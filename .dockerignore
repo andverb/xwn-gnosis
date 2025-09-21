@@ -1,2 +1,32 @@
-# Exclude the project virtual environment from image builds
+# Virtual environments
 .venv
+
+# Git
+.git
+.gitignore
+
+# IDEs
+.idea
+.vscode/
+
+# Databases (use external volumes in production)
+*.db
+*.sqlite3
+
+# Environment files (pass via Docker env vars)
+.env*
+
+# Documentation
+*.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.egg-info
+
+# Development files
+.pre-commit-config.yaml
+uv.lock
