@@ -15,13 +15,13 @@ class RuleSet(Base):
     slug = Column(String(100), nullable=False)
     description = Column(Text)
 
-    # Relationships - homebrew rulesets inherit from base rulesets, overriding some rules
+    # Relationships - one ruleset can have many homebrew versions rulesets, overriding some rules
     base_ruleset_id = Column(Integer, ForeignKey("rulesets.id"), nullable=True)
-    base_ruleset = relationship("RuleSet", remote_side="id")  # Points UP to parent
+    base_ruleset = relationship("RuleSet", remote_side="id", back_populates="homebrew_rulesets")  # Points UP to parent
     homebrew_rulesets = relationship("RuleSet", back_populates="base_ruleset")  # Points DOWN to children
 
-    # Relationships - one - to - many with rules
-    rules = relationship("Rule", back_populates="base_ruleset")
+    # Relationships - one ruleset - to - many rules
+    rules = relationship("Rule", back_populates="ruleset")
 
     # Autopopulated
     created_at = Column(DateTime, server_default=func.now())
@@ -41,7 +41,6 @@ class Rule(Base):
     __tablename__ = "rules"
 
     id = Column(Integer, primary_key=True, index=True)
-    rule_set = Column(String(50), nullable=False)
     tags = Column(JSON, nullable=True)  # searchable tags like ["combat", "spells", "d20"]
     # mechanics = Column(JSON, nullable=True)  #TODO language-agnostic game mechanics
     translations = Column(JSON, nullable=False)  # multilingual content
@@ -50,13 +49,13 @@ class Rule(Base):
     changes_description = Column(Text)  # what was changed from base rule
     is_official = Column(Boolean, default=False)  # Official vs homebrew
 
-    # Relationships - one to many with RuleSet - we store which ruleset this rule belongs to
+    # Relationships - one ruleset to many rules with RuleSet - we store which ruleset this rule belongs to
     ruleset_id = Column(Integer, ForeignKey("rulesets.id"), nullable=False)
     ruleset = relationship("RuleSet", back_populates="rules")
 
-    # Relationships - self-referential, we store which base rule homebrew rule is based on
+    # Relationships - one rule can have may homebrew versions - self-referential
     base_rule_id = Column(Integer, ForeignKey("rules.id"), nullable=True)
-    base_rule = relationship("Rule", remote_side="id")  # Points UP to parent
+    base_rule = relationship("Rule", remote_side="id", back_populates="homebrew_rules")  # Points UP to parent
     homebrew_rules = relationship("Rule", back_populates="base_rule")  # Points DOWN to children
 
     created_at = Column(DateTime, server_default=func.now())
