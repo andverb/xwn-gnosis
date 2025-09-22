@@ -22,3 +22,29 @@ Features expanded:
 8. Hex crawl generator
 9. Mission generator
 
+## Technical Stack
+
+### Current
+- [FastAPI](https://fastapi.tiangolo.com/) - ASGI web framework
+- [SQLAlchemy](https://www.sqlalchemy.org/) - Database ORM
+- [Alembic](https://alembic.sqlalchemy.org/) - Database migrations
+- [Pydantic](https://docs.pydantic.dev/) - Data validation
+
+### Planned
+**Frontend:**
+- [htmx](https://htmx.org/) - Dynamic HTML interactions
+- [Jinja2](https://jinja.palletsprojects.com/) - Template engine
+- [Alpine.js](https://alpinejs.dev/) - Lightweight JS framework
+- CSS: [Simple.css](https://simplecss.org/) or [Beer CSS](https://www.beercss.com/)
+- [Tabler](https://tabler.io/) - Admin template
+
+**Backend:**
+- [FastHX](https://volfpeter.github.io/fasthx/) - FastAPI + htmx integration
+- [FastAPI Users](https://github.com/fastapi-users/fastapi-users) - Authentication
+- [Structlog](https://www.structlog.org/) - Structured logging
+- PostgreSQL with fuzzy search
+
+**Infrastructure:**
+- Docker + Docker Compose for local development
+- Deployment on render.com or railway.com
+- GitHub Actions CI/CD
