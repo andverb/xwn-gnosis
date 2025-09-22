@@ -15,6 +15,8 @@ def health_check():
 
 @app.post("/rules/", response_model=Rule)
 def create_rule(rule: RuleCreate, db: Session = Depends(get_db)):
+    rule.created_by = "admin"
+    rule.last_modified_by = "admin"
     db_rule = RuleModel(**rule.model_dump())
     db.add(db_rule)
     db.commit()

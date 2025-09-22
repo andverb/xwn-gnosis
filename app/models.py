@@ -26,9 +26,10 @@ class RuleSet(Base):
     # Autopopulated
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
     # TODO add users foreign keys
-    created_by = Column(String(150), nullable=False)
-    last_update_by = Column(String(150), nullable=False)
+    created_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
+    last_update_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
 
 
 @event.listens_for(RuleSet, "before_insert")
@@ -62,8 +63,8 @@ class Rule(Base):
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # TODO add users foreign keys
-    created_by = Column(String(150), nullable=False)
-    last_update_by = Column(String(150), nullable=False)
+    created_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
+    last_update_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
 
     def get_name(self) -> str:
         # Try to get English content
