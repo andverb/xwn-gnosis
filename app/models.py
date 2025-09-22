@@ -11,7 +11,7 @@ Base = declarative_base()
 class RuleSet(Base):
     __tablename__ = "rulesets"
     id = Column(Integer, primary_key=True)
-    name = Column(String(150), nullable=False)
+    name = Column(String(150), nullable=False, unique=True)
     slug = Column(String(100), nullable=False)
     description = Column(Text)
 

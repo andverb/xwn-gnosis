@@ -33,8 +33,7 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Claude Code project file
-CLAUDE.md
-
 # Development notes
 schema-notes.md
+CLAUDE.md
+todo.md
