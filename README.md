@@ -44,6 +44,10 @@ Features expanded:
 - [Structlog](https://www.structlog.org/) - Structured logging
 - PostgreSQL with fuzzy search
 
+**Admin Interface:**
+- [Starlette Admin](https://github.com/jowilf/starlette-admin) - Generic admin interface
+- [SQLAdmin](https://github.com/aminalaee/sqladmin) - SQLAlchemy-focused admin panel
+
 **Infrastructure:**
 - Docker + Docker Compose for local development
 - Deployment on render.com or railway.com

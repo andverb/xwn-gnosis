@@ -17,7 +17,9 @@ class RuleSet(Base):
 
     # Relationships - one ruleset can have many homebrew versions rulesets, overriding some rules
     base_ruleset_id = Column(Integer, ForeignKey("rulesets.id"), nullable=True)
-    base_ruleset = relationship("RuleSet", remote_side="id", back_populates="homebrew_rulesets")  # Points UP to parent
+    base_ruleset = relationship(
+        "RuleSet", remote_side="RuleSet.id", back_populates="homebrew_rulesets"
+    )  # Points UP to parent
     homebrew_rulesets = relationship("RuleSet", back_populates="base_ruleset")  # Points DOWN to children
 
     # Relationships - one ruleset - to - many rules
@@ -56,7 +58,7 @@ class Rule(Base):
 
     # Relationships - one rule can have may homebrew versions - self-referential
     base_rule_id = Column(Integer, ForeignKey("rules.id"), nullable=True)
-    base_rule = relationship("Rule", remote_side="id", back_populates="homebrew_rules")  # Points UP to parent
+    base_rule = relationship("Rule", remote_side="Rule.id", back_populates="homebrew_rules")  # Points UP to parent
     homebrew_rules = relationship("Rule", back_populates="base_rule")  # Points DOWN to children
 
     created_at = Column(DateTime, server_default=func.now())
