@@ -1,0 +1,32 @@
+services:
+    postgres:
+      image: postgres:18
+      environment:
+        POSTGRES_DB: gnosis_db
+        POSTGRES_USER: gnosis_user
+        POSTGRES_PASSWORD: dev_password
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U gnosis_user -d gnosis_db"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+    app:
+      build: .
+      ports:
+        - "8000:8000"
+      environment:
+        GNOSIS_DB_URL: postgresql+asyncpg://gnosis_user:dev_password@postgres:5432/gnosis_db
+        GNOSIS_API_KEY: docker-secret-key
+      depends_on:
+        postgres:
+          condition: service_healthy
+      volumes:
+        - .:/code  # For development - live code reload
+
+volumes:
+    postgres_data:

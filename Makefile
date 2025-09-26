@@ -1,10 +1,13 @@
-.PHONY: dev migrate migrations db-reset
+.PHONY: dev dev-docker migrate migrations db-reset
 
 APP_DIR = app
 DB_FILE = app.db
 
 dev:
 	uv run fastapi dev app/main.py
+
+dev-docker:
+	uv run docker-compose up --build
 
 migrate:
 	uv run alembic upgrade head

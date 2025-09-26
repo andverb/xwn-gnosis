@@ -22,5 +22,5 @@ app.include_router(rulesets.router)
 
 
 @app.get("/")
-def health_check():
+async def health_check():
     return {"message": "Im OK!"}

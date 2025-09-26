@@ -1,7 +1,10 @@
+# Import settings for database URL
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+
+from app.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,6 +27,14 @@ target_metadata = Base.metadata
 # ... etc.
 
 
+def get_url():
+    """Get database URL and convert from async to sync for Alembic."""
+    url = settings.db_url
+    if url.startswith("postgresql+asyncpg://"):
+        return url.replace("postgresql+asyncpg://", "postgresql://")
+    return url
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -36,7 +47,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = get_url()
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -55,8 +66,12 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # Use settings URL instead of config file
+    config_dict = config.get_section(config.config_ini_section, {})
+    config_dict["sqlalchemy.url"] = get_url()
+
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        config_dict,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

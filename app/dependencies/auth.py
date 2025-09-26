@@ -1,13 +1,13 @@
-import os
-
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
+
+from app.config import settings
 
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 
 def verify_api_key(api_key: str = Depends(api_key_header)):
-    expected_key = os.getenv("GNOSIS_API_KEY")
+    expected_key = settings.api_key
     if not expected_key:
         raise HTTPException(500, "API key not configured")
     if api_key != expected_key:

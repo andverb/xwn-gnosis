@@ -14,7 +14,7 @@
 *.sqlite3
 
 # Environment files (pass via Docker env vars)
-.env*
+.env
 
 # Documentation
 *.md
@@ -29,4 +29,3 @@ __pycache__/
 
 # Development files
 .pre-commit-config.yaml
-uv.lock

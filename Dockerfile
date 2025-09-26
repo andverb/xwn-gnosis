@@ -29,7 +29,7 @@ ENV PATH="/code/.venv/bin:$PATH"
 ENTRYPOINT []
 
 # Run the FastAPI application by default
-# Uses `fastapi dev` to enable hot-reloading when the `watch` sync occurs
+# Uses `uv run` to ensure proper environment activation
 # Uses `--host 0.0.0.0` to allow access from outside the container
-CMD ["fastapi", "dev", "--host", "0.0.0.0", "app/main.py"]
+CMD ["uv", "run", "fastapi", "dev", "--host", "0.0.0.0", "app/main.py"]
 #CMD ["fastapi", "run", "--workers", "4", "app/main.py"]

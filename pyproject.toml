@@ -10,9 +10,19 @@ dependencies = [
     "fastapi[standard]>=0.115.12",
     "pre-commit>=4.3.0",
     "pydantic>=2.11.3",
+    "pydantic-settings>=2.11.0",
+    "python-dotenv>=1.1.0",
     "python-slugify>=8.0.4",
     "ruff>=0.11.5",
     "sqlalchemy[asyncio]>=2.0.43",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "psycopg2-binary>=2.9.10",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
 ]
 
 [tool.ruff]
@@ -133,7 +143,7 @@ type = "module"
 module = "ruff"
 options = "format REVISION_SCRIPT_FILENAME"
 
-#
+
 # [[tool.alembic.post_write_hooks]]
 # Alternatively, use the exec runner to execute a binary found on your PATH
 # name = "ruff"
