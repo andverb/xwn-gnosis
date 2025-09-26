@@ -203,6 +203,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/49/8f1f51346756c0ceb11ef9309cabb29f3d333c097bae4b4cd69f7bf0beab/crudadmin-0.4.2-py3-none-any.whl", hash = "sha256:8bba024031505eb8f7454a23c4a3690144ae4a49e0366e02d320b6374b2a9c5c", size = 217454, upload-time = "2025-06-26T06:58:51.389Z" },
 ]
 
+[package.optional-dependencies]
+postgres = [
+    { name = "asyncpg" },
+]
+
 [[package]]
 name = "distlib"
 version = "0.4.0"
@@ -1237,7 +1242,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
-    { name = "crudadmin" },
+    { name = "crudadmin", extra = ["postgres"] },
     { name = "fastapi", extra = ["standard"] },
     { name = "pre-commit" },
     { name = "pydantic" },
@@ -1260,7 +1265,7 @@ dev = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.16.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "crudadmin", specifier = ">=0.4.2" },
+    { name = "crudadmin", extras = ["postgres"], specifier = ">=0.4.2" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
     { name = "pre-commit", specifier = ">=4.3.0" },
     { name = "pydantic", specifier = ">=2.11.3" },

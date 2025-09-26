@@ -1,6 +1,16 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
-from app.routers import rules, rulesets
+from app.admin import admin
+from app.routers import misc, rules, rulesets
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):  # noqa
+    await admin.initialize()
+    yield
+
 
 tags_metadata = [
     {
@@ -15,12 +25,13 @@ tags_metadata = [
 
 
 app = FastAPI(
-    title="Gnosis - database of rules for xWN family of TRPG systems", version="0.1.0", openapi_tags=tags_metadata
+    title="Gnosis - database of rules for xWN family of TRPG systems",
+    lifespan=lifespan,
+    version="0.1.0",
+    openapi_tags=tags_metadata,
 )
 app.include_router(rules.router)
 app.include_router(rulesets.router)
+app.include_router(misc.router)
 
-
-@app.get("/")
-async def health_check():
-    return {"message": "Im OK!"}
+app.mount("/admin", admin.app)

@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.16.5",
     "asyncpg>=0.30.0",
-    "crudadmin>=0.4.2",
+    "crudadmin[postgres]>=0.4.2",
     "fastapi[standard]>=0.115.12",
     "pre-commit>=4.3.0",
     "pydantic>=2.11.3",

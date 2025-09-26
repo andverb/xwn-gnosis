@@ -17,6 +17,7 @@ wheels/
 *.db
 *.sqlite3
 rules.db
+crudadmin_data/*
 
 # Environment variables
 .env
@@ -34,6 +35,4 @@ logs/
 Thumbs.db
 
 # Development notes
-schema-notes.md
 CLAUDE.md
-todo.md

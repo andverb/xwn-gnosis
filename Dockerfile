@@ -1,35 +1,42 @@
-# Use a Python image with uv pre-installed
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+# Multi-stage build for optimization
+# Build stage
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-# Install the project into `/code`
 WORKDIR /code
 
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
-
-# Copy from the cache instead of linking since it's a mounted volume
 ENV UV_LINK_MODE=copy
 
-# Install the project's dependencies using the lockfile and settings
+# Copy dependency files first for better caching
+COPY uv.lock pyproject.toml ./
+
+# Install dependencies only (no source code yet)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project --no-dev
 
-# Then, add the rest of the project source code and install it
-# Installing separately from its dependencies allows optimal layer caching
-ADD . /code
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+# Production stage
+FROM python:3.12-slim AS production
+
+WORKDIR /code
+
+# Install uv in production stage
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Copy virtual environment from builder
+COPY --from=builder /code/.venv /code/.venv
+
+# Copy source code
+COPY . .
 
 # Place executables in the environment at the front of the path
 ENV PATH="/code/.venv/bin:$PATH"
 
-# Reset the entrypoint, don't invoke `uv`
-ENTRYPOINT []
+# Create non-root user for security
+RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m
+RUN chown -R adventurer:adventurer /code
+RUN mkdir -p /home/adventurer/.cache && chown -R adventurer:adventurer /home/adventurer/.cache
+USER adventurer
 
-# Run the FastAPI application by default
-# Uses `uv run` to ensure proper environment activation
-# Uses `--host 0.0.0.0` to allow access from outside the container
+# Run the FastAPI application
 CMD ["uv", "run", "fastapi", "dev", "--host", "0.0.0.0", "app/main.py"]
-#CMD ["fastapi", "run", "--workers", "4", "app/main.py"]

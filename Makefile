@@ -7,7 +7,7 @@ dev:
 	uv run fastapi dev app/main.py
 
 dev-docker:
-	uv run docker-compose up --build
+	docker-compose up --build
 
 migrate:
 	uv run alembic upgrade head
