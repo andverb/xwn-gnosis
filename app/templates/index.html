@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="large-padding">
+    <h1>Welcome to Gnosis</h1>
+    <p>Search the database of rules for xWN family tabletop RPG systems</p>
+
+    <!-- Search Form -->
+    <div class="field border">
+        <input class="form-control" type="search"
+       name="q" placeholder="Begin Typing To Search Rules..."
+       hx-get="/search/rules/html"
+       hx-trigger="input changed delay:500ms, keyup[key=='Enter'], load"
+       hx-target="#search-results"
+       hx-indicator="#search-spinner">
+        <i>search</i>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="search-spinner" class="htmx-indicator">
+        <progress class="circle"></progress>
+    </div>
+
+    <!-- Search Results -->
+    <div id="search-results" class="large-margin">
+        <p class="secondary-text">Start typing to search for rules...</p>
+    </div>
+</article>
+{% endblock %}

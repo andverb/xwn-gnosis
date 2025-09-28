@@ -1,0 +1,84 @@
+<!-- Back to Search Button -->
+<div class="row">
+    <button class="border"
+            hx-get="/search/rules/html?q={{ query }}"
+            hx-target="#search-results">
+        <i>arrow_back</i>
+        Back to Results
+    </button>
+</div>
+
+<!-- Rule Detail Card -->
+<article class="large-padding border">
+    <header>
+        <h4>{{ rule.rule_name }}</h4>
+        <div class="row">
+            <div class="max">
+                <span class="chip">{{ rule.ruleset_name }}</span>
+                {% if rule.is_official %}
+                    <span class="chip success">Official</span>
+                {% else %}
+                    <span class="chip secondary">Homebrew</span>
+                {% endif %}
+            </div>
+            <small class="secondary-text">
+                Created: {{ rule.created_at.strftime('%Y-%m-%d') }}
+            </small>
+        </div>
+    </header>
+
+    <main>
+        {% if rule.rule_description %}
+            <div class="large-text">
+                {{ rule.rule_description | replace('\n', '<br>') | safe }}
+            </div>
+        {% else %}
+            <p class="secondary-text">No description available.</p>
+        {% endif %}
+
+        {% if rule.changes_description %}
+            <div class="medium-margin">
+                <h6>Changes from Base Rule:</h6>
+                <p>{{ rule.changes_description }}</p>
+            </div>
+        {% endif %}
+    </main>
+
+    {% if rule.tags %}
+    <footer>
+        <h6>Tags:</h6>
+        <nav class="group">
+            {% for tag in rule.tags %}
+                <button class="no-round secondary">{{ tag }}</button>
+            {% endfor %}
+        </nav>
+    </footer>
+    {% endif %}
+</article>
+
+<!-- Rule Metadata -->
+<details class="small-margin">
+    <summary>Rule Information</summary>
+    <table class="border">
+        <tr>
+            <td>Rule ID</td>
+            <td>{{ rule.id }}</td>
+        </tr>
+        <tr>
+            <td>Slug</td>
+            <td>{{ rule.slug }}</td>
+        </tr>
+        <tr>
+            <td>Created By</td>
+            <td>{{ rule.created_by }}</td>
+        </tr>
+        <tr>
+            <td>Last Updated</td>
+            <td>{{ rule.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        <tr>
+            <td>Updated By</td>
+            <td>{{ rule.last_update_by }}</td>
+        </tr>
+    </table>
+</details>

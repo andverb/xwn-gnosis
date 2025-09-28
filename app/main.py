@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.admin import admin
-from app.routers import misc, rules, rulesets
+from app.routers import misc, rules, rulesets, search
 
 
 @asynccontextmanager
@@ -33,5 +33,6 @@ app = FastAPI(
 app.include_router(rules.router)
 app.include_router(rulesets.router)
 app.include_router(misc.router)
+app.include_router(search.router)
 
 app.mount("/admin", admin.app)

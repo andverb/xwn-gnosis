@@ -84,3 +84,19 @@ class RuleSet(RuleSetBase):
     # TODO consider making those non-nullable since we will auto-populate those as admin
     created_by: str | None = None
     last_update_by: str | None = None
+
+
+class RuleSearchResult(BaseModel):
+    id: int
+    slug: str
+    ruleset_id: int
+    ruleset_name: str
+    rule_name: str
+    rule_description: str | None = None
+    tags: list[str] | None = None
+    changes_description: str | None = None
+    is_official: bool = False
+    created_at: datetime
+    updated_at: datetime
+    created_by: str | None = None
+    last_update_by: str | None = None

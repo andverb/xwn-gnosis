@@ -8,12 +8,10 @@ WORKDIR /code
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
-# Copy dependency files first for better caching
-COPY uv.lock pyproject.toml ./
-
-# Install dependencies only (no source code yet)
+# Let uv handle venv creation in Docker
+COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project --no-dev
+    uv sync --frozen --no-cache
 
 # Production stage
 FROM python:3.12-slim AS production

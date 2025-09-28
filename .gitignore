@@ -33,6 +33,8 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+srd_data
+*.sql
 
 # Development notes
 CLAUDE.md

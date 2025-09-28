@@ -1,4 +1,5 @@
-from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text, event
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, event
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
