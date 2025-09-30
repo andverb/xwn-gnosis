@@ -47,6 +47,7 @@ async def search_rules(
         rules_populated.append(
             schemas.RuleSearchResult(
                 id=rule.id,
+                type=rule.type,
                 slug=rule.slug,
                 ruleset_id=rule.ruleset_id,
                 ruleset_name=rule.ruleset.name,
@@ -103,6 +104,7 @@ async def search_rules_html(
         results.append(
             {
                 "id": rule.id,
+                "type": rule.type,
                 "rule_name": en_content.get("name", f"Rule {rule.id}"),
                 "rule_description": en_content.get("description", ""),
                 "ruleset_name": rule.ruleset.name,

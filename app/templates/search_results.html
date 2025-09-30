@@ -3,25 +3,25 @@
 
     <!-- Search Results List -->
     {% for rule in results %}
-    <article class="border hover"
-             hx-get="/rules/{{ rule.id }}/card"
-             hx-target="#search-results"
-             style="cursor: pointer;">
-        <div class="row">
+        <a class="row padding"
+           hx-get="/rules/{{ rule.id }}/card"
+           hx-target="#search-results">
             <div class="max">
-                <h6>{{ rule.rule_name }}</h6>
+                <h6 class="small">{{ rule.rule_name }}</h6>
                 <small class="secondary-text">{{ rule.ruleset_name }}</small>
             </div>
             <div>
-                {% for tag in rule.tags %}
-                    <span class="chip small">{{ tag }}</span>
-                {% endfor %}
+                {% if rule.type %}
+                    <label>{{ rule.type }}</label>
+                {% endif %}
                 {% if rule.is_official %}
                     <span class="chip success small">Official</span>
+                {% else %}
+                    <span class="chip secondary small">Homebrew</span>
                 {% endif %}
             </div>
-        </div>
-    </article>
+        </a>
+        <hr />
     {% endfor %}
 
 {% else %}

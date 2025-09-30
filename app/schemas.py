@@ -13,7 +13,9 @@ class RuleContent(BaseModel):
 
 class RuleBase(BaseModel):
     # Fields that are SHARED between create/response
+    type: str | None = None
     tags: list[str] | None = None
+    meta_data: dict | None = None
     # Dict with multiple language versions of the rule
     translations: dict[str, RuleContent]
     changes_description: str | None = None
@@ -28,10 +30,12 @@ class RuleCreate(RuleBase):
 
 class RuleUpdate(BaseModel):
     # Inherits from BaseModel, not from RuleBase so all fields optional for partial updates
+    type: str | None = None
     tags: list[str] | None = None
+    meta_data: dict | None = None
     translations: dict[str, RuleContent] | None = None
     changes_description: str | None = None
-    is_official: bool = False
+    is_official: bool | None = None
 
 
 class Rule(RuleBase):
@@ -88,6 +92,7 @@ class RuleSet(RuleSetBase):
 
 class RuleSearchResult(BaseModel):
     id: int
+    type: str | None = None
     slug: str
     ruleset_id: int
     ruleset_name: str

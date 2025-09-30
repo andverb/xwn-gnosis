@@ -45,7 +45,9 @@ class Rule(Base):
     __tablename__ = "rules"
 
     id = Column(Integer, primary_key=True, index=True)
+    type = Column(String(50), nullable=True)  # e.g., spell, feat, equipment
     tags = Column(JSON, nullable=True)  # searchable tags like ["combat", "spells", "d20"]
+    meta_data = Column(JSON, nullable=True)  # type-specific structured data
     # mechanics = Column(JSON, nullable=True)  #TODO language-agnostic game mechanics
     translations = Column(JSON, nullable=False)  # multilingual content
     slug = Column(String(100), nullable=False)
