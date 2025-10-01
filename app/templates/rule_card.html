@@ -1,8 +1,7 @@
 <!-- Back to Search Button -->
 <div class="row">
     <button class="border"
-            hx-get="/search/rules/html"
-            hx-include="#search-input"
+            hx-get="/search/rules/html?q={{ query }}"
             hx-target="#search-results">
         <i>arrow_back</i>
         Back to Results

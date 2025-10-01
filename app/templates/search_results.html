@@ -4,7 +4,7 @@
     <!-- Search Results List -->
     {% for rule in results %}
         <a class="row padding"
-           hx-get="/rules/{{ rule.id }}/card"
+           hx-get="/rules/{{ rule.id }}/card?query={{ query }}"
            hx-target="#search-results">
             <div class="max">
                 <h6 class="small">{{ rule.rule_name }}</h6>
