@@ -27,6 +27,8 @@ async def create_rule(rule: schemas.RuleCreate, db: AsyncSession = Depends(get_d
             raise HTTPException(status_code=404, detail="Base Rule not found")
 
     db_rule = models.Rule(**rule.model_dump())
+    # Sync is_official from ruleset (we already have it loaded)
+    db_rule.is_official = ruleset.is_official
     db.add(db_rule)
     await db.commit()
     await db.refresh(db_rule)

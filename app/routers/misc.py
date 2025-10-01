@@ -7,9 +7,11 @@ from sqlalchemy.orm import selectinload
 
 from app import models
 from app.db import get_db
+from app.utils import render_markdown
 
 router = APIRouter(tags=["utility"])
 templates = Jinja2Templates(directory="app/templates")
+templates.env.filters["markdown"] = render_markdown
 
 
 @router.get("/", response_class=HTMLResponse)

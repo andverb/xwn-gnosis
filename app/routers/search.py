@@ -7,9 +7,11 @@ from sqlalchemy.orm import selectinload
 
 from app import models, schemas
 from app.db import get_db
+from app.utils import render_markdown
 
 router = APIRouter(prefix="/search", tags=["search"])
 templates = Jinja2Templates(directory="app/templates")
+templates.env.filters["markdown"] = render_markdown
 
 
 @router.get("/rules", response_model=list[schemas.RuleSearchResult])

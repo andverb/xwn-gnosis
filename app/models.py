@@ -14,7 +14,9 @@ class RuleSet(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(150), nullable=False, unique=True)
     slug = Column(String(100), nullable=False)
+    abbreviation = Column(String(20), nullable=True)
     description = Column(Text)
+    is_official = Column(Boolean, default=False)
 
     # Relationships - one ruleset can have many homebrew versions rulesets, overriding some rules
     base_ruleset_id = Column(Integer, ForeignKey("rulesets.id"), nullable=True)
@@ -41,6 +43,19 @@ def slugify_ruleset_name(mapper, connection, target):
         target.slug = generate_slug(target.name)
 
 
+@event.listens_for(RuleSet, "before_update")
+def sync_rules_is_official_on_ruleset_update(mapper, connection, target):
+    """When ruleset.is_official changes, update all its rules"""
+    from sqlalchemy import inspect, update  # noqa
+
+    state = inspect(target)
+    history = state.get_history("is_official", passive=True)
+
+    # Only update if is_official actually changed
+    if history.has_changes():
+        connection.execute(update(Rule).where(Rule.ruleset_id == target.id).values(is_official=target.is_official))
+
+
 class Rule(Base):
     __tablename__ = "rules"
 
@@ -53,7 +68,7 @@ class Rule(Base):
     slug = Column(String(100), nullable=False)
 
     changes_description = Column(Text)  # what was changed from base rule
-    is_official = Column(Boolean, default=False)  # Official vs homebrew
+    is_official = Column(Boolean, default=False)  # Denormalized from ruleset for query performance
 
     # Relationships - one ruleset to many rules with RuleSet - we store which ruleset this rule belongs to
     ruleset_id = Column(Integer, ForeignKey("rulesets.id"), nullable=False)

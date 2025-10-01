@@ -19,7 +19,6 @@ class RuleBase(BaseModel):
     # Dict with multiple language versions of the rule
     translations: dict[str, RuleContent]
     changes_description: str | None = None
-    is_official: bool = False
 
 
 class RuleCreate(RuleBase):
@@ -35,7 +34,7 @@ class RuleUpdate(BaseModel):
     meta_data: dict | None = None
     translations: dict[str, RuleContent] | None = None
     changes_description: str | None = None
-    is_official: bool | None = None
+    # Note: is_official is NOT editable here - it's synced from ruleset
 
 
 class Rule(RuleBase):
@@ -46,6 +45,7 @@ class Rule(RuleBase):
     ruleset_id: int
     base_rule_id: int | None = None
     slug: str
+    is_official: bool  # Read-only: synced from ruleset
 
     created_at: datetime
     updated_at: datetime
@@ -64,7 +64,9 @@ class Rule(RuleBase):
 
 class RuleSetBase(BaseModel):
     name: str
+    abbreviation: str | None = None
     description: str | None = None
+    is_official: bool = False
 
 
 class RuleSetCreate(RuleSetBase):
@@ -73,7 +75,9 @@ class RuleSetCreate(RuleSetBase):
 
 class RuleSetUpdate(BaseModel):
     name: str | None = None
+    abbreviation: str | None = None
     description: str | None = None
+    is_official: bool | None = None
 
 
 class RuleSet(RuleSetBase):

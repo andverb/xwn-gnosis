@@ -29,8 +29,8 @@
 
     <main>
         {% if rule.rule_description %}
-            <div class="large-text">
-                {{ rule.rule_description | replace('\n', '<br>') | safe }}
+            <div class="large-text markdown-content">
+                {{ rule.rule_description | markdown | safe }}
             </div>
         {% else %}
             <p class="secondary-text">No description available.</p>
@@ -39,7 +39,9 @@
         {% if rule.changes_description %}
             <div class="medium-margin">
                 <h6>Changes from Base Rule:</h6>
-                <p>{{ rule.changes_description }}</p>
+                <div class="markdown-content">
+                    {{ rule.changes_description | markdown | safe }}
+                </div>
             </div>
         {% endif %}
     </main>
