@@ -30,6 +30,7 @@ async def search_rules(
             or_(
                 models.Rule.translations["en"]["name"].astext.ilike(search_term),
                 models.Rule.tags.cast(String).ilike(search_term),
+                models.Rule.type.ilike(search_term),
             )
         )
     )
@@ -88,6 +89,7 @@ async def search_rules_html(
             or_(
                 models.Rule.translations["en"]["name"].astext.ilike(search_term),
                 models.Rule.tags.cast(String).ilike(search_term),
+                models.Rule.type.ilike(search_term),
             )
         )
     )

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import models, schemas
@@ -36,8 +37,33 @@ async def create_rule(rule: schemas.RuleCreate, db: AsyncSession = Depends(get_d
 
 
 @router.get("/", response_model=list[schemas.Rule])
-async def list_rules(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
-    stmt = select(models.Rule).offset(skip).limit(limit)
+async def list_rules(
+    skip: int = 0,
+    limit: int = 100,
+    type: str | None = None,
+    tags: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    List rules with optional filters.
+
+    - **type**: Filter by rule type (e.g., "class", "art", "skill")
+    - **tags**: Comma-separated list of tags to filter by (e.g., "elementalist,art")
+    """
+    stmt = select(models.Rule)
+
+    # Filter by type
+    if type:
+        stmt = stmt.where(models.Rule.type == type)
+
+    # Filter by tags - check if ALL provided tags are in the rule's tags array
+    if tags:
+        tag_list = [tag.strip() for tag in tags.split(",")]
+        for tag in tag_list:
+            # Cast JSON to JSONB and use PostgreSQL's ? operator for containment check
+            stmt = stmt.where(func.cast(models.Rule.tags, JSONB).contains([tag]))
+
+    stmt = stmt.offset(skip).limit(limit)
     result = await db.execute(stmt)
     return result.scalars().all()
 
