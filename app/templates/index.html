@@ -1,20 +1,51 @@
 {% extends "base.html" %}
 
-{% block content %}
-<article class="large-padding">
-    <h1>Welcome to Gnosis</h1>
-    <p>Search the database of rules for xWN family tabletop RPG systems</p>
+{% block extra_head %}
+<script>
+  // Reset form on page load
+  window.addEventListener('load', () => {
+    document.getElementById('type-filter').value = '';
+    document.getElementById('search-input').value = '';
+  });
+</script>
+{% endblock %}
 
-    <!-- Search Form -->
-    <div class="field border">
-        <input id="search-input" class="form-control" type="search"
-       name="q" placeholder="Begin Typing To Search Rules..."
-       hx-get="/search/rules/html"
-       hx-trigger="input changed delay:500ms, keyup[key=='Enter'], load"
-       hx-target="#search-results"
-       hx-indicator="#search-spinner">
-        <i>search</i>
+{% block content %}
+
+<article>
+    <div class="grid">
+        <div></div>
+        <div>
+            <input id="search-input" name="q" type="search" placeholder="Search rules, classes, spells..."
+                   hx-get="/search/rules/html"
+                   hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
+                   hx-target="#search-results"
+                   hx-include="#type-filter"
+                   hx-indicator="#search-spinner">
+        </div>
+        <div>
+            <select aria-label="Filter" required
+                    id="type-filter" name="type"
+                    hx-get="/search/rules/html"
+                    hx-include="#search-input"
+                    hx-target="#search-results"
+                    hx-trigger="change">
+                <option selected disabled value="">Filter</option>
+                <option value="all">All</option>
+                <option value="rule">Rules</option>
+                <option value="background">Backgrounds</option>
+                <option value="class">Classes</option>
+                <option value="focus">Foci</option>
+                <option value="art">Arts</option>
+                <option value="spell">Spells</option>
+                <option value="weapon">Weapons</option>
+                <option value="armor">Armor</option>
+                <option value="combat-action">Combat Actions</option>
+                <option value="skill">Skills</option>
+            </select>
+        </div>
     </div>
+
 
     <!-- Loading indicator -->
     <div id="search-spinner" class="htmx-indicator">
@@ -23,7 +54,8 @@
 
     <!-- Search Results -->
     <div id="search-results" class="large-margin">
-        <p class="secondary-text">Start typing to search for rules...</p>
     </div>
+
 </article>
+
 {% endblock %}

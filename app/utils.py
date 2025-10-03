@@ -1,3 +1,5 @@
+import re
+
 import bleach
 import markdown
 from slugify import slugify
@@ -60,5 +62,6 @@ def render_markdown(text: str) -> str:
         "th": ["align"],
         "td": ["align"],
     }
+    html = re.sub(r"<table>", '<table role="grid">', html)
 
     return bleach.clean(html, tags=allowed_tags, attributes=allowed_attrs, strip=True)

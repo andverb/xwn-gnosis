@@ -1,90 +1,74 @@
-<!-- Back to Search Button -->
-<div class="row">
-    <button class="border"
-            hx-get="/search/rules/html?q={{ query }}"
-            hx-target="#search-results">
-        <i>arrow_back</i>
-        Back to Results
-    </button>
-</div>
-
 <!-- Rule Detail Card -->
-<article class="large-padding border">
+<article>
     <header>
-        <h4>{{ rule.rule_name }}</h4>
-        <div class="row">
-            <div class="max">
-                <span class="chip">{{ rule.ruleset_name }}</span>
+        <a href="#"
+           hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
+           hx-target="#search-results"
+           style="display: block; margin-bottom: 1rem;">
+            ← Back to Search
+        </a>
+        <h3>{{ rule.rule_name }}</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <kbd>{{ rule.ruleset_name }}</kbd>
                 {% if rule.is_official %}
-                    <span class="chip success">Official</span>
+                <kbd style="background-color: #10b981; color: white;">Official</kbd>
                 {% else %}
-                    <span class="chip secondary">Homebrew</span>
+                <kbd>Homebrew</kbd>
                 {% endif %}
             </div>
-            <small class="secondary-text">
-                Created: {{ rule.created_at.strftime('%Y-%m-%d') }}
-            </small>
+            <div>
+                {% if rule.type %}
+                <kbd>{{ rule.type }}</kbd>
+                {% endif %}
+            </div>
         </div>
     </header>
 
-    <main>
-        {% if rule.rule_description %}
-            <div class="large-text markdown-content">
-                {{ rule.rule_description | markdown | safe }}
-            </div>
-        {% else %}
-            <p class="secondary-text">No description available.</p>
-        {% endif %}
+    {% if rule.rule_description %}
+    <div>
+        {{ rule.rule_description | markdown | safe }}
+    </div>
+    {% else %}
+    <p><small>No description available.</small></p>
+    {% endif %}
 
-        {% if rule.changes_description %}
-            <div class="medium-margin">
-                <h6>Changes from Base Rule:</h6>
-                <div class="markdown-content">
-                    {{ rule.changes_description | markdown | safe }}
-                </div>
-            </div>
-        {% endif %}
-    </main>
+    {% if rule.changes_description %}
+    <div>
+        <h6>Changes from Base Rule:</h6>
+        {{ rule.changes_description | markdown | safe }}
+    </div>
+    {% endif %}
+
+    {% if rule.meta_data %}
+    <hr>
+    <figure>
+        <table role="grid">
+            {% for key, value in rule.meta_data.items() %}
+            <tr>
+                <td><strong>{{ key }}</strong></td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </figure>
+    {% endif %}
 
     {% if rule.tags %}
     <footer>
-        <h6>Tags:</h6>
-        <nav class="group">
-            {% for tag in rule.tags %}
-                <button class="no-round secondary">{{ tag }}</button>
-            {% endfor %}
-        </nav>
+        <strong>Tags:</strong>
+        {% for tag in rule.tags %}
+        <kbd>{{ tag }}</kbd>
+        {% endfor %}
+
+
     </footer>
     {% endif %}
-</article>
 
-<!-- Rule Metadata -->
-<details class="small-margin">
-    <summary>Rule Information</summary>
-    <table class="border">
-        <tr>
-            <td>Metadata</td>
-            <td>{{ rule.meta_data }}</td>
-        </tr>
-        <tr>
-            <td>Rule ID</td>
-            <td>{{ rule.id }}</td>
-        </tr>
-        <tr>
-            <td>Slug</td>
-            <td>{{ rule.slug }}</td>
-        </tr>
-        <tr>
-            <td>Created By</td>
-            <td>{{ rule.created_by }}</td>
-        </tr>
-        <tr>
-            <td>Last Updated</td>
-            <td>{{ rule.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
-        </tr>
-        <tr>
-            <td>Updated By</td>
-            <td>{{ rule.last_update_by }}</td>
-        </tr>
-    </table>
-</details>
+</article>
+<a href="#"
+   hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
+   hx-target="#search-results"
+   style="display: block; margin-bottom: 1rem;">
+    ← Back to Search
+</a>

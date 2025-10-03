@@ -7,7 +7,7 @@ from app import models, schemas
 from app.db import get_db
 from app.dependencies.auth import verify_api_key
 
-router = APIRouter(prefix="/rules", tags=["rules"])
+router = APIRouter(prefix="/api/rules", tags=["rules-api"])
 
 
 @router.post("/", response_model=schemas.Rule, dependencies=[Depends(verify_api_key)])

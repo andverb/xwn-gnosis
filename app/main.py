@@ -3,7 +3,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.admin import admin
-from app.routers import misc, rules, rulesets, search
+from app.routers.api import rules as api_rules
+from app.routers.api import rulesets as api_rulesets
+from app.routers.api import search as api_search
+from app.routers.web import pages
+from app.routers.web import search as web_search
 
 
 @asynccontextmanager
@@ -14,12 +18,24 @@ async def lifespan(app: FastAPI):  # noqa
 
 tags_metadata = [
     {
-        "name": "rules",
-        "description": "Operations with rules. Individual game mechanics and content.",
+        "name": "rules-api",
+        "description": "API: Operations with rules. Individual game mechanics and content.",
     },
     {
-        "name": "rulesets",
-        "description": "Operations with rulesets. Collections of rules for different game systems.",
+        "name": "rulesets-api",
+        "description": "API: Operations with rulesets. Collections of rules for different game systems.",
+    },
+    {
+        "name": "search-api",
+        "description": "API: Search rules and rulesets.",
+    },
+    {
+        "name": "search-web",
+        "description": "Web: Search interface (HTML)",
+    },
+    {
+        "name": "pages",
+        "description": "Web: Frontend pages (HTML)",
     },
 ]
 
@@ -30,9 +46,14 @@ app = FastAPI(
     version="0.1.0",
     openapi_tags=tags_metadata,
 )
-app.include_router(rules.router)
-app.include_router(rulesets.router)
-app.include_router(misc.router)
-app.include_router(search.router)
+
+# API routers (JSON responses)
+app.include_router(api_rules.router)
+app.include_router(api_rulesets.router)
+app.include_router(api_search.router)
+
+# Web routers (HTML responses)
+app.include_router(pages.router)
+app.include_router(web_search.router)
 
 app.mount("/admin", admin.app)

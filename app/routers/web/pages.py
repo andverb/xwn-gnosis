@@ -9,7 +9,7 @@ from app import models
 from app.db import get_db
 from app.utils import render_markdown
 
-router = APIRouter(tags=["utility"])
+router = APIRouter(tags=["pages"])
 templates = Jinja2Templates(directory="app/templates")
 templates.env.filters["markdown"] = render_markdown
 
@@ -20,7 +20,9 @@ async def home(request: Request):
 
 
 @router.get("/rules/{rule_id}/card", response_class=HTMLResponse)
-async def rule_card(rule_id: int, request: Request, query: str = "", db: AsyncSession = Depends(get_db)):
+async def rule_card(
+    rule_id: int, request: Request, query: str = "", type: str = "", db: AsyncSession = Depends(get_db)
+):
     """Get rule detail card for htmx"""
     stmt = select(models.Rule).options(selectinload(models.Rule.ruleset)).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
@@ -34,19 +36,23 @@ async def rule_card(rule_id: int, request: Request, query: str = "", db: AsyncSe
     rule_data = {
         "id": rule.id,
         "slug": rule.slug,
+        "type": rule.type,
         "rule_name": en_content.get("name", f"Rule {rule.id}"),
         "rule_description": en_content.get("description", ""),
         "ruleset_name": rule.ruleset.name,
         "tags": rule.tags or [],
         "is_official": rule.is_official,
         "changes_description": rule.changes_description,
+        "meta_data": rule.meta_data,
         "created_at": rule.created_at,
         "updated_at": rule.updated_at,
         "created_by": rule.created_by,
         "last_update_by": rule.last_update_by,
     }
 
-    return templates.TemplateResponse("rule_card.html", {"request": request, "rule": rule_data, "query": query})
+    return templates.TemplateResponse(
+        "rule_card.html", {"request": request, "rule": rule_data, "query": query, "type": type}
+    )
 
 
 @router.get("/health")
