@@ -6,8 +6,7 @@ from app.db import get_db
 
 admin = CRUDAdmin(
     session=get_db,
-    session_backend="database",
-    admin_db_path=None,  # Use the same session, not separate SQLite
+    session_backend="memory",  # Use in-memory sessions (simple, no DB writes)
     SECRET_KEY=settings.secret_key,
     initial_admin={
         "username": "sorcererkingadmin",  # No underscores allowed
