@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.middleware.gzip import GZipMiddleware
 
 from app.routers.api import rules as api_rules
 from app.routers.api import rulesets as api_rulesets
@@ -35,6 +36,18 @@ app = FastAPI(
     version="0.1.0",
     openapi_tags=tags_metadata,
 )
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+
+@app.middleware("http")
+async def add_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.method == "GET":
+        # Cache for 10 minutes
+        response.headers["Cache-Control"] = "public, max-age=600"
+    return response
+
 
 # API routers (JSON responses)
 app.include_router(api_rules.router)
