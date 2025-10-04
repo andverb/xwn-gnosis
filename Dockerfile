@@ -38,4 +38,4 @@ USER adventurer
 EXPOSE 8000
 
 # Run the FastAPI application
-CMD ["sh", "-c", "alembic upgrade head && granian --interface asgi --host 0.0.0.0 --port 8000 --workers 4 app.main:app"]
+CMD ["sh", "-c", "alembic upgrade head && granian --interface asgi --host 0.0.0.0 --port 8000 --workers 2 app.main:app"]
