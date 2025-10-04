@@ -10,7 +10,7 @@ ENV UV_LINK_MODE=copy
 
 # Let uv handle venv creation in Docker
 COPY pyproject.toml uv.lock ./
-RUN RUN uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev
 
 # Production stage
 FROM python:3.12-slim AS production
