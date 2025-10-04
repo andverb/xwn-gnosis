@@ -1,20 +1,10 @@
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 
-from app.admin import admin
 from app.routers.api import rules as api_rules
 from app.routers.api import rulesets as api_rulesets
 from app.routers.api import search as api_search
 from app.routers.web import pages
 from app.routers.web import search as web_search
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):  # noqa
-    await admin.initialize()
-    yield
-
 
 tags_metadata = [
     {
@@ -42,7 +32,6 @@ tags_metadata = [
 
 app = FastAPI(
     title="Gnosis - database of rules for xWN family of TRPG systems",
-    lifespan=lifespan,
     version="0.1.0",
     openapi_tags=tags_metadata,
 )
@@ -55,5 +44,3 @@ app.include_router(api_search.router)
 # Web routers (HTML responses)
 app.include_router(pages.router)
 app.include_router(web_search.router)
-
-app.mount("/admin", admin.app)

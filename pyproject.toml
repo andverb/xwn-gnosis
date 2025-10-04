@@ -8,7 +8,6 @@ dependencies = [
     "alembic>=1.16.5",
     "asyncpg>=0.30.0",
     "bleach>=6.2.0",
-    "crudadmin[postgres]>=0.4.2",
     "fastapi[standard]>=0.115.12",
     "markdown>=3.9",
     "pre-commit>=4.3.0",

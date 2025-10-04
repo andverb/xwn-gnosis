@@ -29,7 +29,7 @@ target_metadata = Base.metadata
 
 def get_url():
     """Get database URL and convert from async to sync for Alembic."""
-    url = settings.db_url
+    url = settings.database_url
     if url.startswith("postgresql+asyncpg://"):
         return url.replace("postgresql+asyncpg://", "postgresql://")
     return url
