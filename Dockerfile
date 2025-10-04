@@ -10,8 +10,7 @@ ENV UV_LINK_MODE=copy
 
 # Let uv handle venv creation in Docker
 COPY pyproject.toml uv.lock ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-cache
+RUN RUN uv sync --frozen --no-dev
 
 # Production stage
 FROM python:3.12-slim AS production
@@ -36,5 +35,7 @@ RUN chown -R adventurer:adventurer /code
 RUN mkdir -p /home/adventurer/.cache && chown -R adventurer:adventurer /home/adventurer/.cache
 USER adventurer
 
+EXPOSE 8000
+
 # Run the FastAPI application
-CMD ["uv", "run", "fastapi", "dev", "--host", "0.0.0.0", "app/main.py"]
+CMD ["sh", "-c", "alembic upgrade head && granian --interface asgi --host 0.0.0.0 --port 8000 --workers 4 app.main:app"]

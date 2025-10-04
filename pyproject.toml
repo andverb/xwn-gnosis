@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "bleach>=6.2.0",
     "fastapi[standard]>=0.115.12",
+    "granian>=2.5.4",
     "markdown>=3.9",
     "pre-commit>=4.3.0",
     "pydantic>=2.11.3",
