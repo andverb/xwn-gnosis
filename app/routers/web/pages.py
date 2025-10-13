@@ -1,11 +1,12 @@
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Cookie, HTTPException, Query, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app import models
 from app.dependencies import DbSession
+from app.dependencies.i18n import get_language, get_translations
 from app.utils import render_markdown
 
 router = APIRouter(tags=["pages"])
@@ -14,14 +15,35 @@ templates.env.filters["markdown"] = render_markdown
 
 
 @router.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def home(request: Request, lang: str | None = Cookie(default=None)):
+    translations = get_translations(request, lang)
+    current_lang = get_language(request, lang)
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "t": translations, "current_lang": current_lang}
+    )
 
 
-@router.get("/rules/{rule_id}/card", response_class=HTMLResponse)
-async def rule_card(rule_id: int, request: Request, db: DbSession, query: str = "", type: str = ""):
-    """Get rule detail card for htmx"""
-    stmt = select(models.Rule).options(selectinload(models.Rule.ruleset)).where(models.Rule.id == rule_id)
+@router.get("/rules/{ruleset_slug}/{rule_slug}", response_class=HTMLResponse)
+async def rule_card(
+    ruleset_slug: str,
+    rule_slug: str,
+    request: Request,
+    db: DbSession,
+    query: str = "",
+    rule_type: str = Query("", alias="type"),
+    lang: str | None = Cookie(default=None),
+):
+    """Get rule detail card - returns full page or htmx partial"""
+    translations = get_translations(request, lang)
+    current_lang = get_language(request, lang)
+
+    # Join Rule and RuleSet to find by both slugs
+    stmt = (
+        select(models.Rule)
+        .options(selectinload(models.Rule.ruleset))
+        .join(models.RuleSet)
+        .where(models.RuleSet.slug == ruleset_slug, models.Rule.slug == rule_slug)
+    )
     result = await db.execute(stmt)
     rule = result.scalar_one_or_none()
 
@@ -47,9 +69,47 @@ async def rule_card(rule_id: int, request: Request, db: DbSession, query: str = 
         "last_update_by": rule.last_update_by,
     }
 
+    # Check if request is from htmx
+    is_htmx = request.headers.get("HX-Request") == "true"
+
+    if is_htmx:
+        # Return partial for htmx with back links
+        return templates.TemplateResponse(
+            "rule_card.html",
+            {
+                "request": request,
+                "rule": rule_data,
+                "query": query,
+                "type": rule_type,
+                "show_back_link": True,
+                "t": translations,
+                "current_lang": current_lang,
+            },
+        )
+    # Return full page for direct access without back links
     return templates.TemplateResponse(
-        "rule_card.html", {"request": request, "rule": rule_data, "query": query, "type": type}
+        "rule_detail_page.html",
+        {
+            "request": request,
+            "rule": rule_data,
+            "query": query,
+            "type": rule_type,
+            "show_back_link": False,
+            "t": translations,
+            "current_lang": current_lang,
+        },
     )
+
+
+@router.get("/set-language/{lang}")
+async def set_language(lang: str):
+    """Set language preference via cookie"""
+    if lang not in ["en", "uk"]:
+        lang = "en"
+
+    response = RedirectResponse(url="/", status_code=303)
+    response.set_cookie(key="lang", value=lang, max_age=31536000, httponly=True, samesite="lax")  # 1 year
+    return response
 
 
 @router.get("/health")

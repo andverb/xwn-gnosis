@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ current_lang|default('en') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
             integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
             crossorigin="anonymous"></script>
-    <title>{% block title %}Gnosis - xWN Rules Database{% endblock %}</title>
+    <title>{% block title %}{{ t.app_title|default('Gnosis - xWN Rules Database') }}{% endblock %}</title>
     {% block extra_head %}{% endblock %}
 </head>
 <body class="dark">
@@ -21,22 +21,32 @@
     <nav>
         <ul>
             <li>
-                <button data-placement="right" data-tooltip="Made by John from DMK | xWN systems by Kevin Crawford">❓
+                <button data-placement="right" data-tooltip="{{ t.info_tooltip|default('Made by John from DMK | xWN systems by Kevin Crawford') }}">❓
                 </button>
             </li>
         </ul>
         <ul>
             <li>
-                <hgroup>
-                    <h2>Welcome to Gnosis</h2>
-                    <p>Database of rules for xWN systems</p>
-
-                </hgroup>
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    <hgroup style="text-align: center;">
+                        <h2>{{ t.welcome|default('Welcome to Gnosis') }}</h2>
+                        <p>{{ t.subtitle|default('Database of rules for xWN systems') }}</p>
+                    </hgroup>
+                </a>
             </li>
         </ul>
         <ul>
             <li>
-                <button data-placement="left" id="theme-toggle" data-tooltip="Toggle theme">🌓</button>
+                <button data-placement="left"
+                        data-tooltip="{{ t.toggle_language|default('Switch language') }}"
+                        hx-get="/set-language/{% if current_lang == 'en' %}uk{% else %}en{% endif %}"
+                        hx-swap="none"
+                        hx-on::after-request="sessionStorage.clear(); localStorage.removeItem('htmx-cache'); window.location.reload(true);">
+                    {% if current_lang == 'en' %}🇺🇦{% else %}🇬🇧{% endif %}
+                </button>
+            </li>
+            <li>
+                <button data-placement="left" id="theme-toggle" data-tooltip="{{ t.toggle_theme|default('Toggle theme') }}">🌓</button>
             </li>
         </ul>
     </nav>

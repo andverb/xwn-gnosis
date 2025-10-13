@@ -16,7 +16,7 @@
     <div class="grid">
         <div></div>
         <div>
-            <input id="search-input" name="q" type="search" placeholder="Search rules, classes, spells..."
+            <input id="search-input" name="q" type="search" placeholder="{{ t.search_placeholder|default('Search rules, classes, spells...') }}"
                    hx-get="/search/rules/html"
                    hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
                    hx-target="#search-results"
@@ -24,24 +24,24 @@
                    hx-indicator="#search-spinner">
         </div>
         <div>
-            <select aria-label="Filter" required
+            <select aria-label="{{ t.filter_label|default('Filter') }}" required
                     id="type-filter" name="type"
                     hx-get="/search/rules/html"
                     hx-include="#search-input"
                     hx-target="#search-results"
                     hx-trigger="change">
-                <option selected disabled value="">Filter</option>
-                <option value="all">All</option>
-                <option value="rule">Rules</option>
-                <option value="background">Backgrounds</option>
-                <option value="class">Classes</option>
-                <option value="focus">Foci</option>
-                <option value="art">Arts</option>
-                <option value="spell">Spells</option>
-                <option value="weapon">Weapons</option>
-                <option value="armor">Armor</option>
-                <option value="combat-action">Combat Actions</option>
-                <option value="skill">Skills</option>
+                <option selected disabled value="">{{ t.filter_label|default('Filter') }}</option>
+                <option value="all">{{ t.filter_all|default('All') }}</option>
+                <option value="rule">{{ t.filter_rules|default('Rules') }}</option>
+                <option value="background">{{ t.filter_backgrounds|default('Backgrounds') }}</option>
+                <option value="class">{{ t.filter_classes|default('Classes') }}</option>
+                <option value="focus">{{ t.filter_foci|default('Foci') }}</option>
+                <option value="art">{{ t.filter_arts|default('Arts') }}</option>
+                <option value="spell">{{ t.filter_spells|default('Spells') }}</option>
+                <option value="weapon">{{ t.filter_weapons|default('Weapons') }}</option>
+                <option value="armor">{{ t.filter_armor|default('Armor') }}</option>
+                <option value="combat-action">{{ t.filter_combat_actions|default('Combat Actions') }}</option>
+                <option value="skill">{{ t.filter_skills|default('Skills') }}</option>
             </select>
         </div>
     </div>

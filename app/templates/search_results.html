@@ -4,23 +4,22 @@
 <!-- Search Results List -->
 {% for rule in results %}
 <div style="display: flex; justify-content: space-between; align-items: center;">
-    <a href="#"
-       hx-get="/rules/{{ rule.id }}/card?query={{ query }}{% if type_filter %}&type={{ type_filter }}{% endif %}"
-       hx-target="#search-results">
+    <a href="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}"
+       hx-get="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}?query={{ query }}{% if type_filter %}&type={{ type_filter }}{% endif %}"
+       hx-target="#search-results"
+       hx-push-url="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}">
         <h5>{{ rule.rule_name }}</h5>
     </a>
 
     <div>
-
         {% if rule.type %}
         <kbd>{{ rule.type }}</kbd>
         {% endif %}
         {% if rule.is_official %}
-        <kbd>Official</kbd>
+        <kbd style="background-color: #10b981; color: white;">{{ rule.ruleset_abbreviation }}</kbd>
         {% else %}
-        <kbd>Homebrew</kbd>
+        <kbd style="background-color: #f59e0b; color: white;">{{ rule.ruleset_abbreviation }}</kbd>
         {% endif %}
-        <kbd>{{ rule.ruleset_abbreviation }}</kbd>
     </div>
 </div>
 
