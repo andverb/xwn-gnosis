@@ -72,6 +72,9 @@ fixable = ["ALL"]
 [tool.ruff.lint.pycodestyle]
 max-line-length = 120
 
+[tool.ruff.lint.per-file-ignores]
+"app/i18n.py" = ["RUF001"]  # Allow Cyrillic characters in translations
+
 [tool.alembic]
 
 # path to migration scripts.
