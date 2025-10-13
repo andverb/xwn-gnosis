@@ -56,11 +56,12 @@
 
     {% if rule.tags %}
     <footer>
-        <strong>Tags:</strong>
+        <strong>Tags:</strong>\
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
         {% for tag in rule.tags %}
         <kbd>{{ tag }}</kbd>
         {% endfor %}
-
+        </div>>
 
     </footer>
     {% endif %}
