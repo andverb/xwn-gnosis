@@ -11,16 +11,14 @@
     </a>
 
     <div>
-
         {% if rule.type %}
         <kbd>{{ rule.type }}</kbd>
         {% endif %}
         {% if rule.is_official %}
-        <kbd>Official</kbd>
+        <kbd style="background-color: #10b981; color: white;">{{ rule.ruleset_abbreviation }}</kbd>
         {% else %}
-        <kbd>Homebrew</kbd>
+        <kbd style="background-color: #f59e0b; color: white;">{{ rule.ruleset_abbreviation }}</kbd>
         {% endif %}
-        <kbd>{{ rule.ruleset_abbreviation }}</kbd>
     </div>
 </div>
 

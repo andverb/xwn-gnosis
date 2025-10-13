@@ -5,16 +5,15 @@
            hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
            hx-target="#search-results"
            style="display: block; margin-bottom: 1rem;">
-            ← Back to Search
+            ← {{ t.back_to_search|default('Back to Search') }}
         </a>
         <h3>{{ rule.rule_name }}</h3>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <kbd>{{ rule.ruleset_name }}</kbd>
                 {% if rule.is_official %}
-                <kbd style="background-color: #10b981; color: white;">Official</kbd>
+                <kbd style="background-color: #10b981; color: white;">{{ rule.ruleset_name }}</kbd>
                 {% else %}
-                <kbd>Homebrew</kbd>
+                <kbd style="background-color: #f59e0b; color: white;">{{ rule.ruleset_name }}</kbd>
                 {% endif %}
             </div>
             <div>
@@ -30,12 +29,12 @@
         {{ rule.rule_description | markdown | safe }}
     </div>
     {% else %}
-    <p><small>No description available.</small></p>
+    <p><small>{{ t.no_description|default('No description available.') }}</small></p>
     {% endif %}
 
     {% if rule.changes_description %}
     <div>
-        <h6>Changes from Base Rule:</h6>
+        <h6>{{ t.changes_from_base|default('Changes from Base Rule:') }}</h6>
         {{ rule.changes_description | markdown | safe }}
     </div>
     {% endif %}
@@ -56,12 +55,12 @@
 
     {% if rule.tags %}
     <footer>
-        <strong>Tags:</strong>\
+        <strong>{{ t.tags|default('Tags:') }}</strong>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
         {% for tag in rule.tags %}
         <kbd>{{ tag }}</kbd>
         {% endfor %}
-        </div>>
+        </div>
 
     </footer>
     {% endif %}
@@ -71,5 +70,5 @@
    hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
    hx-target="#search-results"
    style="display: block; margin-bottom: 1rem;">
-    ← Back to Search
+    ← {{ t.back_to_search|default('Back to Search') }}
 </a>
