@@ -1,12 +1,15 @@
 <!-- Rule Detail Card -->
 <article>
     <header>
-        <a href="#"
+        {% if show_back_link %}
+        <a href="/"
            hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
            hx-target="#search-results"
+           hx-push-url="/?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
            style="display: block; margin-bottom: 1rem;">
             ← {{ t.back_to_search|default('Back to Search') }}
         </a>
+        {% endif %}
         <h3>{{ rule.rule_name }}</h3>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
@@ -41,16 +44,12 @@
 
     {% if rule.meta_data %}
     <hr>
-    <figure>
-        <table role="grid">
-            {% for key, value in rule.meta_data.items() %}
-            <tr>
-                <td><strong>{{ key }}</strong></td>
-                <td>{{ value }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </figure>
+    <dl style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; margin: 1rem 0;">
+        {% for key, value in rule.meta_data.items() %}
+        <dt><strong>{{ key }}:</strong></dt>
+        <dd style="margin: 0;">{{ value }}</dd>
+        {% endfor %}
+    </dl>
     {% endif %}
 
     {% if rule.tags %}
@@ -66,9 +65,12 @@
     {% endif %}
 
 </article>
-<a href="#"
+{% if show_back_link %}
+<a href="/"
    hx-get="/search/rules/html?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
    hx-target="#search-results"
+   hx-push-url="/?q={{ query }}{% if type %}&type={{ type }}{% endif %}"
    style="display: block; margin-bottom: 1rem;">
     ← {{ t.back_to_search|default('Back to Search') }}
 </a>
+{% endif %}
