@@ -1,20 +1,19 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Query
 from sqlalchemy import String, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app import models, schemas
-from app.db import get_db
+from app.dependencies import DbSession
 
 router = APIRouter(prefix="/api/search", tags=["search-api"])
 
 
 @router.get("/rules", response_model=list[schemas.RuleSearchResult])
 async def search_rules(
+    db: DbSession,
     q: str = Query(..., min_length=2, description="Search query"),
     ruleset: str | None = Query(None, description="Filter by ruleset name"),
     limit: int = Query(20, le=100, description="Max results"),
-    db: AsyncSession = Depends(get_db),
 ):
     search_term = f"%{q.lower()}%"
     stmt = (

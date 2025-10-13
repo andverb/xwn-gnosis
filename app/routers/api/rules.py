@@ -1,17 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import models, schemas
-from app.db import get_db
+from app.dependencies import DbSession
 from app.dependencies.auth import verify_api_key
 
 router = APIRouter(prefix="/api/rules", tags=["rules-api"])
 
 
 @router.post("/", response_model=schemas.Rule, dependencies=[Depends(verify_api_key)])
-async def create_rule(rule: schemas.RuleCreate, db: AsyncSession = Depends(get_db)):
+async def create_rule(rule: schemas.RuleCreate, db: DbSession):
     # Validate required ruleset_id
     stmt = select(models.RuleSet).where(models.RuleSet.id == rule.ruleset_id)
     result = await db.execute(stmt)
@@ -38,11 +37,11 @@ async def create_rule(rule: schemas.RuleCreate, db: AsyncSession = Depends(get_d
 
 @router.get("/", response_model=list[schemas.Rule])
 async def list_rules(
+    db: DbSession,
     skip: int = 0,
     limit: int = 100,
     type: str | None = None,
     tags: str | None = None,
-    db: AsyncSession = Depends(get_db),
 ):
     """
     List rules with optional filters.
@@ -69,7 +68,7 @@ async def list_rules(
 
 
 @router.get("/{rule_id}", response_model=schemas.Rule)
-async def get_rule(rule_id: int, db: AsyncSession = Depends(get_db)):
+async def get_rule(rule_id: int, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
     rule = result.scalar_one_or_none()
@@ -79,7 +78,7 @@ async def get_rule(rule_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.put("/{rule_id}", response_model=schemas.Rule, dependencies=[Depends(verify_api_key)])
-async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: AsyncSession = Depends(get_db)):
+async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
     rule = result.scalar_one_or_none()
@@ -107,7 +106,7 @@ async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: AsyncSe
 
 
 @router.delete("/{rule_id}", dependencies=[Depends(verify_api_key)])
-async def delete_rule(rule_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_rule(rule_id: int, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
     rule = result.scalar_one_or_none()

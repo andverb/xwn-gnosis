@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app import models
-from app.db import get_db
+from app.dependencies import DbSession
 from app.utils import render_markdown
 
 router = APIRouter(tags=["pages"])
@@ -20,9 +19,7 @@ async def home(request: Request):
 
 
 @router.get("/rules/{rule_id}/card", response_class=HTMLResponse)
-async def rule_card(
-    rule_id: int, request: Request, query: str = "", type: str = "", db: AsyncSession = Depends(get_db)
-):
+async def rule_card(rule_id: int, request: Request, db: DbSession, query: str = "", type: str = ""):
     """Get rule detail card for htmx"""
     stmt = select(models.Rule).options(selectinload(models.Rule.ruleset)).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)

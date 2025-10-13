@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Query, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app import models
-from app.db import get_db
+from app.dependencies import DbSession
 from app.utils import render_markdown
 
 router = APIRouter(prefix="/search", tags=["search-web"])
@@ -17,11 +16,11 @@ templates.env.filters["markdown"] = render_markdown
 @router.get("/rules/html", response_class=HTMLResponse, include_in_schema=False)
 async def search_rules_html(
     request: Request,
+    db: DbSession,
     q: str = Query("", description="Search query"),
     type: str | None = Query(None, description="Filter by rule type"),
     ruleset: str | None = Query(None, description="Filter by ruleset name"),
     limit: int = Query(50, le=100, description="Max results"),
-    db: AsyncSession = Depends(get_db),
 ):
     # Allow empty query if type filter is set OR if "all" is selected
     has_valid_type = type and type.strip() and type != ""

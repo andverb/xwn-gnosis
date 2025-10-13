@@ -1,6 +1,9 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
 
+from app.db import engine
 from app.routers.api import rules as api_rules
 from app.routers.api import rulesets as api_rulesets
 from app.routers.api import search as api_search
@@ -31,10 +34,20 @@ tags_metadata = [
 ]
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Manage application lifespan: startup and shutdown events."""
+    # Startup: resources are already initialized at module import
+    yield
+    # Shutdown: properly dispose of database engine and close all connections
+    await engine.dispose()
+
+
 app = FastAPI(
     title="Gnosis - database of rules for xWN family of TRPG systems",
     version="0.1.0",
     openapi_tags=tags_metadata,
+    lifespan=lifespan,
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
