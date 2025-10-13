@@ -18,3 +18,11 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+def get_settings() -> Settings:
+    """
+    Dependency function to provide Settings instance.
+    Using this as a dependency allows for easier testing and follows FastAPI best practices.
+    """
+    return settings
