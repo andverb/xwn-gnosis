@@ -14,50 +14,48 @@
 {% block content %}
 
 <article>
-    <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1rem;">
-        <!-- Search bar -->
-        <input id="search-input" name="q" type="search" placeholder="{{ t.search_placeholder|default('Search rules, classes, spells...') }}"
-               hx-get="/search/rules/html"
-               hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
-               hx-target="#search-results"
-               hx-include="#type-filter, #system-filter"
-               hx-indicator="#search-spinner">
+    <!-- Search bar - full width on mobile -->
+    <input id="search-input" name="q" type="search" placeholder="{{ t.search_placeholder|default('Search rules, classes, spells...') }}"
+           hx-get="/search/rules/html"
+           hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
+           hx-target="#search-results"
+           hx-include="#type-filter, #system-filter"
+           hx-indicator="#search-spinner">
 
-        <!-- Filters -->
-        <div style="display: flex; gap: 0.5rem;">
-            <select aria-label="{{ t.filter_type_label|default('Type') }}" required
-                    id="type-filter" name="type"
-                    hx-get="/search/rules/html"
-                    hx-include="#search-input, #system-filter"
-                    hx-target="#search-results"
-                    hx-trigger="change">
-                <option selected disabled value="">{{ t.filter_type_label|default('Type') }}</option>
-                <option value="all">{{ t.filter_all|default('All') }}</option>
-                <option value="rule">{{ t.filter_rules|default('Rules') }}</option>
-                <option value="background">{{ t.filter_backgrounds|default('Backgrounds') }}</option>
-                <option value="class">{{ t.filter_classes|default('Classes') }}</option>
-                <option value="focus">{{ t.filter_foci|default('Foci') }}</option>
-                <option value="art">{{ t.filter_arts|default('Arts') }}</option>
-                <option value="spell">{{ t.filter_spells|default('Spells') }}</option>
-                <option value="weapon">{{ t.filter_weapons|default('Weapons') }}</option>
-                <option value="armor">{{ t.filter_armor|default('Armor') }}</option>
-                <option value="combat-action">{{ t.filter_combat_actions|default('Combat Actions') }}</option>
-                <option value="skill">{{ t.filter_skills|default('Skills') }}</option>
-            </select>
+    <!-- Filters - stacked on mobile, side-by-side on desktop -->
+    <div class="grid">
+        <select aria-label="{{ t.filter_type_label|default('Type') }}" required
+                id="type-filter" name="type"
+                hx-get="/search/rules/html"
+                hx-include="#search-input, #system-filter"
+                hx-target="#search-results"
+                hx-trigger="change">
+            <option selected disabled value="">{{ t.filter_type_label|default('Type') }}</option>
+            <option value="all">{{ t.filter_all|default('All') }}</option>
+            <option value="rule">{{ t.filter_rules|default('Rules') }}</option>
+            <option value="background">{{ t.filter_backgrounds|default('Backgrounds') }}</option>
+            <option value="class">{{ t.filter_classes|default('Classes') }}</option>
+            <option value="focus">{{ t.filter_foci|default('Foci') }}</option>
+            <option value="art">{{ t.filter_arts|default('Arts') }}</option>
+            <option value="spell">{{ t.filter_spells|default('Spells') }}</option>
+            <option value="weapon">{{ t.filter_weapons|default('Weapons') }}</option>
+            <option value="armor">{{ t.filter_armor|default('Armor') }}</option>
+            <option value="combat-action">{{ t.filter_combat_actions|default('Combat Actions') }}</option>
+            <option value="skill">{{ t.filter_skills|default('Skills') }}</option>
+        </select>
 
-            <select aria-label="{{ t.filter_system_label|default('System') }}" required
-                    id="system-filter" name="ruleset"
-                    hx-get="/search/rules/html"
-                    hx-include="#search-input, #type-filter"
-                    hx-target="#search-results"
-                    hx-trigger="change">
-                <option selected disabled value="">{{ t.filter_system_label|default('System') }}</option>
-                <option value="all">{{ t.filter_all|default('All') }}</option>
-                {% for ruleset in rulesets %}
-                <option value="{{ ruleset.abbreviation }}">{{ ruleset.abbreviation }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        <select aria-label="{{ t.filter_system_label|default('System') }}" required
+                id="system-filter" name="ruleset"
+                hx-get="/search/rules/html"
+                hx-include="#search-input, #type-filter"
+                hx-target="#search-results"
+                hx-trigger="change">
+            <option selected disabled value="">{{ t.filter_system_label|default('System') }}</option>
+            <option value="all">{{ t.filter_all|default('All') }}</option>
+            {% for ruleset in rulesets %}
+            <option value="{{ ruleset.abbreviation }}">{{ ruleset.abbreviation }}</option>
+            {% endfor %}
+        </select>
     </div>
 
 
