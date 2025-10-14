@@ -27,9 +27,10 @@ async def search_rules_html(
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
 
-    # Allow empty query if type filter is set OR if "all" is selected
+    # Allow empty query if type or ruleset filter is set
     has_valid_type = rule_type and rule_type.strip() and rule_type != ""
-    if (not q or len(q) < 2) and not has_valid_type:  # noqa
+    has_valid_ruleset = ruleset and ruleset.strip() and ruleset not in ["", "all"]
+    if (not q or len(q) < 2) and not has_valid_type and not has_valid_ruleset:  # noqa
         return templates.TemplateResponse(
             "search_results.html",
             {"request": request, "results": [], "query": q, "t": translations, "current_lang": current_lang},
@@ -49,8 +50,8 @@ async def search_rules_html(
             )
         )
 
-    if ruleset:
-        stmt = stmt.where(models.RuleSet.name.ilike(f"%{ruleset}%"))
+    if ruleset and ruleset.strip() and ruleset != "all":
+        stmt = stmt.where(models.RuleSet.abbreviation == ruleset)
 
     if rule_type and rule_type.strip() and rule_type != "all":
         stmt = stmt.where(models.Rule.type == rule_type)
@@ -74,6 +75,7 @@ async def search_rules_html(
                 "ruleset_slug": rule.ruleset.slug,
                 "ruleset_abbreviation": rule.ruleset.abbreviation,
                 "tags": rule.tags or [],
+                "meta_data": rule.meta_data or {},
                 "is_official": rule.is_official,
             }
         )

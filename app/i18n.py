@@ -12,10 +12,11 @@ TRANSLATIONS = {
         "subtitle": "Database of rules for xWN systems",
         "info_tooltip": "Made by John from DMK | xWN systems by Kevin Crawford",
         "toggle_theme": "Toggle theme",
-        "toggle_language": "Change language",
+        "toggle_language": "Змінити мову на Українську",
         # Search Interface
         "search_placeholder": "Search rules, classes, spells...",
-        "filter_label": "Filter",
+        "filter_type_label": "Type",
+        "filter_system_label": "System",
         "filter_all": "All",
         "filter_rules": "Rules",
         "filter_backgrounds": "Backgrounds",
@@ -53,7 +54,8 @@ TRANSLATIONS = {
         "toggle_language": "Switch to English",
         # Search Interface
         "search_placeholder": "Шукати правила, класи, закляття...",
-        "filter_label": "Фільтр",
+        "filter_type_label": "Тип",
+        "filter_system_label": "Система",
         "filter_all": "Всі",
         "filter_rules": "Правила",
         "filter_backgrounds": "Передісторії",

@@ -15,11 +15,18 @@ templates.env.filters["markdown"] = render_markdown
 
 
 @router.get("/", response_class=HTMLResponse)
-async def home(request: Request, lang: str | None = Cookie(default=None)):
+async def home(request: Request, db: DbSession, lang: str | None = Cookie(default=None)):
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
+
+    # Fetch all rulesets for system filter dropdown
+    stmt = select(models.RuleSet).order_by(models.RuleSet.name)
+    result = await db.execute(stmt)
+    rulesets = result.scalars().all()
+
     return templates.TemplateResponse(
-        "index.html", {"request": request, "t": translations, "current_lang": current_lang}
+        "index.html",
+        {"request": request, "t": translations, "current_lang": current_lang, "rulesets": rulesets},
     )
 
 

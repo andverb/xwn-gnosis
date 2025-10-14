@@ -3,15 +3,25 @@
 
 <!-- Search Results List -->
 {% for rule in results %}
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <a href="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}"
-       hx-get="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}?query={{ query }}{% if type_filter %}&type={{ type_filter }}{% endif %}"
-       hx-target="#search-results"
-       hx-push-url="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}">
-        <h5>{{ rule.rule_name }}</h5>
-    </a>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+    <div style="flex: 1; min-width: 0;">
+        <a href="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}"
+           hx-get="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}?query={{ query }}{% if type_filter %}&type={{ type_filter }}{% endif %}"
+           hx-target="#search-results"
+           hx-push-url="/rules/{{ rule.ruleset_slug }}/{{ rule.rule_slug }}"
+           style="display: block; cursor: pointer;">
+            <h5 style="margin-bottom: 0.25rem;">{{ rule.rule_name }}</h5>
+        </a>
+        {% if rule.meta_data %}
+        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.25rem; pointer-events: none;">
+            {% for key, value in rule.meta_data.items() %}
+            <kbd style="font-size: 0.7rem;">{{ key }}: {{ value }}</kbd>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
-    <div>
+    <div style="display: flex; gap: 0.25rem; flex-shrink: 0; align-self: flex-start;">
         {% if rule.type %}
         <kbd>{{ rule.type }}</kbd>
         {% endif %}

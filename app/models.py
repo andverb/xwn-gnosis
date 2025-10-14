@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, event
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, event
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -13,7 +13,7 @@ class RuleSet(Base):
     __tablename__ = "rulesets"
     id = Column(Integer, primary_key=True)
     name = Column(String(150), nullable=False, unique=True)
-    slug = Column(String(100), nullable=False)
+    slug = Column(String(100), nullable=False, unique=True)
     abbreviation = Column(String(20), nullable=True)
     description = Column(Text)
     is_official = Column(Boolean, default=False)
@@ -58,6 +58,7 @@ def sync_rules_is_official_on_ruleset_update(mapper, connection, target):
 
 class Rule(Base):
     __tablename__ = "rules"
+    __table_args__ = (UniqueConstraint("ruleset_id", "slug", name="uq_rule_ruleset_slug"),)
 
     id = Column(Integer, primary_key=True, index=True)
     type = Column(String(50), nullable=True)  # e.g., spell, feat, equipment
