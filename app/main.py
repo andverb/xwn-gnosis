@@ -57,6 +57,16 @@ app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 
+# Force HTTPS scheme in production (for admin static files)
+@app.middleware("http")
+async def force_https_scheme(request: Request, call_next):
+    # In production, trust proxy headers to set correct scheme
+    if settings.environment != "development":
+        if request.headers.get("x-forwarded-proto") == "https":
+            request.scope["scheme"] = "https"
+    return await call_next(request)
+
+
 @app.middleware("http")
 async def add_cache_headers(request: Request, call_next):
     response = await call_next(request)
