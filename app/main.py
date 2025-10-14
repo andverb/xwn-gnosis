@@ -2,7 +2,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
+from app.admin import create_admin
+from app.config import settings
 from app.db import engine
 from app.routers.api import rules as api_rules
 from app.routers.api import rulesets as api_rulesets
@@ -50,13 +53,15 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 
 @app.middleware("http")
 async def add_cache_headers(request: Request, call_next):
     response = await call_next(request)
-    if request.method == "GET":
+    # Don't cache admin interface or API write endpoints
+    if request.method == "GET" and not request.url.path.startswith("/admin"):
         # Cache for 10 minutes
         response.headers["Cache-Control"] = "public, max-age=600"
     return response
@@ -70,3 +75,5 @@ app.include_router(api_search.router)
 # Web routers (HTML responses)
 app.include_router(pages.router)
 app.include_router(web_search.router)
+
+create_admin(app)

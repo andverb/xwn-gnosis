@@ -5,6 +5,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     database_url: str = Field(description="Database URL")
     api_key: str = Field(description="API key for access to write delete and update routes")
+    admin_username: str = Field(description="Admin interface username")
+    admin_password: str = Field(description="Admin interface password")
+    secret_key: str = Field(description="Secret key for session middleware")
     environment: str = Field(default="development", description="Environment: development, staging, production")
     model_config = SettingsConfigDict(env_file=".env")
 

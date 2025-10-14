@@ -10,6 +10,7 @@ dependencies = [
     "bleach>=6.2.0",
     "fastapi[standard]>=0.115.12",
     "granian>=2.5.4",
+    "itsdangerous>=2.2.0",
     "markdown>=3.9",
     "pre-commit>=4.3.0",
     "psycopg2-binary>=2.9.10",
@@ -19,6 +20,7 @@ dependencies = [
     "python-slugify>=8.0.4",
     "ruff>=0.11.5",
     "sqlalchemy[asyncio]>=2.0.43",
+    "starlette-admin>=0.15.1",
 ]
 
 [dependency-groups]
@@ -74,6 +76,7 @@ max-line-length = 120
 
 [tool.ruff.lint.per-file-ignores]
 "app/i18n.py" = ["RUF001"]  # Allow Cyrillic characters in translations
+"app/admin.py" = ["RUF012"]  # Starlette Admin ModelView class attributes
 
 [tool.alembic]
 

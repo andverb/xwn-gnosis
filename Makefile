@@ -52,7 +52,7 @@ dump-data:
 	@docker exec xwn-gnosis-postgres-1 pg_dump -U gnosis_user gnosis_db \
 		--data-only --table=rulesets --table=rules --column-inserts \
 		> data/dumps/gnosis_data_$$(date +%Y%m%d_%H%M%S).sql
-	@echo "✅ Data dump created in data/dumps/"
+	@echo "Data dump created in data/dumps/"
 
 # Import data into local database
 restore-data:
@@ -62,8 +62,8 @@ restore-data:
 	@echo ""
 	@read -p "Enter dump filename: " file; \
 	if [ ! -f "$$file" ]; then \
-		echo "❌ File not found: $$file"; \
+		echo "File not found: $$file"; \
 		exit 1; \
 	fi; \
 	psql "$(DB_URL)" -f "$$file" && \
-	echo "✅ Data restored from $$file"
+	echo "Data restored from $$file"

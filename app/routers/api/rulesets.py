@@ -3,12 +3,12 @@ from sqlalchemy import select
 
 from app import models, schemas
 from app.dependencies import DbSession
-from app.dependencies.auth import verify_api_key
+from app.dependencies.auth import verify_admin_credentials
 
 router = APIRouter(prefix="/api/rulesets", tags=["rulesets-api"])
 
 
-@router.post("/", response_model=schemas.RuleSet, dependencies=[Depends(verify_api_key)])
+@router.post("/", response_model=schemas.RuleSet, dependencies=[Depends(verify_admin_credentials)])
 async def create_ruleset(ruleset: schemas.RuleSetCreate, db: DbSession):
     if ruleset.base_ruleset_id is not None:
         stmt = select(models.RuleSet).where(models.RuleSet.id == ruleset.base_ruleset_id)
@@ -41,7 +41,7 @@ async def get_ruleset(ruleset_id: int, db: DbSession):
     return ruleset
 
 
-@router.put("/{ruleset_id}", response_model=schemas.RuleSet, dependencies=[Depends(verify_api_key)])
+@router.put("/{ruleset_id}", response_model=schemas.RuleSet, dependencies=[Depends(verify_admin_credentials)])
 async def update_ruleset(ruleset_id: int, ruleset_update: schemas.RuleSetUpdate, db: DbSession):
     stmt = select(models.RuleSet).where(models.RuleSet.id == ruleset_id)
     result = await db.execute(stmt)
@@ -70,7 +70,7 @@ async def update_ruleset(ruleset_id: int, ruleset_update: schemas.RuleSetUpdate,
     return ruleset
 
 
-@router.delete("/{ruleset_id}", dependencies=[Depends(verify_api_key)])
+@router.delete("/{ruleset_id}", dependencies=[Depends(verify_admin_credentials)])
 async def delete_ruleset(ruleset_id: int, db: DbSession):
     stmt = select(models.RuleSet).where(models.RuleSet.id == ruleset_id)
     result = await db.execute(stmt)

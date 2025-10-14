@@ -4,12 +4,12 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 from app import models, schemas
 from app.dependencies import DbSession
-from app.dependencies.auth import verify_api_key
+from app.dependencies.auth import verify_admin_credentials
 
 router = APIRouter(prefix="/api/rules", tags=["rules-api"])
 
 
-@router.post("/", response_model=schemas.Rule, dependencies=[Depends(verify_api_key)])
+@router.post("/", response_model=schemas.Rule, dependencies=[Depends(verify_admin_credentials)])
 async def create_rule(rule: schemas.RuleCreate, db: DbSession):
     # Validate required ruleset_id
     stmt = select(models.RuleSet).where(models.RuleSet.id == rule.ruleset_id)
@@ -77,7 +77,7 @@ async def get_rule(rule_id: int, db: DbSession):
     return rule
 
 
-@router.put("/{rule_id}", response_model=schemas.Rule, dependencies=[Depends(verify_api_key)])
+@router.put("/{rule_id}", response_model=schemas.Rule, dependencies=[Depends(verify_admin_credentials)])
 async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
@@ -105,7 +105,7 @@ async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSessi
     return rule
 
 
-@router.delete("/{rule_id}", dependencies=[Depends(verify_api_key)])
+@router.delete("/{rule_id}", dependencies=[Depends(verify_admin_credentials)])
 async def delete_rule(rule_id: int, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
