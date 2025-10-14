@@ -74,10 +74,18 @@ class UsernamePasswordProvider(AuthProvider):
 
 def create_admin(app) -> Admin:
     """Create and configure admin interface."""
+    # Force HTTPS for static files in production
+    statics_url = (
+        "/admin/statics"
+        if settings.environment == "development"
+        else "https://xwn-gnosis-production.up.railway.app/admin/statics"
+    )
+
     admin = Admin(
         engine,
         title="Gnosis Admin",
         base_url="/admin",
+        statics_url=statics_url,
         auth_provider=UsernamePasswordProvider(),
     )
 
