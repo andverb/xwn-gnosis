@@ -72,8 +72,9 @@ async def add_cache_headers(request: Request, call_next):
     response = await call_next(request)
     # Don't cache admin interface or API write endpoints
     if request.method == "GET" and not request.url.path.startswith("/admin"):
-        # Cache for 10 minutes
+        # Cache for 10 minutes, but vary by Cookie so different languages are cached separately
         response.headers["Cache-Control"] = "public, max-age=600"
+        response.headers["Vary"] = "Cookie"
     return response
 
 

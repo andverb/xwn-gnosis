@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app import models
+from app.config import settings
 from app.dependencies import DbSession
 from app.dependencies.i18n import get_language, get_translations
 from app.utils import render_markdown
@@ -57,14 +58,17 @@ async def rule_card(
     if not rule:
         raise HTTPException(status_code=404, detail="Rule not found")
 
-    # Extract English content
-    en_content = rule.translations.get("en", {})
+    # Extract content in current language, fallback to English
+    content = rule.translations.get(current_lang, {})
+    if not content:
+        content = rule.translations.get("en", {})
+
     rule_data = {
         "id": rule.id,
         "slug": rule.slug,
         "type": rule.type,
-        "rule_name": en_content.get("name", f"Rule {rule.id}"),
-        "rule_description": en_content.get("description", ""),
+        "rule_name": content.get("name", f"Rule {rule.id}"),
+        "rule_description": content.get("description", ""),
         "ruleset_name": rule.ruleset.name,
         "tags": rule.tags or [],
         "is_official": rule.is_official,
@@ -109,13 +113,24 @@ async def rule_card(
 
 
 @router.get("/set-language/{lang}")
-async def set_language(lang: str):
+async def set_language(lang: str, request: Request):
     """Set language preference via cookie"""
     if lang not in ["en", "uk"]:
         lang = "en"
 
-    response = RedirectResponse(url="/", status_code=303)
-    response.set_cookie(key="lang", value=lang, max_age=31536000, httponly=True, samesite="lax")  # 1 year
+    # Redirect back to referrer or home
+    referer = request.headers.get("referer", "/")
+    response = RedirectResponse(url=referer, status_code=303)
+
+    is_production = settings.environment == "production"
+    response.set_cookie(
+        key="lang",
+        value=lang,
+        max_age=31536000,  # 1 year
+        httponly=True,
+        samesite="lax",
+        secure=is_production,
+    )
     return response
 
 
