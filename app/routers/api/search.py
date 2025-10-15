@@ -22,7 +22,7 @@ async def search_rules(
         .join(models.RuleSet)
         .where(
             or_(
-                models.Rule.translations["en"]["name"].astext.ilike(search_term),
+                models.Rule.name_en.ilike(search_term),
                 models.Rule.tags.cast(String).ilike(search_term),
                 models.Rule.type.ilike(search_term),
             )
@@ -38,9 +38,6 @@ async def search_rules(
 
     rules_populated = []
     for rule in rules:
-        # Extract English content or fallback
-        en_content = rule.translations.get("en", {})
-
         rules_populated.append(
             schemas.RuleSearchResult(
                 id=rule.id,
@@ -48,8 +45,8 @@ async def search_rules(
                 slug=rule.slug,
                 ruleset_id=rule.ruleset_id,
                 ruleset_name=rule.ruleset.name,
-                rule_name=en_content.get("name", f"Rule {rule.id}"),
-                rule_description=en_content.get("description", ""),
+                rule_name=rule.name_en,
+                rule_description=rule.description_en,
                 tags=rule.tags,
                 changes_description=rule.changes_description,
                 is_official=rule.is_official,

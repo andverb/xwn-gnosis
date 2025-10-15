@@ -3,12 +3,14 @@
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette_admin.auth import AdminUser, AuthProvider
-from starlette_admin.contrib.sqla import Admin, ModelView
+from starlette_admin.contrib.sqla import Admin
+from starlette_admin.contrib.sqla.ext.pydantic import ModelView
 from starlette_admin.exceptions import LoginFailed
 
 from app.config import settings
 from app.db import engine
 from app.models import Rule, RuleSet
+from app.schemas import RuleCreate, RuleSetCreate
 
 
 class RuleSetAdmin(ModelView):
@@ -81,9 +83,9 @@ def create_admin(app) -> Admin:
         auth_provider=UsernamePasswordProvider(),
     )
 
-    # Add model views
-    admin.add_view(RuleSetAdmin(RuleSet, icon="fa fa-book"))
-    admin.add_view(RuleAdmin(Rule, icon="fa fa-file-text"))
+    # Add model views with Pydantic validation
+    admin.add_view(RuleSetAdmin(RuleSet, icon="fa fa-book", pydantic_model=RuleSetCreate))
+    admin.add_view(RuleAdmin(Rule, icon="fa fa-file-text", pydantic_model=RuleCreate))
 
     # Mount admin to app
     admin.mount_to(app)

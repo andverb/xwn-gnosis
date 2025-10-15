@@ -1,24 +1,94 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # Follow the pattern - User data in Base, requirements in Create, database data in Response.
 
 
-class RuleContent(BaseModel):
-    # Internal structure of multi-language rule description
-    name: str
-    description: str
-
-
 class RuleBase(BaseModel):
     # Fields that are SHARED between create/response
-    type: str | None = None
+    type: str | None = Field(default=None, max_length=50)
     tags: list[str] | None = None
     meta_data: dict | None = None
-    # Dict with multiple language versions of the rule
-    translations: dict[str, RuleContent]
+
+    # Separate fields for each language
+    name_en: str = Field(min_length=1, max_length=200)
+    description_en: str = Field(min_length=1)
+    name_uk: str | None = Field(default=None, max_length=200)
+    description_uk: str | None = None
+
     changes_description: str | None = None
+
+    @field_validator("type")
+    @classmethod
+    def validate_type(cls, v: str | None) -> str | None:
+        """Validate rule type against known types."""
+        if v is None:
+            return v
+
+        valid_types = {
+            "rule",
+            "skill",
+            "background",
+            "class",
+            "focus",
+            "art",
+            "spell",
+            "weapon",
+            "armor",
+            "combat-action",
+            "faction",
+            "downtime",
+        }
+
+        if v not in valid_types:
+            raise ValueError(f"Invalid rule type '{v}'. Must be one of: {', '.join(sorted(valid_types))}")
+        return v
+
+    @field_validator("name_en")
+    @classmethod
+    def name_en_not_empty(cls, v: str) -> str:
+        """Ensure English name is not just whitespace."""
+        if not v.strip():
+            raise ValueError("English name cannot be empty or just whitespace")
+        return v.strip()
+
+    @field_validator("description_en")
+    @classmethod
+    def description_en_not_empty(cls, v: str) -> str:
+        """Ensure English description is not just whitespace."""
+        if not v.strip():
+            raise ValueError("English description cannot be empty or just whitespace")
+        return v.strip()
+
+    @field_validator("name_uk")
+    @classmethod
+    def name_uk_not_empty(cls, v: str | None) -> str | None:
+        """Ensure Ukrainian name is not just whitespace if provided."""
+        if v and not v.strip():
+            raise ValueError("Ukrainian name cannot be just whitespace")
+        return v.strip() if v else None
+
+    @field_validator("description_uk")
+    @classmethod
+    def description_uk_not_empty(cls, v: str | None) -> str | None:
+        """Ensure Ukrainian description is not just whitespace if provided."""
+        if v and not v.strip():
+            raise ValueError("Ukrainian description cannot be just whitespace")
+        return v.strip() if v else None
+
+    @field_validator("tags")
+    @classmethod
+    def validate_tags(cls, v: list[str] | None) -> list[str] | None:
+        """Ensure tags are non-empty strings."""
+        if v is None:
+            return v
+
+        if not all(isinstance(tag, str) and tag.strip() for tag in v):
+            raise ValueError("All tags must be non-empty strings")
+
+        # Remove duplicates and sort
+        return sorted({tag.strip().lower() for tag in v})
 
 
 class RuleCreate(RuleBase):
@@ -32,7 +102,10 @@ class RuleUpdate(BaseModel):
     type: str | None = None
     tags: list[str] | None = None
     meta_data: dict | None = None
-    translations: dict[str, RuleContent] | None = None
+    name_en: str | None = None
+    description_en: str | None = None
+    name_uk: str | None = None
+    description_uk: str | None = None
     changes_description: str | None = None
     # Note: is_official is NOT editable here - it's synced from ruleset
 
@@ -54,19 +127,32 @@ class Rule(RuleBase):
     created_by: str | None = None
     last_update_by: str | None = None
 
-    def get_content(self, lang: str = "en") -> RuleContent:
-        """Get content for specific language, fallback to English"""
-        content = self.translations.get(lang, self.translations.get("en"))
-        if content is None:
-            raise ValueError(f"No content available for language: {lang}")
-        return RuleContent(**content) if isinstance(content, dict) else content
+    def get_name(self, lang: str = "en") -> str:
+        """Get rule name in specified language, fallback to English"""
+        if lang == "uk" and self.name_uk:
+            return self.name_uk
+        return self.name_en
+
+    def get_description(self, lang: str = "en") -> str:
+        """Get rule description in specified language, fallback to English"""
+        if lang == "uk" and self.description_uk:
+            return self.description_uk
+        return self.description_en
 
 
 class RuleSetBase(BaseModel):
-    name: str
-    abbreviation: str | None = None
+    name: str = Field(min_length=3, max_length=150)
+    abbreviation: str | None = Field(default=None, max_length=20)
     description: str | None = None
     is_official: bool = False
+
+    @field_validator("name")
+    @classmethod
+    def name_not_empty(cls, v: str) -> str:
+        """Ensure name is not just whitespace."""
+        if not v.strip():
+            raise ValueError("Name cannot be empty or just whitespace")
+        return v.strip()
 
 
 class RuleSetCreate(RuleSetBase):
