@@ -24,31 +24,31 @@ Features expanded:
 
 ## Technical Stack
 
-### Current
+### Backend
 - [FastAPI](https://fastapi.tiangolo.com/) - ASGI web framework
-- [SQLAlchemy](https://www.sqlalchemy.org/) - Database ORM
+- [PostgreSQL](https://www.postgresql.org/) - Production database with async support
+- [SQLAlchemy](https://www.sqlalchemy.org/) - Async ORM
 - [Alembic](https://alembic.sqlalchemy.org/) - Database migrations
-- [Pydantic](https://docs.pydantic.dev/) - Data validation
+- [Pydantic](https://docs.pydantic.dev/) - Data validation and settings management
+- [Granian](https://github.com/emmett-framework/granian) - Rust-based ASGI server for production
 
-### Planned
-**Frontend:**
-- [htmx](https://htmx.org/) - Dynamic HTML interactions
-- [Jinja2](https://jinja.palletsprojects.com/) - Template engine
-- [Alpine.js](https://alpinejs.dev/) - Lightweight JS framework
-- CSS: [Simple.css](https://simplecss.org/) or [Beer CSS](https://www.beercss.com/)
-- [Tabler](https://tabler.io/) - Admin template
+### Frontend
+- [htmx](https://htmx.org/) - Dynamic HTML interactions without JavaScript
+- [Jinja2](https://jinja.palletsprojects.com/) - Server-side template engine
+- [Pico CSS](https://picocss.com/) - Minimal CSS framework with dark/light themes
+- [Python-Markdown](https://python-markdown.github.io/) - Markdown to HTML conversion
+- [Bleach](https://bleach.readthedocs.io/) - HTML sanitization
 
-**Backend:**
-- [FastHX](https://volfpeter.github.io/fasthx/) - FastAPI + htmx integration
-- [FastAPI Users](https://github.com/fastapi-users/fastapi-users) - Authentication
+### Admin Interface
+- [Starlette Admin](https://github.com/jowilf/starlette-admin) - Full-featured admin panel with authentication
+- [EasyMDE](https://github.com/Ionaru/easy-markdown-editor) - Markdown editor for content management
+
+### Infrastructure
+- [Docker](https://www.docker.com/) + [Docker Compose](https://docs.docker.com/compose/) - Containerization
+- Deployed on [Railway](https://railway.app/) - https://xwn-gnosis-production.up.railway.app
+- [uv](https://github.com/astral-sh/uv) - Fast Python package manager
+
+### Planned/Future
+- [FastAPI Users](https://github.com/fastapi-users/fastapi-users) - User authentication system
 - [Structlog](https://www.structlog.org/) - Structured logging
-- PostgreSQL with fuzzy search
-
-**Admin Interface:**
-- [Starlette Admin](https://github.com/jowilf/starlette-admin) - Generic admin interface
-- [SQLAdmin](https://github.com/aminalaee/sqladmin) - SQLAlchemy-focused admin panel
-
-**Infrastructure:**
-- Docker + Docker Compose for local development
-- Deployment on render.com or railway.com
-- GitHub Actions CI/CD
+- GitHub Actions CI/CD pipeline
