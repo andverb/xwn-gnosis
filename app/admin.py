@@ -37,46 +37,52 @@ class MarkdownField(TextAreaField):
         ]
 
         # TODO: Find a better way of doing this using documented approaches:
-        # 1. Custom form template: https://jowilf.github.io/starlette-admin/advanced/custom-field/
-        # 2. Custom render JS: https://jowilf.github.io/starlette-admin/advanced/custom-field/#custom-render-js
+        # 1. Custom form template:
+        #    https://jowilf.github.io/starlette-admin/advanced/custom-field/
+        # 2. Custom render JS:
+        #    https://jowilf.github.io/starlette-admin/advanced/custom-field/#custom-render-js
         # 3. EasyMDE usage: https://github.com/Ionaru/easy-markdown-editor#usage
-        # Current approach uses data URL as a workaround since custom templates had resolution issues
+        # Current approach uses data URL as a workaround since custom templates
+        # had resolution issues
         init_script = """
-        (function() {
-            function initEditors() {
-                if (typeof EasyMDE === 'undefined') {
-                    setTimeout(initEditors, 100);
-                    return;
-                }
-                var textareas = document.querySelectorAll('textarea[name="description"],
-                 textarea[name="description_en"], textarea[name="description_uk"],
-                  textarea[name="changes_description"]');
-                textareas.forEach(function(textarea) {
-                    try {
-                        new EasyMDE({
-                            element: textarea,
-                            spellChecker: false,
-                            toolbar: ["table", "bold", "italic", "heading", "|",
-                             "quote", "unordered-list", "ordered-list", "link", "|",
-                              "preview", "side-by-side", "fullscreen", "|", "guide"],
-                            status: ["lines", "words", "cursor"],
-                            placeholder: "Enter description in Markdown format...",
-                            minHeight: "300px",
-                            lineWrapping: true,
-                            sideBySideFullscreen: false,
-                        });
-                    } catch (e) {
-                        console.error('EasyMDE initialization error:', e);
-                    }
+(function() {
+    function initEditors() {
+        if (typeof EasyMDE === 'undefined') {
+            setTimeout(initEditors, 100);
+            return;
+        }
+        var textareas = document.querySelectorAll(
+            'textarea[name="description"], textarea[name="description_en"], ' +
+            'textarea[name="description_uk"], textarea[name="changes_description"]'
+        );
+        textareas.forEach(function(textarea) {
+            try {
+                new EasyMDE({
+                    element: textarea,
+                    spellChecker: false,
+                    toolbar: [
+                        "table", "bold", "italic", "heading", "|",
+                        "quote", "unordered-list", "ordered-list", "link", "|",
+                        "preview", "side-by-side", "fullscreen", "|", "guide"
+                    ],
+                    status: ["lines", "words", "cursor"],
+                    placeholder: "Enter description in Markdown format...",
+                    minHeight: "300px",
+                    lineWrapping: true,
+                    sideBySideFullscreen: false,
                 });
+            } catch (e) {
+                console.error('EasyMDE initialization error:', e);
             }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initEditors);
-            } else {
-                initEditors();
-            }
-        })();
-        """
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initEditors);
+    } else {
+        initEditors();
+    }
+})();
+"""
         # URL-encode the script
         encoded = urllib.parse.quote(init_script)
         links.append(f"data:text/javascript,{encoded}")
