@@ -44,7 +44,8 @@ async def search_rules_html(
         search_term = f"%{q.lower()}%"
         stmt = stmt.where(
             or_(
-                models.Rule.translations["en"]["name"].astext.ilike(search_term),
+                models.Rule.name_en.ilike(search_term),
+                models.Rule.name_uk.ilike(search_term),
                 # models.Rule.tags.cast(String).ilike(search_term),  # dont search tags for now
                 models.Rule.type.ilike(search_term),
             )
@@ -63,13 +64,12 @@ async def search_rules_html(
     # Convert to simple dict for template
     results = []
     for rule in rules:
-        en_content = rule.translations.get("en", {})
         results.append(
             {
                 "id": rule.id,
                 "type": rule.type,
-                "rule_name": en_content.get("name", f"Rule {rule.id}"),
-                "rule_description": en_content.get("description", ""),
+                "rule_name": rule.get_name(current_lang),
+                "rule_description": rule.get_description(current_lang),
                 "rule_slug": rule.slug,
                 "ruleset_name": rule.ruleset.name,
                 "ruleset_slug": rule.ruleset.slug,

@@ -65,7 +65,13 @@ class Rule(Base):
     tags = Column(JSON, nullable=True)  # searchable tags like ["combat", "spells", "d20"]
     meta_data = Column(JSON, nullable=True)  # type-specific structured data
     # mechanics = Column(JSON, nullable=True)  #TODO language-agnostic game mechanics
-    translations = Column(JSON, nullable=False)  # multilingual content
+
+    # Separate fields for each language (better for search and indexing)
+    name_en = Column(String(200), nullable=False)
+    description_en = Column(Text, nullable=False)
+    name_uk = Column(String(200), nullable=True)
+    description_uk = Column(Text, nullable=True)
+
     slug = Column(String(100), nullable=False)
 
     changes_description = Column(Text)  # what was changed from base rule
@@ -87,22 +93,20 @@ class Rule(Base):
     created_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
     last_update_by = Column(String(150), nullable=False, default="sorcerer-king-admin")
 
-    def get_name(self) -> str:
-        # Try to get English content
-        en_content = self.translations.get("en", {})
-        if isinstance(en_content, dict):
-            return en_content.get("name", f"rule-{self.id or 'new'}")
+    def get_name(self, lang: str = "en") -> str:
+        """Get rule name in specified language, fallback to English"""
+        if lang == "uk" and self.name_uk:
+            return self.name_uk
+        return self.name_en or f"rule-{self.id or 'new'}"
 
-        # Fallback to first available language
-        for lang, content in self.translations.items():
-            if isinstance(content, dict) and "name" in content:
-                return content["name"]
-
-        return f"rule-{self.id}"
+    def get_description(self, lang: str = "en") -> str:
+        """Get rule description in specified language, fallback to English"""
+        if lang == "uk" and self.description_uk:
+            return self.description_uk
+        return self.description_en or ""
 
 
 @event.listens_for(Rule, "before_insert")
 def slugify_rule_name(mapper, connection, target):
-    if target.translations and not target.slug:
-        rule_name = target.get_name()
-        target.slug = generate_slug(rule_name)
+    if target.name_en and not target.slug:
+        target.slug = generate_slug(target.name_en)

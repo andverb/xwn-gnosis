@@ -58,17 +58,12 @@ async def rule_card(
     if not rule:
         raise HTTPException(status_code=404, detail="Rule not found")
 
-    # Extract content in current language, fallback to English
-    content = rule.translations.get(current_lang, {})
-    if not content:
-        content = rule.translations.get("en", {})
-
     rule_data = {
         "id": rule.id,
         "slug": rule.slug,
         "type": rule.type,
-        "rule_name": content.get("name", f"Rule {rule.id}"),
-        "rule_description": content.get("description", ""),
+        "rule_name": rule.get_name(current_lang),
+        "rule_description": rule.get_description(current_lang),
         "ruleset_name": rule.ruleset.name,
         "tags": rule.tags or [],
         "is_official": rule.is_official,
