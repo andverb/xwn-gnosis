@@ -79,6 +79,7 @@ async def get_rule(rule_id: int, db: DbSession):
 
 @router.put("/{rule_id}", response_model=schemas.Rule, dependencies=[Depends(verify_admin_credentials)])
 async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSession):
+    """Full update of a rule (all fields should be provided)."""
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
     rule = result.scalar_one_or_none()
@@ -94,6 +95,44 @@ async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSessi
         if ruleset is None:
             raise HTTPException(status_code=404, detail="RuleSet not found")
 
+    for field, value in update_data.items():
+        setattr(rule, field, value)
+
+    # TODO proper user implementation. Model populates only at creation
+    rule.last_update_by = "sorcerer-king-admin"
+
+    await db.commit()
+    await db.refresh(rule)
+    return rule
+
+
+@router.patch("/{rule_id}", response_model=schemas.Rule, dependencies=[Depends(verify_admin_credentials)])
+async def partial_update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSession):
+    """
+    Partial update of a rule - only update fields that are provided.
+    Fields not provided in the request body will remain unchanged.
+    """
+    stmt = select(models.Rule).where(models.Rule.id == rule_id)
+    result = await db.execute(stmt)
+    rule = result.scalar_one_or_none()
+    if rule is None:
+        raise HTTPException(status_code=404, detail="Rule not found")
+
+    # Only get fields that were explicitly provided in the request
+    update_data = rule_update.model_dump(exclude_unset=True)
+
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No fields provided for update")
+
+    # FK validation if ruleset_id is being updated
+    if "ruleset_id" in update_data:
+        stmt = select(models.RuleSet).where(models.RuleSet.id == update_data["ruleset_id"])
+        result = await db.execute(stmt)
+        ruleset = result.scalar_one_or_none()
+        if ruleset is None:
+            raise HTTPException(status_code=404, detail="RuleSet not found")
+
+    # Apply only the provided fields
     for field, value in update_data.items():
         setattr(rule, field, value)
 
