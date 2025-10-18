@@ -93,9 +93,10 @@ class MarkdownField(TextAreaField):
 class RuleSetAdmin(ModelView):
     """Admin view for RuleSet model."""
 
-    exclude_fields_from_list = ["rules", "created_at", "updated_at", "created_by", "last_update_by"]
-    exclude_fields_from_create = ["created_at", "updated_at"]
-    exclude_fields_from_edit = ["created_at", "updated_at"]
+    exclude_fields_from_list = ["rules", "created_at", "updated_at", "created_by", "last_update_by", "base_ruleset"]
+    exclude_fields_from_create = ["rules", "created_at", "updated_at", "created_by", "last_update_by"]
+    exclude_fields_from_edit = ["rules", "created_at", "updated_at", "created_by", "last_update_by"]
+    exclude_fields_from_detail = ["created_by", "last_update_by"]
     searchable_fields = ["name", "abbreviation"]
     sortable_fields = ["name", "created_at", "is_official"]
     page_size = 25
@@ -108,7 +109,7 @@ class RuleSetAdmin(ModelView):
         "abbreviation",
         MarkdownField("description", label="Description"),
         "is_official",
-        "base_ruleset_id",
+        "base_ruleset",
         "rules",
         "created_at",
         "updated_at",
@@ -128,9 +129,12 @@ class RuleAdmin(ModelView):
         "updated_at",
         "created_by",
         "last_update_by",
+        "ruleset",
+        "base_rule",
     ]
-    exclude_fields_from_create = ["created_at", "updated_at"]
-    exclude_fields_from_edit = ["created_at", "updated_at"]
+    exclude_fields_from_create = ["created_at", "updated_at", "created_by", "last_update_by"]
+    exclude_fields_from_edit = ["created_at", "updated_at", "created_by", "last_update_by"]
+    exclude_fields_from_detail = ["created_by", "last_update_by"]
     searchable_fields = ["type"]
     sortable_fields = ["type", "created_at", "is_official"]
     page_size = 50
@@ -148,8 +152,8 @@ class RuleAdmin(ModelView):
         "slug",
         MarkdownField("changes_description", label="Changes Description"),
         "is_official",
-        "ruleset_id",
-        "base_rule_id",
+        "ruleset",
+        "base_rule",
         "created_at",
         "updated_at",
         "created_by",
