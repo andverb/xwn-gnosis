@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ compendium.title }}{% endblock %}
+
+{% block content %}
+<div class="grid">
+    <!-- Table of Contents Sidebar -->
+    <aside>
+        <article>
+            <header><strong>{{ compendium.title }}</strong></header>
+            <nav>
+                <ul>
+                    {% for item in compendium.toc %}
+                    <li>
+                        <a href="/ruleset/{{ ruleset_slug }}/{{ item.id }}"
+                           hx-get="/ruleset/{{ ruleset_slug }}/{{ item.id }}/content"
+                           hx-target="#chapter-content"
+                           hx-swap="innerHTML"
+                           hx-push-url="/ruleset/{{ ruleset_slug }}/{{ item.id }}"
+                           {% if current_chapter and current_chapter.id == item.id %}aria-current="page"{% endif %}>
+                            {{ item.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </article>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div>
+        <article id="chapter-content">
+            {% if current_chapter %}
+                {% include "compendium_content.html" %}
+            {% else %}
+                <p>{{ t('no_content') }}</p>
+            {% endif %}
+        </article>
+    </div>
+</div>
+
+<style>
+    /* Minimal custom CSS for compendium layout */
+    .grid > aside {
+        position: sticky;
+        top: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+
+    .grid > aside nav ul {
+        padding-left: 0;
+    }
+
+    .grid > aside nav a[aria-current="page"] {
+        background-color: var(--primary);
+        color: var(--primary-inverse);
+        border-radius: var(--border-radius);
+        padding: 0.5rem;
+        display: block;
+    }
+</style>
+{% endblock %}

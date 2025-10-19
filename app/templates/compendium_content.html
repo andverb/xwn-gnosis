@@ -1,0 +1,39 @@
+<!-- Chapter content partial for htmx updates -->
+<header>
+    <h1>{{ current_chapter.title }}</h1>
+</header>
+
+<div class="chapter-body">
+    {{ current_chapter.html | safe }}
+</div>
+
+<!-- Navigation buttons -->
+<footer>
+    <div class="grid">
+        <div>
+            {% if nav.prev %}
+                <a href="/ruleset/{{ ruleset_slug }}/{{ nav.prev.id }}"
+                   hx-get="/ruleset/{{ ruleset_slug }}/{{ nav.prev.id }}/content"
+                   hx-target="#chapter-content"
+                   hx-swap="innerHTML"
+                   hx-push-url="/ruleset/{{ ruleset_slug }}/{{ nav.prev.id }}"
+                   role="button"
+                   class="secondary">
+                    ← {{ nav.prev.title }}
+                </a>
+            {% endif %}
+        </div>
+        <div style="text-align: right;">
+            {% if nav.next %}
+                <a href="/ruleset/{{ ruleset_slug }}/{{ nav.next.id }}"
+                   hx-get="/ruleset/{{ ruleset_slug }}/{{ nav.next.id }}/content"
+                   hx-target="#chapter-content"
+                   hx-swap="innerHTML"
+                   hx-push-url="/ruleset/{{ ruleset_slug }}/{{ nav.next.id }}"
+                   role="button">
+                    {{ nav.next.title }} →
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</footer>
