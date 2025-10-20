@@ -20,7 +20,8 @@
            hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
            hx-target="#search-results"
            hx-include="#type-filter, #system-filter"
-           hx-indicator="#search-spinner">
+           hx-indicator="#search-spinner"
+           hx-headers='{"Cache-Control": "no-cache"}'>
 
     <!-- Filters - stacked on mobile, side-by-side on desktop -->
     <div class="grid">
@@ -29,7 +30,8 @@
                 hx-get="/search/rules/html"
                 hx-include="#search-input, #system-filter"
                 hx-target="#search-results"
-                hx-trigger="change">
+                hx-trigger="change"
+                hx-headers='{"Cache-Control": "no-cache"}'>
             <option selected disabled value="">{{ t.filter_type_label|default('Type') }}</option>
             <option value="all">{{ t.filter_all|default('All') }}</option>
             <option value="rule">{{ t.filter_rules|default('Rules') }}</option>
@@ -49,7 +51,8 @@
                 hx-get="/search/rules/html"
                 hx-include="#search-input, #type-filter"
                 hx-target="#search-results"
-                hx-trigger="change">
+                hx-trigger="change"
+                hx-headers='{"Cache-Control": "no-cache"}'>
             <option selected disabled value="">{{ t.filter_system_label|default('System') }}</option>
             <option value="all">{{ t.filter_all|default('All') }}</option>
             {% for ruleset in rulesets %}
