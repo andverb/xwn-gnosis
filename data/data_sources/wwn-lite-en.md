@@ -28,7 +28,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **CONNECT**: Find or know people useful to your purposes, make friendships, call on the help of organizations you belong to…
 
-**CONVINCE**: Create a believable tale, a convincing facade, a compelling lie, persuade listeners to your cause,
+**CONVINCE**: Create a believable tale, a convincing facade, a compelling lie, persuade listeners to your cause…
 
 **CRAFT**: Craft or repair goods & technology appropriate to your background & society…
 
@@ -118,11 +118,11 @@ Max System Strain = Con Score.
 - Strain is often caused by certain spells, poisons, privation, or healing. A target @ max Strain cannot benefit from anything that would increase their Strain above their max. Being forced above Max System Strain is lethal.
 - A decent night's rest typically removes 1 point of Strain.
 
-### INSTANT DEATH (K.C.)
+### INSTANT DEATH
 Being reduced to ≤ 0HP by a heavy attack (boulders, cannonfire) = instant death.
 
 ### POISONS & DISEASE
-Phys Save to avoid. Possible Effects: HP Loss, Hallucination, Increased Strain, Death, Debuf… Lingering maladies may require multiple Saves over time to remove. Failure = worsening effects or death.
+Phys Save to avoid. Possible Effects: HP Loss, Hallucination, Increased Strain, Death, Debuff… Lingering maladies may require multiple Saves over time to remove. Failure = worsening effects or death.
 
 ### FALLING
 1d6 damage per 10' of fall. ½ if done in a controlled manner w/ a successful Exert Check (DC 7 + 1 per every 10').
@@ -275,14 +275,14 @@ Hinders Arts & Spells of casting Mages. Can't be worn discreetly. Penalty to Sne
 
 - **Mail Shirt**: AC14 / 250 $p / 1Є.
 - **Cuirass & Greaves**: AC15 / 250 $p / 2Є.
-- **Scaled Armor**: AC16 / 500 $p / 3Є
+- **Scaled Armor**: AC16 / 500 $p / 3Є.
 
 ### HEAVY ARMOR
 Hinders Arts & Spells of casting Mages. Can't be worn discreetly. Penalty to Sneak & Exert = to its Є.
 
 - **Mail Hauberk**: AC16 / 750 $p / 2Є.
 - **Plate Armor**: AC17 / 1k $p / 2Є.
-- **Grand Plate**: AC16 / 2k $p / 3Є. **Immune to mundane weapons unless 2H, its Shock ≥ AC 16, or the wearer is grappled.
+- **Grand Plate**: AC16 / 2k $p / 3Є. **Immune to mundane weapons unless 2H, its Shock ≥ AC 16, or the wearer is grappled.**
 - **Great Armor**: AC19 / 2k $p / 3Є.
 
 ### SHIELDS
@@ -650,7 +650,7 @@ Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft 
 
 **Preserving Grace (Craft+1)**: A suit of clothing or armor is specially altered to preserve the wearer. 1/wk, when the wearer is Mortally Wounded, they will automatically stabilize. Cost: 1 Salvage & 5k $p.
 
-**Razor Edge (Craft+2)**: A weapon has been given an improved edge or shifting weight system, adding +2 to the damage & Shock it does, albeit req'ing far more care. Cost: 1 Salvage & 5k $p.
+**Razor Edge (Craft+2)**: A weapon has been given an improved edge or shifting weight system, adding +2 to the damage & Shock it does, albeit requiring far more care. Cost: 1 Salvage & 5k $p.
 
 **Tailored Harness (Craft+2)**: A suit of armor is altered to perfectly fit a single wearer, decreasing its effective Encumbrance by 1 for them only. This does not affect Skill check penalties or the Armored Magic Focus. Cost: 5k $p.
 
@@ -709,7 +709,7 @@ These formulae are commonly known to Alchemists. The creation DC, materials cost
 
 **Luminescent Oil**: DC8. 50 $p. 1 day. A vial of this oil can cover 1 person or 10 torches. It causes an object to glow w/ a ghostly white light for 1hr barely sufficient to read by & adequate to make out the rough shapes of objects w/in 10'.
 
-**Self-Igniting Oil**: DC8. 50 $p. 3 days. Thrown as a grenade. Creates a pool of flames, 5' in diameter, that burns for 2 Rounds.. Those w/in it @ the start of their turn must move out or take 1d6 damage. It will ignite any flammable objects.
+**Self-Igniting Oil**: DC8. 50 $p. 3 days. Thrown as a grenade. Creates a pool of flames, 5' in diameter, that burns for 2 Rounds. Those w/in it @ the start of their turn must move out or take 1d6 damage. It will ignite any flammable objects.
 
 **Smoke Cloud**: DC9. 25 $p. 2 days. Thrown as a grenade that bursts into a cloud of smoke 10' in diameter. Lasts 1 Round. Ranged attacks through the smoke or melee attacks w/in it suffer -4 to hit, assuming attackers know roughly where their targets are.
 
@@ -1107,11 +1107,11 @@ Arcane objects of wonder. Below are listed only a small section of possibilities
 
 **Seed of Flesh**: Main Action. Lasts 1 scene. This small, fleshy seed can be thrown & sprouts into a copy of the creature that threw it, albeit naked & unequipped, w/ 6 HP. It can't cast spells or use arts, but will obey even suicidal commands.
 
-**Stonepeg**: These devices are always found in groups of 1d4+2 pegs, each 1 appearing to be a glyphed metal rod ~1' in length w/ a chisel-shaped tip. If thrust firmly into a stone or earthen surface, the peg will effortlessly sink into the material & become as firm & fixed as if it were cemented in place. The peg can only be freely removed by the person who sank it into place, otherwise requiring that it be chiseled out w/ a scene's Effort & the correct tools.
+**Stonepeg**: These devices are always found in groups of 1d4+2 pegs, each appearing to be a glyphed metal rod ~1' in length w/ a chisel-shaped tip. If thrust firmly into a stone or earthen surface, the peg will effortlessly sink into the material & become as firm & fixed as if it were cemented in place. The peg can only be freely removed by the person who sank it into place, otherwise requiring that it be chiseled out w/ a scene's Effort & the correct tools.
 
 **Stutter Hatchet**: +1 hand axe. Inanimate matter damaged by the hatchet will return to its unbroken state @ dawn if the flat of the axe is tapped against its largest fragment of it. If destroyed thoroughly fragments may be missing from the reformed object.
 
-**Vessel of Hours**: Instant Action. the bearer can invoke this clock-like object to undo their actions & any consequences for the immediate turn, resetting their turn back to its beginning. This object & others of its kind will only work once for any given user.
+**Vessel of Hours**: Instant Action. The bearer can invoke this clock-like object to undo their actions & any consequences for the immediate turn, resetting their turn back to its beginning. This object & others of its kind will only work once for any given user.
 
 **Vothite Icon**: Range: 30'. Requires 1 free hand & LoS. Main Action. When a human/demihuman 1st sees this incomprehensible icon, they must make a Mental Save. Failure = loss of their next Round's Action. Can't affect the same creature x2.
 
@@ -2375,11 +2375,11 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **CONSUME LIFE ENERGY**: Effort: None. On a successful Punch attack, or Stab attack using a melee weapon you've spent an hr consecrating, you can absorb a portion of the damage you inflict, healing 1d6 HP. The healing done can't be > the damage or target's remaining HP.
 
-**FALSE DEATH**: Effort: Indefinite. Instant Action. While Commited you appear dead to mundane examination. You lose your Main Actions while "dead", but can move & perceive normally & do not need to eat, drink, breathe, or perform bodily functions. While "dead" poisons & diseases do not progress . You can maintain this state for ≤ 1 day x level before needing 1hr to recover.
+**FALSE DEATH**: Effort: Indefinite. Instant Action. While Commited you appear dead to mundane examination. You lose your Main Actions while "dead", but can move & perceive normally & do not need to eat, drink, breathe, or perform bodily functions. While "dead" poisons & diseases do not progress. You can maintain this state for ≤ 1 day x level before needing 1hr to recover.
 
 **GRAVESIGHT**: Effort: Indefinite. On Turn Action. While Commited you can see the life energies of living creatures around you. You can perceive sicknesses, poisons, & other physical qualities on sight.
 
-**KEEPER OF THE GATE**: Effort: None. Range: 20' x character level. At your discretion,Mortally Wounded creatures near you die instantly & can't be revived. Conversely: Effort: Day. You automatically stabilize any or all w/in range, increasing their System Strain by 1. This benefit can't aid creatures that have suffered unsurvivable injuries.
+**KEEPER OF THE GATE**: Effort: None. Range: 20' x character level. At your discretion, Mortally Wounded creatures near you die instantly & can't be revived. Conversely: Effort: Day. You automatically stabilize any or all w/in range, increasing their System Strain by 1. This benefit can't aid creatures that have suffered unsurvivable injuries.
 
 **LIFE BRIDGE**: Effort: Day. Lasts 1 Scene. Main Action. You can shift HP from a willing or helpless target no smaller than a dog to another, provided you are touching both. You can take enough HP to Mortally Wound a donor, but can't give more than the recipient's Max HP would allow.
 
