@@ -43,6 +43,11 @@ TRANSLATIONS = {
         "loading": "Loading...",
         "no_results": "No results found",
         "error": "An error occurred",
+        # Compendium
+        "compendium": "Compendium",
+        "no_content": "No content available",
+        "previous_chapter": "Previous",
+        "next_chapter": "Next",
     },
     "uk": {  # Ukrainian
         # Navigation & Header
@@ -84,6 +89,11 @@ TRANSLATIONS = {
         "loading": "Завантаження...",
         "no_results": "Результатів не знайдено",
         "error": "Сталася помилка",
+        # Compendium
+        "compendium": "Компендіум",
+        "no_content": "Контент відсутній",
+        "previous_chapter": "Попередній",
+        "next_chapter": "Наступний",
     },
 }
 
