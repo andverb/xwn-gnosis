@@ -12,10 +12,12 @@ dependencies = [
     "granian>=2.5.4",
     "itsdangerous>=2.2.0",
     "markdown>=3.9",
+    "mkdocs-material>=9.6.22",
     "pre-commit>=4.3.0",
     "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.3",
     "pydantic-settings>=2.11.0",
+    "pymdown-extensions>=10.16.1",
     "python-dotenv>=1.1.0",
     "python-slugify>=8.0.4",
     "ruff>=0.11.5",
@@ -26,8 +28,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
-    "mkdocs-material>=9.6.22",
-    "pymdown-extensions>=10.16.1",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
 ]
