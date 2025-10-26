@@ -129,14 +129,14 @@ async def set_language(lang: str, request: Request):
     return response
 
 
-@router.get("/compendiums", response_class=HTMLResponse)
-async def compendiums_home(request: Request, lang: str | None = Cookie(default=None)):
-    """Language chooser for compendiums"""
+@router.get("/rulesets", response_class=HTMLResponse)
+async def rulesets_home(request: Request, lang: str | None = Cookie(default=None)):
+    """Language chooser for rulesets"""
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
 
     return templates.TemplateResponse(
-        "compendiums_home.html",
+        "rulesets_home.html",
         {"request": request, "t": translations, "current_lang": current_lang},
     )
 

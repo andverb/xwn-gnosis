@@ -11,7 +11,11 @@ TRANSLATIONS = {
         "welcome": "Gnosis",
         "subtitle": "Database of rules for xWN systems",
         "info_tooltip": "Made by John from DMK | xWN systems by Kevin Crawford",
-        "compendiums_tooltip": "Browse compendiums",
+        "rulesets_tooltip": "Browse rulesets",
+        "rulesets_title": "Rulesets - Choose Language",
+        "rulesets_subtitle": "Choose your language to view the complete rules documentation",
+        "rulesets_wwn_lite_desc": "A simplified version of Worlds Without Number,"
+        " perfect for newcomers to the xWN system.",
         "toggle_theme": "Toggle theme",
         "toggle_language": "Змінити мову на Українську",
         # Search Interface
@@ -51,7 +55,10 @@ TRANSLATIONS = {
         "welcome": "Гнозіс",
         "subtitle": "База правил для систем xWN",
         "info_tooltip": "Створено Джоном з DMK | Системи xWN від Кевіна Кроуфорда",
-        "compendiums_tooltip": "Переглянути компендіуми",
+        "rulesets_tooltip": "Переглянути збірки правил",
+        "rulesets_title": "Збірки Правил - Оберіть Мову",
+        "rulesets_subtitle": "Оберіть мову для перегляду повної документації правил",
+        "rulesets_wwn_lite_desc": "Спрощена версія Worlds Without Number, ідеальна для новачків у системі xWN.",
         "toggle_theme": "Змінити тему",
         "toggle_language": "Switch to English",
         # Search Interface

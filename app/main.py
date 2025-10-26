@@ -89,14 +89,14 @@ app.include_router(api_search.router)
 app.include_router(pages.router)
 app.include_router(web_search.router)
 
-# Mount MkDocs static sites for compendiums (language-specific)
+# Mount MkDocs static sites for rulesets (language-specific)
 SITE_UK_DIR = Path(__file__).parent.parent / "site-uk"
 SITE_EN_DIR = Path(__file__).parent.parent / "site-en"
 
 if SITE_UK_DIR.exists():
-    app.mount("/compendiums/wwn-lite/uk", StaticFiles(directory=str(SITE_UK_DIR), html=True), name="compendiums-uk")
+    app.mount("/rulesets/wwn-lite/uk", StaticFiles(directory=str(SITE_UK_DIR), html=True), name="rulesets-uk")
 
 if SITE_EN_DIR.exists():
-    app.mount("/compendiums/wwn-lite/en", StaticFiles(directory=str(SITE_EN_DIR), html=True), name="compendiums-en")
+    app.mount("/rulesets/wwn-lite/en", StaticFiles(directory=str(SITE_EN_DIR), html=True), name="rulesets-en")
 
 create_admin(app)

@@ -140,7 +140,7 @@ extra_css:
 extra:
   alternate:
     - name: Українська
-      link: /compendiums/wwn-lite/uk/
+      link: /rulesets/wwn-lite/uk/basics/
       lang: uk
   social:
     - icon: fontawesome/brands/youtube

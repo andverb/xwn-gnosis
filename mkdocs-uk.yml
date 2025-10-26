@@ -38,48 +38,58 @@ plugins:
       lang: uk
 
 nav:
+  - Основи: wwn-lite/uk/basics/index.md
   - Виживання:
-    - Загрози й Зцілення: wwn-lite/uk/threats-healing.md
-    - Дослідження Підземель: wwn-lite/uk/delving.md
-    - Подорожі та Виживання: wwn-lite/uk/overland-travel.md
-    - Кораблі: wwn-lite/uk/sea-travel.md
+    - Загрози й Зцілення: wwn-lite/uk/survival/healing-hazards.md
+    - Дослідження Підземель: wwn-lite/uk/survival/delving.md
+    - Подорожі та Виживання: wwn-lite/uk/survival/overland-travel.md
+    - Кораблі: wwn-lite/uk/survival/sea-travel.md
   - Бій:
-    - Бій: wwn-lite/uk/combat.md
-    - Броня й Зброя: wwn-lite/uk/armor-weapons.md
+    - Основи Бою: wwn-lite/uk/combat/combat-basics.md
+    - Броня й Зброя: wwn-lite/uk/equipment/armors-weapons.md
   - Спорядження:
-    - Звичайне Спорядження: wwn-lite/uk/gear.md
-    - Виготовлення Спорядження: wwn-lite/uk/gear-crafting.md
-    - Модифікації та Обслуговування: wwn-lite/uk/gear-modifications.md
-    - Алхімія: wwn-lite/uk/alchemy.md
+    - Звичайне Спорядження: wwn-lite/uk/equipment/gear.md
+    - Виготовлення Спорядження: wwn-lite/uk/equipment/crafting.md
+    - Модифікації та Обслуговування: wwn-lite/uk/equipment/modifications.md
+    - Алхімія: wwn-lite/uk/equipment/alchemy.md
   - Магія:
-    - Чари: wwn-lite/uk/magic.md
-    - Еліксири: wwn-lite/uk/elixirs.md
-    - Магічні Пристрої: wwn-lite/uk/magical-devices.md
+    - Основи Магії: wwn-lite/uk/magic/magic-basics.md
+    - Еліксири: wwn-lite/uk/magic/elixirs.md
+    - Магічні Пристрої: wwn-lite/uk/magic/magical-devices.md
     - Традиції:
-      - Вищі Маги: wwn-lite/uk/tradition-high-mage.md
-      - Друід: wwn-lite/uk/tradition-druid.md
-      - Елементаліст: wwn-lite/uk/tradition-elementalist.md
-      - Некромант: wwn-lite/uk/tradition-necromancer.md
-      - Бард: wwn-lite/uk/tradition-bard.md
-      - Клірик: wwn-lite/uk/tradition-cleric.md
-      - Монах: wwn-lite/uk/tradition-monk.md
-      - Приборкувач Звірів: wwn-lite/uk/tradition-beastmaster.md
-      - Чаклун: wwn-lite/uk/tradition-warlock.md
+      - Вищі Маги: wwn-lite/uk/magic/traditions/high-mage.md
+      - Друїд: wwn-lite/uk/magic/traditions/druid.md
+      - Елементаліст: wwn-lite/uk/magic/traditions/elementalist.md
+      - Некромант: wwn-lite/uk/magic/traditions/necromancer.md
+      - Бард: wwn-lite/uk/magic/traditions/bard.md
+      - Клірик: wwn-lite/uk/magic/traditions/cleric.md
+      - Монах: wwn-lite/uk/magic/traditions/monk.md
+      - Приборкувач Звірів: wwn-lite/uk/magic/traditions/beastmaster.md
+      - Чаклун: wwn-lite/uk/magic/traditions/warlock.md
   - Персонаж:
-    - Швидке Створення Персонажа: wwn-lite/uk/character-generation.md
-    - Досвід та Підвищення Рівня: wwn-lite/uk/xp-leveling.md
+    - Створення Персонажа: wwn-lite/uk/character/character-creation.md
+    - Досвід та Підвищення Рівня: wwn-lite/uk/character/xp-leveling.md
   - Кампанія:
-    - Витрати на Життя: wwn-lite/uk/living-expenses.md
-    - Найманці: wwn-lite/uk/hirelings.md
-    - Найм Армій: wwn-lite/uk/hiring-armies.md
-    - Земельна Власність: wwn-lite/uk/land-ownership.md
-    - Будівництво Споруд: wwn-lite/uk/building-structures.md
-    - Магічні Конструкції: wwn-lite/uk/building-magical-workings.md
-    - Винагороди від Покровителів: wwn-lite/uk/rewards-by-patron.md
-    - Опис Власності: wwn-lite/uk/property-description.md
-    - Річний Дохід: wwn-lite/uk/income-hex-type.md
-    - Визнання: wwn-lite/uk/recognition.md
-    - Просвітні Заняття: wwn-lite/uk/downtime.md
+    - Витрати на Життя: wwn-lite/uk/campaign/living-expenses.md
+    - Найманці: wwn-lite/uk/campaign/hirelings.md
+    - Найм Армій: wwn-lite/uk/campaign/hiring-armies.md
+    - Земельна Власність: wwn-lite/uk/campaign/land-ownership.md
+    - Будівництво Споруд: wwn-lite/uk/campaign/building-structures.md
+    - Магічні Конструкції: wwn-lite/uk/campaign/magical-workings.md
+    - Винагороди від Покровителів: wwn-lite/uk/campaign/patronage.md
+    - Опис Власності: wwn-lite/uk/campaign/property-rewards.md
+    - Річний Дохід: wwn-lite/uk/campaign/income-hex-type.md
+    - Визнання: wwn-lite/uk/campaign/renown.md
+    - Заняття в Період Простою: wwn-lite/uk/campaign/downtime.md
+  - Довідник:
+    - Теги:
+      - Теги Персонажа: wwn-lite/uk/reference/tags/character.md
+      - Теги Спільнот: wwn-lite/uk/reference/tags/community.md
+      - Теги Руїн: wwn-lite/uk/reference/tags/ruins.md
+      - Теги Дикої Місцевості: wwn-lite/uk/reference/tags/wilderness.md
+      - Теги Двору: wwn-lite/uk/reference/tags/court.md
+    - Складність Сутичок: wwn-lite/uk/reference/encounter-difficulty.md
+    - Статистики НІПИ: wwn-lite/uk/reference/npc-statistics.md
 
 markdown_extensions:
   # Basic extensions
@@ -133,7 +143,7 @@ extra_css:
 extra:
   alternate:
     - name: English
-      link: /compendiums/wwn-lite/en/
+      link: /rulesets/wwn-lite/en/basics/
       lang: en
   social:
     - icon: fontawesome/brands/youtube
