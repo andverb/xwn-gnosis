@@ -1,0 +1,5 @@
+### Ruins Tags
+
+(Classical dungeons, lost cities, ruins, mysterious towers….)
+
+Ancient Archives¹⁻², Aspiring Conqueror³⁻⁴, Automaton Servants⁵⁻⁶, Birthing Cyst⁷⁻⁸, Bitter Remnants⁹⁻¹⁰, Civil War¹¹⁻¹², Cyclical Doom¹³⁻¹⁴, Decrepit Structure¹⁵⁻¹⁶, Desperate Hunger¹⁷⁻¹⁸, Dire Tombs¹⁹⁻²⁰, Distant Gate²¹⁻²², Dungeon Heart²³⁻²⁴, Experimental Lab²⁵⁻²⁶, Failed Intrusion²⁷⁻²⁸, Fallen Sanctuary²⁹⁻³⁰, False Front³¹⁻³², Feral Magic³³⁻³⁴, Flooded Halls³⁵⁻³⁶, Freshly Looted³⁷⁻³⁸, Friendly Foes³⁹⁻⁴⁰, Hidden w/in⁴¹⁻⁴², Hiveminded Natives⁴³⁻⁴⁴, Hospitable Natives⁴⁵⁻⁴⁶, Hostile Environment⁴⁷⁻⁴⁸, Infectious Miasma⁴⁹⁻⁵⁰, Invincible Delusion⁵¹⁻⁵², Lethal Treasure⁵³⁻⁵⁴, Limited Access⁵⁵⁻⁵⁶, Lingering Curse⁵⁷⁻⁵⁸, Living Dungeon⁵⁹⁻⁶⁰, Lost Colony⁶¹⁻⁶², Magical Wonder⁶³⁻⁶⁴, Monster Forge⁶⁵⁻⁶⁶, Outsider Domain⁶⁷⁻⁶⁸, Precious Resource⁶⁹⁻⁷⁰, Raider Lair⁷¹⁻⁷², Recruiting Drive⁷³⁻⁷⁴, Religious Zealots⁷⁵⁻⁷⁶, Rigid Hierarchy⁷⁷⁻⁷⁸, Royal Refuge⁷⁹⁻⁸⁰, Sacrificial Bargain⁸¹⁻⁸², Sealed Evil⁸³⁻⁸⁴, Secret Alliance⁸⁵⁻⁸⁶, Shifting Interior⁸⁷⁻⁸⁸, Spatial Flux⁸⁹⁻⁹⁰, Surfacer Hideout⁹¹⁻⁹², Taboo Place⁹³⁻⁹⁴, Things Below⁹⁵⁻⁹⁶, Useless Treasure⁹⁷⁻⁹⁸, Wizard's Lair⁹⁹⁻¹⁰⁰.

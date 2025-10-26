@@ -1,4 +1,4 @@
-.PHONY: dev dev-docker migrate migrations db-reset backup generate-secrets dump-data restore-data
+.PHONY: dev dev-docker migrate migrations db-reset backup generate-secrets dump-data restore-data build-rulesets
 
 include .env
 export
@@ -13,6 +13,13 @@ dev:
 
 dev-docker:
 	docker-compose up --build
+
+build-rulesets:
+	@echo "Building Ukrainian documentation..."
+	uv run mkdocs build -f mkdocs-uk.yml --clean
+	@echo "Building English documentation..."
+	uv run mkdocs build -f mkdocs-en.yml --clean
+	@echo "✅ Rulesets built successfully!"
 
 migrate:
 	uv run alembic upgrade head

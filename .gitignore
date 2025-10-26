@@ -40,3 +40,8 @@ srd_data
 
 # Development notes
 CLAUDE.md
+
+# MkDocs build outputs
+site/
+site-uk/
+site-en/

@@ -1,10 +1,17 @@
 # WWN-Lite Rules
 
-## SHORTHAND
-Rounded Up/Down: ↑/↓. Greater than (or equal to) >(≥). Less than (or equal to): < (≤). Encumbrance: Є. Silver Pieces: $p.
-Damage: Dmg. Line of Sight: LoS.
+## Basics
 
-## ATTRIBUTES
+### Shorthand
+- Rounded Up/Down: ↑/↓.
+- Greater than (or equal to) >(≥).
+- Less than (or equal to): < (≤).
+- Encumbrance: Є.
+- Silver Pieces: $p.
+- Damage: Dmg.
+- Line of Sight: LoS.
+
+### Attributes
 Score & Modifier (Mod): 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +2
 
 **STRENGTH (Str)**: Lift, break, melee, carry gear.
@@ -19,7 +26,7 @@ Score & Modifier (Mod): 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +
 
 **CHARISMA (Cha)**: Force of character. Charm others, attract attention, win loyalty...
 
-## SKILLS
+### Skills
 Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci may raise Skills past Level Cap after character Gen.
 
 **ADMINISTER**: Navigate the courts, know law, heraldry, & nobility, scribe well, delve archives, authenticate or forge records…
@@ -64,12 +71,12 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **TRADE**: Buy & sell @ profit, appraise loot, deal w/ merchants, navigate the black-market, know contraband law...
 
-## SKILL CHECKS
+### Skill Checks
 - **Checks**: 2d6 + Attribute mod + Skill (-1 if no relevant Skill).
 - **DC6**: Trivial, **DC8**: Easy, **DC10**: Average, **DC12**: Hard, **DC14**: Near Impossible (Adjust based on circumstance & urgency).
 - **PCs can attempt to Aid another** by performing a helpful Check themselves. Their attempt need not be the same Skill it's providing aid for. Success = +1 bonus. Multiple PCs can attempt to Aid, but the acting PC can't earn > +1.
 
-## SAVING THROWS
+### Saving Throws
 - **Saves**: A subject rolls a d20 & tries to roll ≥ the relevant Save score.
 - Favorable or unfavorable circumstance can adjust the difficulty by ±2 or ±4.
 - A PC trained in a helpful Skill can aid another's Save w/o Check. They add their relevant Skill x2 (Min +1) to the roll.
@@ -82,63 +89,65 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Luck**: (16 - Level) For occasions of blind random fortune.
 
-## LANGUAGE
+### Language
 PCs speak their native language + the common language + a # of languages = to their Connect + Know Skills.
 
-## HEALING & HAZARDS
+## Healing & Hazards
 
-### MORTALLY WOUNDED
+### Mortally Wounded
 - PCs @ HP ≤ 0 are Mortally Wounded. They can cry out, crawl a short distance, or take a small action @ GM discretion. Mortally Wounded PCs die in 6 Rounds, or instantly if more damage is taken.
 - NPCs die outright @ ≤ 0HP, or can be knocked unconscious should a Less Lethal weapon be used.
 
-### STABILIZING
+### Stabilizing
 - Main Action. Int/Heal or Dex/Heal. DC8 + # of Rounds since the target was downed (+2DC w/o medical tools).
 - Only 1 ally can attempt to stabilize a target per Round. Others can attempt to aid the check.
 - Once stable the target recovers w/ 1 HP after 10 min rest. The PC can act normally thereafter, but gains the Frail condition.
 
-### FRAIL
+### Frail
 - Frail PCs regain 0HP from a Night's Rest nor do they lose Strain, & will die immediately if brought to 0HP again.
 - The Frail condition is cured by 1 week of bed rest, or by magical healing. A physician can attempt to remove the Frail condition w/ an hour's work & a DC10 Skill check. They get only 1 chance to do so.
 
-### FIRST AID
+### First Aid
 A creature can restore 1d6 + their Heal Skill HP to an ally (No Check required). Each application adds 1 Strain to the target, but can be repeated as often as Strain allows. A single 10 min turn or scene is sufficient to apply as much first aid as desired. First aid works on Frail PCs, but does not remove the Frail condition.
 
-### MAGICAL HEALING
+### Magical Healing
 A creature healed w/ magic loses any Mortally Wounded or Frail qualities & can rise on their next turn.
 
-### A NIGHT'S REST & NATURAL HEALING
+### A Night's Rest & Natural Healing
 Assuming proper food, water, protection from the elements, & sleep, creatures recover the following after a night's rest (Creatures that are Frail do not recover HP nor lose System Strain this way):
+
 - Regain their level in HP
 - Regain all spent Spell Slots
 - Regain all spent Effort
 - Lose 1 point of System Strain
 
-### SYSTEM STRAIN (STRAIN)
+### System Strain (Strain)
 Max System Strain = Con Score.
+
 - Strain is often caused by certain spells, poisons, privation, or healing. A target @ max Strain cannot benefit from anything that would increase their Strain above their max. Being forced above Max System Strain is lethal.
 - A decent night's rest typically removes 1 point of Strain.
 
-### INSTANT DEATH
+### Instant Death
 Being reduced to ≤ 0HP by a heavy attack (boulders, cannonfire) = instant death.
 
-### POISONS & DISEASE
+### Poisons & Disease
 Phys Save to avoid. Possible Effects: HP Loss, Hallucination, Increased Strain, Death, Debuff… Lingering maladies may require multiple Saves over time to remove. Failure = worsening effects or death.
 
-### FALLING
+### Falling
 1d6 damage per 10' of fall. ½ if done in a controlled manner w/ a successful Exert Check (DC 7 + 1 per every 10').
 
-### SUFFOCATION
+### Suffocation
 PCs act normally w/o air for 1 round x Con Score. NPCs last 10 Rounds. After, they lose 1HP x level per Round.
 
-## COMBAT
+## Combat
 
-### INITIATIVE
+### Initiative
 1d8 + Dex or Int Mod. PCs roll individually vs Foe's group Initiative. Foes gain no bonus unless quick. PCs win ties.
 
-### HIT BONUS
+### Hit Bonus
 Class attack Bonus + Attribute Mod + Skill (-2 if Skill < 0) + Foci/Abilities/Magic/weapon Mods + Circumstance mods
 
-### HIT ROLL CIRCUMSTANCE MODIFIER
+### Hit Roll Circumstance Modifier
 - Shoot or melee an adjacent prone foe: +2
 - Shoot @ a distant prone foe: -2
 - Melee attack while prone: -4
@@ -149,47 +158,49 @@ Class attack Bonus + Attribute Mod + Skill (-2 if Skill < 0) + Foci/Abilities/Ma
 - Thrown attack while being meleed: -4
 - Shoot a bow while being meleed: N/A
 
-### DAMAGE ROLLS
+### Damage Rolls
 Weapon Damage Die + Attribute Mod + Foci + Abilities + Magic/weapon Mods
 
-### SHOCK DAMAGE
+### Shock Damage
 Weapon Shock Damage + Attribute Mod + Foci + Abilities + Magic/weapon Mods.
+
 - When rolling an attack, the defender announces their AC so the roller knows if their Shock would apply.
 - On a miss, a weapon inflicts Shock Damage if the target's AC is ≤ the Shock value of the weapon.
 - A throwable weapon's Shock only applies to melee attacks.
 - On a hit, the Damage can't be < the Shock Damage if the target would be susceptible to Shock Damage from the attack.
 
-### DUAL WIELDING
+### Dual Wielding
 - Requires Stab+1. +2 bonus to Damage (NOT Shock Damage). -1 To Hit. Choose which weapon hits. Unarmed can't dual-wield.
 - Shields can be used for dual-wielding attacks, but grant no AC bonus or Shock protection until the wielder's next turn if used so.
 
-### MOUNTED COMBAT
+### Mounted Combat
 - Riders w/ < Ride-0 suffer -1 to hit. Longbows, rifles, & spells are unusable while riding.
 - Mounts share their rider's Initiative, but have their own Main & Move Action, which they can split around their rider's actions.
 - Mounting or dismounting requires a Move Action.
 - Trained war-animals can attack, but ordinary riding beasts fight only in self-defense & require a Morale or Instinct check each Round or flee w/ their rider. A rider can force obedience w/ a Cha/Ride or Dex/Ride check made as a Move Action.
 - A mount reduced to 0HP dumps its rider prone as it falls.
 
-### SPECIAL COMBAT MANEUVERS
+### Special Combat Maneuvers
 Guidelines for adjudicating improvised combat actions.
+
 - If the maneuver requires striking a foe w/ something, make it an attack roll to hit.
 - If it requires manipulating an object around a foe, but not directly attacking him w/ it, let it be a Skill check or an opposed check.
 - If it succeeds, damage caused should be ≥ the hero's usual weapon damage by +2 or +4 due to cleverness.
 - If the effect is hindering rather than directly injurious, take away the foe's Main Action, or Move Action.
 - Actions that could both hurt & hinder a foe may do lesser measures of both.
 
-## ACTIONS & COMMON COMBAT ACTIONS
+## Actions & Common Combat Actions
 
-### ACTION TYPES
+### Action Types
 **MAIN ACTION**: attack, manipulate a device, apply first aid, casting a spell…
 
 **MOVE ACTION**: Climb, swim, crawl, difficult terrain… = ½ distance. In combat movement must be spent all @ once.
 
 **ON TURN ACTION**: Fall prone, speak, draw a Readied object… Limit is @ GM's discretion.
 
-**INSTANT ACTION**: Fast, simple. Can be made outside of an actor's turn. Multiple Instants resolve in order GM decides.
+**INSTANT ACTION**: Fast, simple. Can be made outside an actor's turn. Multiple Instants resolve in order GM decides.
 
-### COMMON COMBAT ACTIONS
+### Common Combat Actions
 
 **MAKE AN ATTACK (Main Action)**: Melee a foe w/in range or shoot a foe w/ a Ranged attack using a Readied weapon.
 
@@ -256,12 +267,12 @@ Guidelines for adjudicating improvised combat actions.
 - If hit, the target makes a Physical Saving Throw @ a penalty = to the attacker's relevant Skill. Fail = Mortally Wounded (or unconscious if PC uses a non-lethal weapon & chooses so). Success = Target still suffers Max damage.
 - Attacking unconscious or incapacitated targets always leaves them Mortally Wounded.
 
-## ARMORS & WEAPONS
+## Armors & Weapons
 
-### ARMOR CLASS
+### Armor Class
 Total AC = Base AC (10 if unarmored, or Armor's AC) + Dex + Shield + Foci/Abilities/Total Defense…)
 
-### LIGHT ARMOR
+### Light Armor
 Hinders Arts & Spells of casting Mages. Some types are discreet & can be worn politely in common society.
 
 - **War Shirt**: AC11 / 5 $p / 0Є. *A wearer of a War Shirt w/ the Casting enchantment may use Spells & Arts unhindered while it is worn.
@@ -270,14 +281,14 @@ Hinders Arts & Spells of casting Mages. Some types are discreet & can be worn po
 - **War Robe**: AC14 / 50 $p / 3Є.
 - **Pieced Armor**: AC14 / 100 $p / 2Є.
 
-### MEDIUM ARMOR
+### Medium Armor
 Hinders Arts & Spells of casting Mages. Can't be worn discreetly. Penalty to Sneak = to its Є.
 
 - **Mail Shirt**: AC14 / 250 $p / 1Є.
 - **Cuirass & Greaves**: AC15 / 250 $p / 2Є.
 - **Scaled Armor**: AC16 / 500 $p / 3Є.
 
-### HEAVY ARMOR
+### Heavy Armor
 Hinders Arts & Spells of casting Mages. Can't be worn discreetly. Penalty to Sneak & Exert = to its Є.
 
 - **Mail Hauberk**: AC16 / 750 $p / 2Є.
@@ -285,13 +296,13 @@ Hinders Arts & Spells of casting Mages. Can't be worn discreetly. Penalty to Sne
 - **Grand Plate**: AC16 / 2k $p / 3Є. **Immune to mundane weapons unless 2H, its Shock ≥ AC 16, or the wearer is grappled.**
 - **Great Armor**: AC19 / 2k $p / 3Є.
 
-### SHIELDS
+### Shields
 Shields allow the bearer to ignore the 1st instance of Shock they'd otherwise take in a Round. If used as a weapon or part of a dual-wielding attack a shield grants no AC boost or Shock protection until the wielder's next turn.
 
 - **Small Shield**: AC13 or +1 if current AC is ≥13 / 20 $p / 1Є. Bound to arm (allows a free hand, which can't hold a 2nd weapon).
 - **Large Shield**: AC14 or +1 if current AC is ≥14 / 10 $p / 2Є. Requires a hand to grip.
 
-### WEAPONS
+### Weapons
 
 | WEAPON | DMG | SHK | ATTRIBUTE | RANGE | TRAITS | COST | ENC (Є) |
 |--------|-----|-----|-----------|-------|--------|------|---------|
@@ -327,7 +338,7 @@ Shields allow the bearer to ignore the 1st instance of Shock they'd otherwise ta
 
 *(HB) Wis can be used as the Attribute Modifier for aimed weapons.
 
-### WEAPON TRAITS
+### Weapon Traits
 
 - **2H**: Two Handed. Ranged two-handed weapons can't be fired while a foe is w/in melee range.
 - **AP**: Armor Piercing. Ignores creatures' mundane armor & shields for purposes of its hit rolls.
@@ -344,30 +355,30 @@ Shields allow the bearer to ignore the 1st instance of Shock they'd otherwise ta
 - **T**: Throwable. Can be used in melee or thrown. Does not deal Shock if thrown. -4 to Hit if thrown while foe is in melee range.
 - **U**: Untrained. Due to its simplicity of operation, a user w/ < 0 in the relevant Skill can use them @ no unskilled hit penalty.
 
-## DELVING
+## Delving
 
-### VISIBILITY
+### Visibility
 A visible target is one who can be seen, or whose exact location is known. If a PC is seen & dives into a 5' bush to hide, they are not immune to ranged attacks assuming their foes are intelligent enough to have object permanence, though the PC may receive a partial cover bonus if the GM is feeling benevolent.
 
-### LACK OF VISIBILITY
+### Lack of Visibility
 Should a target become unable to be seen (invisibility spell, a completely opaque smoke screen, pitch darkness) they are unable to be targeted by ranged attacks, melee attacks against them suffer a -4 penalty, & sight based checks against them fail.
 
-### LIGHTS
+### Lights
 Torches typically cast a 30' radius & burn for around 6 turns (1hr). Lanterns for 24 turns (4hrs) but burn dimmer & require an additional turn when performing sight based tasks such as searching a room.
 
-### SEARCHING
+### Searching
 A PC describes what/how they are searching. If described appropriately they succeed. For items not found by initial description, have the PC w/ best Wis/Notice roll for the PCs. Other PCs can attempt to aid.
 
-### LOCKS & TRAPS
+### Locks & Traps
 DC8 Dex/Sneak or Int/Craft to disarm ≤ good trap/lock (requires 1 turn). If in haste, Main Action @ +2DC. The Dm will do their best to telegraph the danger of the area (bloodstains, dart-sized holes in walls, the smell of death). Players will decide how to proceed, or not, accordingly.
 
-### TIME
+### Time
 Rounds = 10 seconds (6 in a min). Dungeon Turns = 10 mins (6 in an hour). Travel turn = 4 Hours (6 in a day).
 
-### ENCUMBRANCE (Є)
+### Encumbrance (Є)
 A PC's absolute Max carrying capacity: Readied items = to ½ Str Score ↓. Stowed items = to full Str Score. Small bulk goods can be bundled (3 counting as 1 item). Requires a Main Action to Ready, Stow, or Unbundle items.
 
-### DUNGEON MAPPING
+### Dungeon Mapping
 - Do not concern yourself w/ EXACT measurements. Mapping is an art, not a science.
 - Dungeons are measured in rough 10' squares.
 - Hallways are described up to the point of change. So a 30' hallway w/ a turn in the middle could be described as: "The 10' wide hallway runs East 10ft, branches South, & continues on East another 20' before ending at a door."
@@ -376,7 +387,7 @@ A PC's absolute Max carrying capacity: Readied items = to ½ Str Score ↓. Stow
 - Doors, openings, or other such can be described using winds & half winds, so a 30'x30' square room w/ one door on the West wall, three doors on the North wall, & two doors evenly spaced on the East wall may be described as "There's a door to the West, one to the North Northwest, one to the North, one to the North Northeast, one to the East NorthEast, & one to the East Southeast."
 - When in doubt, sketch it out & confirm w/ the GM.
 
-### ENCOUNTER LIKELIHOOD
+### Encounter Likelihood
 - Roll checks every 3 Turns for average dungeons, every 2 if defenses are astir, or every 4 if dormant.
 - Hidden areas or concealed chambers unknown to the natives of the site require no check.
 
@@ -387,7 +398,7 @@ A PC's absolute Max carrying capacity: Readied items = to ½ Str Score ↓. Stow
 4. Shift (hazards, factions…)
 5-6. Free turn
 
-### ENCOUNTER PROCEDURE
+### Encounter Procedure
 Roll 1d6 x 10' if distance is uncertain.
 
 - Unless one party would reasonably notice the other & themselves go unnoticed (making noise, carrying light in the dark…) parties make an opposed Wis/Notice check. Winner notices the other party 1st & decides how to act (greet, flee, ambush…).
@@ -395,7 +406,7 @@ Roll 1d6 x 10' if distance is uncertain.
 - The GM will use the fiction to make PCs @ least somewhat aware of the NPCs' disposition.
 - If the encounter devolves into combat, roll Initiative (1d8+Dex). NPCs have no modifier unless especially quick. PCs win ties.
 
-### REACTION ROLLS
+### Reaction Rolls
 If a creature's disposition is uncertain, make a Reaction Roll (2d6 & consult the table). If a PC is in a position to greet the targets, add their Cha to the roll. GM will make clear the results through narrative.
 
 **Roll 2d6:**
@@ -407,23 +418,23 @@ If a creature's disposition is uncertain, make a Reaction Roll (2d6 & consult th
 
 *Potential Peaceful Encounter Reactions: NPCs ask for a bribe, back off, ask a favor, offer tribute, socialize…
 
-### AMBUSHES & SURPRISE
+### Ambushes & Surprise
 - Surprise grants a party a full Round to act before Initiative is rolled.
 - Stealth ambushes may provide the opportunity to commit an Execution attack if the targets meet the criteria.
 - Bewildering ambushes based on a shocking surprise may provoke a Morale check in undisciplined targets (GM's discretion).
 
-### MORALE CHECKS
+### Morale Checks
 - If 2d6 > ML score the creature loses the will to fight. PCs do not make Morale checks.
 - Foes may be forced to check morale when 1st faced w/ violence, a leader falls, if victory looks hopeless, if terrified…
 - Fleeing combatants may drop burdens, beg for mercy, pray to their gods, offer bribes, make a strategic withdrawal…
 - Once a side has failed their ML check they're unlikely to re-engage the same foes until the situation has shifted in their favor.
 
-### FLEEING & ESCAPE
+### Fleeing & Escape
 If foes pursue (many don't), escapee w/ best Dex/Exert rolls vs fastest pursuer. Successful escapes take ~1 turn & leave escapees in safety. If escapees # < pursuers: +1. Good escape plan: +1. Group w/ slowest member: -2.
 
-## OVERLAND TRAVEL & WILDERNESS SURVIVAL
+## Overland Travel & Wilderness Survival
 
-### TRAVEL TIMES
+### Travel Times
 - PCs can travel 10hrs per day.
 - **Hours spent to cross a hex:**
   - Road Hex: 2
@@ -432,7 +443,7 @@ If foes pursue (many don't), escapee w/ best Dex/Exert rolls vs fastest pursuer.
   - Bad Weather or Terrain: 2x
 - Exploring a 6mi hex for points of interest: ½ day (longer if the task is especially difficult).
 
-### WILDERNESS ENCOUNTERS
+### Wilderness Encounters
 Roll checks once per day of travel & once per night of camping outdoors:
 
 **Roll 1d6:**
@@ -442,7 +453,7 @@ Roll checks once per day of travel & once per night of camping outdoors:
 4. Shift (weather, hazards, etc…)
 5-6. Free turn
 
-### WILDERNESS ENCOUNTER DISTANCE
+### Wilderness Encounter Distance
 Groups usually encounter each other @ max sight range barring concealment.
 
 - Roll opposed Wis/Notice to determine who spots who 1st; the party who gains the edge can usually avoid the other group.
@@ -452,7 +463,7 @@ Groups usually encounter each other @ max sight range barring concealment.
 - Forest, Hills, etc: 2d6 x 10'
 - Mts, Deserts, Plains, Tundra, Sea: 4d6 x 10 Yds
 
-### HEX EXPLORATION, PRIVATION & SUPPLIES
+### Hex Exploration, Privation & Supplies
 The benefits from a Night's Rest may require fire & shelter if weather is poor.
 
 **System Strain from privation:**
@@ -471,24 +482,25 @@ The benefits from a Night's Rest may require fire & shelter if weather is poor.
 - Foraged food spoils in 3 days. Preserving it requires 1 Watch & 1 Forage Unit of firewood.
 - 1 Forage Unit = 1 day's food for 1 person (1Є or ½ Bundled), 1 day's water for 1 person (1Є), or 1 night's firewood (4Є).
 
-### PORTERS
+### Porters
 Porters are NonAdventuring hirelings. Porter/2 Porters w/ Shared litter: 12Є/30Є
 
-### BEASTS OF BURDEN
+### Beasts of Burden
 In non-arid terrain beasts need not worry for fodder or water, otherwise:
+
 - 1 Day's Fodder/Water for a small beast (such as a Mule): 2Є/4Є.
 - 1 Day's Fodder/Water for a large beast (such as a Horse): 4Є/8Є.
 - A beast's Є capacity: Riding Horse/& Laden Rider: 20Є/5Є. Mule/Heavy Pack Horse: 15Є/30Є.
 - A Beast can be butchered into a # of day's rations = to its Є capacity.
 
-## SEA TRAVEL
+## Sea Travel
 
-### TRAVEL & PROVISIONS
+### Travel & Provisions
 - Ships can sail 24hrs/day if far from coasts & other peril. Ships move ½ speed in unfavorable weather & stall w/0 wind.
 - **Provisions:** Food(250 person-days) 500$p, 1t. Water(50 person-days) 0$p, 1t. Repair Supplies (15HP) 200$p, 1t.
 - Calamity or privation may force a crew morale check. Failures can eventually result in mutiny if not quelled.
 
-### CREW
+### Crew
 **Cost by month / Crew Strength:**
 - Sailor: 50$p / 1
 - Officer: 250$p / x2 (reqs 10 troops)
@@ -500,12 +512,12 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 - Ship's owner: ½ of profit & magic items. The 2nd ½ split in shares: Capt = 5, officer = 2, & sailor = 1. (Pirates split haul evenly).
 - Common sailors don't require extra incentive for ordinary peril (minor sea monsters, magical storms, pirate assault…).
 
-### SHIPS & EXPENSES
+### Ships & Expenses
 - Every 3 months ships require 1 week in port for maintenance & repairs (5% of ship, weapons, etc… total cost).
 - Repair costs: Missing HP x 5$p. Best Craft Skill + best Sail Skill = Max HP restorable per day.
 - Ship upgrades cost a % of the ship's total cost & increase a ship's stat by the same percentage (typically between 5% to 20%).
 
-### SHIPS
+### Ships
 
 | SHIP | COST | CREW | HEXES/DAY | GRACE | HP | AC | CARGO | WPNS | SIZE |
 |------|------|------|-----------|-------|----|----|-------|------|------|
@@ -529,12 +541,12 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 - **Weapons**: # of cargo tons that can be dedicated to weaponry.
 - **Size**: Size of a ship.
 
-### COMBAT AT SEA
+### Combat at Sea
 - Such brawls can be run as normal combat encounters w/ a few exceptions (see below) or as mass combats (see pg 15).
 - Ships receive their own Turn in combat in which they can fire off 1 of their weapons provided they have the crew to do so. Once a ship's weapon is fired, it's assumed the weapon's crew begins reloading unless they're unable to do so or take up another task.
 - A ship also has a movement action they may use to try to gain an advantage vs their foe, gaining a bonus to their attack, dam, or AC.
 
-### SHIP WEAPONS
+### Ship Weapons
 
 | WEAPON | COST | CREW | RNG | DMG | CARGO | SIZE | TRAITS |
 |--------|------|------|-----|-----|-------|------|--------|
@@ -557,9 +569,9 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 - **FX**: Fixed. Requires a fixed position & ≥ 5mins to entrench it.
 - **SS**: Single Shot. Takes 10 Rounds to reload & is spoiled if a foe melees the wielder.
 
-## GEAR
+## Gear
 
-### EQUIPMENT
+### Equipment
 
 | Item | Cost | Є | Item | Cost | Є |
 |------|------|---|------|------|---|
@@ -580,7 +592,7 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 
 ~: Can bundle in 3's. Main Action to open. *: 0Є in small amounts. §: 0Є if worn.
 
-### BEASTS & TRANSPORT
+### Beasts & Transport
 
 | Item | Cost |
 |------|------|
@@ -599,7 +611,7 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 
 *All costs are approximate & used as example of what a good or service may cost. A successful Trade check can reduce cost, but grifters or circumstance may raise it.
 
-### CRAFTING GEAR
+### Crafting Gear
 Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft Skill check.
 
 **Difficulty:**
@@ -623,12 +635,12 @@ Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft 
 - Masterwork weapon: +1 Hit. Masterwork Armor: Normal armor -1Є (min of 1. Not for purposes of Armored Magic foci.)
 - The 1st mod added to Masterwork items costs x2 as much in arcane salvage & supplementary costs, but requires no maintenance.
 
-### GEAR MODIFICATIONS & MAINTENANCE
+### Gear Modifications & Maintenance
 - Adding Mods to gear requires Expert or Partial Expert, ≤ Craft+1, & rare "salvage" material. Takes 1 week x Mod's required level of Craft to install. ½ time w/ Craft-0 Assistant, or if all waking hours are spent working on the mod.
 - Mods can Stack, but can't increase attack or damage bonus > +3 or Skill Check bonus > +1.
 - Expert/Partial Expert can Maintain a # of Mods = Int + Con Modifiers + (3 x Craft Level). A modification requires maintenance every 24 hrs or it stops working (assumed to be done automatically by an expert/partial expert). If unmaintained for a 1 week item becomes unfit for use. After 1 yr it may become destroyed. Requires 1 hr of work to clean up a maintenance backlog.
 
-### MODS
+### Mods
 
 **Arrow Storm (Craft+2)**: A ranged weapon automatically generates its own ammunition. The conjured projectiles vanish after 1 Round. This mod does not increase reload speed. Cost: 1 Salvage & 5k $p.
 
@@ -656,9 +668,9 @@ Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft 
 
 **Thirsting Blade (Craft+3)**: A weapon is imbued w/ a fated inclination to harm, adding +1 to hit rolls. Cost: 2 Salvage & 10k $p.
 
-## ALCHEMY
+## Alchemy
 
-### ALCHEMY BASICS
+### Alchemy Basics
 - Alchemy is a Skill restricted to Experts/Partial Experts. Others who take it gain only knowledge benefits.
 - Concoctions created by alchemists are called Works & divided into Lesser & Greater.
 - Making a Work requires ingredients, a formula, & a lab.
@@ -667,14 +679,14 @@ Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft 
 - **Lesser lab**: Can be assembled w/in days, occupies ≥ an inn room's space, weighs 10Є packed, & can be packed/unpacked in 1hr.
 - **Greater lab**: 5k $p to assemble, occupies 1 cottage's worth of space, is a cartload packed, & can be packed/unpacked in 1 day.
 
-### CRAFTING WORKS
+### Crafting Works
 If the alchemist has a lab, formula, material, & time, they can attempt to craft a Work. Int/Craft check vs listed difficulty.
 
 **On failure:** Alchemist chooses to accept the loss or push the reaction.
 - **Accept the loss**: lose materials & time but nothing goes amiss.
 - **Push the reaction**: Repeat the Skill check. Failure: Loss of time, material, & roll an Alchemical accident.
 
-### ALCHEMICAL ACCIDENTS
+### Alchemical Accidents
 
 **Roll 1d6:**
 1. **Explosion**: 1d6 + DC dam, x2 for Greater Works. Lab destroyed.
@@ -684,13 +696,13 @@ If the alchemist has a lab, formula, material, & time, they can attempt to craft
 5. **Broken Tool**: That specific work can't be attempted again for 1 wk.
 6. **Ordinary failure**: Only materials & time are lost.
 
-### USING ALCHEMICAL WORKS
+### Using Alchemical Works
 - Main Action. Range: 60'. If a Work requires direct application: attack vs AC. If thrown as a grenade: attack vs AC 12. On failure w/ grenade-like Works: Miss by 1d20 ft. 1d12 determines clock face direction of miss.
 - Readied Work = 1Є. ≤4 Stowed Works = 1Є.
 - Works w/ the same effect do not stack; only the strongest applies.
 - Works are mundane & can't be detected, dispelled, resisted, or negated by anti-magical means.
 
-### LESSER WORKS
+### Lesser Works
 These formulae are commonly known to Alchemists. The creation DC, materials cost, & time are listed.
 
 **Acid Vial**: DC10. 50 $p. 1 day. Targeted. 1d4 damage. Physical or Mental Save. Failure = target loses their next Move Action from pain & panic. Can corrode tiny metal or wooden objects in about 15 mins.
@@ -717,7 +729,7 @@ These formulae are commonly known to Alchemists. The creation DC, materials cost
 
 **Touchstone**: DC10. 50 $p. 3 days. A prep'd alchemical kit w/ 1 use x alchemist's level. Can detect poisons & identify false precious metals or gems. Vs professional poisoners, the user makes an opposed Craft vs Heal Skill check in order to detect the toxin.
 
-### GREATER WORKS
+### Greater Works
 These formulae are commonly known to Alchemists. Creation DC, materials cost, & time are listed.
 
 **Aqueous Solvent**: DC11. 250 $p. 5 days. Unusable in combat; can melt through ≤ a fist-sized mass of metal/wood in < 1 min.
@@ -736,16 +748,16 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Unquenchable Flame**: DC12. 1000 $p. 2 wks. This fist-sized mass is covered w/ a protective film. If scratched the mass will ignites & burn w/ a ferocious heat & toxic fumes for 1d6+4 Rounds. 1d6 damage to anyone who spends their full Round w/in 10'. The mass burns almost anything (stone, water, metal…) & often burns a hole 3' deep before consuming itself.
 
-## MAGIC
+## Magic
 
-### ARTS & EFFORT
+### Arts & Effort
 - Arts are fueled by Committing Effort. A PC's Class determines from whence Effort is based.
 - Typically: Skill + Attribute Modifier + 1 (if Full Class) = Max Effort.
 - **Committed Effort for the Scene** = Recharges after 1 Scene.
 - **Committed Effort Indefinite** = Returned once you "turn off" an Art instantly.
 - **Committed Effort for the Day** = Recharges after 1 Night's Rest.
 
-### PREPARING & CASTING SPELLS
+### Preparing & Casting Spells
 - A mage can prepare any spell from their spellbook after 1 night's rest. This takes approx 1hr.
 - Spells typically require a Main Action, free hand, & vocalization as loud as conversation. Casting is obvious, but which spell isn't.
 - Spells typically require line of sight w/ the target, unless line of sight would defeat the purpose of the spell (i.e. scrying, etc).
@@ -756,18 +768,18 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - The same spell may be cast > once if the mage has multiple castings left for the day.
 - Partial Mages apply their full character level to any level-based effects from spells.
 
-### LEARNING SPELLS
+### Learning Spells
 - Spellcasting full Mages begin w/ 4 1st level spells & Partial Mages w/ 2. Spells may be chosen from any spell list available to them.
 - Some Mages gain new spells @ level up. High Mages pick 2 High Magic spells they are able to cast. Necromancers & Elementalists pick only 1, but can choose from High Magic spells or spells from their tradition. Partial Mages that are capable of casting spells learn spells just as full Mages do.
 - Learning a spell from a grimoire = (1 week x Spell Level) - (1 week x Level of the Mage's Magic Skill). Min of 1 day.
 - A PC must be capable of casting the spell to learn it.
 
-### GRIMOIRES
+### Grimoires
 - Looted grimoires contain a # of spells to learn = to the level of its initial owner (assumed to be highest level spell's required casting level).
 - To select spells, pick a 1st level spell, then continue picking spells successively until reaching the highest level spell the original owner could cast. Start over @ level 1 spells & continue like this until a # of spells have been chosen = to the original Mage's level.
 - Some grimoires contain curses, & some spells contain flaws.
 
-### DEVELOPING NEW SPELLS
+### Developing New Spells
 - Int/Magic check = DC10 + Spell's Level. Magic-0 Apprentice: +1 bonus. Mage researching New Magic of their specialty: +1 bonus.
 - On success the spell is created. On failure the initial time & money is lost & PCs must roll on the Formula Flaw table.
 - PCs decide to quit or continue w/ the flawed spell, spending ½ the original time, no additional coin, & gaining a +1 bonus.
@@ -781,7 +793,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - Spells should not create permanent magical effects or valuable matter.
 - Spells should not be petty.
 
-### SPELL DEVELOPMENT COSTS
+### Spell Development Costs
 
 | SPELL LEVEL | LAB FEE | MATERIAL FEE* | TIME COST |
 |-------------|---------|---------------|-----------|
@@ -793,7 +805,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 *x2 Material Fee = ½ Time
 
-### FORMULA FLAWS
+### Formula Flaws
 
 **Roll 1d10:**
 1. The spell can only target the caster.
@@ -807,13 +819,13 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 9. The spell is simply unreliable. When cast, roll 1d6. On a 1, the spell fizzles uselessly & the casting slot is wasted.
 10. The whole attempt was a mistake. All progress & research materials are lost & everything must be done over from the start.
 
-### CREATING MAGICAL ITEMS
+### Creating Magical Items
 - Permanent magic items require ≥ 1 adventure to acquire the required components.
 - Int/Magic Skill check to create. Success: Item is created. Failure: Initial time & money is lost. PCs roll for Item Flaw.
 - PCs can quit or continue w/ the flawed item, spending ½ the original time, no additional coin, & receiving a +1 bonus.
 - PCs can repeat this process adding flaws & paying ½ the original time until successful or they abandon the project.
 
-### MAGIC ITEM CREATION COSTS
+### Magic Item Creation Costs
 
 | TYPE OF MAGICAL ITEM | DC | Creation Cost | Creation Time |
 |----------------------|----|---------------|---------------|
@@ -828,7 +840,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - 4 doses of single use item: -2
 - Magic-0 Apprentice: +1
 
-### CALYXES
+### Calyxes
 - A calyx is a magic effect trapped in an object for later use (scroll, tablet…) Mages can't learn spells from these.
 - Any literate in the language of its inscription can decipher its content. If not, 1 day's study by someone w/ Magic-0 is required.
 - A calyx holds ≥ 1 spell. Each spell can be cast once (unless duplicates are embedded in the same calyx) before it's destroyed.
@@ -839,7 +851,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - DC = 8 + spell's level. Failure by ≤ 2: the spell is wasted. Failure by >2: its cast, but @ the wrong target or wrong effect.
 - **Crafting Calyxes**: Cost = 1k $p x Spell Level, DC7 + ½ Spell Level ↑. Requires 1 week to craft & 1 week x Spell Level before another can be.
 
-### EXEMPLARS
+### Exemplars
 - Exemplars are arcane artifacts that provide deep magical insight. Obvious on close inspection by a PC w/t ≤ Magic-0.
 - Exemplars reduce the cost of creating Workings, spell research, or magic item creation by an amount = to their value. Once its $p value is exhausted, it is destroyed.
 - Minor, Major, & Great refer to the power of Exemplars possible to be found in an area.
@@ -850,14 +862,14 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 | Major | 10k $p | 20k $p | 100k $p | 200k $p | 500k $p |
 | Great | 20k $p | 40k $p | 200k $p | 400k $p | 1m $p |
 
-### SENTIENT MAGIC WEAPONRY
+### Sentient Magic Weaponry
 - Rare. Possess their own intellect & will directed toward carrying out a task chosen by its creator.
 - Sentient weapons have ≥ 1 additional special ability related to their purpose, chosen by the GM.
 - Some can vocally or telepathically communicate w/ their bearer, though not all speak modern languages.
 - Bearers who offend the weapon must make an appropriate Cha/Stab or Shoot Skill check against DC 8 + the weapon's magical bonus in order to force its obedience for the day. Failure = weapon is treated as non magical for the rest of the day.
 - Weapons that have a now-impossible purpose may try to reinterpret their function as a pursuable task. Most will not demand constant cooperation. Bearers who do not aid, or work counter to its purpose, will likely be unable to wield it.
 
-### MAGIC WEAPONS
+### Magic Weapons
 - Magic weapon bonuses are added to attack rolls, Damage rolls, & Shock dam, but do not stack w/ Masterwork bonuses.
 - Crafting Magical weapons requires a Mage & a Masterwork Item to Enchant. 3 Effects per item max.
 
@@ -929,7 +941,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Spellcleaving**: 1/scene @ a cost of a Move Action & +1 Strain to the wielder, the weapon can apply a Dispel magic spell effect to any target point w/in its range. The spell is cast as if by a 10th level High Mage w/ a total Int/Magic Skill bonus of +3.
 
-### MAGIC ARMOR
+### Magic Armor
 - Crafting Magical Armor & Shields requires a Mage & a Masterwork Item to Enchant. 2 Effects per item max.
 - Armor's enchantment is measured from +1 to +3, which is added to its base AC. They can also possess magical abilities.
 - Typically masterwork quality, so Є = 1 < the base armor (not for purposes of the Armored Magic Foci' limits). Most magic armor is adjustable to most humanoid wearers.
@@ -988,13 +1000,13 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Weightless**: 0 Encumbrance (does not apply to the Armored Magic Focus' limits or the armor's usual Skill check penalties).
 
-### CURSED ITEMS
+### Cursed Items
 - If a GM decides a risk exists: 1 in 20 chance the weapon is cursed.
 - If an owner is separated from a binding cursed item, they can't lose Strain & gain +1 point each night until the item's return.
 - A Dispel magic spell can disentangle the curse, but other times more elaborate magics or adventures are required.
 - An item's curse makes the item dangerous or harmful to use, but not so awful that the party would discard it out of hand.
 
-### CURSED WEAPONS & ARMOR
+### Cursed Weapons & Armor
 
 **Clumsy**: If the bearer doesn't choose to act last in initiative order, they can't use this item or attack w/ it.
 
@@ -1018,16 +1030,16 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Traitorous**: On a nat 1 attack roll, the weapon strikes its owner. If armor is cursed, foes always hit on a 1 on the hit roll.
 
-## ELIXIRS
+## Elixirs
 
-### ELIXIR BASICS
+### Elixir Basics
 - Elixirs must be consumed as part of their activation, typically requiring a Main Action for a readied Elixir.
 - An Elixir = 1Є when Readied. A GM may allow some to be packed together @ 0 Є but they'll be inaccessible in combat.
 - Salves & unguents can't be applied to a hostile or resisting target.
 - Identifying Elixirs requires a detection spell, legible label, tasting a drop to guess, or 1 day & a Wis or Int Magic check vs its creation DC. Only 1 chance. If elixir was tainted or fouled it may detect incorrectly.
 - Elixirs aren't uncommon in dungeons. Purchasing them requires a relationship w/ a skilled brewer & a reason for them to brew.
 
-### ELIXIR LIST
+### Elixir List
 
 **Anchoring Draught**: Range: 10mi. Lasts 24hrs. Main Action: Imbiber teleports back to the spot they drank the potion, along w/ any objects & willing or incapacitated creatures they are carrying.
 
@@ -1071,7 +1083,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Wrathful Detonation**: These flasks are permanently sealed & when hurled w/ intention never miss. They detonate for 2d6 damage to all targets w/in 15', w/ a range of 60'. They will not explode by accident, & only 1 flask can be hurled at a time.
 
-## MAGICAL DEVICES
+## Magical Devices
 
 Arcane objects of wonder. Below are listed only a small section of possibilities.
 
@@ -1115,15 +1127,15 @@ Arcane objects of wonder. Below are listed only a small section of possibilities
 
 **Vothite Icon**: Range: 30'. Requires 1 free hand & LoS. Main Action. When a human/demihuman 1st sees this incomprehensible icon, they must make a Mental Save. Failure = loss of their next Round's Action. Can't affect the same creature x2.
 
-## LIVING EXPENSES & SERVICES
+## Living Expenses & Services
 
-### COST PER WEEK
+### Cost per Week
 - **Impoverished living** (-1 Social Checks): 5 $p
 - **Common living**: 20 $p
 - **Rich living** (Entree into High Society): 200 $p
 - **Noble lifestyle** (1/session, gain an inconvenient favor from a hanger-on): 1k $p
 
-### SERVICES & COSTS
+### Services & Costs
 - Bribe for a minor/major/capital crime: 10/500/10k $p
 - Hire someone for a minor/major/capital crime: 50/1k/25k $p
 - Magical healing: 10 $p x hp*
@@ -1133,14 +1145,14 @@ Arcane objects of wonder. Below are listed only a small section of possibilities
 
 *Magical services are rare & typically require special favors.
 
-## HIRELINGS
+## Hirelings
 
-### HIRELING TYPES
+### Hireling Types
 - **Non-Adventuring Hirelings** require daily pay + food & lodging if unable to return home. Their # is finite & they may be missed by other NPCs. They'll not fight unless forced, refuse to enter dungeons, & require morale checks after facing exceptional peril.
 - **Adventuring Hirelings** require daily pay + food & lodging if unable to return home. Their # is finite & they may be missed by other NPCs. They'll fight if it's their job, & enter dungeons for a ½ share of loot, but require morale checks if faced w/ exceptional peril.
 - Common hirelings have +1 on Skill checks relevant to their trade. Better servants require quests. Magical hirelings are rare.
 
-### HIRELING PROFESSIONS & COST PER MONTH
+### Hireling Professions & Cost per Month
 
 | Profession | Cost | Profession | Cost |
 |------------|------|------------|------|
@@ -1159,14 +1171,14 @@ Arcane objects of wonder. Below are listed only a small section of possibilities
 
 *Monthly Price Halved if providing long-term housing.
 
-## HIRING ARMIES & MASS COMBAT
+## Hiring Armies & Mass Combat
 
-### MASS COMBAT RULES
+### Mass Combat Rules
 - Each side divides its Combat Strength by 10 & ↑. They gain an = # of d6s. Advantages may warrant bonus d6s be awarded.
 - Highest roll wins. Loser's Combat Strength drops = to the difference in rolls. Both sides suffer losses = # of dice the other rolled.
 - Losses are applied to NPCs 1st. If any is left, PCs lose 4 HP x point of loss, split appropriately amongst the party.
 
-### UNIT COSTS & COMBAT STRENGTH
+### Unit Costs & Combat Strength
 Monthly Price ½ if providing long-term housing.
 
 | UNIT | MONTHLY COST | COMBAT STRENGTH |
@@ -1183,21 +1195,21 @@ Monthly Price ½ if providing long-term housing.
 | Non-Warrior PC | - | Level x2 |
 | Warrior PC | - | Level x3 |
 
-## LAND OWNERSHIP & DOMAINS
+## Land Ownership & Domains
 
 - A business or ag land produces ~10% (-5% taxes to lords) of its purchase price in income each year, assuming all goes well.
 - Each year roll 1d6. 1 = something will go wrong the following yr & there will be no income unless the PCs can fix the problem.
 - Rolling 1 2yrs in a row = Property's financial collapse unless saved by PCs. Ag land never fails shy of war or natural disaster.
 
-## BUILDING STRUCTURES
+## Building Structures
 
-### CONSTRUCTION COSTS
+### Construction Costs
 - 1 Unskilled worker = 5 $p/day worth of construction.
 - 1 Skilled worker = 25 $p/day worth of construction.
 - Capable PC overseeing construction: -10% to cost.
 - Lrg or complex structures built w/ < 10% skilled labor may be subpar.
 
-### BUILDING MATERIALS
+### Building Materials
 - Wooden object 10'x10'x10': 50$p
 - Elaborate wooden object 10'x10'x10': 200$p
 - Wooden palisade per 10'x10'x1': 10$p
@@ -1208,7 +1220,7 @@ Monthly Price ½ if providing long-term housing.
 - Shored earthen tunnel: 100$p
 - Stone Tunnel 10'x10'x5': 250$p
 
-### PROPERTIES & STRUCTURES
+### Properties & Structures
 - Family farm: 500 $p
 - Village temple: 500 $p
 - Urban slum dwelling: 250 $p
@@ -1225,29 +1237,29 @@ Monthly Price ½ if providing long-term housing.
 - Large royal palace: 250k$p
 - Major fortress: 500k $p
 
-## BUILDING MAGICAL WORKINGS
+## Building Magical Workings
 
-### WORKINGS BASICS
+### Workings Basics
 - A Working is a stationary, persistent magic that persists until destroyed or decayed.
 - Workings require a 6th level Mage or Partial Mage caster. If the designer's Level x Magic Skill x 2 ≥ the Working's DC, they can establish it alone. If ≥ ½ DC, they will need to find other mages to make up the difference. If < ½ the DC, the Working is too difficult.
 - Player discusses the goal, & the GM sets the DC. Total cost of the Working = most costly element + 1/2 the rest ↑.
 - Workings are constructed @ a time cost of 1 month + 1 week per 5 points of DC or fraction thereof.
 - x2 cost = ½ time (only applies to the magical components of the Working. Mundane structures must be built prior).
 
-### DEGREE & DIFFICULTY
+### Degree & Difficulty
 - **Trivial**: 1-4
 - **Minor**: 4-8
 - **Major**: 8-16
 - **Great**: 16-32
 
-### AOE & DIFFICULTY MULTIPLIER
+### Aoe & Difficulty Multiplier
 - **Room**: x1
 - **Building**: x4
 - **Village**: x16
 - **City**: x64
 - **Region**: x256
 
-## REWARDS BY PATRON
+## Rewards by Patron
 
 Costs x2 to bribe a patron. Will accept substantial risk, but not likely personal ruin.
 
@@ -1267,17 +1279,18 @@ Costs x2 to bribe a patron. Will accept substantial risk, but not likely persona
 | Monarch or Merchant Prince | 50k $p |
 
 **Modifiers:**
+
 - Paid in land or goods, not cash: x2
 - Great danger or desperate need: x2
 - They'd give everything for this job: x4
 
-### PROPERTY DESCRIPTION & REWARD VALUE
+### Property Description & Reward Value
 - Wilderness hex (barely-habitable): 2.5k $p
 - Wilderness hex (decent farmland): 5k $p
 - Wilderness (good farmland): 15k $p
 - Preestablished farming villages, business monopolies, or other personal estates: 20 x the property's yearly income
 
-### INCOME/YEAR CALCULATIONS
+### Income/Year Calculations
 
 | INCOME/YEAR | HEX TYPE | X POPULATION | X SECURITY |
 |-------------|----------|--------------|------------|
@@ -1287,15 +1300,16 @@ Costs x2 to bribe a patron. Will accept substantial risk, but not likely persona
 | 1k | Poor & barely-habitable terrain | x0.5 Frontier population density | x0.25 Untamed wilderness. No law. |
 | 0 | Wastelands & barren | x0.1 Barely-inhabited wilderness | x0 Active warfare. |
 
-## RENOWN
+## Renown
 
 Renown is earned through deeds & used to complete Major Projects. A party earns a point of Renown each session they successfully:
+
 - Accomplish a longstanding goal.
 - Aid those in dire need.
 - Best a major foe.
 - Risk grave danger for glory or fortune.
 
-### MAJOR PROJECTS
+### Major Projects
 A Project's Renown Cost = Probability x Scope x Opposition.
 
 | GOAL PROBABILITY | SCOPE AFFECTED | GREATEST OPPOSITION |
@@ -1309,13 +1323,13 @@ A Project's Renown Cost = Probability x Scope x Opposition.
 
 **Cost can be lowered by influencing the probability, adjusting the scope, or nullifying the opposition.
 
-## XP, LEVEL UP, & SKILL POINTS (SP)
+## XP, Level Up, & Skill Points (SP)
 
-### GAINING XP
+### Gaining XP
 - PCs gain 1xp per every 1 $p of loot retrieved from dangerous locales, returned to civilization, & blown carousing.
 - **Carousing Cost**: 1 night & d10×100 $p in towns or d10×200 $p in cities. XP gained = cost.
 
-### XP REQUIREMENTS
+### XP Requirements
 - XP required to gain level 2 = 2k xp, & doubles for each additional level
 - Level 2: 2k xp
 - Level 3: 4k xp
@@ -1327,8 +1341,9 @@ A Project's Renown Cost = Probability x Scope x Opposition.
 - Level 9: 256k xp
 - Level 10: 512k xp
 
-### LEVELING UP
+### Leveling Up
 When a PC has accumulated enough xp to advance a level they achieve the following:
+
 - Increase attack Bonus according to your Class.
 - Gain Arts according to your Class (if any).
 - Gain New Foci @ levels 2, 5, 7, & 10.
@@ -1336,11 +1351,11 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 - PC Saves decrease by 1 (Saves = 16 - character Level - Best Relevant Attr).
 - Gain 3 SP to save or spend on improving Skills or Attr. Full & Partial Experts gain +1 SP to spend on a non-combat Skill.
 
-### SPENDING SKILL POINTS
+### Spending Skill Points
 - The cost to boost a Skill = the Skill's new value + 1.
 - Attribute Score boost cost 1SP for the 1st, 2SP for the 2nd… Max of 5 boosts.
 
-## DOWNTIME ACTIVITIES
+## Downtime Activities
 
 **Train a Skill**: Requires a skilled master. Skill+0 = 1 Month + 5k $p. Skill+1 = 6 Months + 50k $p. Skill+2 = 1 Year + 100k $p.
 
@@ -1354,7 +1369,7 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 
 **Other**: Investigate rumors, compete in a tourney, commit larceny, train an animal, pit fight, build bonds, work your trade…
 
-## QUICK-START CHARACTER GENERATION
+## Quick-start Character Generation
 
 1. Roll 3d6 six times. Assign them in order to Str, Dex, Con, Int, Wis, & Cha. You may choose one to change to 14.
 2. Choose a Background. Gain its Free Skill & choose 2 from the Available Skills. Choose 1 extra Skill to reflect your PC's past.
@@ -1363,7 +1378,7 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 5. Choose an Equipment Package. Record weapon & Armor details.
 6. Mages choose their Tradition & pick spells. Choose & record your Arts & Effort based on your Class, if applicable.
 
-### STEP #1 ROLL ATTRIBUTES
+### Step #1 Roll Attributes
 
 **ATTRIBUTES** (Attributes Score & Modifier: 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +2)
 
@@ -1379,7 +1394,7 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 
 **Charisma (Cha)**: Force of character, charming others, attracting attention, winning loyalty.
 
-### STEP #2 CHOOSE A BACKGROUNDS & SKILLS
+### Step #2 Choose a Backgrounds & Skills
 
 | # | BACKGROUND | FREE Skill | ADDITIONAL AVAILABLE SKILLS |
 |---|------------|------------|----------------------------|
@@ -1406,7 +1421,7 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 
 *PC's w/ a background directly related to the attempted task often succeed unless the task or situation is particularly difficult.
 
-### SKILLS
+### Skills
 
 Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci may raise Skills past Level Cap after character Gen.
 
@@ -1452,9 +1467,9 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **TRADE**: Buy & sell @ profit, appraise loot, deal w/ merchants, navigate the black-market, know contraband law...
 
-### STEP #3 CHOOSE A CLASS & TAKE ITS ABILITIES
+### Step #3 Choose a Class & Take Its Abilities
 
-#### WARRIOR
+**WARRIOR**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|---------|-----|--------------|
@@ -1471,7 +1486,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Abilities**: Killing Blow & Veteran's Luck.
 
-#### EXPERT
+**EXPERT**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|------|-----|------|
@@ -1488,7 +1503,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Abilities**: Masterful Expertise & Quick Learner.
 
-#### WARRIOR/EXPERT
+**WARRIOR/EXPERT**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|---------|-----|--------------|
@@ -1505,7 +1520,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Ability**: Quick Learner.
 
-#### MAGE
+**MAGE**:
 
 | LEVEL | HD | BAB | FOCI | ART | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|----------|-----|------|------------------|---------------|-----------|------------|
@@ -1522,7 +1537,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 *Class Ability: Arcane Tradition (see chosen Tradition for 1st Level Arts) & Cantrip.
 
-#### EXPERT/MAGE
+**EXPERT/MAGE**:
 
 | LEVEL | HD | BAB | FOCI | ARTS | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|------|-----|------------|------------------|---------------|-----------|------------|
@@ -1541,7 +1556,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Bards, Beastmasters, Clerics, & Warlocks gain 2 Arts at these levels instead of the typical 1, but do not learn or cast spells.
 
-#### MAGE/WARRIOR
+**MAGE/WARRIOR**:
 
 | LEVEL | HD | BAB | FOCI | ARTS | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|---------|-----|---------------|------------------|---------------|-----------|------------|
@@ -1560,7 +1575,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Bards, Beastmasters, Clerics, & Warlocks gain 2 Arts at these levels instead of the typical 1, but do not learn or cast spells.
 
-#### CLASS ABILITIES
+**CLASS ABILITIES**:
 
 **ARCANE TRADITION**: A Mage picks 1 magical tradition giving them a number of additional benefits & restrictions.
 
@@ -1574,26 +1589,26 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **QUICK LEARNER**: When you level up gain 1 extra Skill Point to spend on a non-combat Skill. This point may be saved for later.
 
-### STEP #4 CHOOSE FOCI
+### Step #4 Choose Foci
 
 - Some Foci raise Skill (-1 to -0, -0 to +1…) Can't raise a Skill past Level+1 @ character creation. Choose a different Skill (not Magic).
 - After Creation, instead of Foci raising Skills by tiers, Foci grant 3 Skill Points towards future purchase of the Skills next tier.
 - After Creation, Foci can raise Skills past PC Level Caps. Skill+4 Max. @ Skill+4 choose another Skill to apply Points towards.
 - A Warrior Foci is any the GM deems. An Expert Foci is any the GM deems.
 
-#### ALERT
+**ALERT**:
 
 **Level 1**: Gain Notice. Can't be surprised. Immune to Execution attacks. Roll w/ Advantage for Initiative.
 
 **Level 2**: You always act 1st in the combat Round unless another also has Alert.
 
-#### ARMORED MAGIC
+**ARMORED MAGIC**:
 
 **Level 1**: You can use spells or arts while wearing armor whose Encumbrance is ≤ 2. You can use a shield while casting, provided your other hand is empty for gesturing.
 
 **Level 2**: You can cast spells while wearing armor of any Encumbrance. You can cast w/ both hands full, but not bound.
 
-#### ARMSMASTER
+**ARMSMASTER**:
 
 (Not applicable to unarmed or non-thrown weapons. Doesn't stack w/ other Foci that add a Skills level to damage or Shock.)
 
@@ -1601,7 +1616,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Level 2**: Shock from your melee attacks always treats the target as AC 10. +1 bonus to hit w/ all thrown or melee attacks.
 
-#### ARTISAN
+**ARTISAN**:
 
 Create Mods even if you are not an Expert.
 
@@ -1609,19 +1624,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1st Mod added to item requires no Maintenance & ½ the typical silver cost (this benefit stacks w/ masterwork 1st Mod benefit). You auto succeed to build masterwork gear, & 1/month you can reduce a created Mod's salvage cost by 1 further unit (min of 0).
 
-#### ASSASSIN
+**ASSASSIN**:
 
 **Level 1**: Gain Sneak. Conceal an object no larger than a knife from anything less than a strip search. Draw this object as an On Turn Action, & your point-blank thrown or melee attacks made during a surprise Round w/ it can't miss.
 
 **Level 2**: You can take a Move Action the same Round you make an Execution attack. You may split the Movement when making an Execution attack to before & after the attack. This movement is too quick to alert a victim or be hindered by guards.
 
-#### AUTHORITY
+**AUTHORITY**:
 
 **Level 1**: Gain Lead. 1/day make a request of an NPC who is not openly hostile to you, rolling a Cha/Lead Skill check @ a DC = to the NPC's Morale score. On success they will comply, provided the request is not very harmful or highly uncharacteristic.
 
 **Level 2**: Any NPC being directly led by you gains a Morale & hit roll bonus = to your Lead Skill & a +1 bonus on all Skill checks. Your followers & henchmen will not act against your interests unless under extreme pressure.
 
-#### BERSERKER (CUPOFCOFFE HB)
+**BERSERKER (CUPOFCOFFE HB)**:
 
 (Only Warriors or Partial Warriors can take this Focus.)
 
@@ -1629,25 +1644,25 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: When dropped to 0 HP for the 1st time in the fury, you may continue to fight for a # of Rounds = to either Stab or Punch before falling Mortally Wounded. Additional damage taken during this time (shy of catastrophic) can't stop or kill you. If healed during this time, you stabilize, but the ability's benefits end.
 
-#### CLOSE COMBATANT
+**CLOSE COMBATANT**:
 
 **Level 1**: Gain any combat Skill. You can use knife-sized thrown weapons in melee w/o suffering penalties for the proximity of melee attackers. You ignore Shock damage from melee assailants, even if you're unarmored @ the time (invoking this benefit disrupts any spellcasting you might do that Round due to the need for violently active evasion). (Still susceptible to Shock from Swarm attacks)
 
 **Level 2**: The Shock damage from your melee attacks treats all targets as if they were AC 10. The Fighting withdrawal combat Act is treated as an On Turn Action for you & can be performed freely.
 
-#### CONNECTED
+**CONNECTED**:
 
 **Level 1**: Gain Connect. If you've spent ≥ a week in a not-entirely-hostile location, you'll have built a web of contacts willing to do favors for you that are ≤ mildly illegal. You can call on 1 favor per game day & the GM decides how far they'll go for you.
 
 **Level 2**: 1/session, if not entirely implausible, you meet someone you know who is willing to do modest favors for you. You can decide when & where to meet this person, but the GM decides who they are & what they can do for you.
 
-#### CULTURED
+**CULTURED**:
 
 **Level 1**: Gain Connect. You fluently speak all the common languages of your native region & convey basic information in uncommon ones. You can learn a new language w/ a wk's practice w/ a native speaker. 1/day your polished ways automatically gain a minor favor from a non-hostile NPC, so long as it would not cost them significant expense or risk.
 
 **Level 2**: 1/session, reroll a failed social Skill check.
 
-#### DANGER SENSE
+**DANGER SENSE**:
 
 (Experts/Partial Experts only. Only 1 foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1655,7 +1670,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 to your Wisdom modifier (+2 Max). 1/day, as an Instant action, when faced w/danger, you receive an intuitive sense of the safest course of action to minimize losses for yourself & your allies, as determined by the GM.
 
-#### DEADEYE
+**DEADEYE**:
 
 (Applies to all ranged & thrown weapons. Does not stack w/ Armsmaster).
 
@@ -1663,31 +1678,31 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You can reload weapons w/ the Slow Reload trait as an On Turn Action. You can use ranged weapons in melee w/o penalty. 1/scene, as an On Turn Action when shooting an inanimate target, you auto hit unless you roll a 2 on your Skill check or the shot is impossible.
 
-#### DEALMAKER
+**DEALMAKER**:
 
 **Level 1**: Gain Trade. W/ a ½hr of searching you can find a buyer or seller for any legal or illegal good or service available in the community. Finding rare services (king-slaying assassins, precious artifacts…) may require an adventure.
 
 **Level 2**: 1/session, target a sentient who is not trying to kill you or your allies @ that moment. Make a request of it that it can comprehend. If plausible for it to agree to such terms it will do so for a price. The price for major favors may be dear.
 
-#### DEVELOPED ATTRIBUTE
+**DEVELOPED ATTRIBUTE**:
 
 (Can't be taken by Mages/Partial Mages)
 
 **Level 1**: +1 to a chosen Attribute Mod (the Score does not change). The mod may increase again if later advancement improves the Score enough (max Mod bonus of +2). You can choose this Focus more than once to improve different Attributes. (HB)
 
-#### DIE HARD
+**DIE HARD**:
 
 **Level 1**: Gain +2 max HP per level. This bonus applies retroactively if you take this Focus after 1st level. You automatically stabilize if Mortally Wounded, provided your body is not destroyed.
 
 **Level 2**: The 1st time each day that you are reduced to 0HP by an injury, you instead survive w/ 1 HP remaining. This ability can't save you from large-scale, instantly-lethal trauma.
 
-#### DIPLOMATIC GRACE
+**DIPLOMATIC GRACE**:
 
 **Level 1**: Gain Convince. You speak all languages common to your region & can learn new ones to a workable level in a week or to fluency in a month. Reroll 1's on Skill check dice related to negotiation or diplomacy.
 
 **Level 2**: 1/day silently consecrate a bargain. The deal's terms must be specific & time-limited, not open-ended. Breaking the deal requires a Mental Save unless it risks the target's life or something they value equally. Most NPCs won't attempt to break it.
 
-#### DUAL WIELDING (HB)
+**DUAL WIELDING (HB)**:
 
 **Level 1**: Gain Stab. Two one-handed weapons can be carried Readied w/o costing Encumbrance. While dual-wielding, your AC increases by +1. 1/scene, you can use the Dual Feint Action (see below).
 
@@ -1695,7 +1710,7 @@ Create Mods even if you are not an Expert.
 
 **Dual Feint**: Instant Action. When you miss an attack while dual-wielding, make another attack roll w/ either weapon w/ +2 to hit.
 
-#### FOLIE À DEUX
+**FOLIE À DEUX**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1703,19 +1718,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Charisma modifier (+2 Max). 1/day, you can deliver an outright lie; unless it is physically impossible or emotionally unbearable, the target must make a Mental save w/ a penalty = to your Convince skill or believe it for 1d4 rounds.
 
-#### GIFTED CHIRURGEON
+**GIFTED CHIRURGEON**:
 
 **Level 1**: Gain Heal. 1/Round, as an On Turn Action, you may attempt to stabilize 1 Mortally Wounded adjacent target. When rolling Heal checks, roll 3d6 & drop the lowest die. You heal x2 as much HP as typical when healing after a battle.
 
 **Level 2**: Your healing counts as magical. As a Main Action you can heal 1d6+Heal Skill to an adjacent ally. Each such application adds 1 Strain to the target & can't be used on targets already @ max Strain.
 
-#### HENCHKEEPER
+**HENCHKEEPER**:
 
 **Level 1**: Gain Lead. You may recruit Henchmen (HM), NPCs who require no compensation, roll Morale only if clearly betrayed, & will not be missed. HM will fight only to save their life, but will enter dungeons & risk danger for you. HM Stats = Peaceful Humans. Max # of HM = 1/3 your level ↑. You can dismiss & rehire HM amicably @ any time. More HM recruits are found w/in 24hrs of arriving in a community. You may have Hirelings in addition to your HM, but they behave normally.
 
 **Level 2**: Your HM will fight for you against anything but clearly hopeless odds. HM stats = Veteran Soldiers. Skilled NPCs may become HM if you've done a service to earn their fierce loyalty.
 
-#### IMPERVIOUS DEFENSE
+**IMPERVIOUS DEFENSE**:
 
 (This Foci's benefits don't stack w/ armor, but Dex & shield mods apply.)
 
@@ -1723,13 +1738,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/day as an Instant Action shrug off a single attack inflicted by a foe. Harm that couldn't be forfended by strong armor can't be resisted this way.
 
-#### IMPOSTOR
+**IMPOSTOR**:
 
 **Level 1**: Gain Perform or Sneak. 1/scene, reroll attempt to maintain an imposture. You may make & flawlessly maintain 1 false identity of no great import. Only irrefutable proof can connect you w/ it. W/ a week's work you can alter this identity to a new one.
 
 **Level 2**: You can alter your attire to allow you to swap between 3 chosen appearances as a Main Action. You can establish 2 additional false identities in each significant community you spend ≥ a day in.
 
-#### LUCKY
+**LUCKY**:
 
 (Restricted to PCs w/ @ least 1 attribute mod of -1 or less).
 
@@ -1737,7 +1752,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session, in a situation of need or peril roll 1d6. If ≥ 2: fortune provides a solution, escape, advantage, or victory. If =1: the situation immediately grows much worse (GM discretion).
 
-#### MASTER TRACKER
+**MASTER TRACKER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1745,7 +1760,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Wisdom modifier (+2 Max). You can recognize the tracks of specific individuals if you have met them before. 1/day, by examining a mostly undisturbed scene where an event occurred w/in the past week, you can reconstruct the general physical actions that took place there.
 
-#### NIGHT WALKER
+**NIGHT WALKER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1753,13 +1768,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Dexterity modifier (+2 Max). Unless an area is lit by torchlight or brighter radiance, you are effectively invisible in it until you do something to draw attention.
 
-#### NULLIFIER
+**NULLIFIER**:
 
 **Level 1**: You & all allies w/in 20' gain a +2 bonus to Saves vs magical effects. As an On Turn Action you can sense the presence of magic w/in 20' of you, though not its details or exact source. 1/day your 1st failed Save vs a magic effect is changed to a success.
 
 **Level 2**: 1/day, as an Instant Action, you are unaffected by an unwanted magic effect or ability. Immunity to a persistent effect lasts for the rest of the scene.
 
-#### PACK BEAST
+**PACK BEAST**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1767,7 +1782,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Strength modifier (+2 Max). 1/scene, as an On Turn action, you can lift & move an object weighing up to 1k lbs, provided you set it down or drop it by the end of your turn.
 
-#### POLYMATH
+**POLYMATH**:
 
 (Experts/Partial Experts only. Phantom Skill levels don't stack w/ normal Skill levels or give Skill purchase discounts.)
 
@@ -1775,13 +1790,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You treat non-combat Skills as if they were @ least level-1 for Skill checks.
 
-#### POISONER
+**POISONER**:
 
 **Level 1**: Gain Alchemy. Reroll failed Saves vs poison. Create a # of toxins = to your level. 1 dose = 1 hr to brew. Blade venoms require Main Action to apply & last 10 min or until damage is inflicted. DC10 to detect your poison in food, or DC12 if the target is unwary. 1 dose can poison ≤ 6 diners. Damage = 2d6 + your level (Phys Save for ½). Toxins are incapacitating if you choose, & if so 0HP = incapacitated 1hr.
 
 **Level 2**: Gain immunity to poison, & a universal antidote that can be applied as a Main Action. Attempts to detect or Save vs your poisons suffer a penalty = to your Alchemy Skill. Your ingested poisons count as an Execution attack vs unsuspecting targets, w/ Alchemy used for the Phys Save penalty & 1d6 damage x Skill level on a Success (can be non-lethal @ your discretion).
 
-#### PROVIDENT CRAFTER
+**PROVIDENT CRAFTER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1789,19 +1804,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain +1 bonus to your Dexterity modifier (+2 Max). 1/day, as an Instant action, you may produce a Stowed normal item of 2 encumbrance or less, provided you could have reasonably bought or crafted it w/in the past week. Pay its purchase or crafting cost & add it to your inventory. Provisions can't be created this way, nor can the same item be produced > 1/week.
 
-#### RIDER
+**RIDER**:
 
 **Level 1**: Gain Ride. Your steeds have Morale 12, use your AC if it's > theirs, & can travel 50% further per day than typical. You can intuitively communicate w/ riding beasts, gaining as much information from it as its intellect can convey.
 
 **Level 2**: 1/scene, negate a successful attack against your steed as an Instant Action. 1/scene, reroll any failed Ride Skill check. You can telepathically send & receive simple warnings, thoughts, & commands to & from your steed so long as it's w/in 200'. You can bond w/ 1 steed @ a time, which requires 1hr.
 
-#### SHOCKING ASSAULT
+**SHOCKING ASSAULT**:
 
 **Level 1**: Gain Punch or Stab. The Shock damage of your weapon treats all targets as if they were AC 10, assuming your foe is not immune to your weapon or to Shock.
 
 **Level 2**: Gain a +2 bonus to the Shock damage of all melee weapons & unarmed attacks that do Shock. As usual, regular hits never do less damage than this Shock would do on a miss, if Shock would apply.
 
-#### SNIPER'S EYE
+**SNIPER'S EYE**:
 
 (Only applies when making an Execution attack w/ a ranged weapon).
 
@@ -1809,7 +1824,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You don't miss ranged Execution attacks. A target hit takes a -4 penalty on their Phys Save. Even if the save is successful, the target takes x2 normal damage inflicted by the attack.
 
-#### SPECIAL ORIGINS (CUPOFCOFFEE HB & HB)
+**SPECIAL ORIGINS (CUPOFCOFFEE HB & HB)**:
 
 (A PC can take an Special Origin focus at level 1 in addition to their usual level 1 Foci. A PC who takes this option doesn't get their usual level 2 Focus.)
 
@@ -1819,7 +1834,7 @@ Create Mods even if you are not an Expert.
 
 **Halfling**: +1 to Dex or Cha mod & -1 to Str or Int. When you hide from creatures not already aware of your presence, you are treated as though invisible provided you remain motionless. +1 AC vs creatures larger than humans. You are too light to set off traps or hazards triggered by weight.
 
-#### SPECIALIST
+**SPECIALIST**:
 
 (You may take this Focus more than once for different Skills.)
 
@@ -1827,7 +1842,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Roll 4d6 & drop the 2 lowest dice for all Skill checks in this Skill.
 
-#### SPIRIT FAMILIAR
+**SPIRIT FAMILIAR**:
 
 **Level 1**: Choose your familiar's form (≥ a cat, ≤ a human). Has traits & abilities as though created by Summon Familiar (pg 25). Main Action to summon or dismiss (appears w/in melee range of its owner). Can't carry objects w/ it during its vanishment. Requires no rest or provisions. If killed vanishes & can be re-summoned after 24 hrs. 1/day, it can refresh 1 point of Committed Effort for you.
 
@@ -1839,37 +1854,37 @@ Create Mods even if you are not an Expert.
 - Gains the ability to attack w/ a hit bonus = to 1/2 your level ↑, doing 1d8 damage on a hit w/ no Shock.
 - Gains another shape of your choice which it can adopt or discard as an On Turn Action.
 
-#### STEADFAST (CUPOFCOFFEE HB)
+**STEADFAST (CUPOFCOFFEE HB)**:
 
 **Level 1**: When you suffer an effect that can be Saved against for full or ½ damage, you take ½ damage instead of full & 0 instead of ½.
 
 **Level 2**: 1/scene you can choose to make a 2nd attempt to succeed w/ a Physical, Evasion or Mental Save when trying to save against any effect. 1/wk, as an Instant Action, you can decide to end a non-permanent condition affecting you.
 
-#### TRAPMASTER
+**TRAPMASTER**:
 
 **Level 1**: Gain Notice. 1/scene, reroll a failed Save or check related to traps. Given 5 min you can trap a portal, container, passageway, or other relatively narrow space w/ foot snares, caltrops, toxic needles, or other hazards. Non-lethal traps cause the 1st victim that triggers it to lose a Round of Actions while dangerous ones inflict 1d6 damage + x2 the character's level (Save for ½). Only 1 such improvised trap can be maintained @ a time. More fearsome traps may be laid w/ congenial circumstances & the GM's permission.
 
 **Level 2**: 1/scene, your efforts count as a Dispel magic spell against the trap or hazard, cast as if a Mage of x2 your level, w/ any relevant Skill check being Int/Notice or Dex/Notice. This ability can be used against any stationary magical effect that's susceptible to being dispelled by Dispel magic.
 
-#### UNARMED COMBATANT
+**UNARMED COMBATANT**:
 
 **Level 1**: Gain Punch. Your unarmed attacks prevent 2 handed ranged weapons from firing in combat (requires 1 freehand to do so). Punch-0 attacks: 1d6 dam, Punch+1: 1d8, Punch+2: 1d10, Punch+3: 1d12, & Punch+4: 1d12+1. At Punch+1 gain Shock = Punch/AC15.
 
 **Level 2**: Even on a miss your Punch attacks do an unmodified 1d6 damage + any Shock the blow would inflict on the target.
 
-#### VALIANT DEFENDER
+**VALIANT DEFENDER**:
 
 **Level 1**: Gain Stab or Punch. Gain +2 on all Skill checks for the Screen Ally combat Action. You can screen against +1 attacker per Round than your Skill would typically allow. 1/Round you can Screen an Ally against an intangible magic or AoE attack. This requires the usual opposing Skill check w/ the assailant using their Magic Skill.
 
 **Level 2**: The 1st Screen Ally check you make in a Round is always successful. Gain +2 AC while screening someone. You can screen against foes as large as oxen.
 
-#### WAR CASTER (ADAPTED FROM SWN DELUXE EDITION)
+**WAR CASTER (ADAPTED FROM SWN DELUXE EDITION)**:
 
 **Level 1**: When attacked while casting a spell, you may make a Phys Save at a penalty = to damage taken to avoid losing it. Even if your spell is interrupted, you do not lose the spell slot; only your Act is wasted though you can't cast another spell the next Round.
 
 **Level 2**: Whenever you would lose a spell to an interruption, accept damage = to x2 the spell's level to continue casting it. If this damage would reduce you to 0 HP, you complete the casting before passing out, stable but at 0 HP.
 
-#### WALK LIKE WIND
+**WALK LIKE WIND**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1877,7 +1892,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Dexterity modifier (+2 Max). You can leap up to 20' horizontally or 10' vertically as a Move action. 1/scene, as an On Turn action, you gain a bonus Move action.
 
-#### WELL MET
+**WELL MET**:
 
 (Works x1 per target)
 
@@ -1885,13 +1900,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session when a reaction roll is made cause the subject to be as friendly to you & your party as plausible.
 
-#### WHIRLWIND ASSAULT
+**WHIRLWIND ASSAULT**:
 
 **Level 1**: Gain Stab. 1/scene (On Turn Action) apply your Shock damage to all foes w/in range susceptible to your Shock.
 
 **Level 2**: The 1st time you kill someone in a Round w/ a normal attack, instantly gain a 2nd attack on a target w/in range.
 
-#### WILDTONGUE
+**WILDTONGUE**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -1899,15 +1914,15 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Charisma modifier (+2 Max). 1/day, you can command a visible animal 1/scene, making it obey even complex orders that would usually be beyond its understanding, as long as they don't seem suicidal or overly dangerous to it. Magical beasts can attempt a Mental Save to resist your command.
 
-#### WRESTLER (CUPOFCOFFEE HB)
+**WRESTLER (CUPOFCOFFEE HB)**:
 
 **Level 1**: Gain Exert or Punch. Roll 3d6 & drop the lowest die for Skill checks related to shoving & grappling. You ignore the size penalty for grappling & shoving significantly larger creatures, & may move grappled targets smaller than you w/o additional Actions or Checks.
 
 **Level 2**: When shoving a creature, you can choose to move them ≤ 20' away & have them fall prone. As a Move Action, whenever you successfully attack a creature w/ a punch attack, you can force them to go prone. You ignore the size penalty for grappling & shoving only barely plausible large creatures.
 
-### STEP #5 CHOOSE AN EQUIPMENT PACK
+### Step #5 Choose an Equipment Pack
 
-#### ADVENTURING PEASANT
+**ADVENTURING PEASANT**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1920,7 +1935,7 @@ Create Mods even if you are not an Expert.
 | Mule & small cart | - |
 | Tinder box & 3 torches | 1 |
 
-#### ARMORED WARRIOR
+**ARMORED WARRIOR**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1931,7 +1946,7 @@ Create Mods even if you are not an Expert.
 | Backpack | 1 |
 | Tinder box & 3 torches | 1 |
 
-#### GENTRY WAYFARER
+**GENTRY WAYFARER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1945,7 +1960,7 @@ Create Mods even if you are not an Expert.
 | Writing kit & 20 sheets of paper | 1 |
 | 20 silver coins | - |
 
-#### RANGER OR ARCHER
+**RANGER OR ARCHER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1960,7 +1975,7 @@ Create Mods even if you are not an Expert.
 | Tinder box & 3 torches | 1 |
 | 20 silver pieces | - |
 
-#### ROGUISH WANDERER
+**ROGUISH WANDERER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1974,7 +1989,7 @@ Create Mods even if you are not an Expert.
 | Tinder box & 3 torches | 1 |
 | Grappling hook & 50' of rope | 2 total |
 
-#### MAGE, HEALER, OR SCHOLAR
+**MAGE, HEALER, OR SCHOLAR**:
 
 | ITEM | ENC |
 |------|-----|
@@ -1988,11 +2003,11 @@ Create Mods even if you are not an Expert.
 | Healer's pouch | 1 |
 | 80 silver pieces | - |
 
-### STEP #6 MAGES CHOOSE THEIR TRADITION & PICK SPELLS
+### Step #6 Mages Choose Their Tradition & Pick Spells
 
-## ARCANE TRADITION OF THE HIGH MAGE
+## Arcane Tradition of the High Mage
 
-### FULL HIGH MAGE
+### Full High Mage
 
 **Bonus Skill**: Magic level-0
 
@@ -2004,7 +2019,7 @@ Create Mods even if you are not an Expert.
 
 **Spell List**: High Mage
 
-### HALF HIGH MAGE
+### Half High Mage
 
 **Bonus Skill**: Magic level-0
 
@@ -2016,7 +2031,7 @@ Create Mods even if you are not an Expert.
 
 **Spell Lists**: High Mage
 
-### ARTS OF THE HIGH MAGES
+### Arts of the High Mages
 
 Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turned off." Day: Returned after 1 Night's Rest.
 
@@ -2050,7 +2065,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **WIZARD'S GRANDEUR**: Effort: Indefinite. On Turn Action. While Commited you can't be made unkempt or unclean. Noxious substances slide off & you remain comfortable enough to receive the benefits of a Night's rest regardless of climate or shelter.
 
-### SPELLS OF THE HIGH MAGES
+### Spells of the High Mages
 
 **SEE MAGIC LEVEL 1**: Lasts 15 mins x Caster level. Caster can see active magic as patterns of light, identify magic items' purpose or power, see mages w/ prep'd spells (which spells prep'd are unknown), & see in darkness.
 
@@ -2154,9 +2169,9 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **DIMENSION PORTAL LEVEL 5**: Lasts 1 min x Caster level or until the caster passes through. Requires 1 hr. Range: 100 mi x Caster level. Caster opens a one-way portal large enough for a wagon from their location to a preset point. Atmosphere, etc can't pass through, only living creatures & what they ride or carry. 1 location may be prep'd for this spell @ a time. (10% chance of appearing 1d100 mi in a random direction).
 
-## ARCANE TRADITION OF THE DRUID
+## Arcane Tradition of the Druid
 
-### FULL DRUID
+### Full Druid
 
 **Bonus Skill**: Magic level-0
 
@@ -2168,7 +2183,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **Max Effort**: Int or Wis modifier + Survive Skill + 1
 
-### HALF DRUID
+### Half Druid
 
 **Bonus Skill**: Magic level-0
 
@@ -2180,11 +2195,11 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **Max Effort**: Int or Wis modifier + Survive Skill
 
-### DRUIDS & BEASTS
+### Druids & Beasts
 
 Many Druid arts & spells refer to "beasts" as being valid targets. For the purposes of these abilities, a "beast" is any animal, magical beast, or monstrous plant creature that has < human intelligence. Druids can target any such creatures, but if they have more hit dice or levels than the Druid, they gain a +4 bonus on any saves a power may grant.
 
-### ARTS OF THE DRUID
+### Arts of the Druid
 
 Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turned off." Day: Returned after 1 Night's Rest.
 
@@ -2214,7 +2229,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **Wild Endurance**: Effort: Day. Main Action. Until dawn, you are immune to natural temperature extremes & can derive sustenance & sufficient water from any plant matter.
 
-### DRUID SPELLS
+### Druid Spells
 
 **DELUDE BEAST LEVEL 1**: Targets up to 1d6 beasts + 1 per caster level. Range: 100'. Duration: While the caster is present & 1 hour after departed. Beasts already in combat or in fear for their lives are unaffected. Mental Save. Failure = their senses are under the control of the caster, who can make them see, smell, or hear what they wish. If a delusion would put them in physical danger the spell breaks. The caster cannot change the illusions once they've left the target's presence.
 
@@ -2248,9 +2263,9 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **REND STRUCTURE LEVEL 5**: Range 200'. Affects only non magical structures. Plantlife erupts from the surface of the structure, their roots ripping it apart w/in 6 secs. The spell can affect only 1 structure or wall segment at a time & destroy no more than a 100' cube of it. The caster has very fine control of the demolition & can destroy only selective smaller parts of a structure, or prevent the demolition from harming those in or around the building. If not so careful, anyone w/in the structure takes 10d6 damage (Evasion save for ½).
 
-## ARCANE TRADITION OF THE ELEMENTALIST
+## Arcane Tradition of the Elementalist
 
-### FULL ELEMENTALIST
+### Full Elementalist
 
 **Bonus Skill**: Magic level-0
 
@@ -2262,7 +2277,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **Max Effort**: Int or Cha modifier + Magic Skill + 1
 
-### HALF ELEMENTALIST
+### Half Elementalist
 
 **Bonus Skill**: Magic level-0
 
@@ -2274,7 +2289,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **Max Effort**: Int or Cha modifier + Magic Skill
 
-### ARTS OF THE ELEMENTALISTS
+### Arts of the Elementalists
 
 Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turned off." Day: Returned after 1 Night's Rest.
 
@@ -2300,7 +2315,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **THERMAL SHIELD**: Effort: Scene. Instant Action. Negate a single instance of fire or frost damage to 1 visible ally or object.
 
-### ELEMENTALIST SPELLS
+### Elementalist Spells
 
 **AQUEOUS HARMONY LEVEL 1**: Lasts 1hr x Caster level, or so long as a subject is still largely submerged, or until dispelled. Caster & ≤ 12 allies gain water-breathing, the ability to survive the depths, & can see clearly through water. Targets may move through water @ their usual move rate, their attacks & projectile weapons are not hindered by water, & their possessions remain dry & undamaged.
 
@@ -2339,9 +2354,9 @@ In all cases, they need not breathe & gain immunity to poisons & diseases not al
 
 **EARTHQUAKE LEVEL 5**: Requires a visible point & 5 min for effects to fully manifest. AoE: radius ≤ 500'. Caster calls a deep tremor which can destroy any structures, tunnels, or caves w/in the AoE unless such structures are magically reinforced. The effects are negated if dispelled w/in 1 min of its casting; after that it's too late to stop.
 
-## ARCANE TRADITION OF THE NECROMANCER
+## Arcane Tradition of the Necromancer
 
-### FULL NECROMANCER
+### Full Necromancer
 
 **Bonus Skill**: Magic level-0
 
@@ -2353,7 +2368,7 @@ In all cases, they need not breathe & gain immunity to poisons & diseases not al
 
 **Spell Lists**: High Mage, Necromancer
 
-### HALF NECROMANCER
+### Half Necromancer
 
 **Bonus Skill**: Magic Level-0
 
@@ -2365,7 +2380,7 @@ In all cases, they need not breathe & gain immunity to poisons & diseases not al
 
 **Spell Lists**: High Mage, Necromancer
 
-### ARTS OF THE NECROMANCERS
+### Arts of the Necromancers
 
 Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turned off." Day: Returned after 1 Night's Rest.
 
@@ -2393,7 +2408,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **UNLIVING PERSISTENCE**: Effort: Day. On Turn Action. Automatically stabilize when Mortally Wounded. You may use this ability to benefit others if able to touch them. This ability can't save a subject that has experienced an extremely final death.
 
-### NECROMANCER SPELLS
+### Necromancer Spells
 
 **COMMAND THE DEAD LEVEL 1**: Lasts until dropped. Range: 100'. Requires a visible target. Caster exerts will over a # of HD worth of undead = to x2 their level. Undead get a Mental Save to resist w/ penalty = to caster's Magic Skill. Creatures partially affected by the spell due to excess HD are dazed for 1 Round. Thosefully affected become suicidally loyal. Caster is limited to ≤ x2 their level of HD bound @ a time.
 
@@ -2427,7 +2442,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **EVERLASTING LEVEL 5**: Lasts 5 Rounds. Effects allies w/in 50'. Cast as an Instant Action. No affected ally can be reduced below 1 HP. At the end of the spell the caster is reduced to 1 HP. Creatures are limited to these benefits 1/day.
 
-## ARCANE TRADITION OF THE BARD (HALF CLASS)
+## Arcane Tradition of the Bard (Half Class)
 
 - The Bard exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert. (HB)
 - Bards gain Perform as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
@@ -2438,7 +2453,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - Bards are not restricted from taking foci or abilities that would typically be withheld from Mages/Partial Mages.
 - Bards are unique in that they are allowed to craft Works & Mods as though they were Experts/Partial Experts.
 
-### ARTS OF THE BARD
+### Arts of the Bard
 
 Bard Effort is calculated w/ Perform. Max Effort = Perform + Cha modifiers (min of 1).
 
@@ -2470,7 +2485,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **SWIFT MISDIRECTION**: Effort: Scene. Main Action. Target 1 intelligent creature w/in earshot. Tell them something in ≤ 1 sentence. Unless what you say is impossible or emotionally unbearable, they must make a Mental Save or believe it for 1 Round. After that, they can judge your words w/ their normal reason. This Art can affect a creature only 1/Scene.
 
-## ARCANE TRADITION OF THE CLERIC (HALF CLASS)
+## Arcane Tradition of the Cleric (Half Class)
 
 - The Cleric exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Clerics gain Pray as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
@@ -2479,7 +2494,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - Cleric Arts are not hindered by the wearing of armor.
 - Cleric Arts require no gestures or free hand to use, though usually a prayer must be vocalized.
 
-### ARTS OF THE CLERIC
+### Arts of the Cleric
 
 Cleric Effort is calculated w/ Pray. Max Effort = Pray + Wis or Cha modifiers (min of 1).
 
@@ -2511,7 +2526,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **WRATH OF THE MOST HIGH**: Effort: Scene. Main Action. Requires a visible target. The 1st time the target takes damage before the end of the next Round, it suffers automatic additional damage = to 1d8 + Caster level.
 
-## ARCANE TRADITION OF THE MONK (HALF CLASS)
+## Arcane Tradition of the Monk (Half Class)
 
 - The Monk exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - All Monks gain a non-combat bonus skill appropriate to their order, acquiring it at level-0, or level-1 if they already have it at level-0.
@@ -2519,7 +2534,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - Monks can't cast spells, but gain x2 as many Arts as is typical for a Partial Mage, earning 2 Arts at levels 3, 6, & 9.
 - Monk Arts cannot be used while wearing armor or using shields.
 
-### ARTS OF THE MONK
+### Arts of the Monk
 
 Monk Effort is calculated w/ their chosen non-combat skill. Max Effort = Chosen skill + best Attribute modifier (min of 1).
 
@@ -2560,7 +2575,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **UNOBTRUSIVE STEP**: You not only possess a considerable skill for disguise & obfuscation, you can become extremely hard to detect. Once per scene, you may Commit Effort for the day as an Instant action to reroll a failed Sneak skill check or skill check related to impersonating someone else.
 
-## ARCANE TRADITION OF THE BEASTMASTER (HALF CLASS)
+## Arcane Tradition of the Beastmaster (Half Class)
 
 - The Beastmaster exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Beastmasters gain Survive as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
@@ -2568,7 +2583,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - Beastmasters can't cast spells, but gain x2 as many Arts as is typical for a Partial Mage, earning 2 Arts at levels 3, 6, & 9.
 - Beastmaster Arts are not hindered by the wearing of armor.
 
-### RULES CONCERNING ANIMAL COMPANIONS
+### Rules Concerning Animal Companions
 
 - A Beastmaster is limited to 1 companion animal at a time. An animal can be left in any terrain suitable for its survival. Unless killed before the Beastmaster's return, the creature can be expected to be found in the same vicinity later. Released creatures are usually friendly to the Beastmaster still, unless mistreated or exceptionally savage.
 - A companion animal functions as an independent allied creature. It will obey commands from the Beastmaster that aren't contrary to its nature or beyond its intellect, & will fight, move, check Instinct & Morale, & act independently in combat.
@@ -2577,7 +2592,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - A companion animal can't have human levels of intelligence.
 - A companion animal must be given a name by the Beastmaster.
 
-### ARTS OF THE BEASTMASTER
+### Arts of the Beastmaster
 
 Beastmaster Effort is calculated w/ Survive. Max Effort = Survive + Wis or Cha modifier (min of 1).
 
@@ -2607,7 +2622,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **TONGUE OF THE BEASTS**: Effort: Indefinite. On Turn Action. While Commited you can speak w/ animals as if possessing human intellect, though their interests, knowledge, & desires do not change.
 
-## ARCANE TRADITION OF THE WARLOCK (HALF CLASS)
+## Arcane Tradition of the Warlock (Half Class)
 
 - The Warlock exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Warlocks gain Magic as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
@@ -2616,7 +2631,7 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 - Warlock Arts are not hindered by the wearing of armor.
 - Foci that normally apply to mundane weapons such as Armsmaster or Deadeye also benefit their relevant melee or ranged attacks. For these Foci, read "Magic" in place of "Shoot" or "Stab" when gaining their benefits, including the granted Skill & the stacking damage bonus that the 1st level of the Focus may grant.
 
-### ARTS OF THE WARLOCK
+### Arts of the Warlock
 
 Max Effort: Magic+ Int or Cha modifier (min of 1).
 
@@ -2660,37 +2675,41 @@ Scene: Returned after 1 Scene. Indefinite: Returned once Art is instantly "turne
 
 **WEEPING WOUNDS**: Effort: Scene. Instant Action. Limit: 1/Round. Requires LoS. When a foe takes damage they make a Phys Save or suffer 1d6 damage/Round for a # of Rounds = to your level. They can't heal or regenerate HP during this effect. This Art does not stack.
 
-## CHARACTER TAGS
+## Tags
+
+### Character Tags
 
 (Ambitions, Powers their situation lends, & Dreads likely to befall them, or upset their schemes..)
 
 Baneful Success¹⁻², Betting It All³⁻⁴, Bitter Grudge⁵⁻⁶, Black Sheep⁷⁻⁸, Blithe Idealist⁹⁻¹⁰, Burnt Out¹¹⁻¹², Chance @ Glory¹³⁻¹⁴, Chronic Illness¹⁵⁻¹⁶, Concealed Sin¹⁷⁻¹⁸, Cultural Outsider¹⁹⁻²⁰, Cursed Misfortune²¹⁻²², Delusional Self-Image²³⁻²⁴, Doomed Love²⁵⁻²⁶, Doomsday Weapon²⁷⁻²⁸, Double Life²⁹⁻³⁰, Double Loyalties³¹⁻³², Down In The World³³⁻³⁴, Earnest Idiot³⁵⁻³⁶, Family Alienation³⁷⁻³⁸, Family Chains³⁹⁻⁴⁰, Friend Turned Foe⁴¹⁻⁴², Grand Plan⁴³⁻⁴⁴, Great Disappointment⁴⁵⁻⁴⁶, Great Expectations⁴⁷⁻⁴⁸, Hidden Origins⁴⁹⁻⁵⁰, Impending Treachery⁵¹⁻⁵², In Over Their Head⁵³⁻⁵⁴, Inherited Duty⁵⁵⁻⁵⁶, Irrational Hatred⁵⁷⁻⁵⁸, Last Survivor⁵⁹⁻⁶⁰, Lives for Today⁶¹⁻⁶², Load-Bearing Relationship⁶³⁻⁶⁴, Lost Cause⁶⁵⁻⁶⁶, Lovesick Fool⁶⁷⁻⁶⁸, Magical Gift⁶⁹⁻⁷⁰, Marked for Success⁷¹⁻⁷², Misplaced Trust⁷³⁻⁷⁴, Natural Leader⁷⁵⁻⁷⁶, Persecuting Foe⁷⁷⁻⁷⁸, Ruined Plan⁷⁹⁻⁸⁰, Ruinous Vice⁸¹⁻⁸², Secret Cravings⁸³⁻⁸⁴, Secret Sectarian⁸⁵⁻⁸⁶, Stolen Reputation⁸⁷⁻⁸⁸, Ticking Bomb⁸⁹⁻⁹⁰, Troublesome Friend⁹¹⁻⁹², Unexpected Talent⁹³⁻⁹⁴, Unreasonably Lucky⁹⁵⁻⁹⁶, Up From the Gutter⁹⁷⁻⁹⁸, Veiled Backers⁹⁹⁻¹⁰⁰
 
-## COMMUNITY TAGS
+### Community Tags
 
 (Cities, villages, tribes, or other broad grouping of people…)
 
 Ancient Infrastructure¹⁻², Bad Neighbors³⁻⁴, Blood Feud⁵⁻⁶, Brilliant Innovation⁷⁻⁸, Broken Spirits⁹⁻¹⁰, Corrupt Laws¹¹⁻¹², Criminal Bosses¹³⁻¹⁴, Cultural Center¹⁵⁻¹⁶, Cursed Circumstances¹⁷⁻¹⁸, Decadent Locals¹⁹⁻²⁰, Decaying Working²¹⁻²², Demihuman Populace²³⁻²⁴, Dueling Lords²⁵⁻²⁶, Enemy w/in²⁷⁻²⁸, Faded Remnant²⁹⁻³⁰, Fallen Prosperity³¹⁻³², Foreign Enclave³³⁻³⁴, Guild Oligarchy³⁵⁻³⁶, Heavy Fortification³⁷⁻³⁸, Hidden Ruler³⁹⁻⁴⁰, Hostile Terrain⁴¹⁻⁴², Incompetent Leaders⁴³⁻⁴⁴, Inherited Architecture⁴⁵⁻⁴⁶, Inhuman Cooperation⁴⁷⁻⁴⁸, Lawless Class⁴⁹⁻⁵⁰, Magical Academy⁵¹⁻⁵², Martial Tradition⁵³⁻⁵⁴, Miserable Penury⁵⁵⁻⁵⁶, Mistreated Blighted⁵⁷⁻⁵⁸, Monstrous Tribute⁵⁹⁻⁶⁰, Neglectful Ruler⁶¹⁻⁶², New Industry⁶³⁻⁶⁴, Pilgrimage Site⁶⁵⁻⁶⁶, Plagued City⁶⁷⁻⁶⁸, Population Boom⁶⁹⁻⁷⁰, Raider Scourge⁷¹⁻⁷², Rebel Stronghold⁷³⁻⁷⁴, Rigid Castes⁷⁵⁻⁷⁶, Scars of War⁷⁷⁻⁷⁸, Seat of Rule⁷⁹⁻⁸⁰, Secret Treachery⁸¹⁻⁸², Sinking City⁸³⁻⁸⁴, Theocratic Authorities⁸⁵⁻⁸⁶, Toxic Economy⁸⁷⁻⁸⁸, Trade Hub⁸⁹⁻⁹⁰, Unique Product⁹¹⁻⁹², Upstart Faith⁹³⁻⁹⁴, Warring Council⁹⁵⁻⁹⁶, Widespread Prosperity⁹⁷⁻⁹⁸, Xenophobic Locals⁹⁹⁻¹⁰⁰.
 
-## RUINS TAGS
+### Ruins Tags
 
 (Classical dungeons, lost cities, ruins, mysterious towers….)
 
 Ancient Archives¹⁻², Aspiring Conqueror³⁻⁴, Automaton Servants⁵⁻⁶, Birthing Cyst⁷⁻⁸, Bitter Remnants⁹⁻¹⁰, Civil War¹¹⁻¹², Cyclical Doom¹³⁻¹⁴, Decrepit Structure¹⁵⁻¹⁶, Desperate Hunger¹⁷⁻¹⁸, Dire Tombs¹⁹⁻²⁰, Distant Gate²¹⁻²², Dungeon Heart²³⁻²⁴, Experimental Lab²⁵⁻²⁶, Failed Intrusion²⁷⁻²⁸, Fallen Sanctuary²⁹⁻³⁰, False Front³¹⁻³², Feral Magic³³⁻³⁴, Flooded Halls³⁵⁻³⁶, Freshly Looted³⁷⁻³⁸, Friendly Foes³⁹⁻⁴⁰, Hidden w/in⁴¹⁻⁴², Hiveminded Natives⁴³⁻⁴⁴, Hospitable Natives⁴⁵⁻⁴⁶, Hostile Environment⁴⁷⁻⁴⁸, Infectious Miasma⁴⁹⁻⁵⁰, Invincible Delusion⁵¹⁻⁵², Lethal Treasure⁵³⁻⁵⁴, Limited Access⁵⁵⁻⁵⁶, Lingering Curse⁵⁷⁻⁵⁸, Living Dungeon⁵⁹⁻⁶⁰, Lost Colony⁶¹⁻⁶², Magical Wonder⁶³⁻⁶⁴, Monster Forge⁶⁵⁻⁶⁶, Outsider Domain⁶⁷⁻⁶⁸, Precious Resource⁶⁹⁻⁷⁰, Raider Lair⁷¹⁻⁷², Recruiting Drive⁷³⁻⁷⁴, Religious Zealots⁷⁵⁻⁷⁶, Rigid Hierarchy⁷⁷⁻⁷⁸, Royal Refuge⁷⁹⁻⁸⁰, Sacrificial Bargain⁸¹⁻⁸², Sealed Evil⁸³⁻⁸⁴, Secret Alliance⁸⁵⁻⁸⁶, Shifting Interior⁸⁷⁻⁸⁸, Spatial Flux⁸⁹⁻⁹⁰, Surfacer Hideout⁹¹⁻⁹², Taboo Place⁹³⁻⁹⁴, Things Below⁹⁵⁻⁹⁶, Useless Treasure⁹⁷⁻⁹⁸, Wizard's Lair⁹⁹⁻¹⁰⁰.
 
-## WILDERNESS TAGS
+### Wilderness Tags
 
 (Natural hazards, dangerous lands, remote motherload, wild beast territories…)
 
 Abandoned Village¹⁻², Ancient Guardians³⁻⁴, Ancient Monument⁵⁻⁶, Arratu Land⁷⁻⁸, Bandit Lair⁹⁻¹⁰, Beast Swarm¹¹⁻¹², Blighted Tribe¹³⁻¹⁴, Broken Infrastructure¹⁵⁻¹⁶, Chokepoint¹⁷⁻¹⁸, Collapsed Deep¹⁹⁻²⁰, Criminal Meet²¹⁻²², Cryptic Art²³⁻²⁴, Cursed Land²⁵⁻²⁶, Decayed Working²⁷⁻²⁸, Demihuman Community²⁹⁻³⁰, Devil Grove³¹⁻³², Disused Mine³³⁻³⁴, Healing Terrain³⁵⁻³⁶, Hermitage³⁷⁻³⁸, Historical Survival³⁹⁻⁴⁰, Isolated Academy⁴¹⁻⁴², Labyrinthine Tangle⁴³⁻⁴⁴, Lost Battlefield⁴⁵⁻⁴⁶, Lost City⁴⁷⁻⁴⁸, Magical Springs⁴⁹⁻⁵⁰, Migration Path⁵¹⁻⁵², Military Outpost⁵³⁻⁵⁴, Monstrous Beast⁵⁵⁻⁵⁶, Motherlode⁵⁷⁻⁵⁸, Nomad Camp⁵⁹⁻⁶⁰, Outsider Enclave⁶¹⁻⁶², Overgrown Tomb⁶³⁻⁶⁴, Perilous Path⁶⁵⁻⁶⁶, Pilgrimage Site⁶⁷⁻⁶⁸, Precious Game⁶⁹⁻⁷⁰, Rampant Experiment⁷¹⁻⁷², Refugee Camp⁷³⁻⁷⁴, Remnant Road⁷⁵⁻⁷⁶, Remote Monastery⁷⁷⁻⁷⁸, Ruined Fortification⁷⁹⁻⁸⁰, Savage Hamlet⁸¹⁻⁸², Sculpted Terrain⁸³⁻⁸⁴, Seductive Peril⁸⁵⁻⁸⁶, Taboo Territory⁸⁷⁻⁸⁸, Toxic Ruins⁸⁹⁻⁹⁰, Treacherous Terrain⁹¹⁻⁹², Twisted Fauna⁹³⁻⁹⁴, Uncanny Weather⁹⁵⁻⁹⁶, Working Wreckage⁹⁷⁻⁹⁸, Zealot Colony⁹⁹⁻¹⁰⁰.
 
-## COURT TAGS
+### Court Tags
 
 (Noble courts, temple hierarchies, business enterprises, dynastic families, insular clans…)
 
 Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻⁶, Awkward Birth⁷⁻⁸, Blandished Leadership⁹⁻¹⁰, Cadet Branches¹¹⁻¹², Capricious Orders¹³⁻¹⁴, Cultural Insignia¹⁵⁻¹⁶, Daring Ambition¹⁷⁻¹⁸, Dark Secret¹⁹⁻²⁰, Decadent Court²¹⁻²², Devil's Bargain²³⁻²⁴, Diplomatic Demands²⁵⁻²⁶, Disputed Inheritance²⁷⁻²⁸, Excess Heirs²⁹⁻³⁰, False Prize³¹⁻³², Fatal Extravagance³³⁻³⁴, Forbidden Romance³⁵⁻³⁶, Foreign Ties³⁷⁻³⁸, Gatekeeper³⁹⁻⁴⁰, Hidden Blight⁴¹⁻⁴², Hopeless Rival⁴³⁻⁴⁴, Impure Blood⁴⁵⁻⁴⁶, Inadequate Tools⁴⁷⁻⁴⁸, Inept Ruler⁴⁹⁻⁵⁰, Iron Law⁵¹⁻⁵², Lost Purpose⁵³⁻⁵⁴, Magical Subversion⁵⁵⁻⁵⁶, Ministerial Capture⁵⁷⁻⁵⁸, New Generation⁵⁹⁻⁶⁰, New Opportunity⁶¹⁻⁶², Outside Debts⁶³⁻⁶⁴, Overextended Grasp⁶⁵⁻⁶⁶, Poisonous Cliques⁶⁷⁻⁶⁸, Priestly Influence⁶⁹⁻⁷⁰, Proxy Speaker⁷¹⁻⁷², Rampant Corruption⁷³⁻⁷⁴, Recent Brutality⁷⁵⁻⁷⁶, Regency Council⁷⁷⁻⁷⁸, Restive Lessers⁷⁹⁻⁸⁰, Rival Dreams⁸¹⁻⁸², Rival Power⁸³⁻⁸⁴, Ruling Regalia⁸⁵⁻⁸⁶, Runaway Rule⁸⁷⁻⁸⁸, Shining Successor⁸⁹⁻⁹⁰, Splendid Seat⁹¹⁻⁹², Sublime Skill⁹³⁻⁹⁴, Sudden Strength⁹⁵⁻⁹⁶, Threatened Violence⁹⁷⁻⁹⁸, Waning Wealth⁹⁹⁻¹⁰⁰
 
-## JUDGING AN ENCOUNTER CHALLENGE
+## Monsters and Encounters
+
+**Judging an encounter challenge**
 
 (Foe's Encounter's Total # of attacks) x (Foe's Encounter's Total # of HD) vs.(PC Party's Total # of Levels) x (# of PCs in the Party)
 
@@ -2706,9 +2725,9 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 
 **SAVING THROW**: 1d20 < Save = Fail. The NPC fails the Save.
 
-## NPC STATISTICS
+## NPC/Monsters Statistics
 
-### HUMAN NPCS
+### Human NPCS
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2721,7 +2740,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 | Warrior Baron | 6 | 18a | +8 | Wpn+3 | Wpn+3 | 30' | 9 | 1 | +2 | 12+ |
 | Warlord | 8 | 16a | +10 x2 | Wpn+4 | Wpn+4/- | 30' | 10 | 3 | +2 | 11+ |
 
-### MAGES
+### Mages
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2732,7 +2751,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 
 *Mages have the spellcasting & Arts of an appropriate mage tradition @ a level = to their HD & Effort = to their Skill bonus +2.
 
-### CREATURES
+### Creatures
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2745,7 +2764,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 | Hulking Predator | 10 | 15 | +12 x2 | 2d6+3 | 6/15 | 30' | 10 | 4 | +1 | 10+ |
 | Hellbeast | 10 | 18 | +12 x4 | 1d10+5 | 6/- | 60' | 11 | 4 | +3 | 10+ |
 
-### UNDEAD
+### Undead
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2759,7 +2778,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 
 *Undead spellcasters have the slots = Necromancer of ½ their HD, & cast @ a level = to their full HD, up to a max effective level of 10.
 
-### AUTOMATONS
+### Automatons
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2769,7 +2788,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 | Warbot | 10 | 20 | +12 x3 | 1d12+5 | 7/- | 40' | 12 | 2 | +2 | 10+ |
 | Ancient Warbot | 14 | 20 | +15 x3 | 2d6+5 | 10/- | 60' fly | 12 | 2 | +2 | 8+ |
 
-### DWARVES
+### Dwarves
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|
@@ -2779,7 +2798,7 @@ Affliction's Mark¹⁻², Ancestral Obligation³⁻⁴, Awesome Legitimacy⁵⁻
 
 *1/day, as an Instant, a Dwarf of > 2HD can negate an unwanted magical effect they can sense that would affect them w/in 100'. This ability can't negate Workings, suppress magic items, or nullify effects created by magic items or exceptionally potent rituals.
 
-### ELVES
+### Elves
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |
 |-----|----|----|-----|-----|-------|----|----|------|-----|----|

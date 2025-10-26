@@ -26,6 +26,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "mkdocs-material>=9.6.22",
+    "pymdown-extensions>=10.16.1",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
 ]
@@ -77,6 +79,7 @@ max-line-length = 120
 [tool.ruff.lint.per-file-ignores]
 "app/i18n.py" = ["RUF001"]  # Allow Cyrillic characters in translations
 "app/admin.py" = ["RUF012"]  # Starlette Admin ModelView class attributes
+"scripts/**/*.py" = ["T201", "RUF001"]  # Allow print statements and Cyrillic characters in CLI scripts
 
 [tool.alembic]
 

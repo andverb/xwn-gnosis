@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.admin import create_admin
@@ -86,5 +88,18 @@ app.include_router(api_search.router)
 # Web routers (HTML responses)
 app.include_router(pages.router)
 app.include_router(web_search.router)
+
+# Mount MkDocs static sites for rulesets
+# site-uk and site-en now contain clean paths (basics/, combat/, etc.)
+# because we set docs_dir to point directly to language-specific folders (docs/wwn-lite/uk, docs/wwn-lite/en)
+# This follows MkDocs best practices for multilingual sites
+SITE_UK_DIR = Path(__file__).parent.parent / "site-uk"
+SITE_EN_DIR = Path(__file__).parent.parent / "site-en"
+
+if SITE_UK_DIR.exists():
+    app.mount("/rulesets/wwn-lite/uk", StaticFiles(directory=str(SITE_UK_DIR), html=True), name="rulesets-uk")
+
+if SITE_EN_DIR.exists():
+    app.mount("/rulesets/wwn-lite/en", StaticFiles(directory=str(SITE_EN_DIR), html=True), name="rulesets-en")
 
 create_admin(app)
