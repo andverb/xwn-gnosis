@@ -1,5 +1,3 @@
-## Delving
-
 ### Visibility
 A visible target is one who can be seen, or whose exact location is known. If a PC is seen & dives into a 5' bush to hide, they are not immune to ranged attacks assuming their foes are intelligent enough to have object permanence, though the PC may receive a partial cover bonus if the GM is feeling benevolent.
 

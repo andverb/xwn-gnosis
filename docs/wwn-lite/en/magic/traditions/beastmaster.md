@@ -1,5 +1,3 @@
-## Arcane Tradition of the Beastmaster (Half Class)
-
 - The Beastmaster exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Beastmasters gain Survive as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
 - A Beastmaster begins play knowing the Art "Bind Companion," & 1 more of their choosing.

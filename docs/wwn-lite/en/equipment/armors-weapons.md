@@ -1,5 +1,3 @@
-## Armors & Weapons
-
 ### Armor Class
 Total AC = Base AC (10 if unarmored, or Armor's AC) + Dex + Shield + Foci/Abilities/Total Defense…)
 

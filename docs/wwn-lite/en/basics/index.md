@@ -1,5 +1,3 @@
-## Basics
-
 ### Shorthand
 - Rounded Up/Down: ↑/↓.
 - Greater than (or equal to) >(≥).

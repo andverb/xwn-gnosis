@@ -1,5 +1,3 @@
-## Magic
-
 ### Arts & Effort
 - Arts are fueled by Committing Effort. A PC's Class determines from whence Effort is based.
 - Typically: Skill + Attribute Modifier + 1 (if Full Class) = Max Effort.

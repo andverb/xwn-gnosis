@@ -1,5 +1,3 @@
-## Monsters and Encounters
-
 **Judging an encounter challenge**
 
 (Foe's Encounter's Total # of attacks) x (Foe's Encounter's Total # of HD) vs.(PC Party's Total # of Levels) x (# of PCs in the Party)

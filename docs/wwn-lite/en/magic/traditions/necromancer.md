@@ -1,5 +1,3 @@
-## Arcane Tradition of the Necromancer
-
 ### Full Necromancer
 
 **Bonus Skill**: Magic level-0

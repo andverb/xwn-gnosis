@@ -1,5 +1,3 @@
-## NPC/Monsters Statistics
-
 ### Human NPCS
 
 | NPC | HD | AC | BAB | DMG | SHOCK | MV | ML | INST | SKL | SV |

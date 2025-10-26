@@ -1,5 +1,3 @@
-## Quick-start Character Generation
-
 1. Roll 3d6 six times. Assign them in order to Str, Dex, Con, Int, Wis, & Cha. You may choose one to change to 14.
 2. Choose a Background. Gain its Free Skill & choose 2 from the Available Skills. Choose 1 extra Skill to reflect your PC's past.
 3. Choose your Class. Roll your Max HP according to Class & add your Con Mod. Max HP @ level 1. Record BAB, Class Abilities, etc.
@@ -98,7 +96,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 ### Step #3 Choose a Class & Take Its Abilities
 
-#### WARRIOR
+**WARRIOR**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|---------|-----|--------------|
@@ -115,7 +113,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Abilities**: Killing Blow & Veteran's Luck.
 
-#### EXPERT
+**EXPERT**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|------|-----|------|
@@ -132,7 +130,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Abilities**: Masterful Expertise & Quick Learner.
 
-#### WARRIOR/EXPERT
+**WARRIOR/EXPERT**:
 
 | LEVEL | HD | BAB | FOCI |
 |-------|---------|-----|--------------|
@@ -149,7 +147,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Class Ability**: Quick Learner.
 
-#### MAGE
+**MAGE**:
 
 | LEVEL | HD | BAB | FOCI | ART | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|----------|-----|------|------------------|---------------|-----------|------------|
@@ -166,7 +164,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 *Class Ability: Arcane Tradition (see chosen Tradition for 1st Level Arts) & Cantrip.
 
-#### EXPERT/MAGE
+**EXPERT/MAGE**:
 
 | LEVEL | HD | BAB | FOCI | ARTS | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|------|-----|------------|------------------|---------------|-----------|------------|
@@ -185,7 +183,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Bards, Beastmasters, Clerics, & Warlocks gain 2 Arts at these levels instead of the typical 1, but do not learn or cast spells.
 
-#### MAGE/WARRIOR
+**MAGE/WARRIOR**:
 
 | LEVEL | HD | BAB | FOCI | ARTS | MAX SPL LEVEL | CASTS/DAY | PREP'D/DAY |
 |-------|---------|-----|---------------|------------------|---------------|-----------|------------|
@@ -204,7 +202,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Bards, Beastmasters, Clerics, & Warlocks gain 2 Arts at these levels instead of the typical 1, but do not learn or cast spells.
 
-#### CLASS ABILITIES
+**CLASS ABILITIES**:
 
 **ARCANE TRADITION**: A Mage picks 1 magical tradition giving them a number of additional benefits & restrictions.
 
@@ -225,19 +223,19 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 - After Creation, Foci can raise Skills past PC Level Caps. Skill+4 Max. @ Skill+4 choose another Skill to apply Points towards.
 - A Warrior Foci is any the GM deems. An Expert Foci is any the GM deems.
 
-#### ALERT
+**ALERT**:
 
 **Level 1**: Gain Notice. Can't be surprised. Immune to Execution attacks. Roll w/ Advantage for Initiative.
 
 **Level 2**: You always act 1st in the combat Round unless another also has Alert.
 
-#### ARMORED MAGIC
+**ARMORED MAGIC**:
 
 **Level 1**: You can use spells or arts while wearing armor whose Encumbrance is ≤ 2. You can use a shield while casting, provided your other hand is empty for gesturing.
 
 **Level 2**: You can cast spells while wearing armor of any Encumbrance. You can cast w/ both hands full, but not bound.
 
-#### ARMSMASTER
+**ARMSMASTER**:
 
 (Not applicable to unarmed or non-thrown weapons. Doesn't stack w/ other Foci that add a Skills level to damage or Shock.)
 
@@ -245,7 +243,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Level 2**: Shock from your melee attacks always treats the target as AC 10. +1 bonus to hit w/ all thrown or melee attacks.
 
-#### ARTISAN
+**ARTISAN**:
 
 Create Mods even if you are not an Expert.
 
@@ -253,19 +251,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1st Mod added to item requires no Maintenance & ½ the typical silver cost (this benefit stacks w/ masterwork 1st Mod benefit). You auto succeed to build masterwork gear, & 1/month you can reduce a created Mod's salvage cost by 1 further unit (min of 0).
 
-#### ASSASSIN
+**ASSASSIN**:
 
 **Level 1**: Gain Sneak. Conceal an object no larger than a knife from anything less than a strip search. Draw this object as an On Turn Action, & your point-blank thrown or melee attacks made during a surprise Round w/ it can't miss.
 
 **Level 2**: You can take a Move Action the same Round you make an Execution attack. You may split the Movement when making an Execution attack to before & after the attack. This movement is too quick to alert a victim or be hindered by guards.
 
-#### AUTHORITY
+**AUTHORITY**:
 
 **Level 1**: Gain Lead. 1/day make a request of an NPC who is not openly hostile to you, rolling a Cha/Lead Skill check @ a DC = to the NPC's Morale score. On success they will comply, provided the request is not very harmful or highly uncharacteristic.
 
 **Level 2**: Any NPC being directly led by you gains a Morale & hit roll bonus = to your Lead Skill & a +1 bonus on all Skill checks. Your followers & henchmen will not act against your interests unless under extreme pressure.
 
-#### BERSERKER (CUPOFCOFFE HB)
+**BERSERKER (CUPOFCOFFE HB)**:
 
 (Only Warriors or Partial Warriors can take this Focus.)
 
@@ -273,25 +271,25 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: When dropped to 0 HP for the 1st time in the fury, you may continue to fight for a # of Rounds = to either Stab or Punch before falling Mortally Wounded. Additional damage taken during this time (shy of catastrophic) can't stop or kill you. If healed during this time, you stabilize, but the ability's benefits end.
 
-#### CLOSE COMBATANT
+**CLOSE COMBATANT**:
 
 **Level 1**: Gain any combat Skill. You can use knife-sized thrown weapons in melee w/o suffering penalties for the proximity of melee attackers. You ignore Shock damage from melee assailants, even if you're unarmored @ the time (invoking this benefit disrupts any spellcasting you might do that Round due to the need for violently active evasion). (Still susceptible to Shock from Swarm attacks)
 
 **Level 2**: The Shock damage from your melee attacks treats all targets as if they were AC 10. The Fighting withdrawal combat Act is treated as an On Turn Action for you & can be performed freely.
 
-#### CONNECTED
+**CONNECTED**:
 
 **Level 1**: Gain Connect. If you've spent ≥ a week in a not-entirely-hostile location, you'll have built a web of contacts willing to do favors for you that are ≤ mildly illegal. You can call on 1 favor per game day & the GM decides how far they'll go for you.
 
 **Level 2**: 1/session, if not entirely implausible, you meet someone you know who is willing to do modest favors for you. You can decide when & where to meet this person, but the GM decides who they are & what they can do for you.
 
-#### CULTURED
+**CULTURED**:
 
 **Level 1**: Gain Connect. You fluently speak all the common languages of your native region & convey basic information in uncommon ones. You can learn a new language w/ a wk's practice w/ a native speaker. 1/day your polished ways automatically gain a minor favor from a non-hostile NPC, so long as it would not cost them significant expense or risk.
 
 **Level 2**: 1/session, reroll a failed social Skill check.
 
-#### DANGER SENSE
+**DANGER SENSE**:
 
 (Experts/Partial Experts only. Only 1 foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -299,7 +297,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 to your Wisdom modifier (+2 Max). 1/day, as an Instant action, when faced w/danger, you receive an intuitive sense of the safest course of action to minimize losses for yourself & your allies, as determined by the GM.
 
-#### DEADEYE
+**DEADEYE**:
 
 (Applies to all ranged & thrown weapons. Does not stack w/ Armsmaster).
 
@@ -307,31 +305,31 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You can reload weapons w/ the Slow Reload trait as an On Turn Action. You can use ranged weapons in melee w/o penalty. 1/scene, as an On Turn Action when shooting an inanimate target, you auto hit unless you roll a 2 on your Skill check or the shot is impossible.
 
-#### DEALMAKER
+**DEALMAKER**:
 
 **Level 1**: Gain Trade. W/ a ½hr of searching you can find a buyer or seller for any legal or illegal good or service available in the community. Finding rare services (king-slaying assassins, precious artifacts…) may require an adventure.
 
 **Level 2**: 1/session, target a sentient who is not trying to kill you or your allies @ that moment. Make a request of it that it can comprehend. If plausible for it to agree to such terms it will do so for a price. The price for major favors may be dear.
 
-#### DEVELOPED ATTRIBUTE
+**DEVELOPED ATTRIBUTE**:
 
 (Can't be taken by Mages/Partial Mages)
 
 **Level 1**: +1 to a chosen Attribute Mod (the Score does not change). The mod may increase again if later advancement improves the Score enough (max Mod bonus of +2). You can choose this Focus more than once to improve different Attributes. (HB)
 
-#### DIE HARD
+**DIE HARD**:
 
 **Level 1**: Gain +2 max HP per level. This bonus applies retroactively if you take this Focus after 1st level. You automatically stabilize if Mortally Wounded, provided your body is not destroyed.
 
 **Level 2**: The 1st time each day that you are reduced to 0HP by an injury, you instead survive w/ 1 HP remaining. This ability can't save you from large-scale, instantly-lethal trauma.
 
-#### DIPLOMATIC GRACE
+**DIPLOMATIC GRACE**:
 
 **Level 1**: Gain Convince. You speak all languages common to your region & can learn new ones to a workable level in a week or to fluency in a month. Reroll 1's on Skill check dice related to negotiation or diplomacy.
 
 **Level 2**: 1/day silently consecrate a bargain. The deal's terms must be specific & time-limited, not open-ended. Breaking the deal requires a Mental Save unless it risks the target's life or something they value equally. Most NPCs won't attempt to break it.
 
-#### DUAL WIELDING (HB)
+**DUAL WIELDING (HB)**:
 
 **Level 1**: Gain Stab. Two one-handed weapons can be carried Readied w/o costing Encumbrance. While dual-wielding, your AC increases by +1. 1/scene, you can use the Dual Feint Action (see below).
 
@@ -339,7 +337,7 @@ Create Mods even if you are not an Expert.
 
 **Dual Feint**: Instant Action. When you miss an attack while dual-wielding, make another attack roll w/ either weapon w/ +2 to hit.
 
-#### FOLIE À DEUX
+**FOLIE À DEUX**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -347,19 +345,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Charisma modifier (+2 Max). 1/day, you can deliver an outright lie; unless it is physically impossible or emotionally unbearable, the target must make a Mental save w/ a penalty = to your Convince skill or believe it for 1d4 rounds.
 
-#### GIFTED CHIRURGEON
+**GIFTED CHIRURGEON**:
 
 **Level 1**: Gain Heal. 1/Round, as an On Turn Action, you may attempt to stabilize 1 Mortally Wounded adjacent target. When rolling Heal checks, roll 3d6 & drop the lowest die. You heal x2 as much HP as typical when healing after a battle.
 
 **Level 2**: Your healing counts as magical. As a Main Action you can heal 1d6+Heal Skill to an adjacent ally. Each such application adds 1 Strain to the target & can't be used on targets already @ max Strain.
 
-#### HENCHKEEPER
+**HENCHKEEPER**:
 
 **Level 1**: Gain Lead. You may recruit Henchmen (HM), NPCs who require no compensation, roll Morale only if clearly betrayed, & will not be missed. HM will fight only to save their life, but will enter dungeons & risk danger for you. HM Stats = Peaceful Humans. Max # of HM = 1/3 your level ↑. You can dismiss & rehire HM amicably @ any time. More HM recruits are found w/in 24hrs of arriving in a community. You may have Hirelings in addition to your HM, but they behave normally.
 
 **Level 2**: Your HM will fight for you against anything but clearly hopeless odds. HM stats = Veteran Soldiers. Skilled NPCs may become HM if you've done a service to earn their fierce loyalty.
 
-#### IMPERVIOUS DEFENSE
+**IMPERVIOUS DEFENSE**:
 
 (This Foci's benefits don't stack w/ armor, but Dex & shield mods apply.)
 
@@ -367,13 +365,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/day as an Instant Action shrug off a single attack inflicted by a foe. Harm that couldn't be forfended by strong armor can't be resisted this way.
 
-#### IMPOSTOR
+**IMPOSTOR**:
 
 **Level 1**: Gain Perform or Sneak. 1/scene, reroll attempt to maintain an imposture. You may make & flawlessly maintain 1 false identity of no great import. Only irrefutable proof can connect you w/ it. W/ a week's work you can alter this identity to a new one.
 
 **Level 2**: You can alter your attire to allow you to swap between 3 chosen appearances as a Main Action. You can establish 2 additional false identities in each significant community you spend ≥ a day in.
 
-#### LUCKY
+**LUCKY**:
 
 (Restricted to PCs w/ @ least 1 attribute mod of -1 or less).
 
@@ -381,7 +379,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session, in a situation of need or peril roll 1d6. If ≥ 2: fortune provides a solution, escape, advantage, or victory. If =1: the situation immediately grows much worse (GM discretion).
 
-#### MASTER TRACKER
+**MASTER TRACKER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -389,7 +387,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Wisdom modifier (+2 Max). You can recognize the tracks of specific individuals if you have met them before. 1/day, by examining a mostly undisturbed scene where an event occurred w/in the past week, you can reconstruct the general physical actions that took place there.
 
-#### NIGHT WALKER
+**NIGHT WALKER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -397,13 +395,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Dexterity modifier (+2 Max). Unless an area is lit by torchlight or brighter radiance, you are effectively invisible in it until you do something to draw attention.
 
-#### NULLIFIER
+**NULLIFIER**:
 
 **Level 1**: You & all allies w/in 20' gain a +2 bonus to Saves vs magical effects. As an On Turn Action you can sense the presence of magic w/in 20' of you, though not its details or exact source. 1/day your 1st failed Save vs a magic effect is changed to a success.
 
 **Level 2**: 1/day, as an Instant Action, you are unaffected by an unwanted magic effect or ability. Immunity to a persistent effect lasts for the rest of the scene.
 
-#### PACK BEAST
+**PACK BEAST**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -411,7 +409,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Strength modifier (+2 Max). 1/scene, as an On Turn action, you can lift & move an object weighing up to 1k lbs, provided you set it down or drop it by the end of your turn.
 
-#### POLYMATH
+**POLYMATH**:
 
 (Experts/Partial Experts only. Phantom Skill levels don't stack w/ normal Skill levels or give Skill purchase discounts.)
 
@@ -419,13 +417,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You treat non-combat Skills as if they were @ least level-1 for Skill checks.
 
-#### POISONER
+**POISONER**:
 
 **Level 1**: Gain Alchemy. Reroll failed Saves vs poison. Create a # of toxins = to your level. 1 dose = 1 hr to brew. Blade venoms require Main Action to apply & last 10 min or until damage is inflicted. DC10 to detect your poison in food, or DC12 if the target is unwary. 1 dose can poison ≤ 6 diners. Damage = 2d6 + your level (Phys Save for ½). Toxins are incapacitating if you choose, & if so 0HP = incapacitated 1hr.
 
 **Level 2**: Gain immunity to poison, & a universal antidote that can be applied as a Main Action. Attempts to detect or Save vs your poisons suffer a penalty = to your Alchemy Skill. Your ingested poisons count as an Execution attack vs unsuspecting targets, w/ Alchemy used for the Phys Save penalty & 1d6 damage x Skill level on a Success (can be non-lethal @ your discretion).
 
-#### PROVIDENT CRAFTER
+**PROVIDENT CRAFTER**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -433,19 +431,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain +1 bonus to your Dexterity modifier (+2 Max). 1/day, as an Instant action, you may produce a Stowed normal item of 2 encumbrance or less, provided you could have reasonably bought or crafted it w/in the past week. Pay its purchase or crafting cost & add it to your inventory. Provisions can't be created this way, nor can the same item be produced > 1/week.
 
-#### RIDER
+**RIDER**:
 
 **Level 1**: Gain Ride. Your steeds have Morale 12, use your AC if it's > theirs, & can travel 50% further per day than typical. You can intuitively communicate w/ riding beasts, gaining as much information from it as its intellect can convey.
 
 **Level 2**: 1/scene, negate a successful attack against your steed as an Instant Action. 1/scene, reroll any failed Ride Skill check. You can telepathically send & receive simple warnings, thoughts, & commands to & from your steed so long as it's w/in 200'. You can bond w/ 1 steed @ a time, which requires 1hr.
 
-#### SHOCKING ASSAULT
+**SHOCKING ASSAULT**:
 
 **Level 1**: Gain Punch or Stab. The Shock damage of your weapon treats all targets as if they were AC 10, assuming your foe is not immune to your weapon or to Shock.
 
 **Level 2**: Gain a +2 bonus to the Shock damage of all melee weapons & unarmed attacks that do Shock. As usual, regular hits never do less damage than this Shock would do on a miss, if Shock would apply.
 
-#### SNIPER'S EYE
+**SNIPER'S EYE**:
 
 (Only applies when making an Execution attack w/ a ranged weapon).
 
@@ -453,7 +451,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You don't miss ranged Execution attacks. A target hit takes a -4 penalty on their Phys Save. Even if the save is successful, the target takes x2 normal damage inflicted by the attack.
 
-#### SPECIAL ORIGINS (CUPOFCOFFEE HB & HB)
+**SPECIAL ORIGINS (CUPOFCOFFEE HB & HB)**:
 
 (A PC can take an Special Origin focus at level 1 in addition to their usual level 1 Foci. A PC who takes this option doesn't get their usual level 2 Focus.)
 
@@ -463,7 +461,7 @@ Create Mods even if you are not an Expert.
 
 **Halfling**: +1 to Dex or Cha mod & -1 to Str or Int. When you hide from creatures not already aware of your presence, you are treated as though invisible provided you remain motionless. +1 AC vs creatures larger than humans. You are too light to set off traps or hazards triggered by weight.
 
-#### SPECIALIST
+**SPECIALIST**:
 
 (You may take this Focus more than once for different Skills.)
 
@@ -471,7 +469,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Roll 4d6 & drop the 2 lowest dice for all Skill checks in this Skill.
 
-#### SPIRIT FAMILIAR
+**SPIRIT FAMILIAR**:
 
 **Level 1**: Choose your familiar's form (≥ a cat, ≤ a human). Has traits & abilities as though created by Summon Familiar (pg 25). Main Action to summon or dismiss (appears w/in melee range of its owner). Can't carry objects w/ it during its vanishment. Requires no rest or provisions. If killed vanishes & can be re-summoned after 24 hrs. 1/day, it can refresh 1 point of Committed Effort for you.
 
@@ -483,37 +481,37 @@ Create Mods even if you are not an Expert.
 - Gains the ability to attack w/ a hit bonus = to 1/2 your level ↑, doing 1d8 damage on a hit w/ no Shock.
 - Gains another shape of your choice which it can adopt or discard as an On Turn Action.
 
-#### STEADFAST (CUPOFCOFFEE HB)
+**STEADFAST (CUPOFCOFFEE HB)**:
 
 **Level 1**: When you suffer an effect that can be Saved against for full or ½ damage, you take ½ damage instead of full & 0 instead of ½.
 
 **Level 2**: 1/scene you can choose to make a 2nd attempt to succeed w/ a Physical, Evasion or Mental Save when trying to save against any effect. 1/wk, as an Instant Action, you can decide to end a non-permanent condition affecting you.
 
-#### TRAPMASTER
+**TRAPMASTER**:
 
 **Level 1**: Gain Notice. 1/scene, reroll a failed Save or check related to traps. Given 5 min you can trap a portal, container, passageway, or other relatively narrow space w/ foot snares, caltrops, toxic needles, or other hazards. Non-lethal traps cause the 1st victim that triggers it to lose a Round of Actions while dangerous ones inflict 1d6 damage + x2 the character's level (Save for ½). Only 1 such improvised trap can be maintained @ a time. More fearsome traps may be laid w/ congenial circumstances & the GM's permission.
 
 **Level 2**: 1/scene, your efforts count as a Dispel magic spell against the trap or hazard, cast as if a Mage of x2 your level, w/ any relevant Skill check being Int/Notice or Dex/Notice. This ability can be used against any stationary magical effect that's susceptible to being dispelled by Dispel magic.
 
-#### UNARMED COMBATANT
+**UNARMED COMBATANT**:
 
 **Level 1**: Gain Punch. Your unarmed attacks prevent 2 handed ranged weapons from firing in combat (requires 1 freehand to do so). Punch-0 attacks: 1d6 dam, Punch+1: 1d8, Punch+2: 1d10, Punch+3: 1d12, & Punch+4: 1d12+1. At Punch+1 gain Shock = Punch/AC15.
 
 **Level 2**: Even on a miss your Punch attacks do an unmodified 1d6 damage + any Shock the blow would inflict on the target.
 
-#### VALIANT DEFENDER
+**VALIANT DEFENDER**:
 
 **Level 1**: Gain Stab or Punch. Gain +2 on all Skill checks for the Screen Ally combat Action. You can screen against +1 attacker per Round than your Skill would typically allow. 1/Round you can Screen an Ally against an intangible magic or AoE attack. This requires the usual opposing Skill check w/ the assailant using their Magic Skill.
 
 **Level 2**: The 1st Screen Ally check you make in a Round is always successful. Gain +2 AC while screening someone. You can screen against foes as large as oxen.
 
-#### WAR CASTER (ADAPTED FROM SWN DELUXE EDITION)
+**WAR CASTER (ADAPTED FROM SWN DELUXE EDITION)**:
 
 **Level 1**: When attacked while casting a spell, you may make a Phys Save at a penalty = to damage taken to avoid losing it. Even if your spell is interrupted, you do not lose the spell slot; only your Act is wasted though you can't cast another spell the next Round.
 
 **Level 2**: Whenever you would lose a spell to an interruption, accept damage = to x2 the spell's level to continue casting it. If this damage would reduce you to 0 HP, you complete the casting before passing out, stable but at 0 HP.
 
-#### WALK LIKE WIND
+**WALK LIKE WIND**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -521,7 +519,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Dexterity modifier (+2 Max). You can leap up to 20' horizontally or 10' vertically as a Move action. 1/scene, as an On Turn action, you gain a bonus Move action.
 
-#### WELL MET
+**WELL MET**:
 
 (Works x1 per target)
 
@@ -529,13 +527,13 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session when a reaction roll is made cause the subject to be as friendly to you & your party as plausible.
 
-#### WHIRLWIND ASSAULT
+**WHIRLWIND ASSAULT**:
 
 **Level 1**: Gain Stab. 1/scene (On Turn Action) apply your Shock damage to all foes w/in range susceptible to your Shock.
 
 **Level 2**: The 1st time you kill someone in a Round w/ a normal attack, instantly gain a 2nd attack on a target w/in range.
 
-#### WILDTONGUE
+**WILDTONGUE**:
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -543,7 +541,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain a +1 bonus to your Charisma modifier (+2 Max). 1/day, you can command a visible animal 1/scene, making it obey even complex orders that would usually be beyond its understanding, as long as they don't seem suicidal or overly dangerous to it. Magical beasts can attempt a Mental Save to resist your command.
 
-#### WRESTLER (CUPOFCOFFEE HB)
+**WRESTLER (CUPOFCOFFEE HB)**:
 
 **Level 1**: Gain Exert or Punch. Roll 3d6 & drop the lowest die for Skill checks related to shoving & grappling. You ignore the size penalty for grappling & shoving significantly larger creatures, & may move grappled targets smaller than you w/o additional Actions or Checks.
 
@@ -551,7 +549,7 @@ Create Mods even if you are not an Expert.
 
 ### Step #5 Choose an Equipment Pack
 
-#### ADVENTURING PEASANT
+**ADVENTURING PEASANT**:
 
 | ITEM | ENC |
 |------|-----|
@@ -564,7 +562,7 @@ Create Mods even if you are not an Expert.
 | Mule & small cart | - |
 | Tinder box & 3 torches | 1 |
 
-#### ARMORED WARRIOR
+**ARMORED WARRIOR**:
 
 | ITEM | ENC |
 |------|-----|
@@ -575,7 +573,7 @@ Create Mods even if you are not an Expert.
 | Backpack | 1 |
 | Tinder box & 3 torches | 1 |
 
-#### GENTRY WAYFARER
+**GENTRY WAYFARER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -589,7 +587,7 @@ Create Mods even if you are not an Expert.
 | Writing kit & 20 sheets of paper | 1 |
 | 20 silver coins | - |
 
-#### RANGER OR ARCHER
+**RANGER OR ARCHER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -604,7 +602,7 @@ Create Mods even if you are not an Expert.
 | Tinder box & 3 torches | 1 |
 | 20 silver pieces | - |
 
-#### ROGUISH WANDERER
+**ROGUISH WANDERER**:
 
 | ITEM | ENC |
 |------|-----|
@@ -618,7 +616,7 @@ Create Mods even if you are not an Expert.
 | Tinder box & 3 torches | 1 |
 | Grappling hook & 50' of rope | 2 total |
 
-#### MAGE, HEALER, OR SCHOLAR
+**MAGE, HEALER, OR SCHOLAR**:
 
 | ITEM | ENC |
 |------|-----|

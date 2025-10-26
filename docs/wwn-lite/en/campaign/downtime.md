@@ -1,5 +1,3 @@
-## Downtime Activities
-
 **Train a Skill**: Requires a skilled master. Skill+0 = 1 Month + 5k $p. Skill+1 = 6 Months + 50k $p. Skill+2 = 1 Year + 100k $p.
 
 **Crafting**: Brew alchemical works, create spells or magic items, craft items or Mods for gear. See related section for crafting rules.

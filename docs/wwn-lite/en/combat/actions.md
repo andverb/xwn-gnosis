@@ -1,5 +1,3 @@
-## Actions & Common Combat Actions
-
 ### Action Types
 **MAIN ACTION**: attack, manipulate a device, apply first aid, casting a spell…
 
@@ -7,7 +5,7 @@
 
 **ON TURN ACTION**: Fall prone, speak, draw a Readied object… Limit is @ GM's discretion.
 
-**INSTANT ACTION**: Fast, simple. Can be made outside of an actor's turn. Multiple Instants resolve in order GM decides.
+**INSTANT ACTION**: Fast, simple. Can be made outside an actor's turn. Multiple Instants resolve in order GM decides.
 
 ### Common Combat Actions
 

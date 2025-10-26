@@ -1,5 +1,3 @@
-## Arcane Tradition of the High Mage
-
 ### Full High Mage
 
 **Bonus Skill**: Magic level-0

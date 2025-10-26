@@ -1,5 +1,3 @@
-## Building Magical Workings
-
 ### Workings Basics
 - A Working is a stationary, persistent magic that persists until destroyed or decayed.
 - Workings require a 6th level Mage or Partial Mage caster. If the designer's Level x Magic Skill x 2 ≥ the Working's DC, they can establish it alone. If ≥ ½ DC, they will need to find other mages to make up the difference. If < ½ the DC, the Working is too difficult.

@@ -1,5 +1,3 @@
-## Elixirs
-
 ### Elixir Basics
 - Elixirs must be consumed as part of their activation, typically requiring a Main Action for a readied Elixir.
 - An Elixir = 1Є when Readied. A GM may allow some to be packed together @ 0 Є but they'll be inaccessible in combat.

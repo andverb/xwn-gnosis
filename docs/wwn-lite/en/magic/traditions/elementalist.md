@@ -1,5 +1,3 @@
-## Arcane Tradition of the Elementalist
-
 ### Full Elementalist
 
 **Bonus Skill**: Magic level-0

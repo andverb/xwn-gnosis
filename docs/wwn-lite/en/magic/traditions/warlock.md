@@ -1,5 +1,3 @@
-## Arcane Tradition of the Warlock (Half Class)
-
 - The Warlock exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Warlocks gain Magic as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
 - A Warlock begins play knowing either the Art "Accursed Blade" or "Accursed Bolt," & 1 more of their choosing.

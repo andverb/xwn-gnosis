@@ -1,5 +1,3 @@
-## Renown
-
 Renown is earned through deeds & used to complete Major Projects. A party earns a point of Renown each session they successfully:
 
 - Accomplish a longstanding goal.

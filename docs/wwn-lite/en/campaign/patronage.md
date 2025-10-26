@@ -1,5 +1,3 @@
-## Rewards by Patron
-
 Costs x2 to bribe a patron. Will accept substantial risk, but not likely personal ruin.
 
 | Patron Type | Reward |

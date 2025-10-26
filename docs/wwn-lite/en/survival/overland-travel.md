@@ -1,5 +1,3 @@
-## Overland Travel & Wilderness Survival
-
 ### Travel Times
 - PCs can travel 10hrs per day.
 - **Hours spent to cross a hex:**

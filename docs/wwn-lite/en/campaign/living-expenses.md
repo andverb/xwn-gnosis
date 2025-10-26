@@ -1,5 +1,3 @@
-## Living Expenses & Services
-
 ### Cost per Week
 - **Impoverished living** (-1 Social Checks): 5 $p
 - **Common living**: 20 $p

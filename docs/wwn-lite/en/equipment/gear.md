@@ -1,5 +1,3 @@
-## Gear
-
 ### Equipment
 
 | Item | Cost | Є | Item | Cost | Є |

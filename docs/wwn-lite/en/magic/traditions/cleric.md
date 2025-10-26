@@ -1,5 +1,3 @@
-## Arcane Tradition of the Cleric (Half Class)
-
 - The Cleric exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - Clerics gain Pray as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
 - A Cleric begins play knowing 2 Arts of their choosing.

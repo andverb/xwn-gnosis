@@ -1,5 +1,3 @@
-## Arcane Tradition of the Druid
-
 ### Full Druid
 
 **Bonus Skill**: Magic level-0

@@ -1,5 +1,3 @@
-## Magical Devices
-
 Arcane objects of wonder. Below are listed only a small section of possibilities.
 
 **Censer of Solid Dreams**: Lasts 1 scene. Main Action. 1/day when filled w/ fuel & lit it exhales smoke that the bearer can mold w/ mental commands into a solid, simple object ≤ 30' cube. It is opaque & requires 5HP of damage to punch a human-sized hole through it. Creatures caught w/in the smoke can tear through it w/ a Main Action. Can bear the weight of horses.

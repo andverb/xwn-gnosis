@@ -1,5 +1,3 @@
-## Arcane Tradition of the Monk (Half Class)
-
 - The Monk exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert.
 - All Monks gain a non-combat bonus skill appropriate to their order, acquiring it at level-0, or level-1 if they already have it at level-0.
 - A Monk begins play knowing Martial Style, Unarmed Might, Unarmored Defense, & 1 additional Art of their choosing.

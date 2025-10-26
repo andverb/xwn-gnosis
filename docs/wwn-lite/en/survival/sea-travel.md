@@ -1,5 +1,3 @@
-## Sea Travel
-
 ### Travel & Provisions
 - Ships can sail 24hrs/day if far from coasts & other peril. Ships move ½ speed in unfavorable weather & stall w/0 wind.
 - **Provisions:** Food(250 person-days) 500$p, 1t. Water(50 person-days) 0$p, 1t. Repair Supplies (15HP) 200$p, 1t.

@@ -1,5 +1,3 @@
-## Combat
-
 ### Initiative
 1d8 + Dex or Int Mod. PCs roll individually vs Foe's group Initiative. Foes gain no bonus unless quick. PCs win ties.
 

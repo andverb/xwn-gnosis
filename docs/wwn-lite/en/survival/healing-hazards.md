@@ -1,5 +1,3 @@
-## Healing & Hazards
-
 ### Mortally Wounded
 - PCs @ HP ≤ 0 are Mortally Wounded. They can cry out, crawl a short distance, or take a small action @ GM discretion. Mortally Wounded PCs die in 6 Rounds, or instantly if more damage is taken.
 - NPCs die outright @ ≤ 0HP, or can be knocked unconscious should a Less Lethal weapon be used.

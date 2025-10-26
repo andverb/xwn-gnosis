@@ -1,5 +1,3 @@
-## Arcane Tradition of the Bard (Half Class)
-
 - The Bard exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert. (HB)
 - Bards gain Perform as a bonus Skill, acquiring it at level-0, or level+1 if they already have it at level-0.
 - Bards begin play knowing the Art "A Thousand Tongues" & 1 more Art of their choosing.
