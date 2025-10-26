@@ -129,6 +129,18 @@ async def set_language(lang: str, request: Request):
     return response
 
 
+@router.get("/compendiums", response_class=HTMLResponse)
+async def compendiums_home(request: Request, lang: str | None = Cookie(default=None)):
+    """Language chooser for compendiums"""
+    translations = get_translations(request, lang)
+    current_lang = get_language(request, lang)
+
+    return templates.TemplateResponse(
+        "compendiums_home.html",
+        {"request": request, "t": translations, "current_lang": current_lang},
+    )
+
+
 @router.get("/health")
 async def health_check():
     return {"message": "Im OK!"}

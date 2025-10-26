@@ -1,0 +1,169 @@
+site_name: xWN Gnosis - Compendiums
+site_description: Rules compendiums for xWN tabletop roleplaying games
+site_author: John from DMK
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    # Light mode
+    - scheme: default
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search:
+      lang:
+        - en
+        - uk
+
+nav:
+  - Home: index.md
+  - WWN-Lite:
+    - 'Українська 🇺🇦':
+      - Головна: wwn-lite/uk/index.md
+      - Основи:
+        - wwn-lite/uk/basics/index.md
+        - wwn-lite/uk/basics/core-mechanics.md
+      - Виживання:
+        - wwn-lite/uk/survival/index.md
+        - wwn-lite/uk/survival/threats-healing.md
+        - wwn-lite/uk/survival/exploration.md
+        - wwn-lite/uk/survival/travel-ships.md
+      - Бій:
+        - wwn-lite/uk/combat/index.md
+        - wwn-lite/uk/combat/combat.md
+      - Спорядження:
+        - wwn-lite/uk/equipment/index.md
+        - wwn-lite/uk/equipment/equipment.md
+        - wwn-lite/uk/equipment/alchemy.md
+      - Магія:
+        - wwn-lite/uk/magic/index.md
+        - wwn-lite/uk/magic/magic-basics.md
+        - wwn-lite/uk/magic/traditions.md
+        - wwn-lite/uk/magic/items.md
+      - Персонаж:
+        - wwn-lite/uk/character/index.md
+        - wwn-lite/uk/character/creation.md
+        - wwn-lite/uk/character/options.md
+      - Кампанія:
+        - wwn-lite/uk/campaign/index.md
+        - wwn-lite/uk/campaign/domain-management.md
+        - wwn-lite/uk/campaign/downtime.md
+      - Довідник:
+        - wwn-lite/uk/reference/index.md
+        - wwn-lite/uk/reference/tags.md
+    - 'English 🇬🇧':
+      - Home: wwn-lite/en/index.md
+      - Basics:
+        - wwn-lite/en/basics/index.md
+        - wwn-lite/en/basics/core-mechanics.md
+      - Survival:
+        - wwn-lite/en/survival/index.md
+        - wwn-lite/en/survival/threats-healing.md
+        - wwn-lite/en/survival/exploration.md
+        - wwn-lite/en/survival/travel-ships.md
+      - Combat:
+        - wwn-lite/en/combat/index.md
+        - wwn-lite/en/combat/combat.md
+      - Equipment:
+        - wwn-lite/en/equipment/index.md
+        - wwn-lite/en/equipment/equipment.md
+        - wwn-lite/en/equipment/alchemy.md
+      - Magic:
+        - wwn-lite/en/magic/index.md
+        - wwn-lite/en/magic/magic-basics.md
+        - wwn-lite/en/magic/traditions.md
+        - wwn-lite/en/magic/items.md
+      - Character:
+        - wwn-lite/en/character/index.md
+        - wwn-lite/en/character/creation.md
+        - wwn-lite/en/character/options.md
+      - Campaign:
+        - wwn-lite/en/campaign/index.md
+        - wwn-lite/en/campaign/domain-management.md
+        - wwn-lite/en/campaign/downtime.md
+      - Reference:
+        - wwn-lite/en/reference/index.md
+        - wwn-lite/en/reference/tags.md
+
+markdown_extensions:
+  # Basic extensions
+  - tables
+  - attr_list
+  - def_list
+  - abbr
+  - footnotes
+
+  # Admonitions (notes, warnings, etc.)
+  - admonition
+  - pymdownx.details
+
+  # Code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+  # Content tabs
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Better lists
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  # Table of contents
+  - toc:
+      permalink: true
+      toc_depth: 3
+      title: On this page
+
+  # Better formatting
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.keys
+
+  # Emoji support
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/@d-m-k
+      name: DMK YouTube Channel
+    - icon: fontawesome/brands/github
+      link: https://github.com/yourusername/xwn-gnosis
+      name: GitHub Repository

@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.admin import create_admin
@@ -86,5 +88,15 @@ app.include_router(api_search.router)
 # Web routers (HTML responses)
 app.include_router(pages.router)
 app.include_router(web_search.router)
+
+# Mount MkDocs static sites for compendiums (language-specific)
+SITE_UK_DIR = Path(__file__).parent.parent / "site-uk"
+SITE_EN_DIR = Path(__file__).parent.parent / "site-en"
+
+if SITE_UK_DIR.exists():
+    app.mount("/compendiums/wwn-lite/uk", StaticFiles(directory=str(SITE_UK_DIR), html=True), name="compendiums-uk")
+
+if SITE_EN_DIR.exists():
+    app.mount("/compendiums/wwn-lite/en", StaticFiles(directory=str(SITE_EN_DIR), html=True), name="compendiums-en")
 
 create_admin(app)

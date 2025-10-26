@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.compendiums_title|default('Compendiums - Choose Language') }}{% endblock %}
+
+{% block content %}
+<article>
+    <hgroup style="text-align: center;">
+        <h1>📖 Compendiums</h1>
+        <p>{{ t.compendiums_subtitle|default('Choose your language to view the complete rules documentation') }}</p>
+    </hgroup>
+
+    <section style="max-width: 600px; margin: 2rem auto;">
+        <h2>WWN-Lite</h2>
+        <p>{{ t.compendiums_wwn_lite_desc|default('A simplified version of Worlds Without Number, perfect for newcomers to the xWN system.') }}</p>
+
+        <div class="grid" style="margin-top: 2rem;">
+            <a href="/compendiums/wwn-lite/uk/" role="button">
+                <span style="font-size: 2rem;">🇺🇦</span><br>
+                Українська
+            </a>
+            <a href="/compendiums/wwn-lite/en/" role="button">
+                <span style="font-size: 2rem;">🇬🇧</span><br>
+                English
+            </a>
+        </div>
+
+        <hr style="margin-top: 3rem;">
+
+        <p style="text-align: center;">
+            <small>
+                <a href="/">← {{ t.back_to_search|default('Back to search') }}</a>
+            </small>
+        </p>
+    </section>
+</article>
+{% endblock %}

@@ -1,0 +1,148 @@
+site_name: WWN-Lite - English
+site_description: WWN-Lite rules in English
+site_author: John from DMK
+
+docs_dir: docs
+site_dir: site-en
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    # Light mode
+    - scheme: default
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search:
+      lang: en
+
+nav:
+  - Basics: wwn-lite/en/basics/index.md
+  - Survival:
+    - Healing & Hazards: wwn-lite/en/survival/healing-hazards.md
+    - Delving: wwn-lite/en/survival/delving.md
+    - Overland Travel: wwn-lite/en/survival/overland-travel.md
+    - Sea Travel: wwn-lite/en/survival/sea-travel.md
+  - Combat:
+    - Combat Basics: wwn-lite/en/combat/combat-basics.md
+    - Actions: wwn-lite/en/combat/actions.md
+  - Equipment:
+    - Gear: wwn-lite/en/equipment/gear.md
+    - Armors & Weapons: wwn-lite/en/equipment/armors-weapons.md
+    - Alchemy: wwn-lite/en/equipment/alchemy.md
+  - Magic:
+    - Magic Basics: wwn-lite/en/magic/magic-basics.md
+    - Elixirs: wwn-lite/en/magic/elixirs.md
+    - Magical Devices: wwn-lite/en/magic/magical-devices.md
+    - Traditions:
+      - High Mage: wwn-lite/en/magic/traditions/high-mage.md
+      - Druid: wwn-lite/en/magic/traditions/druid.md
+      - Elementalist: wwn-lite/en/magic/traditions/elementalist.md
+      - Necromancer: wwn-lite/en/magic/traditions/necromancer.md
+      - Bard: wwn-lite/en/magic/traditions/bard.md
+      - Cleric: wwn-lite/en/magic/traditions/cleric.md
+      - Monk: wwn-lite/en/magic/traditions/monk.md
+      - Beastmaster: wwn-lite/en/magic/traditions/beastmaster.md
+      - Warlock: wwn-lite/en/magic/traditions/warlock.md
+  - Character:
+    - Character Creation: wwn-lite/en/character/character-creation.md
+    - XP & Leveling: wwn-lite/en/character/xp-leveling.md
+  - Campaign:
+    - Living Expenses: wwn-lite/en/campaign/living-expenses.md
+    - Hirelings: wwn-lite/en/campaign/hirelings.md
+    - Hiring Armies: wwn-lite/en/campaign/hiring-armies.md
+    - Land Ownership: wwn-lite/en/campaign/land-ownership.md
+    - Building Structures: wwn-lite/en/campaign/building-structures.md
+    - Magical Workings: wwn-lite/en/campaign/magical-workings.md
+    - Patronage: wwn-lite/en/campaign/patronage.md
+    - Renown: wwn-lite/en/campaign/renown.md
+    - Downtime: wwn-lite/en/campaign/downtime.md
+  - Reference:
+    - Tags:
+      - Character Tags: wwn-lite/en/reference/tags/character.md
+      - Community Tags: wwn-lite/en/reference/tags/community.md
+      - Ruins Tags: wwn-lite/en/reference/tags/ruins.md
+      - Wilderness Tags: wwn-lite/en/reference/tags/wilderness.md
+      - Court Tags: wwn-lite/en/reference/tags/court.md
+    - Encounter Difficulty: wwn-lite/en/reference/encounter-difficulty.md
+    - NPC Statistics: wwn-lite/en/reference/npc-statistics.md
+
+markdown_extensions:
+  # Basic extensions
+  - tables
+  - attr_list
+  - def_list
+  - abbr
+  - footnotes
+
+  # Admonitions (notes, warnings, etc.)
+  - admonition
+  - pymdownx.details
+
+  # Code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+  # Content tabs
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Better lists
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  # Table of contents
+  - toc:
+      permalink: true
+      toc_depth: 3
+      title: On this page
+
+  # Better formatting
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.keys
+
+  # Emoji support
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  alternate:
+    - name: Українська
+      link: /compendiums/wwn-lite/uk/
+      lang: uk
+  social:
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/@d-m-k
+      name: DMK YouTube Channel

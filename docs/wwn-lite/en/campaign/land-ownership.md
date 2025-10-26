@@ -1,0 +1,5 @@
+## Land Ownership & Domains
+
+- A business or ag land produces ~10% (-5% taxes to lords) of its purchase price in income each year, assuming all goes well.
+- Each year roll 1d6. 1 = something will go wrong the following yr & there will be no income unless the PCs can fix the problem.
+- Rolling 1 2yrs in a row = Property's financial collapse unless saved by PCs. Ag land never fails shy of war or natural disaster.

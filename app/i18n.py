@@ -11,6 +11,7 @@ TRANSLATIONS = {
         "welcome": "Gnosis",
         "subtitle": "Database of rules for xWN systems",
         "info_tooltip": "Made by John from DMK | xWN systems by Kevin Crawford",
+        "compendiums_tooltip": "Browse compendiums",
         "toggle_theme": "Toggle theme",
         "toggle_language": "Змінити мову на Українську",
         # Search Interface
@@ -50,6 +51,7 @@ TRANSLATIONS = {
         "welcome": "Гнозіс",
         "subtitle": "База правил для систем xWN",
         "info_tooltip": "Створено Джоном з DMK | Системи xWN від Кевіна Кроуфорда",
+        "compendiums_tooltip": "Переглянути компендіуми",
         "toggle_theme": "Змінити тему",
         "toggle_language": "Switch to English",
         # Search Interface
