@@ -2,7 +2,7 @@ site_name: WWN-Lite - English
 site_description: WWN-Lite rules in English
 site_author: John from DMK
 
-docs_dir: docs
+docs_dir: docs/wwn-lite/en
 site_dir: site-en
 
 theme:
@@ -38,55 +38,56 @@ plugins:
       lang: en
 
 nav:
-  - Basics: wwn-lite/en/basics/index.md
+  - Back to Gnosis: /
+  - Basics: basics/index.md
   - Survival:
-    - Healing & Hazards: wwn-lite/en/survival/healing-hazards.md
-    - Delving: wwn-lite/en/survival/delving.md
-    - Overland Travel: wwn-lite/en/survival/overland-travel.md
-    - Sea Travel: wwn-lite/en/survival/sea-travel.md
+    - Healing & Hazards: survival/healing-hazards.md
+    - Delving: survival/delving.md
+    - Overland Travel: survival/overland-travel.md
+    - Sea Travel: survival/sea-travel.md
   - Combat:
-    - Combat Basics: wwn-lite/en/combat/combat-basics.md
-    - Actions: wwn-lite/en/combat/actions.md
+    - Combat Basics: combat/combat-basics.md
+    - Actions: combat/actions.md
   - Equipment:
-    - Gear: wwn-lite/en/equipment/gear.md
-    - Armors & Weapons: wwn-lite/en/equipment/armors-weapons.md
-    - Alchemy: wwn-lite/en/equipment/alchemy.md
+    - Gear: equipment/gear.md
+    - Armors & Weapons: equipment/armors-weapons.md
+    - Alchemy: equipment/alchemy.md
   - Magic:
-    - Magic Basics: wwn-lite/en/magic/magic-basics.md
-    - Elixirs: wwn-lite/en/magic/elixirs.md
-    - Magical Devices: wwn-lite/en/magic/magical-devices.md
+    - Magic Basics: magic/magic-basics.md
+    - Elixirs: magic/elixirs.md
+    - Magical Devices: magic/magical-devices.md
     - Traditions:
-      - High Mage: wwn-lite/en/magic/traditions/high-mage.md
-      - Druid: wwn-lite/en/magic/traditions/druid.md
-      - Elementalist: wwn-lite/en/magic/traditions/elementalist.md
-      - Necromancer: wwn-lite/en/magic/traditions/necromancer.md
-      - Bard: wwn-lite/en/magic/traditions/bard.md
-      - Cleric: wwn-lite/en/magic/traditions/cleric.md
-      - Monk: wwn-lite/en/magic/traditions/monk.md
-      - Beastmaster: wwn-lite/en/magic/traditions/beastmaster.md
-      - Warlock: wwn-lite/en/magic/traditions/warlock.md
+      - High Mage: magic/traditions/high-mage.md
+      - Druid: magic/traditions/druid.md
+      - Elementalist: magic/traditions/elementalist.md
+      - Necromancer: magic/traditions/necromancer.md
+      - Bard: magic/traditions/bard.md
+      - Cleric: magic/traditions/cleric.md
+      - Monk: magic/traditions/monk.md
+      - Beastmaster: magic/traditions/beastmaster.md
+      - Warlock: magic/traditions/warlock.md
   - Character:
-    - Character Creation: wwn-lite/en/character/character-creation.md
-    - XP & Leveling: wwn-lite/en/character/xp-leveling.md
+    - Character Creation: character/character-creation.md
+    - XP & Leveling: character/xp-leveling.md
   - Campaign:
-    - Living Expenses: wwn-lite/en/campaign/living-expenses.md
-    - Hirelings: wwn-lite/en/campaign/hirelings.md
-    - Hiring Armies: wwn-lite/en/campaign/hiring-armies.md
-    - Land Ownership: wwn-lite/en/campaign/land-ownership.md
-    - Building Structures: wwn-lite/en/campaign/building-structures.md
-    - Magical Workings: wwn-lite/en/campaign/magical-workings.md
-    - Patronage: wwn-lite/en/campaign/patronage.md
-    - Renown: wwn-lite/en/campaign/renown.md
-    - Downtime: wwn-lite/en/campaign/downtime.md
+    - Living Expenses: campaign/living-expenses.md
+    - Hirelings: campaign/hirelings.md
+    - Hiring Armies: campaign/hiring-armies.md
+    - Land Ownership: campaign/land-ownership.md
+    - Building Structures: campaign/building-structures.md
+    - Magical Workings: campaign/magical-workings.md
+    - Patronage: campaign/patronage.md
+    - Renown: campaign/renown.md
+    - Downtime: campaign/downtime.md
   - Reference:
     - Tags:
-      - Character Tags: wwn-lite/en/reference/tags/character.md
-      - Community Tags: wwn-lite/en/reference/tags/community.md
-      - Ruins Tags: wwn-lite/en/reference/tags/ruins.md
-      - Wilderness Tags: wwn-lite/en/reference/tags/wilderness.md
-      - Court Tags: wwn-lite/en/reference/tags/court.md
-    - Encounter Difficulty: wwn-lite/en/reference/encounter-difficulty.md
-    - NPC Statistics: wwn-lite/en/reference/npc-statistics.md
+      - Character Tags: reference/tags/character.md
+      - Community Tags: reference/tags/community.md
+      - Ruins Tags: reference/tags/ruins.md
+      - Wilderness Tags: reference/tags/wilderness.md
+      - Court Tags: reference/tags/court.md
+    - Encounter Difficulty: reference/encounter-difficulty.md
+    - NPC Statistics: reference/npc-statistics.md
 
 markdown_extensions:
   # Basic extensions

@@ -89,7 +89,10 @@ app.include_router(api_search.router)
 app.include_router(pages.router)
 app.include_router(web_search.router)
 
-# Mount MkDocs static sites for rulesets (language-specific)
+# Mount MkDocs static sites for rulesets
+# site-uk and site-en now contain clean paths (basics/, combat/, etc.)
+# because we set docs_dir to point directly to language-specific folders (docs/wwn-lite/uk, docs/wwn-lite/en)
+# This follows MkDocs best practices for multilingual sites
 SITE_UK_DIR = Path(__file__).parent.parent / "site-uk"
 SITE_EN_DIR = Path(__file__).parent.parent / "site-en"
 

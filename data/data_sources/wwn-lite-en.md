@@ -1279,6 +1279,7 @@ Costs x2 to bribe a patron. Will accept substantial risk, but not likely persona
 | Monarch or Merchant Prince | 50k $p |
 
 **Modifiers:**
+
 - Paid in land or goods, not cash: x2
 - Great danger or desperate need: x2
 - They'd give everything for this job: x4

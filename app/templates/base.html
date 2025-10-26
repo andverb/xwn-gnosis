@@ -20,13 +20,7 @@
 <main class="container">
     <nav>
         <ul>
-            <li>
-                <button data-placement="right" data-tooltip="{{ t.info_tooltip|default('Made by John from DMK | xWN systems by Kevin Crawford') }}">❓
-                </button>
-            </li>
-            <li>
-                <a href="/rulesets" role="button" data-placement="right" data-tooltip="{{ t.rulesets_tooltip|default('Browse rulesets') }}">📖</a>
-            </li>
+            <li><a href="/rulesets">{{ t.rulesets_tooltip|default('Browse rulesets') }}</a></li>
         </ul>
         <ul>
             <li>
@@ -39,6 +33,10 @@
             </li>
         </ul>
         <ul>
+            <li>
+                <button data-placement="left" data-tooltip="{{ t.info_tooltip|default('Made by John from DMK | xWN systems by Kevin Crawford') }}">❓
+                </button>
+            </li>
             <li>
                 <button data-placement="left"
                         data-tooltip="{{ t.toggle_language|default('Switch language') }}"

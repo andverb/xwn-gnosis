@@ -29,6 +29,10 @@ COPY . .
 # Place executables in the environment at the front of the path
 ENV PATH="/code/.venv/bin:$PATH"
 
+# Build MkDocs rulesets (Ukrainian and English)
+RUN mkdocs build -f mkdocs-uk.yml --clean && \
+    mkdocs build -f mkdocs-en.yml --clean
+
 # Create non-root user for security
 RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m
 RUN chown -R adventurer:adventurer /code
