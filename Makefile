@@ -15,6 +15,8 @@ dev-docker:
 	docker-compose up --build
 
 build-rulesets:
+	@echo "Splitting markdown files..."
+	uv run python scripts/split_markdown_hierarchical.py
 	@echo "Building Ukrainian documentation..."
 	uv run mkdocs build -f mkdocs-uk.yml --clean
 	@echo "Building English documentation..."
