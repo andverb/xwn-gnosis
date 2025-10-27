@@ -75,6 +75,7 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 - **Checks**: 2d6 + Attribute mod + Skill (-1 if no relevant Skill).
 - **DC6**: Trivial, **DC8**: Easy, **DC10**: Average, **DC12**: Hard, **DC14**: Near Impossible (Adjust based on circumstance & urgency).
 - **PCs can attempt to Aid another** by performing a helpful Check themselves. Their attempt need not be the same Skill it's providing aid for. Success = +1 bonus. Multiple PCs can attempt to Aid, but the acting PC can't earn > +1.
+- **Opposed checks**: NPCs rolls plain 2d6, can add +skill if it makes sense that NPC is good at relevant skill. Ties go to PCs.
 
 ### Saving Throws
 - **Saves**: A subject rolls a d20 & tries to roll ≥ the relevant Save score.
