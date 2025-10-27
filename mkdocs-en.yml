@@ -56,16 +56,6 @@ nav:
     - Magic Basics: magic/magic-basics.md
     - Elixirs: magic/elixirs.md
     - Magical Devices: magic/magical-devices.md
-    - Traditions:
-      - High Mage: magic/traditions/high-mage.md
-      - Druid: magic/traditions/druid.md
-      - Elementalist: magic/traditions/elementalist.md
-      - Necromancer: magic/traditions/necromancer.md
-      - Bard: magic/traditions/bard.md
-      - Cleric: magic/traditions/cleric.md
-      - Monk: magic/traditions/monk.md
-      - Beastmaster: magic/traditions/beastmaster.md
-      - Warlock: magic/traditions/warlock.md
   - Character:
     - Character Creation: character/character-creation.md
     - XP & Leveling: character/xp-leveling.md
@@ -120,7 +110,7 @@ markdown_extensions:
   # Table of contents
   - toc:
       permalink: true
-      toc_depth: 3
+      toc_depth: 4
       title: On this page
 
   # Better formatting

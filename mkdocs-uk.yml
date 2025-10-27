@@ -57,16 +57,6 @@ nav:
     - Основи Магії: magic/magic-basics.md
     - Еліксири: magic/elixirs.md
     - Магічні Пристрої: magic/magical-devices.md
-    - Традиції:
-      - Вищі Маги: magic/traditions/high-mage.md
-      - Друїд: magic/traditions/druid.md
-      - Елементаліст: magic/traditions/elementalist.md
-      - Некромант: magic/traditions/necromancer.md
-      - Бард: magic/traditions/bard.md
-      - Клірик: magic/traditions/cleric.md
-      - Монах: magic/traditions/monk.md
-      - Приборкувач Звірів: magic/traditions/beastmaster.md
-      - Чаклун: magic/traditions/warlock.md
   - Персонаж:
     - Створення Персонажа: character/character-creation.md
     - Досвід та Підвищення Рівня: character/xp-leveling.md
@@ -123,7 +113,7 @@ markdown_extensions:
   # Table of contents
   - toc:
       permalink: true
-      toc_depth: 3
+      toc_depth: 4
       title: На цій сторінці
 
   # Better formatting
