@@ -211,6 +211,7 @@ Guidelines for adjudicating improvised combat actions.
 **READY/STOW AN ITEM (Main Action)**: Draw a weapon or item from a pack. Changes from Readied to Stowed, or vice versa.
 
 **SWARM ATTACK (Main Action)**:
+
 - Each willing attacker takes this Act, targeting a foe w/in range.
 - Once the final attacker has acted, 1 of the assailants makes an immediate attack (+2 to hit & +1 to damage for each additional assailant. Max +6/+3). Damage can't exceed the max of their normal attack, & is not applied to Shock.
 - Even on a miss, Shock from the attack always harms the target regardless of their AC, if they're using a shield, or they have a Foci immunity to Shock. Total Defense however can prevent this Shock damage.
@@ -220,6 +221,7 @@ Guidelines for adjudicating improvised combat actions.
 **SHATTER A SHIELD (Main Action)**: Requires an axe, mace, Foci-improved unarmed attack… Roll to hit. Success = no damage, but roll an opposed Str/Stab check (+1 to defender). Success = shield breaks. Magic shields are immune. Craft-0 & 1 scene to repair.
 
 **GRAPPLE A FOE (Main Action)**:
+
 - Roll to hit w/ Punch. On success, no damage, but roll an opposed Str/Punch check. On success the target is grappled.
 - While grappled, neither attackers or defender can move from their spot, nor can they fight w/ anything but unarmed attacks.
 - To escape a grapple: defender uses Main Action & rolls 1 opposed Str/Punch check & compares it vs each grappling attacker.
@@ -234,6 +236,7 @@ Guidelines for adjudicating improvised combat actions.
 **RUN (Move Action)**: Move normal combat movement, typically 30'. ½ speed to crawl, climb, swim, difficult terrain…
 
 **SCREEN AN ALLY (Move Action)**:
+
 - PC selects an ally w/in 10' to Screen until the PC's next turn.
 - While screened, ranged/melee attackers attempting to hit the screened target must succeed an opposed Str or Dex Check using the combat Skill of their weapon vs the screener's weapon Skill. On failure, the attack roll is directed towards the screening PC.
 - A PC can screen a # of attackers = to their Combat Skill. A PC w/ < Skill+1 can't effectively screen.
@@ -243,6 +246,7 @@ Guidelines for adjudicating improvised combat actions.
 **TOTAL DEFENSE (Instant Action)**: Costs Main Action for the Round & can't be used if their Main Action was already used that Round. Avoids all Shock damage & PC gains a +2 bonus to AC until their next turn. CAN prevent Shock from Swarm attack.
 
 **RELOAD A weapon (Main Action/Move Action/On Turn)**:
+
 - Reload a weapon like a crossbow w/ the Slow Reload property (Main Action).
 - Reload a weapon like a bow w/ the Reload property untrained or w/o a quiver readied (Move Action).
 - Reload a weapon like a bow w/ the Reload property w/ Shoot+1 & a readied quiver (On Turn Action).
@@ -260,6 +264,7 @@ Guidelines for adjudicating improvised combat actions.
 **HOLD AN ACTION (Move Action)**: Hold remainder of your Actions until later in the Round, activating them as an Instant Action.
 
 **EXECUTION ATTACKS (Main Action)**:
+
 - Requires a target oblivious of danger, 1 min of setup time, & a weapon unless the attacker has a Foci or ability stating otherwise.
 - A target's AC is irrelevant assuming the attacker's weapon is capable of harming them.
 - Ranged attacks require a Dex/Shoot Skill check. Point Blank: DC6. Normal Range: DC8. Extreme Range: DC10. Melee always hits.
@@ -1847,6 +1852,7 @@ Create Mods even if you are not an Expert.
 **Level 1**: Choose your familiar's form (≥ a cat, ≤ a human). Has traits & abilities as though created by Summon Familiar (pg 25). Main Action to summon or dismiss (appears w/in melee range of its owner). Can't carry objects w/ it during its vanishment. Requires no rest or provisions. If killed vanishes & can be re-summoned after 24 hrs. 1/day, it can refresh 1 point of Committed Effort for you.
 
 **Level 2**: Pick 2 benefits from the list for your familiar (this level may be taken more than once):
+
 - HP = x3 your level.
 - Can hover or fly @ its usual movement rate.
 - Can communicate w/ others in any language you know.

@@ -474,6 +474,7 @@ Create Mods even if you are not an Expert.
 **Level 1**: Choose your familiar's form (≥ a cat, ≤ a human). Has traits & abilities as though created by Summon Familiar (pg 25). Main Action to summon or dismiss (appears w/in melee range of its owner). Can't carry objects w/ it during its vanishment. Requires no rest or provisions. If killed vanishes & can be re-summoned after 24 hrs. 1/day, it can refresh 1 point of Committed Effort for you.
 
 **Level 2**: Pick 2 benefits from the list for your familiar (this level may be taken more than once):
+
 - HP = x3 your level.
 - Can hover or fly @ its usual movement rate.
 - Can communicate w/ others in any language you know.
