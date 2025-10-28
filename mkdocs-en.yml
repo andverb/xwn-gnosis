@@ -53,9 +53,8 @@ nav:
     - Armors & Weapons: equipment/armors-weapons.md
     - Alchemy: equipment/alchemy.md
   - Magic:
-    - Magic Basics: magic/magic-basics.md
-    - Elixirs: magic/elixirs.md
-    - Magical Devices: magic/magical-devices.md
+    - Magic and Spells: magic/magic-basics.md
+    - Magical Items: magic/magical-items.md
   - Character:
     - Character Creation: character/character-creation.md
     - XP & Leveling: character/xp-leveling.md

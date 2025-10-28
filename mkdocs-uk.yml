@@ -54,9 +54,8 @@ nav:
     - Модифікації та Обслуговування: equipment/modifications.md
     - Алхімія: equipment/alchemy.md
   - Магія:
-    - Основи Магії: magic/magic-basics.md
-    - Еліксири: magic/elixirs.md
-    - Магічні Пристрої: magic/magical-devices.md
+    - Чари і Заклинання: magic/magic-basics.md
+    - Магічні Предмети: magic/magical-items.md
   - Персонаж:
     - Створення Персонажа: character/character-creation.md
     - Досвід та Підвищення Рівня: character/xp-leveling.md

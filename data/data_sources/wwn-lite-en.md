@@ -754,7 +754,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Unquenchable Flame**: DC12. 1000 $p. 2 wks. This fist-sized mass is covered w/ a protective film. If scratched the mass will ignites & burn w/ a ferocious heat & toxic fumes for 1d6+4 Rounds. 1d6 damage to anyone who spends their full Round w/in 10'. The mass burns almost anything (stone, water, metal…) & often burns a hole 3' deep before consuming itself.
 
-## Magic
+## Magic and Spells
 
 ### Arts & Effort
 - Arts are fueled by Committing Effort. A PC's Class determines from whence Effort is based.
@@ -825,6 +825,8 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 9. The spell is simply unreliable. When cast, roll 1d6. On a 1, the spell fizzles uselessly & the casting slot is wasted.
 10. The whole attempt was a mistake. All progress & research materials are lost & everything must be done over from the start.
 
+## Magical Items
+
 ### Creating Magical Items
 - Permanent magic items require ≥ 1 adventure to acquire the required components.
 - Int/Magic Skill check to create. Success: Item is created. Failure: Initial time & money is lost. PCs roll for Item Flaw.
@@ -855,7 +857,11 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - A spellcaster can't use their own arts to boost a spell embedded in a calyx. It must be cast in its normal, unmodified form.
 - User's Magic Skill must be ≥ the spell's level -1 to trigger it safely, otherwise Int/Magic or Cha/Magic Skill check is needed.
 - DC = 8 + spell's level. Failure by ≤ 2: the spell is wasted. Failure by >2: its cast, but @ the wrong target or wrong effect.
-- **Crafting Calyxes**: Cost = 1k $p x Spell Level, DC7 + ½ Spell Level ↑. Requires 1 week to craft & 1 week x Spell Level before another can be.
+
+**Crafting Calyxes**: 
+- Cost = 1k $p x Spell Level.
+- DC7 + ½ Spell Level ↑. 
+- Requires 1 week to craft & 1 week x Spell Level before another can be.
 
 ### Exemplars
 - Exemplars are arcane artifacts that provide deep magical insight. Obvious on close inspection by a PC w/t ≤ Magic-0.
@@ -1036,16 +1042,13 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Traitorous**: On a nat 1 attack roll, the weapon strikes its owner. If armor is cursed, foes always hit on a 1 on the hit roll.
 
-## Elixirs
+### Elixirs
 
-### Elixir Basics
 - Elixirs must be consumed as part of their activation, typically requiring a Main Action for a readied Elixir.
 - An Elixir = 1Є when Readied. A GM may allow some to be packed together @ 0 Є but they'll be inaccessible in combat.
 - Salves & unguents can't be applied to a hostile or resisting target.
 - Identifying Elixirs requires a detection spell, legible label, tasting a drop to guess, or 1 day & a Wis or Int Magic check vs its creation DC. Only 1 chance. If elixir was tainted or fouled it may detect incorrectly.
 - Elixirs aren't uncommon in dungeons. Purchasing them requires a relationship w/ a skilled brewer & a reason for them to brew.
-
-### Elixir List
 
 **Anchoring Draught**: Range: 10mi. Lasts 24hrs. Main Action: Imbiber teleports back to the spot they drank the potion, along w/ any objects & willing or incapacitated creatures they are carrying.
 
@@ -1089,7 +1092,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 
 **Wrathful Detonation**: These flasks are permanently sealed & when hurled w/ intention never miss. They detonate for 2d6 damage to all targets w/in 15', w/ a range of 60'. They will not explode by accident, & only 1 flask can be hurled at a time.
 
-## Magical Devices
+### Magical Devices
 
 Arcane objects of wonder. Below are listed only a small section of possibilities.
 
