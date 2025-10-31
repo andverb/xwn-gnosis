@@ -23,6 +23,7 @@ Groups usually encounter each other @ max sight range barring concealment.
 - Roll opposed Wis/Notice to determine who spots who 1st; the party who gains the edge can usually avoid the other group.
 
 **Distance by terrain:**
+
 - Dungeons, Alleyways, etc: 1d6 x 10'
 - Forest, Hills, etc: 2d6 x 10'
 - Mts, Deserts, Plains, Tundra, Sea: 4d6 x 10 Yds
@@ -31,6 +32,7 @@ Groups usually encounter each other @ max sight range barring concealment.
 The benefits from a Night's Rest may require fire & shelter if weather is poor.
 
 **System Strain from privation:**
+
 - Night w/o Adequate Shelter/Fire: +0 Strain
 - 1st Day w/o Enough Food: +0 Strain
 - 1st Day w/o Enough Water: +2 Strain
@@ -39,6 +41,7 @@ The benefits from a Night's Rest may require fire & shelter if weather is poor.
 - Consecutive Day w/o Water: +3 Strain
 
 **Foraging:**
+
 - PCs traveling in non-barren terrain or w/ a caravan or a well-stocked wagon need not worry for food, drink, or shelter.
 - Foraging requires 1 hour. Successful Check = 1d6 Forage Units (FU) + the sum of the group's Survive Skills (max 10).
 - Typical foraging: DC10

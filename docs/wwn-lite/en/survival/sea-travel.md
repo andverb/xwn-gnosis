@@ -5,6 +5,7 @@
 
 ### Crew
 **Cost by month / Crew Strength:**
+
 - Sailor: 50$p / 1
 - Officer: 250$p / x2 (reqs 10 troops)
 - Captain: 250$p / x5 (reqs 100 troops)

@@ -51,6 +51,7 @@ Roll 1d6 x 10' if distance is uncertain.
 If a creature's disposition is uncertain, make a Reaction Roll (2d6 & consult the table). If a PC is in a position to greet the targets, add their Cha to the roll. GM will make clear the results through narrative.
 
 **Roll 2d6:**
+
 - 2: Max Hostile
 - 3-5: Very Hostile
 - 6-8: Predictably hostile, friendly, or indifferent

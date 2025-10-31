@@ -15,6 +15,7 @@
 | Powerful item or one w/ multiple significant abilities | 14 | 250k $p | 6 months |
 
 **Modifiers:**
+
 - 2 doses of single use item: -1 penalty
 - 4 doses of single use item: -2
 - Magic-0 Apprentice: +1

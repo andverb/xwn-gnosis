@@ -34,6 +34,7 @@
 - PCs can repeat this process adding flaws & paying ½ the original time until successful or until they abandon the project.
 
 **Spell design guidelines:**
+
 - Spells should not substitute for other classes.
 - Spells should not offer simple numeric bonuses.
 - Spells should not offer cheap & easy combat damage.
