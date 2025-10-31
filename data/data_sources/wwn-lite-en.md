@@ -416,6 +416,7 @@ Roll 1d6 x 10' if distance is uncertain.
 If a creature's disposition is uncertain, make a Reaction Roll (2d6 & consult the table). If a PC is in a position to greet the targets, add their Cha to the roll. GM will make clear the results through narrative.
 
 **Roll 2d6:**
+
 - 2: Max Hostile
 - 3-5: Very Hostile
 - 6-8: Predictably hostile, friendly, or indifferent
@@ -465,6 +466,7 @@ Groups usually encounter each other @ max sight range barring concealment.
 - Roll opposed Wis/Notice to determine who spots who 1st; the party who gains the edge can usually avoid the other group.
 
 **Distance by terrain:**
+
 - Dungeons, Alleyways, etc: 1d6 x 10'
 - Forest, Hills, etc: 2d6 x 10'
 - Mts, Deserts, Plains, Tundra, Sea: 4d6 x 10 Yds
@@ -473,6 +475,7 @@ Groups usually encounter each other @ max sight range barring concealment.
 The benefits from a Night's Rest may require fire & shelter if weather is poor.
 
 **System Strain from privation:**
+
 - Night w/o Adequate Shelter/Fire: +0 Strain
 - 1st Day w/o Enough Food: +0 Strain
 - 1st Day w/o Enough Water: +2 Strain
@@ -481,6 +484,7 @@ The benefits from a Night's Rest may require fire & shelter if weather is poor.
 - Consecutive Day w/o Water: +3 Strain
 
 **Foraging:**
+
 - PCs traveling in non-barren terrain or w/ a caravan or a well-stocked wagon need not worry for food, drink, or shelter.
 - Foraging requires 1 hour. Successful Check = 1d6 Forage Units (FU) + the sum of the group's Survive Skills (max 10).
 - Typical foraging: DC10
@@ -508,11 +512,13 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 
 ### Crew
 **Cost by month / Crew Strength:**
+
 - Sailor: 50$p / 1
 - Officer: 250$p / x2 (reqs 10 troops)
 - Captain: 250$p / x5 (reqs 100 troops)
 
 **Crew considerations:**
+
 - Expeditions w/o prospects of riches might find crew @ x5 to x10 the usual pay rate, but few sailors will risk their lives for less.
 - Crews of ships commissioned for privateering, piracy, or expeditions into the unknown typically demand shares of the profit.
 - Ship's owner: ½ of profit & magic items. The 2nd ½ split in shares: Capt = 5, officer = 2, & sailor = 1. (Pirates split haul evenly).
@@ -537,6 +543,7 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 *Can move up to 10 hexes/day by oar w/ 8 rowers.
 
 **Ship Stats:**
+
 - **Cost**: Ship price (not including crew hiring costs).
 - **Crew**: # required for regular operation / max # a ship may hold.
 - **Hexes/Day**: # of hexes a ship can travel in 24hrs (½ in bad weather)
@@ -562,12 +569,10 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 | Cannon | 2500 $p | 10 | Far | 1d12 x3 | 4t | Medium | AP, FX, SS |
 
 **Ship Weapon Stats:**
+
 - **COST**: Price of gear (doesn't include crew costs).
 - **CREW**: # of men required to fire & reload a weapon.
-- **RNG**:
-  - Sighted: W/in view
-  - Far: Subject to ranged attacks of 500'
-  - Near: +2 to attacks regardless of range & w/in range to board
+- **RNG**: Range of the weapon - **Sighted**: W/in view, **Far** - Subject to ranged attacks of 500', **Near**: +2 to attacks regardless of range & w/in range to board
 - **DMG**: Dealt on hit.
 - **Cargo**: Space required for a weapon's equipment.
 - **Size**: Min size of a ship capable of mounting the weapon.
@@ -621,21 +626,25 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft Skill check.
 
 **Difficulty:**
+
 - Background Item: No Skill check
 - Item unrelated to Background: DC7
 - Demanding item: DC9
 - Specialist item: DC11
 
 **Crafting Time:**
+
 - Torches, Spears, Cloaks, etc: 1Hr
 - Clothes, Blunt weapons, leather armor: 1Day
 - Blades, Metal armor, Cart: 1wk
 
 **Crafting bonuses:**
+
 - A Craft-0 Assistant = x2 speed
 - DC9 Int or Dex Craft check = x2 speed. On failure lose ½ material & gain no speed.
 
 **Additional rules:**
+
 - DC7 Int or Dex Craft check to jury rig something crude but plausible, DC10 check for something more difficult/less plausible.
 - Masterwork gear costs x10 retail & x2 time to craft. DC10 Int or Dex Craft check @ end of crafting, on failure item is normal.
 - Masterwork weapon: +1 Hit. Masterwork Armor: Normal armor -1Є (min of 1. Not for purposes of Armored Magic foci.)
@@ -792,6 +801,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 - PCs can repeat this process adding flaws & paying ½ the original time until successful or until they abandon the project.
 
 **Spell design guidelines:**
+
 - Spells should not substitute for other classes.
 - Spells should not offer simple numeric bonuses.
 - Spells should not offer cheap & easy combat damage.
@@ -844,6 +854,7 @@ These formulae are commonly known to Alchemists. Creation DC, materials cost, & 
 | Powerful item or one w/ multiple significant abilities | 14 | 250k $p | 6 months |
 
 **Modifiers:**
+
 - 2 doses of single use item: -1 penalty
 - 4 doses of single use item: -2
 - Magic-0 Apprentice: +1

@@ -10,6 +10,7 @@
 - Captain: 250$p / x5 (reqs 100 troops)
 
 **Crew considerations:**
+
 - Expeditions w/o prospects of riches might find crew @ x5 to x10 the usual pay rate, but few sailors will risk their lives for less.
 - Crews of ships commissioned for privateering, piracy, or expeditions into the unknown typically demand shares of the profit.
 - Ship's owner: ½ of profit & magic items. The 2nd ½ split in shares: Capt = 5, officer = 2, & sailor = 1. (Pirates split haul evenly).
@@ -34,6 +35,7 @@
 *Can move up to 10 hexes/day by oar w/ 8 rowers.
 
 **Ship Stats:**
+
 - **Cost**: Ship price (not including crew hiring costs).
 - **Crew**: # required for regular operation / max # a ship may hold.
 - **Hexes/Day**: # of hexes a ship can travel in 24hrs (½ in bad weather)
@@ -59,12 +61,10 @@
 | Cannon | 2500 $p | 10 | Far | 1d12 x3 | 4t | Medium | AP, FX, SS |
 
 **Ship Weapon Stats:**
+
 - **COST**: Price of gear (doesn't include crew costs).
 - **CREW**: # of men required to fire & reload a weapon.
-- **RNG**:
-  - Sighted: W/in view
-  - Far: Subject to ranged attacks of 500'
-  - Near: +2 to attacks regardless of range & w/in range to board
+- **RNG**: Range of the weapon - **Sighted**: W/in view, **Far** - Subject to ranged attacks of 500', **Near**: +2 to attacks regardless of range & w/in range to board
 - **DMG**: Dealt on hit.
 - **Cargo**: Space required for a weapon's equipment.
 - **Size**: Min size of a ship capable of mounting the weapon.
