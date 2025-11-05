@@ -45,3 +45,10 @@ CLAUDE.md
 site/
 site-uk/
 site-en/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+*.cover
