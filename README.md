@@ -1,3 +1,8 @@
+# xWN Gnosis
+
+[![Tests](https://github.com/andverb/xwn-gnosis/actions/workflows/tests.yml/badge.svg)](https://github.com/andverb/xwn-gnosis/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/andverb/xwn-gnosis/branch/main/graph/badge.svg)](https://codecov.io/gh/andverb/xwn-gnosis)
+
 This is a rules database for xWN family of tabletop roleplaying games.
 
 Features planned: 
@@ -48,7 +53,11 @@ Features expanded:
 - Deployed on [Railway](https://railway.app/) - https://xwn-gnosis-production.up.railway.app
 - [uv](https://github.com/astral-sh/uv) - Fast Python package manager
 
+### Testing & CI/CD
+- [pytest](https://docs.pytest.org/) - Testing framework with async support
+- [pytest-cov](https://pytest-cov.readthedocs.io/) - Code coverage reporting
+- GitHub Actions - Automated testing and coverage reports
+- [Codecov](https://codecov.io/) - Code coverage tracking and badges
+
 ### Planned/Future
 - [FastAPI Users](https://github.com/fastapi-users/fastapi-users) - User authentication system
-- [Structlog](https://www.structlog.org/) - Structured logging
-- GitHub Actions CI/CD pipeline

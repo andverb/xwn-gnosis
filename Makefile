@@ -1,4 +1,4 @@
-.PHONY: dev dev-docker migrate migrations db-reset backup generate-secrets dump-data restore-data build-rulesets
+.PHONY: dev dev-docker migrate migrations db-reset backup generate-secrets dump-data restore-data build-rulesets test test-cov test-html
 
 include .env
 export
@@ -76,3 +76,16 @@ restore-data:
 	fi; \
 	psql "$(DB_URL)" -f "$$file" && \
 	echo "Data restored from $$file"
+
+# Run tests
+test:
+	uv run pytest
+
+# Run tests with coverage report
+test-cov:
+	uv run pytest --cov=app --cov-report=term-missing
+
+# Run tests with HTML coverage report
+test-html:
+	uv run pytest --cov=app --cov-report=html
+	@echo "Coverage report generated in htmlcov/index.html"
