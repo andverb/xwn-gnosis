@@ -4,9 +4,6 @@ Tests for the improved health check endpoint.
 This module tests the comprehensive health check that verifies database connectivity.
 """
 
-import pytest
-from unittest.mock import AsyncMock, patch
-
 
 class TestHealthCheck:
     """Test health check endpoint functionality."""

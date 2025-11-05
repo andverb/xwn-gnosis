@@ -176,7 +176,7 @@ async def health_check(db: DbSession):
         health_status["status"] = "unhealthy"
         health_status["checks"]["database"] = {
             "status": "unhealthy",
-            "message": f"Database connection failed: {str(e)}",
+            "message": f"Database connection failed: {e!s}",
             "error_type": type(e).__name__,
         }
 
@@ -198,7 +198,7 @@ async def health_check(db: DbSession):
     except Exception as e:
         health_status["checks"]["database_schema"] = {
             "status": "degraded",
-            "message": f"Database schema check failed: {str(e)}",
+            "message": f"Database schema check failed: {e!s}",
             "error_type": type(e).__name__,
         }
         # Don't fail health check for schema issues, just mark as degraded

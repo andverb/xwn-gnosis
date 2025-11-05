@@ -84,6 +84,12 @@ max-line-length = 120
 "app/i18n.py" = ["RUF001"]  # Allow Cyrillic characters in translations
 "app/admin.py" = ["RUF012"]  # Starlette Admin ModelView class attributes
 "scripts/**/*.py" = ["T201", "RUF001"]  # Allow print statements and Cyrillic characters in CLI scripts
+"tests/**/*.py" = [
+    "S106",    # Allow hardcoded passwords in tests
+    "PLR2004", # Allow magic values in tests
+    "PLC0415", # Allow imports inside functions in tests
+    "DTZ005",  # Allow datetime without timezone in tests
+]
 
 [tool.alembic]
 

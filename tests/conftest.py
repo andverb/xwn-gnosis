@@ -7,20 +7,18 @@ including database setup, test client, and sample data factories.
 
 import asyncio
 from collections.abc import AsyncGenerator, Generator
-from typing import Any
 
 import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
 from sqlalchemy import event
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import StaticPool
 
 from app.config import Settings
 from app.dependencies import AppSettings
 from app.main import app
 from app.models import Base, Rule, RuleSet
-
 
 # Use in-memory SQLite for tests
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -97,17 +95,18 @@ async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
     """
     Provide a database session for each test.
 
-    Each test gets a fresh session that is rolled back after the test completes.
+    Uses transaction-based isolation - all changes are rolled back after each test,
+    ensuring complete test isolation even if tests fail mid-execution.
     """
-    async_session_maker = async_sessionmaker(
-        test_engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-    )
+    connection = await test_engine.connect()
+    transaction = await connection.begin()
 
-    async with async_session_maker() as session:
-        yield session
-        await session.rollback()
+    session = AsyncSession(bind=connection, expire_on_commit=False)
+    yield session
+
+    await session.close()
+    await transaction.rollback()
+    await connection.close()
 
 
 @pytest.fixture
@@ -122,6 +121,7 @@ def client(test_settings: Settings, db_session: AsyncSession) -> TestClient:
     Returns:
         TestClient instance for making test requests
     """
+    from app.db import get_db
 
     # Override dependencies
     def override_get_settings() -> Settings:
@@ -131,8 +131,7 @@ def client(test_settings: Settings, db_session: AsyncSession) -> TestClient:
         yield db_session
 
     app.dependency_overrides[AppSettings] = override_get_settings
-    # Note: We cannot easily override get_db without importing it, so tests
-    # that need database should use db_session directly
+    app.dependency_overrides[get_db] = override_get_db
 
     with TestClient(app) as test_client:
         yield test_client
@@ -141,7 +140,7 @@ def client(test_settings: Settings, db_session: AsyncSession) -> TestClient:
     app.dependency_overrides.clear()
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="function")
 async def sample_ruleset(db_session: AsyncSession) -> RuleSet:
     """
     Create a sample ruleset for testing.

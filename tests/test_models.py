@@ -5,7 +5,6 @@ This module tests database models in app/models.py.
 """
 
 import pytest
-from sqlalchemy import select
 
 from app.models import Rule, RuleSet
 

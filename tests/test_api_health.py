@@ -4,7 +4,6 @@ Tests for API health and basic endpoint functionality.
 This module tests that the API is configured correctly and basic endpoints work.
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
 
