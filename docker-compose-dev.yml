@@ -20,8 +20,8 @@ services:
       ports:
         - "8000:8000"
       environment:
-        GNOSIS_DATABASE_URL: postgresql+asyncpg://gnosis_user:dev_password@postgres:5432/gnosis_db
-#        GNOSIS_API_KEY: dev-secret-key
+        DATABASE_URL: postgresql+asyncpg://gnosis_user:dev_password@postgres:5432/gnosis_db
+#        API_KEY: dev-secret-key
       depends_on:
         postgres:
           condition: service_healthy

@@ -9,19 +9,25 @@ logger = get_logger(__name__)
 logger.info(
     "database_engine_configured",
     environment=settings.environment,
-    pool_size="default",
-    echo=False,
+    pool_size=5,
+    max_overflow=10,
+    pool_recycle=3600,
+    echo=settings.environment == "development",
 )
 
 engine = create_async_engine(
     settings.database_url,
-    echo=settings.environment == "development",  # Log SQL queries in development
-    pool_pre_ping=True,  # Verify connections before use
+    echo=settings.environment == "development",  # Log SQL queries in dev for debugging
+    pool_size=5,  # Keep 5 persistent connections open
+    max_overflow=10,  # Allow 10 additional temporary connections during spikes (15 total)
+    pool_pre_ping=True,  # Verify connection health before use (prevents "connection closed" errors)
+    pool_recycle=3600,  # Recycle connections after 1 hour (prevents stale connections from Railway/cloud timeouts)
 )
 AsyncSessionLocal = async_sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine,
+    expire_on_commit=False,
 )
 
 
