@@ -28,6 +28,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "aiosqlite>=0.20.0",
     "httpx>=0.28.1",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
@@ -164,16 +165,6 @@ options = "format REVISION_SCRIPT_FILENAME"
 # type = "exec"
 # executable = "ruff"
 # options = "check --fix REVISION_SCRIPT_FILENAME"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-asyncio_mode = "auto"
-asyncio_default_fixture_loop_scope = "function"
-addopts = [
-    "--strict-markers",
-    "--strict-config",
-    "-ra",
-]
 
 [tool.coverage.run]
 source = ["app"]
