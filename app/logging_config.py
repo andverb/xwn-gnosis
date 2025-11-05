@@ -54,13 +54,15 @@ def setup_logging(log_level: str = "INFO", json_logs: bool = False) -> None:
 
     if json_logs:
         # Production: JSON output for log aggregation systems
-        processors = shared_processors + [
+        processors = [
+            *shared_processors,
             structlog.processors.dict_tracebacks,  # Format exceptions as dicts
             structlog.processors.JSONRenderer(),  # Render as JSON
         ]
     else:
         # Development: Colored console output for human readability
-        processors = shared_processors + [
+        processors = [
+            *shared_processors,
             structlog.processors.format_exc_info,  # Format exceptions
             structlog.dev.ConsoleRenderer(colors=True),  # Pretty console output with colors
         ]
