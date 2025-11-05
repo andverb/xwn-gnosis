@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Cookie, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Cookie, HTTPException, Query, Request, status
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import selectinload
 
 from app import models
@@ -142,5 +142,65 @@ async def rulesets_home(request: Request, lang: str | None = Cookie(default=None
 
 
 @router.get("/health")
-async def health_check():
-    return {"message": "Im OK!"}
+async def health_check(db: DbSession):
+    """
+    Health check endpoint for monitoring and load balancers.
+
+    Checks:
+    - API is running
+    - Database connectivity
+    - Basic database query execution
+
+    Returns:
+        200: Service is healthy
+        503: Service is unhealthy (database issues)
+    """
+    health_status = {
+        "status": "healthy",
+        "version": "0.1.0",
+        "environment": settings.environment,
+        "checks": {},
+    }
+
+    # Check database connection
+    try:
+        # Execute a simple query to verify database connectivity
+        result = await db.execute(text("SELECT 1"))
+        result.scalar_one()
+
+        health_status["checks"]["database"] = {
+            "status": "healthy",
+            "message": "Database connection successful",
+        }
+    except Exception as e:
+        health_status["status"] = "unhealthy"
+        health_status["checks"]["database"] = {
+            "status": "unhealthy",
+            "message": f"Database connection failed: {str(e)}",
+            "error_type": type(e).__name__,
+        }
+
+        # Return 503 Service Unavailable if database is down
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=health_status,
+        )
+
+    # Optional: Check if we can query actual tables
+    try:
+        stmt = select(models.RuleSet).limit(1)
+        await db.execute(stmt)
+
+        health_status["checks"]["database_schema"] = {
+            "status": "healthy",
+            "message": "Database schema accessible",
+        }
+    except Exception as e:
+        health_status["checks"]["database_schema"] = {
+            "status": "degraded",
+            "message": f"Database schema check failed: {str(e)}",
+            "error_type": type(e).__name__,
+        }
+        # Don't fail health check for schema issues, just mark as degraded
+
+    return health_status
