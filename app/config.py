@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     environment: str = Field(default="development", description="Environment: development, staging, production")
     log_level: str = Field(default="INFO", description="Logging level: DEBUG, INFO, WARNING, ERROR, CRITICAL")
     log_json: bool = Field(default=False, description="Output logs in JSON format (for production)")
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     @field_validator("database_url")
     @classmethod

@@ -45,6 +45,11 @@ jobs:
     - name: Run database migrations
       env:
         DATABASE_URL: postgresql+asyncpg://gnosis_user:test_password@localhost:5432/gnosis_test
+        API_KEY: test-api-key
+        ADMIN_USERNAME: admin
+        ADMIN_PASSWORD: test-password
+        SECRET_KEY: test-secret-key-for-ci-only
+        ENVIRONMENT: test
       run: |
         uv run alembic upgrade head
 
