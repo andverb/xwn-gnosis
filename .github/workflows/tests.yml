@@ -49,7 +49,7 @@ jobs:
         ADMIN_USERNAME: admin
         ADMIN_PASSWORD: test-password
         SECRET_KEY: test-secret-key-for-ci-only
-        ENVIRONMENT: test
+        ENVIRONMENT: development
       run: |
         uv run alembic upgrade head
 
@@ -60,7 +60,7 @@ jobs:
         ADMIN_USERNAME: admin
         ADMIN_PASSWORD: test-password
         SECRET_KEY: test-secret-key-for-ci-only
-        ENVIRONMENT: test
+        ENVIRONMENT: development
       run: |
         uv run pytest --cov=app --cov-report=xml --cov-report=term-missing
 
