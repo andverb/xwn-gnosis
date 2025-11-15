@@ -70,8 +70,6 @@ UK_SECTION_MAP = {
     "Будівництво Споруд": ("campaign", "building-structures.md"),
     "Створення Магічних Конструкцій": ("campaign", "magical-workings.md"),
     "Винагороди Від Покровителів": ("campaign", "patronage.md"),
-    "Опис Власності та Вартість Винагороди": ("campaign", "property-rewards.md"),
-    "Річний Дохід та Тип Місцевості": ("campaign", "income-hex-type.md"),
     "Визнання": ("campaign", "renown.md"),
     "Досвід (ОД), Підвищення Рівня та Очки Навичок (ОН)": ("character", "xp-leveling.md"),
     "Деякі Заняття в Період Простою": ("campaign", "downtime.md"),
