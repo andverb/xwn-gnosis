@@ -47,6 +47,7 @@ nav:
     - Кораблі: survival/sea-travel.md
   - Бій:
     - Основи Бою: combat/combat-basics.md
+    - Дії в Бою: combat/actions.md
     - Броня й Зброя: equipment/armors-weapons.md
   - Спорядження:
     - Звичайне Спорядження: equipment/gear.md
