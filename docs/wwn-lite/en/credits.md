@@ -5,17 +5,17 @@
 **Worlds Without Number** is a tabletop role-playing game created by **Kevin Crawford**.
 
 - [Purchase on DriveThruRPG](https://www.drivethrurpg.com/product/348809/Worlds-Without-Number)
-- [Worlds Without Number SRD](https://www.worldswithoutumber.com/)
+- [Worlds Without Number SRD](https://www.drivethrurpg.com/en/product/473939/worlds-without-number-system-reference-document)
 
-## This Ruleset
+## WWN-Lite Ruleset
 
-This is a **homebrewed and shortened version** of Worlds Without Number, created by **KaiokenXTen** from Reddit. The rules have been condensed and modified to provide a streamlined gaming experience while maintaining the core mechanics of the original system.
+**WWN-Lite** is a **homebrewed and shortened version** of Worlds Without Number, created by **KaiokenXTen** from Reddit. This ruleset condenses and modifies the original rules to provide a streamlined gaming experience while maintaining the core mechanics of the Worlds Without Number system.
 
 - [Source: WWN Reduced Rules on Reddit](https://www.reddit.com/r/WWN/comments/1j7gqvv/wwn_reduced_rules_reduced_homebrewed_rules/)
 
-## This Website
+## Gnosis
 
-This documentation website was created and maintained by **John from DMK**.
+Gnosis was created and maintained by **John from DMK**.
 
 - [DMK YouTube Channel](https://www.youtube.com/@d-m-k)
 
