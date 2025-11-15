@@ -20,6 +20,7 @@
 Гнозіс було створено та підтримується **Джоном з DMK** (John from DMK).
 
 - [YouTube канал DMK](https://www.youtube.com/@d-m-k)
+- Контакт: virtuemonkey@gmail.com
 
 ---
 

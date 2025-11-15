@@ -18,6 +18,7 @@
 Gnosis was created and maintained by **John from DMK**.
 
 - [DMK YouTube Channel](https://www.youtube.com/@d-m-k)
+- Contact: virtuemonkey@gmail.com
 
 ---
 
