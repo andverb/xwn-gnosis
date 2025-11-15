@@ -56,7 +56,7 @@ UK_SECTION_MAP = {
     "Броня й Зброя": ("equipment", "armors-weapons.md"),
     "Дослідження Підземель": ("survival", "delving.md"),
     "Подорожі та Виживання": ("survival", "overland-travel.md"),
-    "Кораблі": ("survival", "sea-travel.md"),
+    "Морські подорожі": ("survival", "sea-travel.md"),
     "Спорядження": ("equipment", "gear.md"),
     "Виготовлення Спорядження": ("equipment", "crafting.md"),
     "Модифікації та Обслуговування Спорядження": ("equipment", "modifications.md"),
