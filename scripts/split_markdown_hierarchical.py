@@ -57,7 +57,7 @@ UK_SECTION_MAP = {
     "Дослідження Підземель": ("survival", "delving.md"),
     "Подорожі та Виживання": ("survival", "overland-travel.md"),
     "Кораблі": ("survival", "sea-travel.md"),
-    "Звичайне Спорядження": ("equipment", "gear.md"),
+    "Спорядження": ("equipment", "gear.md"),
     "Виготовлення Спорядження": ("equipment", "crafting.md"),
     "Модифікації та Обслуговування Спорядження": ("equipment", "modifications.md"),
     "Алхімія": ("equipment", "alchemy.md"),
