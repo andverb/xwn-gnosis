@@ -18,6 +18,8 @@ EN_SECTION_MAP = {
     "Overland Travel & Wilderness Survival": ("survival", "overland-travel.md"),
     "Sea Travel": ("survival", "sea-travel.md"),
     "Gear": ("equipment", "gear.md"),
+    "Crafting Gear": ("equipment", "crafting.md"),
+    "Gear Modifications & Maintenance": ("equipment", "modifications.md"),
     "Alchemy": ("equipment", "alchemy.md"),
     "Magic and Spells": ("magic", "magic-basics.md"),
     "Magical Items": ("magic", "magical-items.md"),

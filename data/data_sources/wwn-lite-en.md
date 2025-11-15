@@ -639,7 +639,7 @@ In non-arid terrain beasts need not worry for fodder or water, otherwise:
 
 *All costs are approximate & used as example of what a good or service may cost. A successful Trade check can reduce cost, but grifters or circumstance may raise it.
 
-### Crafting Gear
+## Crafting Gear
 Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft Skill check.
 
 **Difficulty:**
@@ -667,7 +667,7 @@ Crafting Equipment = Costs ½ the item's retail value. Typically requires Craft 
 - Masterwork weapon: +1 Hit. Masterwork Armor: Normal armor -1Є (min of 1. Not for purposes of Armored Magic foci.)
 - The 1st mod added to Masterwork items costs x2 as much in arcane salvage & supplementary costs, but requires no maintenance.
 
-### Gear Modifications & Maintenance
+## Gear Modifications & Maintenance
 - Adding Mods to gear requires Expert or Partial Expert, ≤ Craft+1, & rare "salvage" material. Takes 1 week x Mod's required level of Craft to install. ½ time w/ Craft-0 Assistant, or if all waking hours are spent working on the mod.
 - Mods can Stack, but can't increase attack or damage bonus > +3 or Skill Check bonus > +1.
 - Expert/Partial Expert can Maintain a # of Mods = Int + Con Modifiers + (3 x Craft Level). A modification requires maintenance every 24 hrs or it stops working (assumed to be done automatically by an expert/partial expert). If unmaintained for a 1 week item becomes unfit for use. After 1 yr it may become destroyed. Requires 1 hr of work to clean up a maintenance backlog.
