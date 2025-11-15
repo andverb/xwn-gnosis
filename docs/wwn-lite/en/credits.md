@@ -11,17 +11,13 @@
 
 **WWN-Lite** is a **homebrewed and shortened version** of Worlds Without Number, created by **KaiokenXTen** from Reddit. This ruleset condenses and modifies the original rules to provide a streamlined gaming experience while maintaining the core mechanics of the Worlds Without Number system.
 
-- [Source: WWN Reduced Rules on Reddit](https://www.reddit.com/r/WWN/comments/1j7gqvv/wwn_reduced_rules_reduced_homebrewed_rules/)
+- [WWN Reduced Rules on Reddit](https://www.reddit.com/r/WWN/comments/1j7gqvv/wwn_reduced_rules_reduced_homebrewed_rules/)
 
 ## Gnosis
 
-Gnosis was created and maintained by **John from DMK**.
+Gnosis is an **unofficial** database and rules library for the xWN family of systems.
+Created and maintained by **John from Where are my dice?**.
 
-- [DMK YouTube Channel](https://www.youtube.com/@d-m-k)
+- [Where are my dice? YouTube Channel](https://www.youtube.com/@d-m-k)
+- [Where are my dice? Telegram Channel](https://t.me/de_moi_kuby)
 - Contact: virtuemonkey@gmail.com
-
----
-
-## Additional Information
-
-This documentation is provided as a reference tool for players and game masters using the WWN-Lite ruleset. For the complete and official Worlds Without Number rules, please refer to the original game materials by Kevin Crawford.
