@@ -50,6 +50,7 @@ UK_SECTION_MAP = {
     "Основи": ("basics", "index.md"),
     "Загрози й Зцілення": ("survival", "healing-hazards.md"),
     "Бій": ("combat", "combat-basics.md"),
+    "Дії та часті дії в бою": ("combat", "actions.md"),
     "Броня й Зброя": ("equipment", "armors-weapons.md"),
     "Дослідження Підземель": ("survival", "delving.md"),
     "Подорожі та Виживання": ("survival", "overland-travel.md"),
