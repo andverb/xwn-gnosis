@@ -48,9 +48,11 @@ nav:
   - Combat:
     - Combat Basics: combat/combat-basics.md
     - Actions: combat/actions.md
+    - Armors & Weapons: equipment/armors-weapons.md
   - Equipment:
     - Gear: equipment/gear.md
-    - Armors & Weapons: equipment/armors-weapons.md
+    - Crafting: equipment/crafting.md
+    - Modifications: equipment/modifications.md
     - Alchemy: equipment/alchemy.md
   - Magic:
     - Magic and Spells: magic/magic-basics.md

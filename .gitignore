@@ -19,7 +19,10 @@ wheels/
 rules.db
 crudadmin_data/*
 backups
-scripts
+
+# Scripts - ignore all except split_markdown_hierarchical.py
+scripts/*
+!scripts/split_markdown_hierarchical.py
 
 # Environment variables
 .env
