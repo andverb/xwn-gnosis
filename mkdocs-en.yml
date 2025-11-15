@@ -39,6 +39,7 @@ plugins:
 
 nav:
   - Back to Gnosis: /
+  - About & Credits: credits.md
   - Basics: basics/index.md
   - Survival:
     - Healing & Hazards: survival/healing-hazards.md

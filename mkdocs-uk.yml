@@ -39,6 +39,7 @@ plugins:
 
 nav:
   - Повернутися до Гнозіс: /
+  - Про Проєкт та Автори: credits.md
   - Основи: basics/index.md
   - Виживання:
     - Загрози й Зцілення: survival/healing-hazards.md
