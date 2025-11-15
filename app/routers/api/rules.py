@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.exc import IntegrityError
 
 from app import models, schemas
 from app.dependencies import DbSession
@@ -30,7 +31,16 @@ async def create_rule(rule: schemas.RuleCreate, db: DbSession):
     # Sync is_official from ruleset (we already have it loaded)
     db_rule.is_official = ruleset.is_official
     db.add(db_rule)
-    await db.commit()
+
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="A rule with this name already exists in this ruleset",
+        )
+
     await db.refresh(db_rule)
     return db_rule
 
@@ -101,7 +111,15 @@ async def update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db: DbSessi
     # TODO proper user implementation. Model populates only at creation
     rule.last_update_by = "sorcerer-king-admin"
 
-    await db.commit()
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="A rule with this name already exists in this ruleset",
+        )
+
     await db.refresh(rule)
     return rule
 
@@ -139,12 +157,20 @@ async def partial_update_rule(rule_id: int, rule_update: schemas.RuleUpdate, db:
     # TODO proper user implementation. Model populates only at creation
     rule.last_update_by = "sorcerer-king-admin"
 
-    await db.commit()
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="A rule with this name already exists in this ruleset",
+        )
+
     await db.refresh(rule)
     return rule
 
 
-@router.delete("/{rule_id}", dependencies=[Depends(verify_admin_credentials)])
+@router.delete("/{rule_id}", status_code=204, dependencies=[Depends(verify_admin_credentials)])
 async def delete_rule(rule_id: int, db: DbSession):
     stmt = select(models.Rule).where(models.Rule.id == rule_id)
     result = await db.execute(stmt)
@@ -154,4 +180,3 @@ async def delete_rule(rule_id: int, db: DbSession):
 
     await db.delete(rule)
     await db.commit()
-    return {"message": "Rule deleted successfully"}

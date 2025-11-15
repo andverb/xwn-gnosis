@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from app import models, schemas
 from app.dependencies import DbSession
@@ -19,7 +20,16 @@ async def create_ruleset(ruleset: schemas.RuleSetCreate, db: DbSession):
 
     db_ruleset = models.RuleSet(**ruleset.model_dump())
     db.add(db_ruleset)
-    await db.commit()
+
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="A ruleset with this name already exists",
+        )
+
     await db.refresh(db_ruleset)
     return db_ruleset
 
@@ -65,12 +75,20 @@ async def update_ruleset(ruleset_id: int, ruleset_update: schemas.RuleSetUpdate,
     # TODO proper user implementation. Model populates only at creation
     ruleset.last_update_by = "sorcerer-king-admin"
 
-    await db.commit()
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="A ruleset with this name already exists",
+        )
+
     await db.refresh(ruleset)
     return ruleset
 
 
-@router.delete("/{ruleset_id}", dependencies=[Depends(verify_admin_credentials)])
+@router.delete("/{ruleset_id}", status_code=204, dependencies=[Depends(verify_admin_credentials)])
 async def delete_ruleset(ruleset_id: int, db: DbSession):
     stmt = select(models.RuleSet).where(models.RuleSet.id == ruleset_id)
     result = await db.execute(stmt)
@@ -80,4 +98,3 @@ async def delete_ruleset(ruleset_id: int, db: DbSession):
 
     await db.delete(ruleset)
     await db.commit()
-    return {"message": "Ruleset deleted successfully"}

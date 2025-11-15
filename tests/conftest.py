@@ -214,3 +214,35 @@ def api_key_headers(test_settings: Settings) -> dict[str, str]:
         Dictionary with X-API-Key header
     """
     return {"X-API-Key": test_settings.api_key}
+
+
+@pytest.fixture
+def authenticated_client(test_settings: Settings, db_session: AsyncSession) -> TestClient:
+    """
+    Provide a FastAPI test client with authentication overrides enabled.
+
+    This client bypasses authentication checks for testing authenticated endpoints.
+    """
+    from app.db import get_db
+    from app.dependencies.auth import verify_admin_credentials
+
+    # Override dependencies
+    def override_get_settings() -> Settings:
+        return test_settings
+
+    async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
+        yield db_session
+
+    # Mock admin auth to always succeed
+    def override_verify_admin_credentials():
+        return "test_admin"
+
+    app.dependency_overrides[AppSettings] = override_get_settings
+    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[verify_admin_credentials] = override_verify_admin_credentials
+
+    with TestClient(app) as test_client:
+        yield test_client
+
+    # Clear overrides
+    app.dependency_overrides.clear()
