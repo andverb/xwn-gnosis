@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from app import models, schemas
@@ -89,12 +89,46 @@ async def update_ruleset(ruleset_id: int, ruleset_update: schemas.RuleSetUpdate,
 
 
 @router.delete("/{ruleset_id}", status_code=204, dependencies=[Depends(verify_admin_credentials)])
-async def delete_ruleset(ruleset_id: int, db: DbSession):
+async def delete_ruleset(ruleset_id: int, db: DbSession, cascade: bool = False):
+    """
+    Delete a ruleset.
+
+    - **cascade**: If true, also delete all rules associated with this ruleset.
+                   If false (default) and rules exist, returns 409 Conflict error.
+    """
     stmt = select(models.RuleSet).where(models.RuleSet.id == ruleset_id)
     result = await db.execute(stmt)
     ruleset = result.scalar_one_or_none()
     if ruleset is None:
         raise HTTPException(status_code=404, detail="Ruleset not found")
 
+    # Count associated rules
+    count_stmt = select(models.Rule).where(models.Rule.ruleset_id == ruleset_id)
+    count_result = await db.execute(count_stmt)
+    rules = count_result.scalars().all()
+    rules_count = len(rules)
+
+    # If rules exist and cascade is not enabled, return 409 Conflict
+    if rules_count > 0 and not cascade:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Cannot delete ruleset with {rules_count} associated rule{'s' if rules_count != 1 else ''}. "
+            f"Use ?cascade=true to delete ruleset and all associated rules.",
+        )
+
+    # Cascade delete: delete rules first, then ruleset (in a single transaction)
+    if cascade and rules_count > 0:
+        delete_rules_stmt = delete(models.Rule).where(models.Rule.ruleset_id == ruleset_id)
+        await db.execute(delete_rules_stmt)
+
+    # Delete the ruleset
     await db.delete(ruleset)
-    await db.commit()
+
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to delete ruleset due to database constraint violation",
+        )

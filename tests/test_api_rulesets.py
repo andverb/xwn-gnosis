@@ -95,3 +95,55 @@ class TestRulesetsAPI:
         response = authenticated_client.post("/api/rulesets/", json=ruleset_data)
         assert response.status_code == 409
         assert "already exists" in response.json()["detail"].lower()
+
+    def test_delete_ruleset_with_rules_without_cascade(self, authenticated_client, sample_ruleset, sample_rule):
+        """Test deleting ruleset with associated rules without cascade returns 409."""
+        response = authenticated_client.delete(f"/api/rulesets/{sample_ruleset.id}")
+        assert response.status_code == 409
+        assert "Cannot delete ruleset" in response.json()["detail"]
+        assert "associated rule" in response.json()["detail"]
+        assert "cascade=true" in response.json()["detail"]
+
+        # Verify ruleset still exists
+        get_response = authenticated_client.get(f"/api/rulesets/{sample_ruleset.id}")
+        assert get_response.status_code == 200
+
+        # Verify rule still exists
+        rule_response = authenticated_client.get(f"/api/rules/{sample_rule.id}")
+        assert rule_response.status_code == 200
+
+    def test_delete_ruleset_with_rules_with_cascade(self, authenticated_client, sample_ruleset, sample_rule):
+        """Test deleting ruleset with associated rules using cascade=true succeeds."""
+        ruleset_id = sample_ruleset.id
+        rule_id = sample_rule.id
+
+        response = authenticated_client.delete(f"/api/rulesets/{ruleset_id}?cascade=true")
+        assert response.status_code == 204
+
+        # Verify ruleset is deleted
+        get_response = authenticated_client.get(f"/api/rulesets/{ruleset_id}")
+        assert get_response.status_code == 404
+
+        # Verify rule is also deleted
+        rule_response = authenticated_client.get(f"/api/rules/{rule_id}")
+        assert rule_response.status_code == 404
+
+    def test_delete_empty_ruleset_with_cascade_true(self, authenticated_client, sample_ruleset):
+        """Test deleting empty ruleset with cascade=true succeeds."""
+        ruleset_id = sample_ruleset.id
+        response = authenticated_client.delete(f"/api/rulesets/{ruleset_id}?cascade=true")
+        assert response.status_code == 204
+
+        # Verify ruleset is deleted
+        get_response = authenticated_client.get(f"/api/rulesets/{ruleset_id}")
+        assert get_response.status_code == 404
+
+    def test_delete_empty_ruleset_with_cascade_false(self, authenticated_client, sample_ruleset):
+        """Test deleting empty ruleset with cascade=false succeeds."""
+        ruleset_id = sample_ruleset.id
+        response = authenticated_client.delete(f"/api/rulesets/{ruleset_id}?cascade=false")
+        assert response.status_code == 204
+
+        # Verify ruleset is deleted
+        get_response = authenticated_client.get(f"/api/rulesets/{ruleset_id}")
+        assert get_response.status_code == 404
