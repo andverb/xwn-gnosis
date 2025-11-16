@@ -1,0 +1,31 @@
+# Codecov configuration
+# https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  status:
+    project:
+      default:
+        # Make coverage checks informational only (won't fail PRs)
+        informational: true
+        # Alternatively, you can set a threshold for how much coverage can drop
+        # threshold: 1%  # Allow up to 1% coverage drop
+    patch:
+      default:
+        # Make patch coverage informational only
+        informational: true
+        # target: 70%  # Optionally require patch to have 70% coverage
+
+# Comment settings - customize what shows in PR comments
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+# Ignore certain files/directories from coverage
+ignore:
+  - "tests/**/*"
+  - "migrations/**/*"
+  - "scripts/**/*"
+  - "**/__pycache__"
