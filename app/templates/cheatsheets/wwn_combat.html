@@ -106,6 +106,35 @@
         margin: 0.5rem 0;
     }
 
+    .formula-stacked {
+        background: var(--pico-code-background-color);
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+
+    .formula-stacked .formula-line {
+        display: block;
+        padding: 0.1rem 0;
+        color: var(--pico-muted-color);
+    }
+
+    .formula-stacked .formula-line:first-child {
+        color: var(--pico-color);
+    }
+
+    .formula-stacked .formula-op {
+        color: var(--pico-primary);
+        font-weight: bold;
+        margin-right: 0.25rem;
+    }
+
+    .formula-stacked .formula-note {
+        font-size: 0.75rem;
+        opacity: 0.7;
+    }
+
     .quick-ref {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -299,22 +328,30 @@
 
         <div class="action-item">
             <h4>Hit Bonus</h4>
-            <div class="formula-box">
-                Class Attack Bonus + Attribute Mod + Skill (<span class="modifier-negative">-2</span> if Skill &lt; 0) + Foci/Abilities/Magic/Weapon Mods + Circumstance Mods
+            <div class="formula-stacked">
+                <span class="formula-line">Class Attack Bonus</span>
+                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                <span class="formula-line"><span class="formula-op">+</span>Skill <span class="formula-note">(<span class="modifier-negative">-2</span> if Skill &lt; 0)</span></span>
+                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+                <span class="formula-line"><span class="formula-op">+</span>Circumstance Mods</span>
             </div>
         </div>
 
         <div class="action-item">
             <h4>Damage Rolls</h4>
-            <div class="formula-box">
-                Weapon Damage Die + Attribute Mod + Foci + Abilities + Magic/Weapon Mods
+            <div class="formula-stacked">
+                <span class="formula-line">Weapon Damage Die</span>
+                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
             </div>
         </div>
 
         <div class="action-item">
             <h4>Shock Damage</h4>
-            <div class="formula-box">
-                Weapon Shock + Attribute Mod + Foci + Abilities + Magic/Weapon Mods
+            <div class="formula-stacked">
+                <span class="formula-line">Weapon Shock</span>
+                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
             </div>
             <ul>
                 <li>Defender announces AC so roller knows if Shock applies</li>
@@ -354,6 +391,80 @@
         </div>
     </article>
 
+    <!-- Move Actions -->
+    <article class="cheatsheet-card">
+        <h3>Move Actions</h3>
+
+        <div class="action-item">
+            <h4>Run</h4>
+            <span class="action-type action-move">Move</span>
+            <p>Move normal combat movement (typically 30'). Half speed to crawl, climb, swim, difficult terrain...</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Stand</h4>
+            <span class="action-type action-move">Move</span>
+            <p>Gets up from prone, gathering any dropped belongings.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Hold an Action</h4>
+            <span class="action-type action-move">Move</span> <span class="action-type action-instant">Instant</span>
+            <p>Hold remainder of your Actions until later in the Round, <strong>activating them as an Instant Action.</strong></p>
+        </div>
+
+        <div class="action-item">
+            <h4>Pick Up an Item</h4>
+            <span class="action-type action-move">Move</span>
+            <p>Grab an object with a free hand. Picked up objects are "Readied."</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Screen an Ally</h4>
+            <span class="action-type action-move">Move</span>
+            <ul>
+                <li>Select an ally within 10' to Screen until your next turn</li>
+                <li>Attackers must succeed opposed Str or Dex check (their weapon Skill vs screener's weapon Skill). Failure = attack directed at screener</li>
+                <li>Can screen # of attackers = Combat Skill. Skill &lt; 1 can't effectively screen</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- On Turn & Instant Actions -->
+    <article class="cheatsheet-card">
+        <h3>On Turn & Instant</h3>
+
+        <div class="action-item">
+            <h4>Go Prone</h4>
+            <span class="action-type action-onturn">On Turn</span>
+            <p>Fall flat. Distant ranged attackers: <span class="modifier-negative">-2</span> to hit. Adjacent foes: <span class="modifier-positive">+2</span> to hit.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Delay an Action</h4>
+            <span class="action-type action-onturn">On Turn</span>
+            <p>Delay remainder of your Actions this turn <strong>until AFTER a specified target has acted.</strong></p>
+        </div>
+
+        <div class="action-item">
+            <h4>Drop an Item</h4>
+            <span class="action-type action-instant">Instant</span>
+            <p>Drop an item to free up your hands.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Snap Attack</h4>
+            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
+            <p>Attack outside your turn. <span class="modifier-negative">-4</span> to hit &amp; uses your Main Action for the turn. GM resolves order of multiple snap attacks. Typically reserved for PCs or powerful combatants (No Name = No Snap attacks).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Total Defense</h4>
+            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
+            <p>Costs Main Action (can't use if Main already spent). Avoids all Shock damage &amp; gain <span class="modifier-positive">+2</span> AC until next turn. CAN prevent Shock from Swarm attack.</p>
+        </div>
+    </article>
+
     <!-- Special -->
     <article class="cheatsheet-card">
         <h3>Special</h3>
@@ -380,80 +491,6 @@
             <h4>Charge</h4>
             <span class="action-type action-main">Main</span> <span class="action-type action-move">Move</span>
             <p>Requires min 10' to build momentum. Move x2 normal Movement Speed in a straight line before making a melee or thrown attack at <span class="modifier-positive">+2</span> to hit. After the attack: <span class="modifier-negative">-2</span> to AC for rest of Round.</p>
-        </div>
-    </article>
-
-    <!-- Move Actions -->
-    <article class="cheatsheet-card">
-        <h3>Move Actions</h3>
-
-        <div class="action-item">
-            <h4>Run</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Move normal combat movement (typically 30'). Half speed to crawl, climb, swim, difficult terrain...</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Screen an Ally</h4>
-            <span class="action-type action-move">Move</span>
-            <ul>
-                <li>Select an ally within 10' to Screen until your next turn</li>
-                <li>Attackers must succeed opposed Str or Dex check (their weapon Skill vs screener's weapon Skill). Failure = attack directed at screener</li>
-                <li>Can screen # of attackers = Combat Skill. Skill &lt; 1 can't effectively screen</li>
-            </ul>
-        </div>
-
-        <div class="action-item">
-            <h4>Pick Up an Item</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Grab an object with a free hand. Picked up objects are "Readied."</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Stand</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Gets up from prone, gathering any dropped belongings.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Hold an Action</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Hold remainder of your Actions until later in the Round, activating them as an Instant Action.</p>
-        </div>
-    </article>
-
-    <!-- On Turn & Instant Actions -->
-    <article class="cheatsheet-card">
-        <h3>On Turn & Instant</h3>
-
-        <div class="action-item">
-            <h4>Go Prone</h4>
-            <span class="action-type action-onturn">On Turn</span>
-            <p>Fall flat. Distant ranged attackers: <span class="modifier-negative">-2</span> to hit. Adjacent foes: <span class="modifier-positive">+2</span> to hit.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Delay an Action</h4>
-            <span class="action-type action-onturn">On Turn</span>
-            <p>Delay remainder of your Actions this turn until AFTER a specified target has acted.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Drop an Item</h4>
-            <span class="action-type action-instant">Instant</span>
-            <p>Drop an item to free up your hands.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Snap Attack</h4>
-            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
-            <p>Attack outside your turn. <span class="modifier-negative">-4</span> to hit &amp; uses your Main Action for the turn. GM resolves order of multiple snap attacks. Typically reserved for PCs or powerful combatants (No Name = No Snap attacks).</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Total Defense</h4>
-            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
-            <p>Costs Main Action (can't use if Main already spent). Avoids all Shock damage &amp; gain <span class="modifier-positive">+2</span> AC until next turn. CAN prevent Shock from Swarm attack.</p>
         </div>
     </article>
 
