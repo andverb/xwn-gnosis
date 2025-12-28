@@ -1,0 +1,567 @@
+{% extends "base.html" %}
+
+{% block title %}Шпаргалка з Бою WWN - Гнозіс{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Cheatsheet-specific styles */
+    .cheatsheet-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    @media (max-width: 1200px) {
+        .cheatsheet-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cheatsheet-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .cheatsheet-card {
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 1rem;
+    }
+
+    .cheatsheet-card h3 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--pico-primary);
+    }
+
+    .action-type {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+
+    .action-main { background: #0d6efd; color: white; }
+    .action-move { background: #198754; color: white; }
+    .action-onturn { background: #6f42c1; color: white; }
+    .action-instant { background: #dc3545; color: white; }
+    .action-special { background: #fd7e14; color: white; }
+
+    .dice {
+        font-family: monospace;
+        font-weight: bold;
+        color: var(--pico-primary);
+    }
+
+    .modifier-positive { color: #198754; font-weight: bold; }
+    .modifier-negative { color: #dc3545; font-weight: bold; }
+
+    .action-item {
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .action-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .action-item h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1rem;
+    }
+
+    .action-item p, .action-item ul,
+    .cheatsheet-card > ul {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--pico-muted-color);
+    }
+
+    .action-item ul,
+    .cheatsheet-card > ul {
+        padding-left: 1.2rem;
+        margin-top: 0.25rem;
+    }
+
+    .action-item li,
+    .cheatsheet-card > ul > li {
+        margin-bottom: 0.25rem;
+    }
+
+    .formula-box {
+        background: var(--pico-code-background-color);
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+
+    .formula-stacked {
+        background: var(--pico-code-background-color);
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+
+    .formula-stacked .formula-line {
+        display: block;
+        padding: 0.1rem 0;
+        color: var(--pico-muted-color);
+    }
+
+    .formula-stacked .formula-line:first-child {
+        color: var(--pico-color);
+    }
+
+    .formula-stacked .formula-op {
+        color: var(--pico-primary);
+        font-weight: bold;
+        margin-right: 0.25rem;
+    }
+
+    .formula-stacked .formula-note {
+        font-size: 0.75rem;
+        opacity: 0.7;
+    }
+
+    .quick-ref {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .quick-ref-item {
+        background: var(--pico-code-background-color);
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        text-align: center;
+    }
+
+    .quick-ref-item strong {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--pico-muted-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .modifier-table {
+        font-size: 0.8rem;
+        width: 100%;
+        margin: 0.5rem 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 1rem;
+    }
+
+    .modifier-table .mod-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .modifier-table .mod-row .mod-desc {
+        color: var(--pico-muted-color);
+    }
+
+    @media (max-width: 768px) {
+        .modifier-table {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Single column modifier list */
+    .modifier-list {
+        font-size: 0.8rem;
+    }
+
+    .modifier-list .mod-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.2rem 0;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .modifier-list .mod-row:last-child {
+        border-bottom: none;
+    }
+
+    .modifier-list .mod-desc {
+        color: var(--pico-muted-color);
+    }
+
+    /* Column span utilities */
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .span-2 {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 768px) {
+        .span-2 {
+            grid-column: span 1;
+        }
+    }
+
+    @media print {
+        body { background: white; }
+        .no-print { display: none; }
+        .cheatsheet-card { break-inside: avoid; }
+    }
+
+    .back-link {
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="back-link no-print">
+    <a href="/">&larr; Назад до Пошуку</a>
+    <button onclick="window.print()" style="float: right;">Друк</button>
+</div>
+
+<hgroup style="text-align: center; margin-bottom: 2rem;">
+    <h1>Шпаргалка з Бою WWN</h1>
+    <p>Швидкий довідник правил бою Worlds Without Number</p>
+</hgroup>
+
+<!-- Action Types Overview -->
+<section style="margin-bottom: 2rem;">
+    <div class="quick-ref" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="quick-ref-item">
+            <span class="action-type action-main">Основна</span>
+            <strong>1 за раунд</strong>
+            Атака, закляття, навичка...
+        </div>
+        <div class="quick-ref-item">
+            <span class="action-type action-move">Дія Руху</span>
+            <strong>1 за раунд</strong>
+            30' (½ для лазіння/плавання)
+        </div>
+        <div class="quick-ref-item">
+            <span class="action-type action-onturn">Дія На Ходу</span>
+            <strong>На розсуд ГМ (Бонусна дія)</strong>
+            Дістати предмет, лягти...
+        </div>
+        <div class="quick-ref-item">
+            <span class="action-type action-instant">Миттєва</span>
+            <strong>Будь-коли (Реакція)</strong>
+            Швидкі, прості дії
+        </div>
+    </div>
+</section>
+
+<div class="cheatsheet-grid">
+
+    <!-- Initiative & Hit Roll Modifiers -->
+    <article class="cheatsheet-card">
+        <h3>Ініціатива & Ситуаційні Мод. Влучання</h3>
+
+        <div class="action-item">
+            <h4>Ініціатива</h4>
+            <div class="formula-box">
+                <span class="dice">1к8</span> + мод. СПР або ІНТ
+            </div>
+            <p>ПГ кидають окремо, монстри кидають як група. Вороги отримують бонус тільки якщо швидкі. ПГ перемагають у нічиїх.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Ситуаційні Мод. Влучання</h4>
+            <div class="modifier-list">
+                <div class="mod-row">
+                    <span class="mod-desc">Стрільба/ближній бій по лежачому поруч</span>
+                    <span class="modifier-positive">+2</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">1/2 укриття</span>
+                    <span class="modifier-negative">-2</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Стрільба за межами першої дистанції</span>
+                    <span class="modifier-negative">-2</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Стрільба по далекому лежачому</span>
+                    <span class="modifier-negative">-2</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">3/4 укриття</span>
+                    <span class="modifier-negative">-4</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Метання під час ближнього бою</span>
+                    <span class="modifier-negative">-4</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Ближня атака лежачи</span>
+                    <span class="modifier-negative">-4</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Швидка Атака</span>
+                    <span class="modifier-negative">-4</span>
+                </div>
+                <div class="mod-row">
+                    <span class="mod-desc">Стрільба з лука в ближньому бою</span>
+                    <strong>Н/Д</strong>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Hit, Damage & Shock -->
+    <article class="cheatsheet-card">
+        <h3>Влучання, Шкода & Шок</h3>
+
+        <div class="action-item">
+            <h4>Бонус Влучання</h4>
+            <div class="formula-stacked">
+                <span class="formula-line">Бонус Атаки Класу</span>
+                <span class="formula-line"><span class="formula-op">+</span>Модифікатор Здібності</span>
+                <span class="formula-line"><span class="formula-op">+</span>Навичка <span class="formula-note">(<span class="modifier-negative">-2</span> якщо Навичка &lt; 0)</span></span>
+                <span class="formula-line"><span class="formula-op">+</span>Фокуси / Здібності / Магія / Моди Зброї</span>
+                <span class="formula-line"><span class="formula-op">+</span>Ситуаційні модифікатори</span>
+            </div>
+        </div>
+
+        <div class="action-item">
+            <h4>Кидки Шкоди</h4>
+            <div class="formula-stacked">
+                <span class="formula-line">Кубик Шкоди Зброї</span>
+                <span class="formula-line"><span class="formula-op">+</span>Модифікатор Здібності</span>
+                <span class="formula-line"><span class="formula-op">+</span>Фокуси / Здібності / Магія / Моди Зброї</span>
+            </div>
+        </div>
+
+        <div class="action-item">
+            <h4>Шокова Шкода</h4>
+            <div class="formula-stacked">
+                <span class="formula-line">Шок Зброї</span>
+                <span class="formula-line"><span class="formula-op">+</span>Модифікатор Здібності</span>
+                <span class="formula-line"><span class="formula-op">+</span>Фокуси / Здібності / Магія / Моди Зброї</span>
+            </div>
+            <ul>
+                <li>Захисник повідомляє КБ, щоб атакуючий знав, чи застосовується Шок</li>
+                <li>При <strong>промаху</strong>: зброя завдає Шок, якщо КБ цілі ≤ значення Шоку зброї</li>
+                <li>Шок метальної зброї застосовується лише до ближніх атак</li>
+                <li>При <strong>влучанні</strong>: шкода не може бути &lt; Шоку, якщо ціль вразлива</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- Make an Attack & Cast a Spell -->
+    <article class="cheatsheet-card">
+        <h3>Часті Дії</h3>
+
+        <div class="action-item">
+            <h4>Атакувати</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Ближня атака по ворогу в межах досяжності або дальня атака підготовленою зброєю.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Чарувати</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Не можна чарувати, якщо: отримано шкоду цього Раунду, діставали/ховали предмет рукою для чарів, або сильно штовхнули. Шкода під час чарування = закляття розвіюється &amp; слот витрачається.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Використати Навичку</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Виконати дію навички за 6 секунд (стабілізація пораненого союзника, повернути важіль...)</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Підготувати/Сховати Предмет</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Дістати зброю або предмет з рюкзака. Змінює статус із Підготовленого на Схований, або навпаки.</p>
+        </div>
+    </article>
+
+    <!-- Move Actions -->
+    <article class="cheatsheet-card">
+        <h3>Дії Руху</h3>
+
+        <div class="action-item">
+            <h4>Біг</h4>
+            <span class="action-type action-move">Дія Руху</span>
+            <p>Рух зі стандартною швидкістю в бою (зазвичай 30'). Половинна швидкість для повзання, лазіння, плавання, складної місцевості...</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Встати</h4>
+            <span class="action-type action-move">Дія Руху</span>
+            <p>Встає з положення лежачи, збираючи скинуті речі.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Затримати Дію</h4>
+            <span class="action-type action-move">Дія Руху</span> <span class="action-type action-instant">Миттєва</span>
+            <p>Утримує решту ваших Дій до пізнішого моменту в Раунді, <strong>активуючи їх як Миттєву Дію.</strong></p>
+        </div>
+
+        <div class="action-item">
+            <h4>Підняти Предмет</h4>
+            <span class="action-type action-move">Дія Руху</span>
+            <p>Взяти предмет вільною рукою. Підняті предмети стають "Підготовленими."</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Прикрити Союзника</h4>
+            <span class="action-type action-move">Дія Руху</span>
+            <ul>
+                <li>Обрати союзника в межах 10' для Прикриття до наступного ходу</li>
+                <li>Атакуючі повинні пройти протиставлену перевірку СИЛ або СПР (їхня Навичка зброї проти Навички того, хто прикриває). Провал = атака спрямована на того, хто прикриває</li>
+                <li>Можна прикривати від кількості атакуючих = Бойовій Навичці. Навичка &lt; 1 не може ефективно прикривати</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- On Turn & Instant Actions -->
+    <article class="cheatsheet-card">
+        <h3>На Ходу & Миттєві</h3>
+
+        <div class="action-item">
+            <h4>Лягти</h4>
+            <span class="action-type action-onturn">Дія На Ходу</span>
+            <p>Упасти долілиць. Дальні Атаки: <span class="modifier-negative">-2</span> до влучання. Супротивники поруч: <span class="modifier-positive">+2</span> до влучання.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Відкласти Дію</h4>
+            <span class="action-type action-onturn">Дія На Ходу</span>
+            <p>Відкласти решту своїх Дій цього ходу <strong>на момент ПІСЛЯ ходу зазначеної цілі.</strong></p>
+        </div>
+
+        <div class="action-item">
+            <h4>Кинути Предмет</h4>
+            <span class="action-type action-instant">Миттєва</span>
+            <p>Кинути предмет, щоб звільнити руки.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Швидка Атака</h4>
+            <span class="action-type action-instant">Миттєва</span> <span class="action-type action-main">Основна</span>
+            <p>Атака поза своїм ходом. <span class="modifier-negative">-4</span> до влучання &amp; використовує Основну Дію на хід. ГМ вирішує порядок кількох швидких атак. Зазвичай для ПГ або потужних бійців (Без Імені = Без Швидких атак).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Глуха Оборона</h4>
+            <span class="action-type action-instant">Миттєва</span> <span class="action-type action-main">Основна</span>
+            <p>Коштує Основну Дію (не можна, якщо Основна вже витрачена). Уникає всієї Шокової шкоди &amp; отримує <span class="modifier-positive">+2</span> КБ до наступного ходу. <strong>МОЖЕ запобігти Шоку від Масової атаки.</strong></p>
+        </div>
+    </article>
+
+    <!-- Special -->
+    <article class="cheatsheet-card">
+        <h3>Спеціальні</h3>
+
+        <div class="action-item">
+            <h4>Штовхнути</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Кидок влучання. Успіх: шкода не завдається, але протиставлена перевірка СИЛ/РУКОПАШКА або СИЛ/АТЛЕТИКА. Успіх: атакуючий обирає — супротивник падає або відкидається на 10'.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Зламати Щит</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Потрібна сокира, булава, поліпшена Фокусом беззбройна атака... Кидок влучання. Успіх = шкоди немає, але протиставлена перевірка СИЛ/ОЗБРОЄННЯ (<span class="modifier-positive">+1</span> захиснику). Успіх = щит ламається. Магічні щити імунні. РЕМЕСЛО-0 &amp; 1 сцена для ремонту.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Відступ</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Вихід із ближнього бою, запобігає атакам по можливості. Ви все ще повинні/можете Рухатись.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Ривок</h4>
+            <span class="action-type action-main">Основна</span> <span class="action-type action-move">Дія Руху</span>
+            <p>Потрібно мін 10' для розгону. Рух ×2 нормальної Швидкості Руху по прямій перед здійсненням ближньої або метальної атаки з <span class="modifier-positive">+2</span> до влучання. Після атаки: <span class="modifier-negative">-2</span> до КБ до кінця Раунду.</p>
+        </div>
+    </article>
+
+    <!-- Swarm Attack -->
+    <article class="cheatsheet-card">
+        <h3>Масова Атака</h3>
+        <span class="action-type action-main">Основна</span>
+        <ul>
+            <li>Кожен бажаючий атакуючий виконує цю Дію, націлюючись на ворога в межах досяжності</li>
+            <li>Після останнього атакуючого, 1 нападник здійснює негайну атаку (<span class="modifier-positive">+2</span> до влучання &amp; <span class="modifier-positive">+1</span> до шкоди за кожного додаткового нападника, макс <span class="modifier-positive">+6/+3</span>)</li>
+            <li>Шкода не може перевищувати макс. шкоди від їхньої звичайної атаки &amp; не застосовується до Шоку</li>
+            <li>Навіть при промаху, Шок завжди шкодить цілі незалежно від КБ, використання щита або імунітету до Шоку від Фокусів</li>
+            <li><strong>Глуха Оборона МОЖЕ запобігти цій Шоковій шкоді</strong></li>
+        </ul>
+    </article>
+
+    <!-- Grapple -->
+    <article class="cheatsheet-card span-2">
+        <h3>Боротьба</h3>
+        <span class="action-type action-main">Основна</span>
+        <ul>
+            <li>Кидок влучання з РУКОПАШКА. Успіх: шкоди немає, але протиставлена перевірка СИЛ/РУКОПАШКА. Успіх: ціль захоплена</li>
+            <li>Під час захоплення: ні атакуючий, ні захисник не можуть рухатись, ні битись нічим, окрім беззбройних атак</li>
+            <li><strong>Щоб звільнитись:</strong> захисник використовує Основну Дію &amp; кидає 1 протиставлену перевірку СИЛ/РУКОПАШКА проти кожного захоплюючого атакуючого</li>
+            <li>Кінець кожного Раунду: захисник отримує шкоду, ніби влучила РУКОПАШКА від кожного захоплюючого ворога</li>
+            <li>Ціль більша за атакуючого: <span class="modifier-negative">-2</span> до Перевірки Захоплення, або <span class="modifier-negative">-4</span> для ледь можливих цілей</li>
+            <li><strong>Щоб перемістити захопленого ворога:</strong> Основна Дія + протиставлена СИЛ/РУКОПАШКА. Успіх = перемістити ціль на 10' з собою, або кинути на 5' &amp; збити з ніг. Провал = захисник звільняється</li>
+        </ul>
+    </article>
+
+    <!-- Execution Attacks -->
+    <article class="cheatsheet-card span-2">
+        <h3>Вбивчі Атаки</h3>
+        <span class="action-type action-main">Основна</span>
+        <ul>
+            <li>Потрібно: ціль не має здогадуватись про небезпеку, 1 хв підготовки &amp; зброя (якщо Фокус/здатність не вказує інше)</li>
+            <li>КБ цілі не враховується (якщо зброя може їй зашкодити)</li>
+            <li><strong>Дальній бій:</strong> перевірка СПР/СТРІЛЬБА. Впритул: КС6. Нормальна Дистанція: КС8. Екстремальна Дистанція: КС10</li>
+            <li><strong>Ближній бій:</strong> Завжди влучає</li>
+            <li>Воїн може використати Ветеранську Вдачу тільки для перекидання провальної перевірки</li>
+            <li><strong>Якщо влучив:</strong> ціль робить Фізичний рятівний кидок зі штрафом = відповідній Навичці атакуючого. Провал = Смертельно Поранений (або без свідомості, якщо несмертельна &amp; обрано). Успіх = Макс шкода</li>
+            <li>Атака на непритомні/недієздатні цілі завжди залишає їх Смертельно Пораненими</li>
+        </ul>
+    </article>
+
+    <!-- Reload -->
+    <article class="cheatsheet-card">
+        <h3>Перезарядка Зброї</h3>
+
+        <div class="action-item">
+            <h4>Повільна Перезарядка (арбалет)</h4>
+            <span class="action-type action-main">Основна</span>
+            <p>Перезарядити зброю з властивістю Повільного Перезаряджання.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Перезарядка (лук, без навички)</h4>
+            <span class="action-type action-move">Дія Руху</span>
+            <p>Перезарядити зброю з властивістю Перезаряджання без навички або без підготовленого сагайдака.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Перезарядка (лук, з навичкою)</h4>
+            <span class="action-type action-onturn">Дія На Ходу</span>
+            <p>Перезарядити зброю з властивістю Перезаряджання зі СТРІЛЬБА+1 &amp; підготовленим сагайдаком.</p>
+        </div>
+    </article>
+
+</div>
+
+<footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
+    <small>WWN від Кевіна Кроуфорда. Зміст шпаргалки зібрано для швидкого довідника.</small>
+</footer>
+{% endblock %}
