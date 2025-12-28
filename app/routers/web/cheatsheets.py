@@ -16,7 +16,10 @@ async def wwn_combat_cheatsheet(request: Request, lang: str | None = Cookie(defa
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
 
+    # Select template based on language
+    template_name = "cheatsheets/wwn_combat_uk.html" if current_lang == "uk" else "cheatsheets/wwn_combat.html"
+
     return templates.TemplateResponse(
-        "cheatsheets/wwn_combat.html",
+        template_name,
         {"request": request, "t": translations, "current_lang": current_lang},
     )
