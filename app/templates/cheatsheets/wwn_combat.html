@@ -269,13 +269,15 @@
 
     <!-- Initiative & Hit Roll Modifiers -->
     <article class="cheatsheet-card">
-        <h3>Initiative & Hit Mods</h3>
+        <div class="action-item">
+            <h4>Surprise</h4>
+            <p>If GM decides surprise is possible, roll Wis/Notice vs Dex/Sneak. If attackers win, they act full round before initiative is rolled.</p>
+            <p>Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
+        </div>
 
         <div class="action-item">
             <h4>Initiative</h4>
-            <div class="formula-box">
-                <span class="dice">1d8</span> + Dex or Int Mod
-            </div>
+            <p><span class="dice">1d8</span> + Dex or Int Mod</p>
             <p>PCs roll individually vs Foe's group Initiative. Foes gain no bonus unless quick. PCs win ties.</p>
         </div>
 
@@ -320,6 +322,7 @@
                 </div>
             </div>
         </div>
+
     </article>
 
     <!-- Hit, Damage & Shock -->
@@ -389,6 +392,12 @@
             <span class="action-type action-main">Main</span>
             <p>Draw a weapon or item from a pack. Changes from Readied to Stowed, or vice versa.</p>
         </div>
+
+        <div class="action-item">
+            <h4>Dash</h4>
+            <span class="action-type action-main">Main</span>
+            <p>Take additional Move action this turn (any of them).</p>
+        </div>
     </article>
 
     <!-- Move Actions -->
@@ -398,7 +407,7 @@
         <div class="action-item">
             <h4>Run</h4>
             <span class="action-type action-move">Move</span>
-            <p>Move normal combat movement (typically 30'). Half speed to crawl, climb, swim, difficult terrain...</p>
+            <p>Move normal combat movement (typically 30'). Cannot split movement. Half speed to crawl, climb, swim, difficult terrain...</p>
         </div>
 
         <div class="action-item">
@@ -557,6 +566,27 @@
             <span class="action-type action-onturn">On Turn</span>
             <p>Reload a weapon with Reload property with Shoot+1 &amp; a readied quiver.</p>
         </div>
+    </article>
+
+    <!-- Dual Wielding -->
+    <article class="cheatsheet-card">
+        <h3>Dual Wielding</h3>
+        <ul>
+            <li>Requires Stab+1. <span class="modifier-positive">+2</span> bonus to Damage (NOT Shock Damage). <span class="modifier-negative">-1</span> To Hit. Choose which weapon hits. Unarmed can't dual-wield.</li>
+            <li>Shields can be used for dual-wielding attacks, but grant no AC bonus or Shock protection until the wielder's next turn if used so.</li>
+        </ul>
+    </article>
+
+    <!-- Mounted Combat -->
+    <article class="cheatsheet-card span-2">
+        <h3>Mounted Combat</h3>
+        <ul>
+            <li>Riders w/ &lt; Ride-0 suffer <span class="modifier-negative">-1</span> to hit. Longbows, rifles, &amp; spells are unusable while riding.</li>
+            <li>Mounts share their rider's Initiative, but have their own Main &amp; Move Action, which they can split around their rider's actions.</li>
+            <li>Mounting or dismounting requires a Move Action.</li>
+            <li>Trained war-animals can attack, but ordinary riding beasts fight only in self-defense &amp; require a Morale or Instinct check each Round or flee w/ their rider. A rider can force obedience w/ a Cha/Ride or Dex/Ride check made as a Move Action.</li>
+            <li>A mount reduced to 0HP dumps its rider prone as it falls.</li>
+        </ul>
     </article>
 
 </div>
