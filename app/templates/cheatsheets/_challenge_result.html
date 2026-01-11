@@ -1,0 +1,16 @@
+<div class="calculator-result">
+    <div class="scores">
+        <div class="score-box">
+            <div class="score-value">{{ foe_score|default(1) }}</div>
+            <div class="score-label">Foe Score<br><small>(Attacks &times; HD)</small></div>
+        </div>
+        <div class="score-box">
+            <div style="font-size: 1.5rem; padding-top: 0.5rem;">vs</div>
+        </div>
+        <div class="score-box">
+            <div class="score-value">{{ party_score|default(16) }}</div>
+            <div class="score-label">Party Score<br><small>(Levels &times; PCs)</small></div>
+        </div>
+    </div>
+    <div class="verdict {{ verdict_class|default('verdict-easy') }}">{{ verdict|default('Easy - Probably a walkover') }}</div>
+</div>

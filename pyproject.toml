@@ -74,6 +74,7 @@ ignore = [
   "RUF100",
   "S101",
   "S104",
+    "PLR2004",
 ]
 fixable = ["ALL"]
 
