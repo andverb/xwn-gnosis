@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}WWN DM Encounter Cheatsheet - Gnosis{% endblock %}
+{% block title %}Encounter Cheatsheet - Gnosis{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -154,6 +154,17 @@
 
     .modifier-positive { color: #198754; font-weight: bold; }
     .modifier-negative { color: #dc3545; font-weight: bold; }
+
+    .variant {
+        color: #6f42c1;
+        cursor: help;
+        border-bottom: 1px dotted #6f42c1;
+    }
+
+    [data-theme="dark"] .variant {
+        color: #b794f6;
+        border-bottom-color: #b794f6;
+    }
 
     .action-item {
         margin-bottom: 1rem;
@@ -433,11 +444,187 @@
 </div>
 
 <hgroup style="text-align: center; margin-bottom: 2rem;">
-    <h1>WWN DM Encounter Cheatsheet</h1>
+    <h1>Encounter Cheatsheet</h1>
     <p>Quick reference for running encounters</p>
 </hgroup>
 
 <div class="cheatsheet-grid">
+
+    <!-- Ruin Turns & Encounters -->
+    <article class="cheatsheet-card" x-data="turnTracker">
+        <h3>Ruin Turns & Encounters</h3>
+
+        <table class="turn-table">
+            <thead>
+                <tr>
+                    <th><button class="reset-btn" @click="turns = 0" title="Reset">↺</button></th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns < 6" x-text="time"></span>
+                        <span x-show="turns >= 6">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i">
+                        <td><input type="checkbox" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
+                        <span x-show="turns >= 12">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 6">
+                        <td><input type="checkbox" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
+                        <span x-show="turns >= 18">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 12">
+                        <td><input type="checkbox" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
+                        <span x-show="turns >= 24">🔥🏮</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 18">
+                        <td><input type="checkbox" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
+                    </template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="turn-legend">
+            <span>🔥 torch (6 turns / 1h)</span>
+            <span>🏮 lantern (24 turns / 4h)</span>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.75rem 0;">
+            Each turn ≈ 10 minutes. <strong>1 turn:</strong> move room → room, pick lock, disarm trap, fight, first aid & loot, search room, parley, jury-rig device.
+        </p>
+
+        <div class="action-item">
+            <h4>Encounter Check</h4>
+            <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas). Distance: room = entrance, corridor = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10'.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Check Frequency</h4>
+            <table class="compact-table">
+                <thead>
+                    <tr><th>Turns</th><th>Location Type</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
+                    <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
+                    <tr><td>3</td><td>No organized or active defense</td></tr>
+                    <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
+                    <tr><td>6</td><td>Abandoned or disused area</td></tr>
+                    <tr><td>—</td><td>Hidden chamber unknown to natives</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- Reaction Rolls -->
+    <article class="cheatsheet-card">
+        <h3>Reaction Rolls</h3>
+
+        <div class="action-item">
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod
+                (if PCs can greet)
+            </div>
+            <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
+        </div>
+
+        <div class="action-item">
+            <div class="reaction-table">
+                <div class="reaction-row reaction-hostile">
+                    <span class="reaction-score">2-</span>
+                    <span class="reaction-desc">Hostile as the situation allows</span>
+                </div>
+                <div class="reaction-row reaction-unfriendly">
+                    <span class="reaction-score">3-5</span>
+                    <span class="reaction-desc">More unfriendly than expected</span>
+                </div>
+                <div class="reaction-row reaction-neutral">
+                    <span class="reaction-score">6-8</span>
+                    <span class="reaction-desc">Predictably hostile or friendly</span>
+                </div>
+                <div class="reaction-row reaction-friendly">
+                    <span class="reaction-score">9-11</span>
+                    <span class="reaction-desc">More friendly than expected</span>
+                </div>
+                <div class="reaction-row reaction-helpful">
+                    <span class="reaction-score">12+</span>
+                    <span class="reaction-desc">As friendly and helpful as possible</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-item">
+            <h4>Peaceful Reactions</h4>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">What "friendly" means for hostile groups:</p>
+            <ul>
+                <li><strong>Demand a bribe</strong> - Money, gear, food, praise; haggling possible</li>
+                <li><strong>Back off</strong> - Keep distance, let groups pass; may report later</li>
+                <li><strong>Ask for favors</strong> - Enemy killed, task done; offer to ignore PCs in return</li>
+                <li><strong>Offer tribute</strong> - Wealth, info, services to be left alone</li>
+                <li><strong>Willingly socialize</strong> - Lonely, mistaken identity, or just chatty</li>
+            </ul>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--pico-muted-color);">
+            <strong>Remember:</strong> Reaction rolls are just the start. Clever words, gifts, or insults can shift attitudes.
+        </p>
+    </article>
+
+    <!-- Surprise & Initiative -->
+    <article class="cheatsheet-card">
+        <h3>Surprise & Initiative</h3>
+
+        <div class="action-item">
+            <h4>Surprise</h4>
+            <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
+            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Initiative (Group)</h4>
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + highest Dex <span class="variant" data-tooltip="Variant rule">(or Int)</span> mod
+            </div>
+            <p>Each side rolls. Winning side acts first in any order, then the other. NPCs usually have no modifier unless quick. PCs win ties.</p>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-top: 0.5rem;"><span class="variant" data-tooltip="Individual Initiative variant">Variant:</span> Each participant rolls their own initiative and acts in order.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Fleeing & Escape</h4>
+            <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
+            <div class="instinct-table" style="margin-top: 0.5rem;">
+                <div class="inst-row">
+                    <span class="inst-desc">Escapees outnumber pursuers</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Good escape plan</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Slowed by slowest member</span>
+                    <span class="inst-score modifier-negative">-2</span>
+                </div>
+            </div>
+        </div>
+    </article>
 
     <!-- Challenge Calculator -->
     <article class="cheatsheet-card">
@@ -492,106 +679,6 @@
         </div>
     </article>
 
-    <!-- Ruin Turn Tracker -->
-    <article class="cheatsheet-card" x-data="turnTracker">
-        <h3>Ruin Turn Tracker</h3>
-
-        <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin-bottom: 0.75rem;">
-            Each turn ≈ 10 minutes. Check a box per action. Roll encounter check each turn.
-        </p>
-
-        <table class="turn-table">
-            <thead>
-                <tr>
-                    <th><button class="reset-btn" @click="turns = 0" title="Reset">↺</button></th>
-                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns < 6" x-text="time"></span>
-                        <span x-show="turns >= 6">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i">
-                        <td><input type="checkbox" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
-                        <span x-show="turns >= 12">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 6">
-                        <td><input type="checkbox" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
-                        <span x-show="turns >= 18">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 12">
-                        <td><input type="checkbox" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
-                        <span x-show="turns >= 24">🔥🏮</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 18">
-                        <td><input type="checkbox" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="turn-legend">
-            <span>🔥 torch (6 turns / 1h)</span>
-            <span>🏮 lantern (24 turns / 4h)</span>
-        </div>
-
-        <div class="action-item" style="margin-top: 0.75rem;">
-            <h4>Time Costs</h4>
-            <div class="time-costs">
-                <span><strong>1 turn:</strong> Move room → room, pick lock, disarm trap, fight, first aid & loot, search room, parley, jury-rig device</span>
-            </div>
-        </div>
-    </article>
-
-    <!-- Ruin Encounters -->
-    <article class="cheatsheet-card">
-        <h3>Ruin Encounters</h3>
-
-        <div class="action-item">
-            <h4>Encounter Check</h4>
-            <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas).</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Check Frequency</h4>
-            <table class="compact-table">
-                <thead>
-                    <tr><th>Turns</th><th>Location Type</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
-                    <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
-                    <tr><td>3</td><td>No organized or active defense</td></tr>
-                    <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
-                    <tr><td>6</td><td>Abandoned or disused area</td></tr>
-                    <tr><td>—</td><td>Hidden chamber unknown to natives</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="action-item">
-            <h4>Encounter Distance</h4>
-            <p><strong>In a room:</strong> creatures enter through an available entrance. <strong>In corridors:</strong> <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10' away when spotted/heard (space permitting).</p>
-        </div>
-    </article>
-
     <script>
     (function() {
         const hdInput = document.getElementById('total_hd');
@@ -626,44 +713,6 @@
         });
     })();
     </script>
-
-    <!-- Surprise & Initiative -->
-    <article class="cheatsheet-card">
-        <h3>Surprise & Initiative</h3>
-
-        <div class="action-item">
-            <h4>Surprise</h4>
-            <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
-            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Initiative</h4>
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + Dex or Int Mod
-            </div>
-            <p>PCs roll individually vs Foe's group Initiative. Foes gain no bonus unless quick. PCs win ties.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Fleeing & Escape</h4>
-            <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
-            <div class="instinct-table" style="margin-top: 0.5rem;">
-                <div class="inst-row">
-                    <span class="inst-desc">Escapees outnumber pursuers</span>
-                    <span class="inst-score modifier-positive">+1</span>
-                </div>
-                <div class="inst-row">
-                    <span class="inst-desc">Good escape plan</span>
-                    <span class="inst-score modifier-positive">+1</span>
-                </div>
-                <div class="inst-row">
-                    <span class="inst-desc">Slowed by slowest member</span>
-                    <span class="inst-score modifier-negative">-2</span>
-                </div>
-            </div>
-        </div>
-    </article>
 
     <!-- Morale Checks -->
     <article class="cheatsheet-card">
@@ -735,60 +784,6 @@
 
         <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
             <strong>Typical Inst:</strong> 5+ beasts/civilians, 3-4 veterans, 1-2 hardened, 0 coldest killers. PCs never check. Optional.
-        </p>
-    </article>
-
-    <!-- Reaction Rolls -->
-    <article class="cheatsheet-card">
-        <h3>Reaction Rolls</h3>
-
-        <div class="action-item">
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod
-                (if PCs can greet)
-            </div>
-            <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
-        </div>
-
-        <div class="action-item">
-            <div class="reaction-table">
-                <div class="reaction-row reaction-hostile">
-                    <span class="reaction-score">2-</span>
-                    <span class="reaction-desc">Hostile as the situation allows</span>
-                </div>
-                <div class="reaction-row reaction-unfriendly">
-                    <span class="reaction-score">3-5</span>
-                    <span class="reaction-desc">More unfriendly than expected</span>
-                </div>
-                <div class="reaction-row reaction-neutral">
-                    <span class="reaction-score">6-8</span>
-                    <span class="reaction-desc">Predictably hostile or friendly</span>
-                </div>
-                <div class="reaction-row reaction-friendly">
-                    <span class="reaction-score">9-11</span>
-                    <span class="reaction-desc">More friendly than expected</span>
-                </div>
-                <div class="reaction-row reaction-helpful">
-                    <span class="reaction-score">12+</span>
-                    <span class="reaction-desc">As friendly and helpful as possible</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="action-item">
-            <h4>Peaceful Reactions</h4>
-            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">What "friendly" means for hostile groups:</p>
-            <ul>
-                <li><strong>Demand a bribe</strong> - Money, gear, food, praise; haggling possible</li>
-                <li><strong>Back off</strong> - Keep distance, let groups pass; may report later</li>
-                <li><strong>Ask for favors</strong> - Enemy killed, task done; offer to ignore PCs in return</li>
-                <li><strong>Offer tribute</strong> - Wealth, info, services to be left alone</li>
-                <li><strong>Willingly socialize</strong> - Lonely, mistaken identity, or just chatty</li>
-            </ul>
-        </div>
-
-        <p style="font-size: 0.85rem; color: var(--pico-muted-color);">
-            <strong>Remember:</strong> Reaction rolls are just the start. Clever words, gifts, or insults can shift attitudes.
         </p>
     </article>
 

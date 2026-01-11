@@ -25,16 +25,17 @@ async def wwn_combat_cheatsheet(request: Request, lang: str | None = Cookie(defa
     )
 
 
-@router.get("/cheatsheets/wwn-dm-encounter", response_class=HTMLResponse)
-async def wwn_dm_encounter_cheatsheet(request: Request, lang: str | None = Cookie(default=None)):
-    """WWN DM Encounter Cheatsheet - morale, instinct, challenge calculator"""
+@router.get("/cheatsheets/wwn-encounter", response_class=HTMLResponse)
+async def encounter_cheatsheet(request: Request, lang: str | None = Cookie(default=None)):
+    """Encounter Cheatsheet - morale, instinct, challenge calculator"""
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
 
-    # Select template based on language
-    template_name = (
-        "cheatsheets/wwn_dm_encounter_uk.html" if current_lang == "uk" else "cheatsheets/wwn_dm_encounter.html"
-    )
+    # TODO: Add Ukrainian translation, then restore language selection:
+    # template_name = (
+    #     "cheatsheets/wwn_encounter_uk.html" if current_lang == "uk" else "cheatsheets/wwn_encounter.html"
+    # )
+    template_name = "cheatsheets/wwn_encounter.html"
 
     return templates.TemplateResponse(
         template_name,
