@@ -4,6 +4,8 @@
 
 {% block extra_head %}
 <style>
+    /* Alpine.js cloak */
+    [x-cloak] { display: none !important; }
     /* Cheatsheet-specific styles */
     .cheatsheet-grid {
         display: grid;
@@ -41,6 +43,113 @@
         font-family: monospace;
         font-weight: bold;
         color: var(--pico-primary);
+        cursor: pointer;
+        padding: 0.1rem 0.4rem;
+        border-radius: 0.25rem;
+        transition: all 0.15s ease;
+    }
+
+    .dice:hover {
+        background-color: var(--pico-primary-focus);
+    }
+
+    .dice.rolled {
+        background-color: var(--pico-primary);
+        color: white;
+    }
+
+    .compact-table {
+        width: 100%;
+        font-size: 0.85rem;
+        border-collapse: collapse;
+        margin: 0.5rem 0;
+    }
+
+    .compact-table th,
+    .compact-table td {
+        padding: 0.3rem 0.5rem;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .compact-table th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .compact-table td:first-child {
+        font-weight: bold;
+        color: var(--pico-primary);
+        width: 3rem;
+        text-align: center;
+    }
+
+    .compact-table td:last-child {
+        color: var(--pico-muted-color);
+    }
+
+    .compact-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Turn Tracker */
+    .turn-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0.5rem;
+    }
+
+    .turn-table th,
+    .turn-table td {
+        padding: 0.25rem;
+        text-align: center;
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    .turn-table th {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        background: var(--pico-code-background-color);
+    }
+
+    .turn-table .row-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        background: var(--pico-code-background-color);
+        width: 3rem;
+    }
+
+    .turn-table input[type="checkbox"] {
+        margin: 0;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .turn-legend {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+    }
+
+    .turn-table .reset-btn {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        font-size: 0.9rem;
+        line-height: 1;
+        margin: 0;
+        min-width: auto;
+    }
+
+    .time-costs {
+        font-size: 0.85rem;
+        color: var(--pico-muted-color);
     }
 
     .modifier-positive { color: #198754; font-weight: bold; }
@@ -289,6 +398,21 @@
     .verdict-fair { background: #198754; color: white; }
     .verdict-easy { background: #0d6efd; color: white; }
 
+    .challenge-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+    }
+
+    .challenge-legend .legend-item {
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+    }
+
     @media print {
         body { background: white; }
         .no-print { display: none; }
@@ -322,8 +446,9 @@
         <form id="challenge-form"
               hx-post="/cheatsheets/calculate-challenge"
               hx-target="#calculator-result"
-              hx-trigger="input delay:150ms, submit"
-              hx-swap="innerHTML">
+              hx-trigger="load, input delay:150ms, submit"
+              hx-swap="innerHTML"
+              autocomplete="off">
             <div class="calculator-sides">
                 <div class="calculator-side side-foes">
                     <h4>Foes</h4>
@@ -358,12 +483,112 @@
             {% include "cheatsheets/_challenge_result.html" %}
         </div>
 
-        <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--pico-muted-color); text-align: center;">
-            Foe &gt;4&times; = Rout |
-            ~2&times; = Deadly |
-            &gt;1&times; = Hard |
-            &le;1&times; = Fair |
-            &lt;&half;&times; = Easy
+        <div class="challenge-legend">
+            <span class="legend-item verdict-rout">&gt;4× Rout</span>
+            <span class="legend-item verdict-deadly">~2× Deadly</span>
+            <span class="legend-item verdict-hard">&gt;1× Hard</span>
+            <span class="legend-item verdict-fair">≤1× Fair</span>
+            <span class="legend-item verdict-easy">&lt;½× Easy</span>
+        </div>
+    </article>
+
+    <!-- Ruin Turn Tracker -->
+    <article class="cheatsheet-card" x-data="turnTracker">
+        <h3>Ruin Turn Tracker</h3>
+
+        <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin-bottom: 0.75rem;">
+            Each turn ≈ 10 minutes. Check a box per action. Roll encounter check each turn.
+        </p>
+
+        <table class="turn-table">
+            <thead>
+                <tr>
+                    <th><button class="reset-btn" @click="turns = 0" title="Reset">↺</button></th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns < 6" x-text="time"></span>
+                        <span x-show="turns >= 6">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i">
+                        <td><input type="checkbox" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
+                        <span x-show="turns >= 12">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 6">
+                        <td><input type="checkbox" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
+                        <span x-show="turns >= 18">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 12">
+                        <td><input type="checkbox" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
+                        <span x-show="turns >= 24">🔥🏮</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 18">
+                        <td><input type="checkbox" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
+                    </template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="turn-legend">
+            <span>🔥 torch (6 turns / 1h)</span>
+            <span>🏮 lantern (24 turns / 4h)</span>
+        </div>
+
+        <div class="action-item" style="margin-top: 0.75rem;">
+            <h4>Time Costs</h4>
+            <div class="time-costs">
+                <span><strong>1 turn:</strong> Move room → room, pick lock, disarm trap, fight, first aid & loot, search room, parley, jury-rig device</span>
+            </div>
+        </div>
+    </article>
+
+    <!-- Ruin Encounters -->
+    <article class="cheatsheet-card">
+        <h3>Ruin Encounters</h3>
+
+        <div class="action-item">
+            <h4>Encounter Check</h4>
+            <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Check Frequency</h4>
+            <table class="compact-table">
+                <thead>
+                    <tr><th>Turns</th><th>Location Type</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
+                    <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
+                    <tr><td>3</td><td>No organized or active defense</td></tr>
+                    <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
+                    <tr><td>6</td><td>Abandoned or disused area</td></tr>
+                    <tr><td>—</td><td>Hidden chamber unknown to natives</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="action-item">
+            <h4>Encounter Distance</h4>
+            <p><strong>In a room:</strong> creatures enter through an available entrance. <strong>In corridors:</strong> <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10' away when spotted/heard (space permitting).</p>
         </div>
     </article>
 
@@ -402,14 +627,51 @@
     })();
     </script>
 
+    <!-- Surprise & Initiative -->
+    <article class="cheatsheet-card">
+        <h3>Surprise & Initiative</h3>
+
+        <div class="action-item">
+            <h4>Surprise</h4>
+            <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
+            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Initiative</h4>
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + Dex or Int Mod
+            </div>
+            <p>PCs roll individually vs Foe's group Initiative. Foes gain no bonus unless quick. PCs win ties.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Fleeing & Escape</h4>
+            <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
+            <div class="instinct-table" style="margin-top: 0.5rem;">
+                <div class="inst-row">
+                    <span class="inst-desc">Escapees outnumber pursuers</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Good escape plan</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Slowed by slowest member</span>
+                    <span class="inst-score modifier-negative">-2</span>
+                </div>
+            </div>
+        </div>
+    </article>
+
     <!-- Morale Checks -->
     <article class="cheatsheet-card">
         <h3>Morale Checks</h3>
 
         <div class="action-item">
-            <h4>The Roll</h4>
             <div class="formula-box">
-                <span class="dice">2d6</span> &gt; ML = <span class="modifier-negative">Fail</span>
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> &gt; ML = <span class="modifier-negative">Fail</span>
             </div>
             <p>On failure: NPC retreats, surrenders, or seeks to escape.</p>
         </div>
@@ -444,9 +706,8 @@
         <h3>Instinct Checks</h3>
 
         <div class="action-item">
-            <h4>The Roll</h4>
             <div class="formula-box">
-                <span class="dice">1d10</span> &le; Inst = <span class="modifier-negative">Fail</span>
+                <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d10</span> &le; Inst = <span class="modifier-negative">Fail</span>
             </div>
             <p>On failure: NPC acts impulsively, short-sightedly, instinctually.</p>
         </div>
@@ -483,7 +744,7 @@
 
         <div class="action-item">
             <div class="formula-box">
-                <span class="dice">2d6</span> + Cha mod
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod
                 (if PCs can greet)
             </div>
             <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
@@ -652,4 +913,77 @@
 <footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
     <small>WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
 </footer>
+
+<!-- Alpine.js + Simple Dice Roller -->
+<script>
+    // Simple dice roller - supports notation like "2d6", "1d8+2", "3d6-1"
+    function rollDice(notation) {
+        const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
+        if (!match) return null;
+        const count = parseInt(match[1]) || 1;
+        const sides = parseInt(match[2]);
+        const modifier = parseInt(match[3]) || 0;
+        const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+        return { total: rolls.reduce((a, b) => a + b, 0) + modifier, rolls };
+    }
+
+    // Register Alpine components BEFORE Alpine loads
+    document.addEventListener('alpine:init', () => {
+        // Turn tracker component
+        Alpine.data('turnTracker', () => ({
+            turns: 0,
+            get time() {
+                const mins = this.turns * 10;
+                const h = Math.floor(mins / 60);
+                const m = mins % 60;
+                if (h > 0 && m > 0) return `${h}h${m}m`;
+                if (h > 0) return `${h}h`;
+                if (m > 0) return `${m}m`;
+                return '';
+            }
+        }));
+
+        // Rollable dice component
+        Alpine.data('rollable', () => ({
+            notation: '',
+            displayText: '',
+            rolled: false,
+            timeout: null,
+            clickHandler: null,
+
+            init() {
+                this.notation = this.$el.dataset.notation || this.$el.textContent.trim();
+                this.displayText = this.notation;
+            },
+
+            roll() {
+                this.reset();
+                const r = rollDice(this.notation);
+                if (r) {
+                    this.displayText = `${r.total} [${r.rolls.join(',')}]`;
+                    this.rolled = true;
+
+                    // Reset after 3 seconds
+                    this.timeout = setTimeout(() => this.reset(), 3000);
+
+                    // Reset on click anywhere else
+                    this.clickHandler = (e) => {
+                        if (e.target !== this.$el) this.reset();
+                    };
+                    setTimeout(() => document.addEventListener('click', this.clickHandler, { once: true }), 10);
+                }
+            },
+
+            reset() {
+                if (this.timeout) clearTimeout(this.timeout);
+                if (this.clickHandler) document.removeEventListener('click', this.clickHandler);
+                this.displayText = this.notation;
+                this.rolled = false;
+                this.timeout = null;
+                this.clickHandler = null;
+            }
+        }));
+    });
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 {% endblock %}
