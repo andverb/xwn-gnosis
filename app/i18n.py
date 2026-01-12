@@ -18,6 +18,8 @@ TRANSLATIONS = {
         " perfect for newcomers to the xWN system.",
         "toggle_theme": "Toggle theme",
         "toggle_language": "Змінити мову на Українську",
+        "cheatsheet_combat": "WWN Combat",
+        "cheatsheet_encounter": "WWN Encounter",
         # Search Interface
         "search_placeholder": "Search rules, classes, spells...",
         "filter_type_label": "Type",
@@ -61,6 +63,8 @@ TRANSLATIONS = {
         "rulesets_wwn_lite_desc": "Спрощена версія Worlds Without Number, ідеальна для новачків у системі xWN.",
         "toggle_theme": "Змінити тему",
         "toggle_language": "Switch to English",
+        "cheatsheet_combat": "WWN Бій",
+        "cheatsheet_encounter": "WWN Зіткнення",
         # Search Interface
         "search_placeholder": "Шукати правила, класи, закляття...",
         "filter_type_label": "Тип",

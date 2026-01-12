@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Encounter Cheatsheet - Gnosis{% endblock %}
+{% block title %}Шпаргалка Зіткнень WWN - Гнозіс{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -438,26 +438,26 @@
 
 {% block content %}
 <div class="back-link no-print">
-    <a href="/">&larr; Back to Search</a>
-    <a href="/cheatsheets/wwn-combat" style="margin-left: 1rem;">Combat Cheatsheet</a>
-    <button onclick="window.print()" style="float: right;">Print</button>
+    <a href="/">&larr; Назад до Пошуку</a>
+    <a href="/cheatsheets/wwn-combat" style="margin-left: 1rem;">Шпаргалка з Бою</a>
+    <button onclick="window.print()" style="float: right;">Друк</button>
 </div>
 
 <hgroup style="text-align: center; margin-bottom: 2rem;">
-    <h1>Encounter Cheatsheet</h1>
-    <p>Quick reference for running encounters</p>
+    <h1>Шпаргалка Зіткнень WWN</h1>
+    <p>Швидкий довідник для проведення зіткнень</p>
 </hgroup>
 
 <div class="cheatsheet-grid">
 
     <!-- Ruin Turns & Encounters -->
     <article class="cheatsheet-card" x-data="turnTracker">
-        <h3>Ruin Turns & Encounters</h3>
+        <h3>Ходи & Зіткнення</h3>
 
         <table class="turn-table">
             <thead>
                 <tr>
-                    <th><button class="reset-btn" @click="turns = 0" title="Reset">↺</button></th>
+                    <th><button class="reset-btn" @click="turns = 0" title="Скинути">↺</button></th>
                     <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
                 </tr>
             </thead>
@@ -502,32 +502,32 @@
         </table>
 
         <div class="turn-legend">
-            <span>🔥 torch (6 turns / 1h)</span>
-            <span>🏮 lantern (24 turns / 4h)</span>
+            <span>🔥 смолоскип (6 ходів )</span>
+            <span>🏮 ліхтар (24 ходи )</span>
         </div>
 
         <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.75rem 0;">
-            Each turn ≈ 10 minutes. <strong>1 turn:</strong> move room → room, pick lock, disarm trap, fight, first aid & loot, search room, parley, jury-rig device.
+            Кожен хід ≈ 10 хвилин. <strong>1 хід:</strong> рух між кімнатами, злом замка, знешкодження пастки, бій, перша допомога & обшук, обшук кімнати, переговори, імпровізований ремонт.
         </p>
 
         <div class="action-item">
-            <h4>Encounter Check</h4>
-            <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas). Distance: room = entrance, corridor = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10'.</p>
+            <h4>Перевірка Зіткнення</h4>
+            <p>Кидок <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к6</span>. Зіткнення на 1 (або 1-2 в небезпечних зонах). Відстань: кімната = вхід, коридор = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к8</span> × 10 футів.</p>
         </div>
 
         <div class="action-item">
-            <h4>Check Frequency</h4>
+            <h4>Частота Перевірок</h4>
             <table class="compact-table">
                 <thead>
-                    <tr><th>Turns</th><th>Location Type</th></tr>
+                    <tr><th>Ходів</th><th>Тип Локації</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
-                    <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
-                    <tr><td>3</td><td>No organized or active defense</td></tr>
-                    <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
-                    <tr><td>6</td><td>Abandoned or disused area</td></tr>
-                    <tr><td>—</td><td>Hidden chamber unknown to natives</td></tr>
+                    <tr><td>1</td><td>Місце в стані тривоги, організована оборона</td></tr>
+                    <tr><td>2</td><td>Спокійне місце, організована оборона</td></tr>
+                    <tr><td>3</td><td>Без організованої або активної оборони</td></tr>
+                    <tr><td>4</td><td>Дуже мало мобільних мешканців</td></tr>
+                    <tr><td>6</td><td>Покинуте або занедбане місце</td></tr>
+                    <tr><td>—</td><td>Прихована кімната, невідома місцевим</td></tr>
                 </tbody>
             </table>
         </div>
@@ -535,91 +535,91 @@
 
     <!-- Reaction Rolls -->
     <article class="cheatsheet-card">
-        <h3>Reaction Rolls</h3>
+        <h3>Кидки на Реакцію</h3>
 
         <div class="action-item">
             <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod
-                (if PCs can greet)
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">2к6</span> + мод. ХАР
+                (якщо ПГ можуть привітатись)
             </div>
-            <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
+            <p>Кидайте для кожної зустрічі, окрім випадків неминучого кровопролиття. Дайте ПГ зрозуміти результат до їхніх дій.</p>
         </div>
 
         <div class="action-item">
             <div class="reaction-table">
                 <div class="reaction-row reaction-hostile">
                     <span class="reaction-score">2-</span>
-                    <span class="reaction-desc">Hostile as the situation allows</span>
+                    <span class="reaction-desc">Максимально ворожа</span>
                 </div>
                 <div class="reaction-row reaction-unfriendly">
                     <span class="reaction-score">3-5</span>
-                    <span class="reaction-desc">More unfriendly than expected</span>
+                    <span class="reaction-desc">Більш ворожа, ніж очікувалось</span>
                 </div>
                 <div class="reaction-row reaction-neutral">
                     <span class="reaction-score">6-8</span>
-                    <span class="reaction-desc">Predictably hostile or friendly</span>
+                    <span class="reaction-desc">Передбачувано ворожа або дружня</span>
                 </div>
                 <div class="reaction-row reaction-friendly">
                     <span class="reaction-score">9-11</span>
-                    <span class="reaction-desc">More friendly than expected</span>
+                    <span class="reaction-desc">Більш дружня, ніж очікувалось</span>
                 </div>
                 <div class="reaction-row reaction-helpful">
                     <span class="reaction-score">12+</span>
-                    <span class="reaction-desc">As friendly and helpful as possible</span>
+                    <span class="reaction-desc">Максимально дружня, готові допомагати</span>
                 </div>
             </div>
         </div>
 
         <div class="action-item">
-            <h4>Peaceful Reactions</h4>
-            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">What "friendly" means for hostile groups:</p>
+            <h4>Мирні Реакції</h4>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">Що означає "дружня" реакція для ворожих груп:</p>
             <ul>
-                <li><strong>Demand a bribe</strong> - Money, gear, food, praise; haggling possible</li>
-                <li><strong>Back off</strong> - Keep distance, let groups pass; may report later</li>
-                <li><strong>Ask for favors</strong> - Enemy killed, task done; offer to ignore PCs in return</li>
-                <li><strong>Offer tribute</strong> - Wealth, info, services to be left alone</li>
-                <li><strong>Willingly socialize</strong> - Lonely, mistaken identity, or just chatty</li>
+                <li><strong>Вимагають хабар</strong> - Гроші, спорядження, їжа, похвала; можливий торг</li>
+                <li><strong>Відступають</strong> - Тримають дистанцію, пропускають групу; можуть донести пізніше</li>
+                <li><strong>Просять про послугу</strong> - Вбити ворога, виконати завдання; за це ігнорують ПГ</li>
+                <li><strong>Пропонують данину</strong> - Багатство, інформація, послуги, щоб їх залишили в спокої</li>
+                <li><strong>Охоче спілкуються</strong> - Самотні, переплутали з кимось знайомим, або просто балакучі</li>
             </ul>
         </div>
 
         <p style="font-size: 0.85rem; color: var(--pico-muted-color);">
-            <strong>Remember:</strong> Reaction rolls are just the start. Clever words, gifts, or insults can shift attitudes.
+            <strong>Пам'ятайте:</strong> Кидки на реакцію - лише початок. Розумні слова, дарунки або образи можуть змінити ставлення.
         </p>
     </article>
 
     <!-- Surprise & Initiative -->
     <article class="cheatsheet-card">
-        <h3>Surprise & Initiative</h3>
+        <h3>Засідки & Ініціатива</h3>
 
         <div class="action-item">
-            <h4>Surprise</h4>
-            <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
-            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
+            <h4>Несподіванка</h4>
+            <p>Якщо ГМ вирішує, що несподіванка можлива, кидок <strong>МУД/УВАГА</strong> проти <strong>СПР/СКРАДАННЯ</strong>. Якщо атакуючі перемагають, вони діють повний раунд перед кидком ініціативи.</p>
+            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Засідка може спровокувати перевірку Моралі у невійськових або недисциплінованих цілей (на розсуд ГМ).</p>
         </div>
 
         <div class="action-item">
-            <h4>Initiative</h4>
+            <h4>Ініціатива</h4>
             <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + highest Dex <span class="variant" data-tooltip="Variant rule">(or Int)</span> mod
+                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к8</span> + найвищий мод. СПР <span class="variant" data-tooltip="Варіант правила">(або ІНТ)</span>
             </div>
-            <p>Each side rolls. Winning side acts first in any order, then the other. NPCs usually have no modifier unless quick. PCs win ties.</p>
-            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-top: 0.5rem;"><span class="variant" data-tooltip="Individual Initiative variant">Variant:</span> Each participant rolls their own initiative and acts in order.</p>
+            <p>Кожна сторона кидає. Переможці діють першими у будь-якому порядку, потім інша сторона. НІПи зазвичай без модифікаторів, якщо не швидкі. ПГ перемагають у нічиїх.</p>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-top: 0.5rem;"><span class="variant" data-tooltip="Варіант індивідуальної ініціативи">Варіант:</span> Кожен учасник кидає власну ініціативу та діє по порядку.</p>
         </div>
 
         <div class="action-item">
-            <h4>Fleeing & Escape</h4>
-            <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
+            <h4>Втеча & Порятунок</h4>
+            <p>Якщо вороги переслідують (багато не роблять цього), втікач із найкращою <strong>СПР/АТЛЕТИКА</strong> кидає проти найшвидшого переслідувача. Успіх = ~1 хід до безпеки.</p>
             <div class="instinct-table" style="margin-top: 0.5rem;">
                 <div class="inst-row">
-                    <span class="inst-desc">Escapees outnumber pursuers</span>
+                    <span class="inst-desc">Втікачів більше, ніж переслідувачів</span>
                     <span class="inst-score modifier-positive">+1</span>
                 </div>
                 <div class="inst-row">
-                    <span class="inst-desc">Good escape plan</span>
+                    <span class="inst-desc">Хороший план втечі</span>
                     <span class="inst-score modifier-positive">+1</span>
                 </div>
                 <div class="inst-row">
-                    <span class="inst-desc">Slowed by slowest member</span>
+                    <span class="inst-desc">Сповільнені найповільнішим членом</span>
                     <span class="inst-score modifier-negative">-2</span>
                 </div>
             </div>
@@ -628,38 +628,40 @@
 
     <!-- Challenge Calculator -->
     <article class="cheatsheet-card">
-        <h3>Challenge Calculator</h3>
+        <h3>Розрахунок Складності</h3>
 
         <form id="challenge-form"
               hx-post="/cheatsheets/calculate-challenge"
               hx-target="#calculator-result"
               hx-trigger="load, input delay:150ms, submit"
               hx-swap="innerHTML"
+              hx-headers='{"Accept-Language": "uk"}'
               autocomplete="off">
+            <input type="hidden" name="lang" value="uk">
             <div class="calculator-sides">
                 <div class="calculator-side side-foes">
-                    <h4>Foes</h4>
+                    <h4>Вороги</h4>
                     <div class="field-row">
                         <div class="field-group">
                             <input type="number" id="total_hd" name="total_hd" min="1" value="1">
-                            <span class="field-label">HD (total)</span>
+                            <span class="field-label">КХ (сумма)</span>
                         </div>
                         <div class="field-group">
                             <input type="number" id="total_attacks" name="total_attacks" min="1" value="1">
-                            <span class="field-label">Attacks (total)</span>
+                            <span class="field-label">Атаки (сумма)</span>
                         </div>
                     </div>
                 </div>
                 <div class="calculator-side side-party">
-                    <h4>Party</h4>
+                    <h4>Група</h4>
                     <div class="field-row">
                         <div class="field-group">
                             <input type="number" id="num_pcs" name="num_pcs" min="1" value="4">
-                            <span class="field-label"># of PCs</span>
+                            <span class="field-label">К-сть ПГ</span>
                         </div>
                         <div class="field-group">
                             <input type="number" id="total_pc_levels" name="total_pc_levels" min="1" value="4">
-                            <span class="field-label">Levels (total)</span>
+                            <span class="field-label">Рівні (сумма)</span>
                         </div>
                     </div>
                 </div>
@@ -667,15 +669,15 @@
         </form>
 
         <div id="calculator-result">
-            {% include "cheatsheets/_challenge_result.html" %}
+            {% include "cheatsheets/_challenge_result_uk.html" %}
         </div>
 
         <div class="challenge-legend">
-            <span class="legend-item verdict-rout">&gt;4× Rout</span>
-            <span class="legend-item verdict-deadly">~2× Deadly</span>
-            <span class="legend-item verdict-hard">&gt;1× Hard</span>
-            <span class="legend-item verdict-fair">≤1× Fair</span>
-            <span class="legend-item verdict-easy">&lt;½× Easy</span>
+            <span class="legend-item verdict-rout">&gt;4× Розгром</span>
+            <span class="legend-item verdict-deadly">~2× Смертельно</span>
+            <span class="legend-item verdict-hard">&gt;1× Важко</span>
+            <span class="legend-item verdict-fair">≤1× Справедливо</span>
+            <span class="legend-item verdict-easy">&lt;½× Легко</span>
         </div>
     </article>
 
@@ -716,145 +718,145 @@
 
     <!-- Morale Checks -->
     <article class="cheatsheet-card">
-        <h3>Morale Checks</h3>
+        <h3>Перевірки Моралі</h3>
 
         <div class="action-item">
             <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> &gt; ML = <span class="modifier-negative">Fail</span>
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">2к6</span> &gt; Мораль = <span class="modifier-negative">Провал</span>
             </div>
-            <p>On failure: NPC retreats, surrenders, or seeks to escape.</p>
+            <p>При провалі: НІП відступає, здається або намагається втекти.</p>
         </div>
 
         <div class="action-item">
-            <h4>When to Roll</h4>
+            <h4>Коли Кидати</h4>
             <ul class="trigger-list">
-                <li><strong>First casualty</strong> - When first member of a group is killed or incapacitated</li>
-                <li><strong>Losing badly</strong> - Group starts to visibly lose or odds of victory shrink</li>
-                <li><strong>Terror</strong> - Facing terrifying magic, horrendous slaughter, or vastly superior foe</li>
-                <li><strong>Non-combatant</strong> - Civilian first faced with serious physical harm</li>
-                <li><strong>Ambush</strong> - Undisciplined targets may check when ambushed (GM discretion)</li>
+                <li><strong>Перша втрата</strong> - Коли першого члена групи вбито або виведено з бою</li>
+                <li><strong>Програють</strong> - Група починає очевидно програвати або шанси на перемогу зменшуються</li>
+                <li><strong>Жах</strong> - Стикаються з жахливою магією, страхітливою різаниною або значно сильнішим ворогом</li>
+                <li><strong>Цивільні</strong> - Цивільні вперше стикаються з реальною фізичною загрозою</li>
+                <li><strong>Засідка</strong> - Недисципліновані цілі можуть перевіряти при несподіваній засідці (на розсуд ГМ)</li>
             </ul>
         </div>
 
         <div class="action-item">
-            <h4>Failure Consequences</h4>
+            <h4>Наслідки Провалу</h4>
             <ul>
-                <li><strong>Non-combatants:</strong> Flee madly, drop everything</li>
-                <li><strong>Trained fighters:</strong> Fighting withdrawal, try to escape with comrades</li>
-                <li><strong>If escape impossible:</strong> Surrender, collapse in despair, or fight with frenzy</li>
+                <li><strong>Цивільні:</strong> Божевільна втеча, кидають все</li>
+                <li><strong>Треновані бійці:</strong> Бойовий відступ, намагаються втекти з товаришами</li>
+                <li><strong>Якщо втеча неможлива:</strong> Здаються, впадають у відчай, або б'ються з люттю</li>
             </ul>
         </div>
 
         <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
-            <strong>Typical ML:</strong> 2-5 cowardly, 6-7 average, 8-9 brave, 10-11 fearless, 12 unbreakable. PCs never check.
+            <strong>Типова Мораль:</strong> 2-5 боягузи, 6-7 звичайні, 8-9 хоробрі, 10-11 безстрашні, 12 незламні. ПГ ніколи не кидають Мораль.
         </p>
     </article>
 
     <!-- Instinct Checks -->
     <article class="cheatsheet-card">
-        <h3>Instinct Checks</h3>
+        <h3>Перевірки Інстинкту</h3>
 
         <div class="action-item">
             <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d10</span> &le; Inst = <span class="modifier-negative">Fail</span>
+                <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к10</span> &le; Інстинкт = <span class="modifier-negative">Провал</span>
             </div>
-            <p>On failure: NPC acts impulsively, short-sightedly, instinctually.</p>
+            <p>При провалі: НІП діє імпульсивно, короткозоро, інстинктивно.</p>
         </div>
 
         <div class="action-item">
-            <h4>When to Roll</h4>
+            <h4>Коли Кидати</h4>
             <ul class="trigger-list">
-                <li><strong>Round 2+</strong> - Second round of combat for mobs and undisciplined fighters</li>
-                <li><strong>After Morale</strong> - Creature just had to make a Morale check</li>
-                <li><strong>Confusion</strong> - Enemy did something confusing or disorienting</li>
-                <li><strong>Provoked</strong> - Enemy enraged or directly intimidated the creature</li>
-                <li><strong>Temptation</strong> - Presented with something it desires (food, money, etc.)</li>
+                <li><strong>Раунд 2+</strong> - Другий раунд бою для недисциплінованих бійців</li>
+                <li><strong>Після Моралі</strong> - Істота щойно робила перевірку Моралі</li>
+                <li><strong>Збентеження</strong> - Ворог зробив щось заплутане або дезорієнтуюче</li>
+                <li><strong>Провокація</strong> - Ворог розлютив або безпосередньо залякав істоту</li>
+                <li><strong>Спокуса</strong> - Представлено щось бажане (їжа, гроші тощо)</li>
             </ul>
         </div>
 
         <div class="action-item">
-            <h4>Failure Examples</h4>
+            <h4>Приклади Провалу</h4>
             <ul>
-                <li>Attack sub-optimal targets blindly</li>
-                <li>Use unarmed attacks instead of weapon in hand</li>
-                <li>Aim spells/shots at targets of lesser importance</li>
-                <li>Chase after dropped bait instead of fighting</li>
+                <li>Сліпо атакує неоптимальні цілі</li>
+                <li>Використовує беззбройні атаки замість зброї в руці</li>
+                <li>Спрямовує закляття/постріли на менш важливі цілі</li>
+                <li>Женеться за кинутою приманкою замість бою</li>
             </ul>
         </div>
 
         <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
-            <strong>Typical Inst:</strong> 5+ beasts/civilians, 3-4 veterans, 1-2 hardened, 0 coldest killers. PCs never check. Optional.
+            <strong>Типовий Інстинкт:</strong> 5+ звірі/цивільні, 3-4 ветерани, 1-2 загартовані, 0 найхолоднокровніші вбивці. ПГ ніколи не кидають Інстинкт. Опціонально.
         </p>
     </article>
 
     <!-- Running NPC Combat & Fleeing -->
     <article class="cheatsheet-card">
-        <h3>Running NPCs & Fleeing</h3>
+        <h3>Керування НІПами</h3>
 
         <div class="action-item">
-            <h4>NPC Combat Tips</h4>
+            <h4>Поради для Бою НІПів</h4>
             <ul>
-                <li>NPCs won't fight to the death unless they must</li>
-                <li>Check Morale when things go badly</li>
-                <li>Check Instinct when confused or provoked</li>
-                <li>Let NPCs make tactical errors - they're not perfect</li>
-                <li>Once Morale fails, side won't fight those foes until courage recovered</li>
+                <li>НІПи не б'ються до смерті, якщо не змушені</li>
+                <li>Перевіряйте Мораль, коли справи йдуть погано</li>
+                <li>Перевіряйте Інстинкт при збентеженні або провокації</li>
+                <li>Дозволяйте НІПам робити тактичні помилки - вони не ідеальні</li>
+                <li>Після провалу Моралі сторона не битиметься з тими ж ворогами, доки ситуація не зміниться</li>
             </ul>
         </div>
 
         <div class="action-item">
-            <h4>GM Guidance</h4>
+            <h4>Поради для ГМ</h4>
             <ul>
-                <li>Be charitable about letting PCs run away</li>
-                <li>Most pursuers won't be relentlessly persistent</li>
-                <li>Running away is a viable option, not an excuse to die tired</li>
+                <li>Будьте поблажливі щодо втечі ПГ</li>
+                <li>Більшість переслідувачів не будуть невпинно наполегливими</li>
+                <li>Втеча - життєздатний варіант, а не привід померти втомленими</li>
             </ul>
         </div>
     </article>
 
     <!-- Chases -->
     <article class="cheatsheet-card span-2">
-        <h3>Chases & Pursuit</h3>
+        <h3>Погоні & Переслідування</h3>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <!-- Foot Chase -->
             <div>
-                <h4 style="margin-top: 0;">Foot Chase</h4>
+                <h4 style="margin-top: 0;">Пішки</h4>
                 <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
-                    <li><strong>Fleeing pace:</strong> Best Dex/Exert or Con/Exert in fleeing group rolls = <strong>Pace</strong></li>
-                    <li><strong>Helpers:</strong> Other fleeing members hinder pursuit (skill check or GM judgment). Success = <span class="modifier-positive">+1</span> to Pace each, max <span class="modifier-positive">+3</span></li>
-                    <li><strong>Pursuers roll:</strong> Single Dex/Exert or Con/Exert check with modifiers</li>
-                    <li><strong>Result:</strong> Beat Pace = <span class="modifier-negative">caught</span>. Tie or less = <span class="modifier-positive">escaped</span></li>
+                    <li><strong>Темп втечі:</strong> Найкращий СПР/АТЛЕТИКА або СТА/АТЛЕТИКА у групі втікачів = <strong>Темп</strong></li>
+                    <li><strong>Помічники:</strong> Інші втікачі заважають переслідуванню (перевірка навички або рішення ГМ). Успіх = <span class="modifier-positive">+1</span> до Темпу кожен, макс <span class="modifier-positive">+3</span></li>
+                    <li><strong>Переслідувачі кидають:</strong> Один кидок СПР/АТЛЕТИКА або СТА/АТЛЕТИКА з модифікаторами</li>
+                    <li><strong>Результат:</strong> Перевищує Темп = <span class="modifier-negative">спіймано</span>. Рівно або менше = <span class="modifier-positive">втекли</span></li>
                 </ol>
 
-                <h4 style="margin-top: 0.75rem;">Foot Chase Pace Modifiers</h4>
+                <h4 style="margin-top: 0.75rem;">Модифікатори Темпу Пішки</h4>
                 <div class="instinct-table">
                     <div class="inst-row">
-                        <span class="inst-desc">No head start at all</span>
+                        <span class="inst-desc">Без фори взагалі</span>
                         <span class="inst-score">+2</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">One round head start</span>
+                        <span class="inst-desc">Один раунд фори</span>
                         <span class="inst-score">+1</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">&lt;1 minute head start</span>
+                        <span class="inst-desc">&lt;1 хв фори</span>
                         <span class="inst-score">+0</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">&gt;1 minute head start</span>
+                        <span class="inst-desc">&gt;1 хв фори</span>
                         <span class="inst-score">-2</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">More pursuers than pursued</span>
+                        <span class="inst-desc">Переслідувачів більше</span>
                         <span class="inst-score">-1</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Terrain knowledge</span>
-                        <span class="inst-score">-2 to +2</span>
+                        <span class="inst-desc">Знання місцевості</span>
+                        <span class="inst-score">-2 до +2</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Half-hearted / Enraged</span>
+                        <span class="inst-desc">Млявість / Лють</span>
                         <span class="inst-score">-1 / +1</span>
                     </div>
                 </div>
@@ -862,40 +864,40 @@
 
             <!-- Mounted Chase -->
             <div>
-                <h4 style="margin-top: 0;">Mounted Chase</h4>
+                <h4 style="margin-top: 0;">Верхи</h4>
                 <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
-                    <li><strong>Fleeing pace:</strong> Fleeing rider rolls Dex/Ride = <strong>Pace</strong></li>
-                    <li><strong>Each pursuer rolls:</strong> Dex/Ride with modifiers</li>
-                    <li><strong>Result:</strong> Meet or exceed Pace = <span class="modifier-negative">catch up</span>. Fail = <span class="modifier-positive">fall behind & lost</span></li>
+                    <li><strong>Темп втечі:</strong> Втікач кидає СПР/ЇЗДА = <strong>Темп</strong></li>
+                    <li><strong>Кожен переслідувач кидає:</strong> СПР/ЇЗДА з модифікаторами</li>
+                    <li><strong>Результат:</strong> Рівно або більше Темпу = <span class="modifier-negative">наздогнав</span>. Менше = <span class="modifier-positive">відстав & загубив</span></li>
                 </ol>
                 <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.5rem 0;">
-                    <strong>Note:</strong> Unmounted pursuers cannot catch mounted evaders in short-term chases.
+                    <strong>Примітка:</strong> Пішоходи не можуть наздогнати верхових у короткочасних погонях.
                 </p>
 
-                <h4 style="margin-top: 0.75rem;">Mounted Chase Pace Modifiers</h4>
+                <h4 style="margin-top: 0.75rem;">Модифікатори Темпу Верхи</h4>
                 <div class="instinct-table">
                     <div class="inst-row">
-                        <span class="inst-desc">Can't directly see pursued</span>
+                        <span class="inst-desc">Не бачить втікача напряму</span>
                         <span class="inst-score">-2</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Pursuer flying, pursued not</span>
+                        <span class="inst-desc">Переслідувач летить, втікач ні</span>
                         <span class="inst-score">+3</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Pursued flying, pursuer not</span>
+                        <span class="inst-desc">Втікач летить, переслідувач ні</span>
                         <span class="inst-score">-3</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Spotter relaying position</span>
+                        <span class="inst-desc">Спостерігач передає позицію</span>
                         <span class="inst-score">+1</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Terrain knowledge</span>
-                        <span class="inst-score">-2 to +2</span>
+                        <span class="inst-desc">Знання місцевості</span>
+                        <span class="inst-score">-2 до +2</span>
                     </div>
                     <div class="inst-row">
-                        <span class="inst-desc">Half-hearted / Enraged</span>
+                        <span class="inst-desc">Млявість / Лють</span>
                         <span class="inst-score">-1 / +1</span>
                     </div>
                 </div>
@@ -906,14 +908,14 @@
 </div>
 
 <footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
-    <small>WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
+    <small>WWN від Кевіна Кроуфорда. Зміст шпаргалки зібрано для швидкого довідника.</small>
 </footer>
 
 <!-- Alpine.js + Simple Dice Roller -->
 <script>
     // Simple dice roller - supports notation like "2d6", "1d8+2", "3d6-1"
     function rollDice(notation) {
-        const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
+        const match = notation.match(/^(\d+)?[dкк](\d+)([+-]\d+)?$/i);
         if (!match) return null;
         const count = parseInt(match[1]) || 1;
         const sides = parseInt(match[2]);
@@ -931,9 +933,9 @@
                 const mins = this.turns * 10;
                 const h = Math.floor(mins / 60);
                 const m = mins % 60;
-                if (h > 0 && m > 0) return `${h}h${m}m`;
-                if (h > 0) return `${h}h`;
-                if (m > 0) return `${m}m`;
+                if (h > 0 && m > 0) return `${h}г${m}хв`;
+                if (h > 0) return `${h}г`;
+                if (m > 0) return `${m}хв`;
                 return '';
             }
         }));

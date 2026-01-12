@@ -31,11 +31,7 @@ async def encounter_cheatsheet(request: Request, lang: str | None = Cookie(defau
     translations = get_translations(request, lang)
     current_lang = get_language(request, lang)
 
-    # TODO: Add Ukrainian translation, then restore language selection:
-    # template_name = (
-    #     "cheatsheets/wwn_encounter_uk.html" if current_lang == "uk" else "cheatsheets/wwn_encounter.html"
-    # )
-    template_name = "cheatsheets/wwn_encounter.html"
+    template_name = "cheatsheets/wwn_encounter_uk.html" if current_lang == "uk" else "cheatsheets/wwn_encounter.html"
 
     return templates.TemplateResponse(
         template_name,
@@ -50,8 +46,13 @@ async def calculate_challenge(
     total_attacks: int = Form(default=1),
     num_pcs: int = Form(default=4),
     total_pc_levels: int = Form(default=4),
+    lang: str = Form(default=None),
+    language: str | None = Cookie(default=None, alias="lang"),
 ):
     """Calculate encounter challenge rating"""
+    # Determine language from form or cookie
+    current_lang = lang or language or "en"
+
     # Ensure attacks >= HD (minimum 1 attack per HD)
     attacks = max(total_attacks, total_hd, 1)
     hd = max(total_hd, 1)
@@ -65,24 +66,48 @@ async def calculate_challenge(
 
     ratio = foe_score / party_score
 
+    # Verdicts in both languages
+    verdicts = {
+        "en": {
+            "rout": "Rout - Excellent tactics or magic needed to survive",
+            "deadly": "Deadly - At least 1 PC down, possible TPK",
+            "hard": "Hard - Ally might go down, decent chance to win",
+            "fair": "Fair - Likely win without Mortally Wounded",
+            "easy": "Easy - Probably a walkover",
+        },
+        "uk": {
+            "rout": "Розгром - Щоб вижити, потрібна відмінна тактика або магія",
+            "deadly": "Смертельна небезпека - Мінімум 1 персонаж в 0, можливий TPK",
+            "hard": "Важко - Хтось із ПГ може впасти в 0, але є шанс на перемогу",
+            "fair": "Справедливо - Ймовірна перемога без С. Поранених персонажів",
+            "easy": "Легко - Скоріш за все легка прогулянка",
+        },
+    }
+
+    lang_verdicts = verdicts.get(current_lang, verdicts["en"])
+
     if ratio > 4:
-        verdict = "Rout - Excellent tactics or magic needed"
+        verdict = lang_verdicts["rout"]
         verdict_class = "verdict-rout"
     elif ratio >= 2:
-        verdict = "Deadly - At least 1 PC down, possible TPK"
+        verdict = lang_verdicts["deadly"]
         verdict_class = "verdict-deadly"
     elif ratio > 1:
-        verdict = "Hard - Ally might go down, decent chance"
+        verdict = lang_verdicts["hard"]
         verdict_class = "verdict-hard"
     elif ratio > 0.5:
-        verdict = "Fair - Likely win without Mortally Wounded"
+        verdict = lang_verdicts["fair"]
         verdict_class = "verdict-fair"
     else:
-        verdict = "Easy - Probably a walkover"
+        verdict = lang_verdicts["easy"]
         verdict_class = "verdict-easy"
 
+    template_name = (
+        "cheatsheets/_challenge_result_uk.html" if current_lang == "uk" else "cheatsheets/_challenge_result.html"
+    )
+
     return templates.TemplateResponse(
-        "cheatsheets/_challenge_result.html",
+        template_name,
         {
             "request": request,
             "foe_score": foe_score,
