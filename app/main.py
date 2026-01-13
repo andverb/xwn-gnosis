@@ -15,7 +15,7 @@ from app.logging_config import add_request_context, clear_request_context, get_l
 from app.routers.api import rules as api_rules
 from app.routers.api import rulesets as api_rulesets
 from app.routers.api import search as api_search
-from app.routers.web import cheatsheets, pages
+from app.routers.web import cheatsheets, combat_tracker, pages
 from app.routers.web import search as web_search
 
 # Initialize structured logging
@@ -158,6 +158,7 @@ app.include_router(api_search.router)
 app.include_router(pages.router)
 app.include_router(web_search.router)
 app.include_router(cheatsheets.router)
+app.include_router(combat_tracker.router)
 
 # Mount MkDocs static sites for rulesets
 # site-uk and site-en now contain clean paths (basics/, combat/, etc.)

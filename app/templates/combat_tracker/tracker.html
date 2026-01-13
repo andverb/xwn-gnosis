@@ -1,0 +1,1409 @@
+{% extends "base.html" %}
+
+{% block title %}Combat Tracker - Gnosis{% endblock %}
+
+{% block extra_head %}
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+<style>
+    /* Single column layout */
+    .tracker-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Controls bar */
+    .controls-bar {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0.75rem;
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+    }
+
+    .controls-bar button {
+        margin: 0;
+        padding: 0.5rem 1rem;
+    }
+
+    .round-counter {
+        margin-left: auto;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        background: var(--pico-primary);
+        color: white;
+        border-radius: var(--pico-border-radius);
+    }
+
+    /* Initiative list */
+    .initiative-panel {
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 1rem;
+    }
+
+    .initiative-panel h3 {
+        margin: 0 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--pico-primary);
+        font-size: 1rem;
+    }
+
+    /* Group headers */
+    .group-header {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.5rem;
+        background: var(--pico-code-background-color);
+        border-bottom: 1px solid var(--pico-muted-border-color);
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+
+    /* Group colors - applied dynamically */
+    .group-header.colored {
+        border-left: 3px solid var(--group-color, #6c757d);
+        background: color-mix(in srgb, var(--group-color, #6c757d) 10%, transparent);
+    }
+
+    .group-header .group-name {
+        flex: 1;
+        cursor: pointer;
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.2rem;
+    }
+
+    .group-header .group-name:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    .group-header .group-name-input {
+        width: 10rem;
+        height: 1.4rem;
+        min-height: 0;
+        padding: 0.1rem 0.25rem;
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.2rem;
+    }
+
+    .group-header .group-actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* Icon buttons (shared style for + and X) */
+    .icon-btn {
+        width: 1.4rem;
+        height: 1.4rem;
+        padding: 0;
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: 0.2rem;
+        color: var(--pico-muted-color);
+        cursor: pointer;
+    }
+
+    .icon-btn:hover {
+        background: var(--pico-primary);
+        color: white;
+        border-color: var(--pico-primary);
+    }
+
+    .icon-btn.danger:hover {
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .combatant-row.grouped {
+        border-left: 2px solid var(--group-color, #6c757d);
+        padding-left: calc(1rem - 2px);
+    }
+
+    .group-init {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+    }
+
+    .group-init input[type="text"] {
+        width: 1.5rem;
+        height: 1.4rem;
+        min-height: 0;
+        padding: 0.1rem;
+        text-align: center;
+        margin: 0;
+        font-size: 0.75rem;
+        line-height: 1;
+        border-radius: 0.2rem;
+    }
+
+    .group-init label {
+        font-size: 0.7rem;
+        color: var(--pico-muted-color);
+        font-weight: normal;
+    }
+
+    .add-group-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0.5rem 0;
+        font-size: 0.8rem;
+        background: transparent;
+        border: 1px dashed var(--pico-muted-border-color);
+        color: var(--pico-muted-color);
+        width: 100%;
+    }
+
+    .add-group-btn:hover {
+        border-color: var(--pico-primary);
+        color: var(--pico-primary);
+        background: transparent;
+    }
+
+    .combatant-row {
+        display: grid;
+        grid-template-columns: 1fr 4.5rem 3rem auto;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.3rem 0.5rem 0.3rem 1rem;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+        transition: background-color 0.15s;
+        font-size: 0.9rem;
+    }
+
+    .combatant-row:last-child {
+        border-bottom: none;
+    }
+
+    .combatant-row:hover {
+        background: var(--pico-code-background-color);
+    }
+
+    .combatant-row.active {
+        background: rgba(13, 110, 253, 0.15);
+        border-left: 3px solid var(--pico-primary);
+        padding-left: calc(1rem - 3px);
+    }
+
+    .combatant-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .combatant-name {
+        font-weight: 600;
+    }
+
+    .combatant-stats {
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .combatant-stats span {
+        white-space: nowrap;
+    }
+
+    .stat-label {
+        opacity: 0.7;
+    }
+
+    .weapon-traits {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .trait-badge {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.25rem;
+        background: var(--pico-code-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: 0.2rem;
+        cursor: help;
+        font-family: monospace;
+    }
+
+    .trait-badge:hover {
+        background: var(--pico-primary);
+        color: white;
+        border-color: var(--pico-primary);
+    }
+
+    .combatant-hp {
+        text-align: center;
+        cursor: pointer;
+        padding: 0.2rem 0.35rem;
+        border-radius: 0.25rem;
+        position: relative;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .combatant-hp:hover {
+        background: rgba(220, 53, 69, 0.2);
+    }
+
+    .hp-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: #dc3545;
+        width: 100%;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    .hp-bar-fill {
+        height: 100%;
+        background: #198754;
+        transition: width 0.3s;
+        border-radius: 0 0 0 0.25rem;
+    }
+
+    .combatant-ac {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .ac-suffix {
+        font-size: 0.7rem;
+        color: var(--pico-muted-color);
+    }
+
+    .combatant-actions button {
+        padding: 0.15rem 0.4rem;
+        margin: 0;
+        font-size: 0.75rem;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+    }
+
+    .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 1.5rem;
+        z-index: 1000;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal h3 {
+        margin: 0 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--pico-primary);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--pico-muted-color);
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .modal-close:hover {
+        color: var(--pico-color);
+    }
+
+    /* Form styles */
+    .form-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 1rem;
+    }
+
+    .form-tabs button {
+        flex: 1;
+        margin: 0;
+        border-radius: 0;
+        background: var(--pico-code-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    .form-tabs button:first-child {
+        border-radius: var(--pico-border-radius) 0 0 var(--pico-border-radius);
+    }
+
+    .form-tabs button:last-child {
+        border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
+    }
+
+    .form-tabs button.active {
+        background: var(--pico-primary);
+        color: white;
+        border-color: var(--pico-primary);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .form-field label {
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+        margin: 0;
+    }
+
+    .form-field input,
+    .form-field select {
+        margin: 0;
+        padding: 0.4rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-field.flex-2 { flex: 2; min-width: 120px; }
+    .form-field.flex-1 { flex: 1; min-width: 80px; }
+
+    .form-field input[type="number"] {
+        width: 4.5rem;
+    }
+
+    .form-field input[type="checkbox"] {
+        width: auto;
+        margin: 0.25rem 0;
+    }
+
+    .checkbox-row {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .checkbox-field input {
+        margin: 0;
+    }
+
+    .checkbox-field label {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .form-section-title {
+        font-size: 0.8rem;
+        color: var(--pico-muted-color);
+        margin: 1rem 0 0.5rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--pico-muted-border-color);
+    }
+
+    .form-actions button {
+        flex: 1;
+        margin: 0;
+    }
+
+    /* HP toggle */
+    .hp-mode-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .hp-mode-toggle button {
+        flex: 1;
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 0;
+        background: var(--pico-code-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    .hp-mode-toggle button:first-child {
+        border-radius: var(--pico-border-radius) 0 0 var(--pico-border-radius);
+    }
+
+    .hp-mode-toggle button:last-child {
+        border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
+    }
+
+    .hp-mode-toggle button.active {
+        background: var(--pico-primary);
+        color: white;
+        border-color: var(--pico-primary);
+    }
+
+    /* HP Modal (damage/heal) */
+    .hp-modal-current {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .hp-modal-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .hp-modal-buttons button {
+        flex: 1;
+        margin: 0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--pico-muted-color);
+    }
+
+    .empty-state p {
+        margin: 0.5rem 0;
+    }
+
+    /* Dice styling */
+    .dice {
+        font-family: monospace;
+        font-weight: bold;
+        color: var(--pico-primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div x-data="combatTracker()" x-init="init()">
+    <div class="tracker-layout">
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+            <button @click="openAddModal()">+ Add Combatant</button>
+            <button @click="rollAllInitiative()" :disabled="combatants.length === 0">Roll All Init</button>
+            <button @click="nextTurn()" :disabled="sortedCombatants.length === 0">Next Turn</button>
+            <button class="secondary outline" @click="clearCombat()" :disabled="combatants.length === 0">Clear</button>
+            <div class="round-counter">Round <span x-text="round"></span></div>
+        </div>
+
+        <!-- Initiative List -->
+        <div class="initiative-panel">
+            <h3>Combat</h3>
+
+            <template x-if="sortedGroups.length === 0">
+                <div class="empty-state">
+                    <p>No combatants yet</p>
+                </div>
+            </template>
+
+            <!-- All Groups (unified PCs and monsters) -->
+            <template x-for="group in sortedGroups" :key="group.name">
+                <div :style="'--group-color: ' + group.color">
+                    <div class="group-header colored">
+                        <span class="group-name"
+                              x-show="editingGroup !== group.name"
+                              @dblclick="startEditingGroup(group.name)"
+                              x-text="group.name"
+                              title="Double-click to rename"></span>
+                        <input x-show="editingGroup === group.name"
+                               type="text"
+                               class="group-name-input"
+                               :value="group.name"
+                               @blur="finishEditingGroup(group.name, $event.target.value)"
+                               @keyup.enter="$event.target.blur()"
+                               @keyup.escape="editingGroup = null"
+                               x-ref="groupNameInput">
+                        <div class="group-actions">
+                            <button class="icon-btn" @click="openAddToGroup(group.name)" title="Add to group">+</button>
+                            <button class="icon-btn danger" @click="removeGroup(group.name)" title="Remove group">&times;</button>
+                            <div class="group-init">
+                                <input type="text" :value="group.initiative" @input="updateGroupInitiative(group.name, $event.target.value)" placeholder="-" title="Initiative">
+                            </div>
+                        </div>
+                    </div>
+                    <template x-for="combatant in group.combatants" :key="combatant.id">
+                        <div class="combatant-row grouped" :class="{ 'active': combatant.id === currentTurnId }">
+                            <div class="combatant-info">
+                                <span class="combatant-name" x-text="getCombatantDisplayName(combatant)"></span>
+                                <div class="combatant-stats">
+                                    <template x-if="combatant.type === 'pc'">
+                                        <span>
+                                            <span><span class="stat-label">Lvl:</span> <span x-text="getPC(combatant.sourceId)?.level"></span></span>
+                                            <span><span class="stat-label">Strain:</span> <span x-text="combatant.systemStrain || 0"></span></span>
+                                        </span>
+                                    </template>
+                                    <template x-if="combatant.type === 'npc'">
+                                        <span>
+                                            <span><span class="stat-label">BAB:</span> <span x-text="getNpcBab(combatant)"></span></span>
+                                            <span><span class="stat-label">Dmg:</span> <span class="dice" x-text="getNpcDamage(combatant)"></span></span>
+                                            <span><span class="stat-label">Shk:</span> <span x-text="getNpcShock(combatant)"></span></span>
+                                            <span><span class="stat-label">ML:</span> <span x-text="getStatblock(combatant.sourceId)?.ml"></span></span>
+                                        </span>
+                                    </template>
+                                </div>
+                                <div class="weapon-traits" x-show="combatant.type === 'npc' && getWeaponTraits(combatant).length > 0">
+                                    <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
+                                        <span class="trait-badge" :data-tooltip="trait.desc" x-text="trait.code"></span>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="combatant-hp" @click.stop="openHpModal(combatant)">
+                                <span x-text="combatant.currentHp + '/' + combatant.maxHp"></span>
+                                <div class="hp-bar">
+                                    <div class="hp-bar-fill" :style="'width: ' + Math.max(0, combatant.currentHp / combatant.maxHp * 100) + '%'"></div>
+                                </div>
+                            </div>
+                            <div class="combatant-ac">
+                                <span x-text="getCombatantAC(combatant)"></span>
+                                <span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
+                            </div>
+                            <div class="combatant-actions">
+                                <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Add Group Button -->
+            <button class="add-group-btn" @click="addNewGroup()">+ Add Group</button>
+        </div>
+    </div>
+
+    <!-- Add Combatant Modal -->
+    <template x-if="addModalOpen">
+        <div>
+            <div class="modal-backdrop" @click="closeAddModal()"></div>
+            <div class="modal">
+                <button class="modal-close" @click="closeAddModal()">&times;</button>
+                <h3>Add Combatant</h3>
+
+                <!-- Tabs -->
+                <div class="form-tabs">
+                    <button :class="{ 'active': formTab === 'npc' }" @click="formTab = 'npc'">NPC / Monster</button>
+                    <button :class="{ 'active': formTab === 'pc' }" @click="formTab = 'pc'">PC</button>
+                </div>
+
+                <!-- NPC Form -->
+                <template x-if="formTab === 'npc'">
+                    <div>
+                        <div class="form-row">
+                            <div class="form-field flex-2">
+                                <label>Name</label>
+                                <input type="text" x-model="npcForm.name" placeholder="Goblin" @keyup.enter="addNPC()">
+                            </div>
+                            <div class="form-field">
+                                <label>Count</label>
+                                <input type="number" x-model.number="npcForm.count" min="1" max="20" style="width: 3.5rem;">
+                            </div>
+                            <div class="form-field">
+                                <label>HD</label>
+                                <input type="number" x-model.number="npcForm.hd" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-section-title">HP Calculation</div>
+                        <div class="hp-mode-toggle">
+                            <button :class="{ 'active': npcForm.hpMode === 'roll' }" @click="npcForm.hpMode = 'roll'">Roll (HD×d8)</button>
+                            <button :class="{ 'active': npcForm.hpMode === 'average' }" @click="npcForm.hpMode = 'average'">Average (HD×4.5)</button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label>AC</label>
+                                <input type="number" x-model.number="npcForm.ac" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label>BAB</label>
+                                <input type="number" x-model.number="npcForm.bab" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label>Attacks</label>
+                                <input type="number" x-model.number="npcForm.attacks" min="1">
+                            </div>
+                        </div>
+
+                        <div class="checkbox-row">
+                            <div class="checkbox-field">
+                                <input type="checkbox" id="npc-armor" x-model="npcForm.hasArmor">
+                                <label for="npc-armor">Wearing Armor (a)</label>
+                            </div>
+                            <div class="checkbox-field">
+                                <input type="checkbox" id="npc-shield" x-model="npcForm.hasShield">
+                                <label for="npc-shield">Has Shield (s)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-field flex-2">
+                                <label>Weapon</label>
+                                <select x-model="npcForm.weaponId">
+                                    {% for weapon in weapons %}
+                                    <option value="{{ weapon.id }}">{{ weapon.name.en }}</option>
+                                    {% endfor %}
+                                    <option value="custom">Custom damage...</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>+Dmg Bonus</label>
+                                <input type="number" x-model.number="npcForm.dmgBonus" min="0">
+                            </div>
+                        </div>
+
+                        <template x-if="npcForm.weaponId === 'custom'">
+                            <div class="form-row">
+                                <div class="form-field flex-1">
+                                    <label>Custom Damage</label>
+                                    <input type="text" x-model="npcForm.fixedDamage" placeholder="1d8">
+                                </div>
+                                <div class="form-field flex-1">
+                                    <label>Custom Shock</label>
+                                    <input type="text" x-model="npcForm.fixedShock" placeholder="2/15">
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="form-section-title">Behavior</div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label>MV</label>
+                                <input type="text" x-model="npcForm.mv" style="width: 4.5rem;">
+                            </div>
+                            <div class="form-field">
+                                <label>ML</label>
+                                <input type="number" x-model.number="npcForm.ml" min="2" max="12">
+                            </div>
+                            <div class="form-field">
+                                <label>INST</label>
+                                <input type="number" x-model.number="npcForm.inst" min="0" max="10">
+                            </div>
+                            <div class="form-field">
+                                <label>SKL</label>
+                                <input type="number" x-model.number="npcForm.skl" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label>SV</label>
+                                <input type="number" x-model.number="npcForm.sv" min="1" max="20">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="secondary" @click="closeAddModal()">Cancel</button>
+                            <button @click="addNPC()">Add NPC</button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- PC Form -->
+                <template x-if="formTab === 'pc'">
+                    <div>
+                        <div class="form-row">
+                            <div class="form-field flex-2">
+                                <label>Character Name</label>
+                                <input type="text" x-model="pcForm.name" placeholder="Theron" @keyup.enter="addPC()">
+                            </div>
+                            <div class="form-field">
+                                <label>Level</label>
+                                <input type="number" x-model.number="pcForm.level" min="1" max="10">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label>AC</label>
+                                <input type="number" x-model.number="pcForm.ac" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label>Max HP</label>
+                                <input type="number" x-model.number="pcForm.maxHp" min="1">
+                            </div>
+                            <div class="form-field">
+                                <label>System Strain</label>
+                                <input type="number" x-model.number="pcForm.systemStrain" min="0">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="secondary" @click="closeAddModal()">Cancel</button>
+                            <button @click="addPC()">Add PC</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+
+    <!-- HP Modal (Damage/Heal) -->
+    <template x-if="hpModalOpen">
+        <div>
+            <div class="modal-backdrop" @click="closeHpModal()"></div>
+            <div class="modal" style="max-width: 300px;">
+                <button class="modal-close" @click="closeHpModal()">&times;</button>
+                <h3 x-text="getCombatantDisplayName(hpModalTarget)"></h3>
+                <div class="hp-modal-current">
+                    <span x-text="hpModalTarget?.currentHp"></span> / <span x-text="hpModalTarget?.maxHp"></span> HP
+                </div>
+                <div class="form-field" style="margin-bottom: 1rem;">
+                    <label>Amount</label>
+                    <input type="number" x-model.number="hpModalAmount" min="0" placeholder="0"
+                           @keyup.enter="applyDamage()" x-ref="hpInput">
+                </div>
+                <div class="hp-modal-buttons">
+                    <button class="secondary" @click="applyDamage()">Damage</button>
+                    <button @click="applyHealing()">Heal</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ super() }}
+<script>
+    // Weapon data from server
+    const weaponsData = {{ weapons | tojson }};
+
+    // Color palette for monster groups
+    const groupColors = [
+        '#dc3545', // red
+        '#fd7e14', // orange
+        '#6f42c1', // purple
+        '#0dcaf0', // cyan
+        '#d63384', // pink
+        '#20c997', // teal
+        '#ffc107', // yellow
+        '#6610f2', // indigo
+    ];
+
+    function combatTracker() {
+        return {
+            // State
+            round: 1,
+            currentTurnId: null,
+            combatants: [],
+            statblocks: [],
+            pcs: [],
+
+            // Modals
+            addModalOpen: false,
+            hpModalOpen: false,
+            hpModalTarget: null,
+            hpModalAmount: 0,
+            formTab: 'npc',
+
+            // NPC Form
+            npcForm: {
+                name: '',
+                group: '',
+                count: 1,
+                hd: 1,
+                hpMode: 'roll',
+                ac: 10,
+                hasArmor: false,
+                hasShield: false,
+                bab: 0,
+                attacks: 1,
+                weaponId: 'spear-light',
+                dmgBonus: 0,
+                fixedDamage: '',
+                fixedShock: '',
+                mv: "30'",
+                ml: 7,
+                inst: 5,
+                skl: 1,
+                sv: 15
+            },
+
+            // Group initiative tracking
+            groupInitiatives: {},  // { "Group 1": 5, "Group 2": 3 }
+            nextGroupNum: 1,       // For auto-naming groups
+            editingGroup: null,    // Group name currently being edited
+
+            // PC Form
+            pcForm: {
+                name: '',
+                group: '',
+                level: 1,
+                ac: 10,
+                maxHp: 6,
+                systemStrain: 0
+            },
+
+            // Computed
+            get sortedCombatants() {
+                return [...this.combatants].sort((a, b) => {
+                    const initA = a.initiative ?? -999;
+                    const initB = b.initiative ?? -999;
+                    return initB - initA;
+                });
+            },
+
+            get allGroups() {
+                // Group all combatants (PCs and NPCs) by their group name
+                const groups = {};
+
+                // Include empty groups from groupInitiatives
+                Object.keys(this.groupInitiatives).forEach(groupName => {
+                    if (!groups[groupName]) {
+                        groups[groupName] = {
+                            name: groupName,
+                            initiative: this.groupInitiatives[groupName] ?? null,
+                            combatants: []
+                        };
+                    }
+                });
+
+                this.combatants.forEach(c => {
+                    let groupName;
+                    if (c.type === 'npc') {
+                        const sb = this.getStatblock(c.sourceId);
+                        groupName = sb?.group || 'Group 1';
+                    } else {
+                        const pc = this.getPC(c.sourceId);
+                        groupName = pc?.group || 'Group 1';
+                    }
+
+                    if (!groups[groupName]) {
+                        groups[groupName] = {
+                            name: groupName,
+                            initiative: this.groupInitiatives[groupName] ?? null,
+                            combatants: []
+                        };
+                    }
+                    groups[groupName].combatants.push(c);
+                });
+
+                // Assign colors to groups
+                const groupList = Object.values(groups);
+                groupList.forEach((group, index) => {
+                    group.color = groupColors[index % groupColors.length];
+                });
+
+                return groupList;
+            },
+
+            get sortedGroups() {
+                // Sort groups by initiative (highest first), nulls at end
+                return [...this.allGroups].sort((a, b) => {
+                    const initA = a.initiative ?? -999;
+                    const initB = b.initiative ?? -999;
+                    return initB - initA;
+                });
+            },
+
+            get existingGroups() {
+                // Get unique group names
+                return this.allGroups.map(g => g.name);
+            },
+
+            // Init
+            init() {
+                this.loadFromStorage();
+            },
+
+            // Helpers
+            generateId() {
+                return 'c-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            },
+
+            getWeapon(weaponId) {
+                return weaponsData.find(w => w.id === weaponId);
+            },
+
+            getStatblock(id) {
+                return this.statblocks.find(s => s.id === id);
+            },
+
+            getPC(id) {
+                return this.pcs.find(p => p.id === id);
+            },
+
+            getCombatantDisplayName(combatant) {
+                if (!combatant) return '';
+                if (combatant.type === 'pc') {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.name || 'Unknown PC';
+                } else {
+                    const statblock = this.getStatblock(combatant.sourceId);
+                    const baseName = statblock?.name || 'Unknown';
+                    return combatant.instanceNum > 1 ? baseName + ' ' + combatant.instanceNum : baseName;
+                }
+            },
+
+            getCombatantAC(combatant) {
+                if (combatant.type === 'pc') {
+                    return this.getPC(combatant.sourceId)?.ac || 10;
+                } else {
+                    return this.getStatblock(combatant.sourceId)?.ac || 10;
+                }
+            },
+
+            getAcSuffix(combatant) {
+                if (combatant.type === 'pc') return '';
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '';
+                let suffix = '';
+                if (sb.hasArmor) suffix += 'a';
+                if (sb.hasShield) suffix += 's';
+                return suffix;
+            },
+
+            getNpcBab(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '-';
+                const attacks = sb.attacks > 1 ? ' x' + sb.attacks : '';
+                return '+' + sb.bab + attacks;
+            },
+
+            getNpcDamage(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '-';
+                const weapon = this.getWeapon(sb.weaponId);
+                let dmg = sb.fixedDamage || weapon?.damage || '-';
+                if (sb.dmgBonus > 0 && !sb.fixedDamage) dmg += '+' + sb.dmgBonus;
+                return dmg;
+            },
+
+            getNpcShock(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '-';
+                if (sb.fixedShock) return sb.fixedShock;
+                const weapon = this.getWeapon(sb.weaponId);
+                if (!weapon?.shock) return '-';
+                const shockVal = weapon.shock.value + (sb.dmgBonus || 0);
+                return shockVal + '/' + weapon.shock.ac;
+            },
+
+            getWeaponTraits(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb || sb.weaponId === 'custom') return [];
+                const weapon = this.getWeapon(sb.weaponId);
+                if (!weapon?.traits) return [];
+                const traitData = {{ weapon_traits | tojson }};
+                return weapon.traits.map(code => ({
+                    code: code,
+                    desc: traitData[code]?.en || code
+                }));
+            },
+
+            updateGroupInitiative(groupName, value) {
+                this.groupInitiatives[groupName] = value === '' ? null : parseInt(value);
+                this.saveToStorage();
+            },
+
+            getNpcStatLine(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return [];
+
+                const weapon = this.getWeapon(sb.weaponId);
+                let dmg = sb.fixedDamage || weapon?.damage || '-';
+                if (sb.dmgBonus > 0 && !sb.fixedDamage) dmg += '+' + sb.dmgBonus;
+
+                let shock = '-';
+                if (sb.fixedShock) {
+                    shock = sb.fixedShock;
+                } else if (weapon?.shock) {
+                    const shockVal = weapon.shock.value + (sb.dmgBonus || 0);
+                    shock = shockVal + '/AC' + weapon.shock.ac;
+                }
+
+                const attacks = sb.attacks > 1 ? ' x' + sb.attacks : '';
+
+                return [
+                    { label: 'BAB', value: '+' + sb.bab + attacks },
+                    { label: 'Dmg', value: dmg },
+                    { label: 'Shock', value: shock },
+                    { label: 'ML', value: sb.ml },
+                    { label: 'Inst', value: sb.inst },
+                ];
+            },
+
+            getPcStatLine(combatant) {
+                const pc = this.getPC(combatant.sourceId);
+                if (!pc) return [];
+                return [
+                    { label: 'Level', value: pc.level },
+                    { label: 'Strain', value: combatant.systemStrain || 0 },
+                ];
+            },
+
+            rollDice(notation) {
+                const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
+                if (!match) return null;
+                const count = parseInt(match[1]) || 1;
+                const sides = parseInt(match[2]);
+                const modifier = parseInt(match[3]) || 0;
+                const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+                return rolls.reduce((a, b) => a + b, 0) + modifier;
+            },
+
+            // Modal controls
+            openAddModal() {
+                this.addModalOpen = true;
+            },
+
+            openAddToGroup(groupName) {
+                // Open modal with group pre-filled
+                this.npcForm.group = groupName;
+                this.formTab = 'npc';
+                this.addModalOpen = true;
+            },
+
+            addNewGroup() {
+                // Auto-generate group name
+                const groupName = 'Group ' + this.nextGroupNum;
+                this.nextGroupNum++;
+                this.groupInitiatives[groupName] = null;
+                this.npcForm.group = groupName;
+                this.pcForm.group = groupName;
+                this.addModalOpen = true;
+                this.saveToStorage();
+            },
+
+            startEditingGroup(groupName) {
+                this.editingGroup = groupName;
+                // Focus the input after Alpine updates the DOM
+                this.$nextTick(() => {
+                    const input = this.$el.querySelector('.group-name-input:not([style*="display: none"])');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                });
+            },
+
+            finishEditingGroup(oldName, newName) {
+                this.editingGroup = null;
+                if (newName && newName.trim() && newName.trim() !== oldName) {
+                    const trimmedName = newName.trim();
+                    // Update initiative tracking
+                    this.groupInitiatives[trimmedName] = this.groupInitiatives[oldName];
+                    delete this.groupInitiatives[oldName];
+                    // Update all statblocks with this group
+                    this.statblocks.forEach(sb => {
+                        if (sb.group === oldName) sb.group = trimmedName;
+                    });
+                    // Update all PCs with this group
+                    this.pcs.forEach(pc => {
+                        if (pc.group === oldName) pc.group = trimmedName;
+                    });
+                    this.saveToStorage();
+                }
+            },
+
+            removeGroup(groupName) {
+                if (!confirm(`Remove group "${groupName}" and all its combatants?`)) return;
+
+                // Find combatants in this group and remove them
+                this.combatants = this.combatants.filter(c => {
+                    if (c.type === 'npc') {
+                        const sb = this.getStatblock(c.sourceId);
+                        return sb?.group !== groupName;
+                    } else {
+                        const pc = this.getPC(c.sourceId);
+                        return pc?.group !== groupName;
+                    }
+                });
+
+                // Remove statblocks belonging to this group
+                this.statblocks = this.statblocks.filter(sb => sb.group !== groupName);
+
+                // Remove PCs belonging to this group
+                this.pcs = this.pcs.filter(pc => pc.group !== groupName);
+
+                // Remove group from initiative tracking
+                delete this.groupInitiatives[groupName];
+
+                // Clear current turn if it was in this group
+                if (this.currentTurnId && !this.combatants.find(c => c.id === this.currentTurnId)) {
+                    this.currentTurnId = null;
+                }
+
+                this.saveToStorage();
+            },
+
+            closeAddModal() {
+                this.addModalOpen = false;
+                // Reset count after closing
+                this.npcForm.count = 1;
+            },
+
+            openHpModal(combatant) {
+                this.hpModalTarget = combatant;
+                this.hpModalAmount = 0;
+                this.hpModalOpen = true;
+                this.$nextTick(() => {
+                    this.$refs.hpInput?.focus();
+                });
+            },
+
+            closeHpModal() {
+                this.hpModalOpen = false;
+                this.hpModalTarget = null;
+            },
+
+            // Actions
+            addNPC() {
+                if (!this.npcForm.name.trim()) {
+                    alert('Please enter a name');
+                    return;
+                }
+
+                const statblockId = this.generateId();
+                const groupName = this.npcForm.group.trim() || this.npcForm.name.trim() + 's';
+                const statblock = {
+                    id: statblockId,
+                    name: this.npcForm.name.trim(),
+                    group: groupName,
+                    hd: this.npcForm.hd,
+                    ac: this.npcForm.ac,
+                    hasArmor: this.npcForm.hasArmor,
+                    hasShield: this.npcForm.hasShield,
+                    bab: this.npcForm.bab,
+                    attacks: this.npcForm.attacks,
+                    weaponId: this.npcForm.weaponId,
+                    dmgBonus: this.npcForm.dmgBonus,
+                    fixedDamage: this.npcForm.weaponId === 'custom' ? this.npcForm.fixedDamage : null,
+                    fixedShock: this.npcForm.weaponId === 'custom' ? this.npcForm.fixedShock : null,
+                    mv: this.npcForm.mv,
+                    ml: this.npcForm.ml,
+                    inst: this.npcForm.inst,
+                    skl: this.npcForm.skl,
+                    sv: this.npcForm.sv
+                };
+                this.statblocks.push(statblock);
+
+                // Count existing instances of this monster type
+                const existingCount = this.combatants.filter(c =>
+                    c.type === 'npc' && this.getStatblock(c.sourceId)?.name === statblock.name
+                ).length;
+
+                // Create multiple combatants based on count
+                const count = Math.max(1, Math.min(20, this.npcForm.count || 1));
+                for (let i = 0; i < count; i++) {
+                    // Roll HP individually for each monster
+                    let maxHp;
+                    if (this.npcForm.hpMode === 'average') {
+                        maxHp = Math.round(statblock.hd * 4.5);
+                    } else {
+                        maxHp = this.rollDice(statblock.hd + 'd8') || statblock.hd;
+                    }
+
+                    const combatant = {
+                        id: this.generateId(),
+                        type: 'npc',
+                        sourceId: statblockId,
+                        instanceNum: existingCount + i + 1,
+                        initiative: null,
+                        currentHp: maxHp,
+                        maxHp: maxHp,
+                        conditions: [],
+                        notes: ''
+                    };
+                    this.combatants.push(combatant);
+                }
+
+                this.saveToStorage();
+                this.closeAddModal();
+            },
+
+            addPC() {
+                if (!this.pcForm.name.trim()) {
+                    alert('Please enter a name');
+                    return;
+                }
+
+                const pcId = this.generateId();
+                const groupName = this.pcForm.group.trim() || 'Group 1';
+                const pc = {
+                    id: pcId,
+                    type: 'pc',
+                    name: this.pcForm.name.trim(),
+                    group: groupName,
+                    level: this.pcForm.level,
+                    ac: this.pcForm.ac,
+                    maxHp: this.pcForm.maxHp,
+                    systemStrain: this.pcForm.systemStrain
+                };
+                this.pcs.push(pc);
+
+                const combatant = {
+                    id: this.generateId(),
+                    type: 'pc',
+                    sourceId: pcId,
+                    instanceNum: 1,
+                    initiative: null,
+                    currentHp: this.pcForm.maxHp,
+                    maxHp: this.pcForm.maxHp,
+                    systemStrain: this.pcForm.systemStrain,
+                    conditions: [],
+                    notes: ''
+                };
+                this.combatants.push(combatant);
+
+                // Reset name but keep group for adding more to same group
+                this.pcForm.name = '';
+                this.saveToStorage();
+                this.closeAddModal();
+            },
+
+            removeCombatant(id) {
+                const idx = this.combatants.findIndex(c => c.id === id);
+                if (idx !== -1) {
+                    this.combatants.splice(idx, 1);
+                    if (this.currentTurnId === id) {
+                        this.currentTurnId = null;
+                    }
+                    this.saveToStorage();
+                }
+            },
+
+            updateInitiative(id, value) {
+                const combatant = this.combatants.find(c => c.id === id);
+                if (combatant) {
+                    combatant.initiative = value === '' ? null : parseInt(value);
+                    this.saveToStorage();
+                }
+            },
+
+            rollAllInitiative() {
+                // Roll initiative for all groups
+                this.allGroups.forEach(group => {
+                    this.groupInitiatives[group.name] = this.rollDice('1d8') || 1;
+                });
+                this.saveToStorage();
+            },
+
+            nextTurn() {
+                const sorted = this.sortedCombatants;
+                if (sorted.length === 0) return;
+
+                if (!this.currentTurnId) {
+                    this.currentTurnId = sorted[0].id;
+                } else {
+                    const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
+                    const nextIdx = (currentIdx + 1) % sorted.length;
+                    if (nextIdx === 0) {
+                        this.round++;
+                    }
+                    this.currentTurnId = sorted[nextIdx].id;
+                }
+                this.saveToStorage();
+            },
+
+            clearCombat() {
+                if (confirm('Clear all combatants?')) {
+                    this.combatants = [];
+                    this.statblocks = [];
+                    this.pcs = [];
+                    this.round = 1;
+                    this.currentTurnId = null;
+                    this.groupInitiatives = {};
+                    this.nextGroupNum = 1;
+                    this.saveToStorage();
+                }
+            },
+
+            applyDamage() {
+                if (this.hpModalTarget && this.hpModalAmount > 0) {
+                    this.hpModalTarget.currentHp = Math.max(0, this.hpModalTarget.currentHp - this.hpModalAmount);
+                    this.saveToStorage();
+                }
+                this.closeHpModal();
+            },
+
+            applyHealing() {
+                if (this.hpModalTarget && this.hpModalAmount > 0) {
+                    this.hpModalTarget.currentHp = Math.min(this.hpModalTarget.maxHp, this.hpModalTarget.currentHp + this.hpModalAmount);
+                    this.saveToStorage();
+                }
+                this.closeHpModal();
+            },
+
+            // Persistence
+            saveToStorage() {
+                const data = {
+                    round: this.round,
+                    currentTurnId: this.currentTurnId,
+                    combatants: this.combatants,
+                    statblocks: this.statblocks,
+                    pcs: this.pcs,
+                    groupInitiatives: this.groupInitiatives,
+                    nextGroupNum: this.nextGroupNum
+                };
+                localStorage.setItem('wwn-combat-tracker', JSON.stringify(data));
+            },
+
+            loadFromStorage() {
+                const saved = localStorage.getItem('wwn-combat-tracker');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        this.round = data.round || 1;
+                        this.currentTurnId = data.currentTurnId || null;
+                        this.combatants = data.combatants || [];
+                        this.statblocks = data.statblocks || [];
+                        this.pcs = data.pcs || [];
+                        this.groupInitiatives = data.groupInitiatives || {};
+                        this.nextGroupNum = data.nextGroupNum || 1;
+                    } catch (e) {
+                        console.error('Failed to load combat tracker data:', e);
+                    }
+                }
+            }
+        };
+    }
+</script>
+{% endblock %}

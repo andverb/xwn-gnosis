@@ -1,0 +1,298 @@
+{
+  "weapons": [
+    {
+      "id": "axe-hand",
+      "name": { "en": "Axe, Hand", "uk": "Сокира, Ручна" },
+      "damage": "1d6",
+      "shock": { "value": 1, "ac": 15 },
+      "attribute": "Str/Dex",
+      "range": "10/30",
+      "traits": ["T"],
+      "enc": 1
+    },
+    {
+      "id": "axe-war",
+      "name": { "en": "Axe, War", "uk": "Сокира, Бойова" },
+      "damage": "1d10",
+      "shock": { "value": 3, "ac": 15 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H"],
+      "enc": 2
+    },
+    {
+      "id": "blackjack",
+      "name": { "en": "Blackjack", "uk": "Кистень" },
+      "damage": "1d4",
+      "shock": null,
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": ["S", "LL"],
+      "enc": 1
+    },
+    {
+      "id": "bow-large",
+      "name": { "en": "Bow, Large", "uk": "Лук, Великий" },
+      "damage": "1d8",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "100/600",
+      "traits": ["2H", "R", "PM"],
+      "enc": 2
+    },
+    {
+      "id": "bow-small",
+      "name": { "en": "Bow, Small", "uk": "Лук, Малий" },
+      "damage": "1d6",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "50/300",
+      "traits": ["2H", "R", "PM"],
+      "enc": 1
+    },
+    {
+      "id": "claw-blades",
+      "name": { "en": "Claw Blades", "uk": "Кігтеві Леза" },
+      "damage": "1d6",
+      "shock": { "value": 2, "ac": 13 },
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": ["S"],
+      "enc": 1
+    },
+    {
+      "id": "club",
+      "name": { "en": "Club", "uk": "Палиця" },
+      "damage": "1d4",
+      "shock": null,
+      "attribute": "Str/Dex",
+      "range": "10/30",
+      "traits": ["T", "LL"],
+      "enc": 1
+    },
+    {
+      "id": "club-great",
+      "name": { "en": "Club, Great", "uk": "Палиця, Велика" },
+      "damage": "1d10",
+      "shock": { "value": 2, "ac": 15 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H"],
+      "enc": 2
+    },
+    {
+      "id": "crossbow",
+      "name": { "en": "Crossbow", "uk": "Арбалет" },
+      "damage": "1d10",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "100/300",
+      "traits": ["2H", "SR", "PM"],
+      "enc": 1
+    },
+    {
+      "id": "dagger",
+      "name": { "en": "Dagger", "uk": "Кинджал" },
+      "damage": "1d4",
+      "shock": { "value": 1, "ac": 15 },
+      "attribute": "Str/Dex",
+      "range": "30/60",
+      "traits": ["S", "T", "PM"],
+      "enc": 1
+    },
+    {
+      "id": "halberd",
+      "name": { "en": "Halberd", "uk": "Алебарда" },
+      "damage": "1d10",
+      "shock": { "value": 2, "ac": 15 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H", "L"],
+      "enc": 2
+    },
+    {
+      "id": "hammer-great",
+      "name": { "en": "Hammer, Great", "uk": "Молот, Великий" },
+      "damage": "1d10",
+      "shock": { "value": 2, "ac": 18 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H"],
+      "enc": 2
+    },
+    {
+      "id": "hammer-war",
+      "name": { "en": "Hammer, War", "uk": "Молот, Бойовий" },
+      "damage": "1d8",
+      "shock": { "value": 1, "ac": 18 },
+      "attribute": "Str",
+      "range": null,
+      "traits": [],
+      "enc": 1
+    },
+    {
+      "id": "mace",
+      "name": { "en": "Mace", "uk": "Булава" },
+      "damage": "1d6",
+      "shock": { "value": 1, "ac": 18 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["LL"],
+      "enc": 1
+    },
+    {
+      "id": "pike",
+      "name": { "en": "Pike", "uk": "Піка" },
+      "damage": "1d8",
+      "shock": { "value": 1, "ac": 18 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H", "L"],
+      "enc": 2
+    },
+    {
+      "id": "shield-large",
+      "name": { "en": "Shield Bash, Large", "uk": "Удар Щитом, Великий" },
+      "damage": "1d6",
+      "shock": { "value": 1, "ac": 13 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["B", "LL"],
+      "enc": 0
+    },
+    {
+      "id": "shield-small",
+      "name": { "en": "Shield Bash, Small", "uk": "Удар Щитом, Малий" },
+      "damage": "1d4",
+      "shock": null,
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": ["B", "LL"],
+      "enc": 0
+    },
+    {
+      "id": "spear-heavy",
+      "name": { "en": "Spear, Heavy", "uk": "Спис, Важкий" },
+      "damage": "1d10",
+      "shock": { "value": 2, "ac": 15 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H"],
+      "enc": 2
+    },
+    {
+      "id": "spear-light",
+      "name": { "en": "Spear, Light", "uk": "Спис, Легкий" },
+      "damage": "1d6",
+      "shock": { "value": 2, "ac": 13 },
+      "attribute": "Str/Dex",
+      "range": "30/60",
+      "traits": ["T"],
+      "enc": 1
+    },
+    {
+      "id": "throwing-blade",
+      "name": { "en": "Throwing Blade", "uk": "Метальний Ніж" },
+      "damage": "1d4",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "30/60",
+      "traits": ["S", "T", "N"],
+      "enc": 1
+    },
+    {
+      "id": "staff",
+      "name": { "en": "Staff", "uk": "Посох" },
+      "damage": "1d6",
+      "shock": { "value": 1, "ac": 13 },
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": ["2H", "LL"],
+      "enc": 1
+    },
+    {
+      "id": "stiletto",
+      "name": { "en": "Stiletto", "uk": "Стилет" },
+      "damage": "1d4",
+      "shock": { "value": 1, "ac": 18 },
+      "attribute": "Dex",
+      "range": null,
+      "traits": ["S", "PM"],
+      "enc": 1
+    },
+    {
+      "id": "sword-great",
+      "name": { "en": "Sword, Great", "uk": "Меч, Великий" },
+      "damage": "1d12",
+      "shock": { "value": 2, "ac": 15 },
+      "attribute": "Str",
+      "range": null,
+      "traits": ["2H"],
+      "enc": 2
+    },
+    {
+      "id": "sword-long",
+      "name": { "en": "Sword, Long", "uk": "Меч, Довгий" },
+      "damage": "1d8",
+      "shock": { "value": 2, "ac": 13 },
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": [],
+      "enc": 1
+    },
+    {
+      "id": "sword-short",
+      "name": { "en": "Sword, Short", "uk": "Меч, Короткий" },
+      "damage": "1d6",
+      "shock": { "value": 2, "ac": 15 },
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": [],
+      "enc": 1
+    },
+    {
+      "id": "unarmed",
+      "name": { "en": "Unarmed", "uk": "Без Зброї" },
+      "damage": "1d2",
+      "shock": null,
+      "attribute": "Str/Dex",
+      "range": null,
+      "traits": [],
+      "enc": 0
+    },
+    {
+      "id": "pistol-bp",
+      "name": { "en": "Black Powder Pistol", "uk": "Порохова Рушниця" },
+      "damage": "1d12",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "30/60",
+      "traits": ["SS", "AP"],
+      "enc": 1
+    },
+    {
+      "id": "rifle-bp",
+      "name": { "en": "Black Powder Rifle", "uk": "Порохова Гвинтівка" },
+      "damage": "2d8",
+      "shock": null,
+      "attribute": "Dex",
+      "range": "200/600",
+      "traits": ["2H", "SS", "AP", "PM"],
+      "enc": 2
+    }
+  ],
+  "traits": {
+    "2H": { "en": "Two-handed", "uk": "Дворучна" },
+    "T": { "en": "Throwable", "uk": "Метальна" },
+    "S": { "en": "Small (concealable)", "uk": "Мала (приховувана)" },
+    "LL": { "en": "Less Lethal", "uk": "Менш Смертельна" },
+    "R": { "en": "Reload (Move action)", "uk": "Перезарядка (Дія Руху)" },
+    "SR": { "en": "Slow Reload (Main action)", "uk": "Повільна Перезарядка (Основна дія)" },
+    "PM": { "en": "Precisely Made", "uk": "Точно Виготовлена" },
+    "L": { "en": "Long (reach)", "uk": "Довга (досяжність)" },
+    "B": { "en": "Bash (shield)", "uk": "Удар (щит)" },
+    "N": { "en": "Numerous (3 per enc)", "uk": "Численні (3 за навант.)" },
+    "SS": { "en": "Single Shot", "uk": "Один Постріл" },
+    "AP": { "en": "Armor Piercing", "uk": "Бронебійна" }
+  }
+}
