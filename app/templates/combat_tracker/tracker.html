@@ -57,14 +57,16 @@
 
     /* Group headers */
     .group-header {
-        display: flex;
+        display: grid;
+        grid-template-columns: 2.5rem 1fr 4rem 4.5rem auto;
         align-items: center;
-        gap: 0.4rem;
-        padding: 0.2rem 0.5rem;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem 0.25rem 1rem;
         background: var(--pico-code-background-color);
         border-bottom: 1px solid var(--pico-muted-border-color);
         font-weight: 600;
         font-size: 0.8rem;
+        min-height: 0;
     }
 
     /* Group colors - applied dynamically */
@@ -96,10 +98,10 @@
     }
 
     .group-header .group-actions {
-        margin-left: auto;
         display: flex;
         align-items: center;
         gap: 0.3rem;
+        justify-content: flex-end;
     }
 
     /* Icon buttons (shared style for + and X) */
@@ -136,30 +138,6 @@
         padding-left: calc(1rem - 2px);
     }
 
-    .group-init {
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-    }
-
-    .group-init input[type="text"] {
-        width: 1.5rem;
-        height: 1.4rem;
-        min-height: 0;
-        padding: 0.1rem;
-        text-align: center;
-        margin: 0;
-        font-size: 0.75rem;
-        line-height: 1;
-        border-radius: 0.2rem;
-    }
-
-    .group-init label {
-        font-size: 0.7rem;
-        color: var(--pico-muted-color);
-        font-weight: normal;
-    }
-
     .add-group-btn {
         display: flex;
         align-items: center;
@@ -182,7 +160,7 @@
 
     .combatant-row {
         display: grid;
-        grid-template-columns: 1fr 4.5rem 3rem auto;
+        grid-template-columns: 2.5rem 1fr 4rem 4.5rem auto;
         gap: 0.5rem;
         align-items: center;
         padding: 0.3rem 0.5rem 0.3rem 1rem;
@@ -532,10 +510,12 @@
     <div class="tracker-layout">
         <!-- Controls Bar -->
         <div class="controls-bar">
-            <button @click="openAddModal()">+ Add Combatant</button>
-            <button @click="rollAllInitiative()" :disabled="combatants.length === 0">Roll All Init</button>
-            <button @click="nextTurn()" :disabled="sortedCombatants.length === 0">Next Turn</button>
-            <button class="secondary outline" @click="clearCombat()" :disabled="combatants.length === 0">Clear</button>
+            <button @click="startCombat()" :disabled="combatants.length === 0 || currentTurnId !== null" class="contrast">Start</button>
+            <button @click="prevTurn()" :disabled="!currentTurnId">Prev</button>
+            <button @click="nextTurn()" :disabled="!currentTurnId">Next</button>
+            <button @click="endCombat()" :disabled="!currentTurnId" class="secondary">End</button>
+            <button @click="rollAllInitiative()" :disabled="combatants.length === 0" class="outline">Roll Init</button>
+            <button class="secondary outline" @click="clearCombat()" :disabled="combatants.length === 0">Clear All</button>
             <div class="round-counter">Round <span x-text="round"></span></div>
         </div>
 
@@ -549,35 +529,67 @@
                 </div>
             </template>
 
-            <!-- All Groups (unified PCs and monsters) -->
-            <template x-for="group in sortedGroups" :key="group.name">
-                <div :style="'--group-color: ' + group.color">
-                    <div class="group-header colored">
-                        <span class="group-name"
-                              x-show="editingGroup !== group.name"
-                              @dblclick="startEditingGroup(group.name)"
-                              x-text="group.name"
-                              title="Double-click to rename"></span>
-                        <input x-show="editingGroup === group.name"
-                               type="text"
-                               class="group-name-input"
-                               :value="group.name"
-                               @blur="finishEditingGroup(group.name, $event.target.value)"
-                               @keyup.enter="$event.target.blur()"
-                               @keyup.escape="editingGroup = null"
-                               x-ref="groupNameInput">
-                        <div class="group-actions">
-                            <button class="icon-btn" @click="openAddToGroup(group.name)" title="Add to group">+</button>
-                            <button class="icon-btn danger" @click="removeGroup(group.name)" title="Remove group">&times;</button>
-                            <div class="group-init">
-                                <input type="text" :value="group.initiative" @input="updateGroupInitiative(group.name, $event.target.value)" placeholder="-" title="Initiative">
+            <!-- All Groups and Individual Combatants (mixed and sorted by initiative) -->
+            <template x-for="item in sortedGroups" :key="item.name">
+                <div :style="'--group-color: ' + item.color">
+                    <!-- Group Header (only for groups, not individuals) -->
+                    <template x-if="item.type === 'group'">
+                        <div class="group-header colored">
+                            <!-- Initiative Column -->
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <input type="text"
+                                       :value="item.initiative"
+                                       @input="updateGroupInitiative(item.name, $event.target.value)"
+                                       placeholder="-"
+                                       title="Initiative"
+                                       style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
+                            </div>
+                            <!-- Group Name (spans 3 middle columns) -->
+                            <div style="grid-column: span 3;">
+                                <span class="group-name"
+                                      x-show="editingGroup !== item.name"
+                                      @dblclick="startEditingGroup(item.name)"
+                                      x-text="item.name"
+                                      title="Double-click to rename"></span>
+                                <input x-show="editingGroup === item.name"
+                                       type="text"
+                                       class="group-name-input"
+                                       :value="item.name"
+                                       @blur="finishEditingGroup(item.name, $event.target.value)"
+                                       @keyup.enter="$event.target.blur()"
+                                       @keyup.escape="editingGroup = null"
+                                       x-ref="groupNameInput">
+                            </div>
+                            <!-- Group Actions -->
+                            <div class="group-actions">
+                                <button class="icon-btn" @click="openAddToGroup(item.name)" title="Add to group">+</button>
+                                <button class="icon-btn danger" @click="removeGroup(item.name)" title="Remove group">&times;</button>
                             </div>
                         </div>
-                    </div>
-                    <template x-for="combatant in group.combatants" :key="combatant.id">
-                        <div class="combatant-row grouped" :class="{ 'active': combatant.id === currentTurnId }">
+                    </template>
+
+                    <!-- Combatant Rows -->
+                    <template x-for="combatant in item.combatants" :key="combatant.id">
+                        <div class="combatant-row"
+                             :class="{
+                                 'active': combatant.id === currentTurnId,
+                                 'grouped': item.type === 'group'
+                             }">
+                            <!-- Initiative Column -->
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <template x-if="item.type === 'individual'">
+                                    <input type="text"
+                                           :value="combatant.initiative"
+                                           @input="updateIndividualInitiative(combatant.id, $event.target.value)"
+                                           placeholder="-"
+                                           title="Initiative"
+                                           style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
+                                </template>
+                            </div>
+                            <!-- Name and Stats -->
                             <div class="combatant-info">
                                 <span class="combatant-name" x-text="getCombatantDisplayName(combatant)"></span>
+                                <span style="font-size: 0.7rem; font-weight: 600; color: var(--pico-muted-color); margin-left: 0.25rem;" x-text="combatant.type === 'pc' ? 'PC' : 'NPC'"></span>
                                 <div class="combatant-stats">
                                     <template x-if="combatant.type === 'pc'">
                                         <span>
@@ -587,10 +599,11 @@
                                     </template>
                                     <template x-if="combatant.type === 'npc'">
                                         <span>
-                                            <span><span class="stat-label">BAB:</span> <span x-text="getNpcBab(combatant)"></span></span>
+                                            <span><span class="stat-label">Attack:</span> <span x-text="getNpcBab(combatant)"></span></span>
                                             <span><span class="stat-label">Dmg:</span> <span class="dice" x-text="getNpcDamage(combatant)"></span></span>
-                                            <span><span class="stat-label">Shk:</span> <span x-text="getNpcShock(combatant)"></span></span>
+                                            <span><span class="stat-label">Shock:</span> <span x-text="getNpcShock(combatant)"></span></span>
                                             <span><span class="stat-label">ML:</span> <span x-text="getStatblock(combatant.sourceId)?.ml"></span></span>
+                                            <span><span class="stat-label">Inst:</span> <span x-text="getStatblock(combatant.sourceId)?.inst"></span></span>
                                         </span>
                                     </template>
                                 </div>
@@ -600,16 +613,18 @@
                                     </template>
                                 </div>
                             </div>
+                            <!-- AC -->
+                            <div class="combatant-ac">
+                                <span class="stat-label">AC:</span> <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
+                            </div>
+                            <!-- HP -->
                             <div class="combatant-hp" @click.stop="openHpModal(combatant)">
                                 <span x-text="combatant.currentHp + '/' + combatant.maxHp"></span>
                                 <div class="hp-bar">
                                     <div class="hp-bar-fill" :style="'width: ' + Math.max(0, combatant.currentHp / combatant.maxHp * 100) + '%'"></div>
                                 </div>
                             </div>
-                            <div class="combatant-ac">
-                                <span x-text="getCombatantAC(combatant)"></span>
-                                <span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
-                            </div>
+                            <!-- Actions -->
                             <div class="combatant-actions">
                                 <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
                             </div>
@@ -618,8 +633,11 @@
                 </div>
             </template>
 
-            <!-- Add Group Button -->
-            <button class="add-group-btn" @click="addNewGroup()">+ Add Group</button>
+            <!-- Add Buttons -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <button class="add-group-btn" @click="addNewGroup()" style="flex: 1;">+ Add Group</button>
+                <button class="add-group-btn" @click="addIndividualCombatant()" style="flex: 1;">+ Add Individual</button>
+            </div>
         </div>
     </div>
 
@@ -891,12 +909,12 @@
             },
 
             get allGroups() {
-                // Group all combatants (PCs and NPCs) by their group name
+                // Group all combatants (PCs and NPCs) by their group name, excluding individuals
                 const groups = {};
 
-                // Include empty groups from groupInitiatives
+                // Include empty groups from groupInitiatives (except _individual)
                 Object.keys(this.groupInitiatives).forEach(groupName => {
-                    if (!groups[groupName]) {
+                    if (groupName !== '_individual' && !groups[groupName]) {
                         groups[groupName] = {
                             name: groupName,
                             initiative: this.groupInitiatives[groupName] ?? null,
@@ -906,14 +924,10 @@
                 });
 
                 this.combatants.forEach(c => {
-                    let groupName;
-                    if (c.type === 'npc') {
-                        const sb = this.getStatblock(c.sourceId);
-                        groupName = sb?.group || 'Group 1';
-                    } else {
-                        const pc = this.getPC(c.sourceId);
-                        groupName = pc?.group || 'Group 1';
-                    }
+                    const groupName = this.getCombatantGroup(c);
+
+                    // Skip individuals - they're handled separately
+                    if (groupName === '_individual') return;
 
                     if (!groups[groupName]) {
                         groups[groupName] = {
@@ -934,9 +948,42 @@
                 return groupList;
             },
 
+            get individualCombatants() {
+                // Filter and sort individuals by their initiative
+                return this.combatants
+                    .filter(c => this.isIndividual(c))
+                    .sort((a, b) => {
+                        const initA = a.initiative ?? -999;
+                        const initB = b.initiative ?? -999;
+                        return initB - initA;
+                    });
+            },
+
             get sortedGroups() {
-                // Sort groups by initiative (highest first), nulls at end
-                return [...this.allGroups].sort((a, b) => {
+                // Mix groups and individual combatants, sorted by initiative
+                const items = [];
+
+                // Add all groups
+                this.allGroups.forEach(group => {
+                    items.push({
+                        type: 'group',
+                        ...group
+                    });
+                });
+
+                // Add individual combatants as single-item entries
+                this.individualCombatants.forEach(combatant => {
+                    items.push({
+                        type: 'individual',
+                        name: this.getCombatantDisplayName(combatant),
+                        initiative: combatant.initiative,
+                        combatants: [combatant],
+                        color: null
+                    });
+                });
+
+                // Sort by initiative (highest first)
+                return items.sort((a, b) => {
                     const initA = a.initiative ?? -999;
                     const initB = b.initiative ?? -999;
                     return initB - initA;
@@ -1043,6 +1090,14 @@
                 this.saveToStorage();
             },
 
+            updateIndividualInitiative(combatantId, value) {
+                const combatant = this.combatants.find(c => c.id === combatantId);
+                if (combatant) {
+                    combatant.initiative = value === '' ? null : parseInt(value);
+                    this.saveToStorage();
+                }
+            },
+
             getNpcStatLine(combatant) {
                 const sb = this.getStatblock(combatant.sourceId);
                 if (!sb) return [];
@@ -1110,6 +1165,13 @@
                 this.pcForm.group = groupName;
                 this.addModalOpen = true;
                 this.saveToStorage();
+            },
+
+            addIndividualCombatant() {
+                // Add combatant with individual initiative (not in a group)
+                this.npcForm.group = '_individual';
+                this.pcForm.group = '_individual';
+                this.addModalOpen = true;
             },
 
             startEditingGroup(groupName) {
@@ -1323,24 +1385,90 @@
                 this.allGroups.forEach(group => {
                     this.groupInitiatives[group.name] = this.rollDice('1d8') || 1;
                 });
+                // Roll for individual combatants
+                this.combatants.forEach(c => {
+                    if (this.isIndividual(c)) {
+                        c.initiative = this.rollDice('1d8') || 1;
+                    }
+                });
+                this.saveToStorage();
+            },
+
+            startCombat() {
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0) return;
+                this.currentTurnId = sorted[0].id;
+                this.saveToStorage();
+            },
+
+            endCombat() {
+                this.currentTurnId = null;
+                this.round = 1;
+                this.saveToStorage();
+            },
+
+            prevTurn() {
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0 || !this.currentTurnId) return;
+
+                const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
+                if (currentIdx === 0) {
+                    // Go to last combatant of previous round
+                    if (this.round > 1) {
+                        this.round--;
+                        this.currentTurnId = sorted[sorted.length - 1].id;
+                    }
+                } else {
+                    this.currentTurnId = sorted[currentIdx - 1].id;
+                }
                 this.saveToStorage();
             },
 
             nextTurn() {
-                const sorted = this.sortedCombatants;
-                if (sorted.length === 0) return;
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0 || !this.currentTurnId) return;
 
-                if (!this.currentTurnId) {
-                    this.currentTurnId = sorted[0].id;
-                } else {
-                    const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
-                    const nextIdx = (currentIdx + 1) % sorted.length;
-                    if (nextIdx === 0) {
-                        this.round++;
-                    }
-                    this.currentTurnId = sorted[nextIdx].id;
+                const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
+                const nextIdx = (currentIdx + 1) % sorted.length;
+                if (nextIdx === 0) {
+                    this.round++;
                 }
+                this.currentTurnId = sorted[nextIdx].id;
                 this.saveToStorage();
+            },
+
+            getTurnOrder() {
+                // Sort all combatants by their effective initiative
+                return [...this.combatants].sort((a, b) => {
+                    const initA = this.getEffectiveInitiative(a) ?? -999;
+                    const initB = this.getEffectiveInitiative(b) ?? -999;
+                    return initB - initA;
+                });
+            },
+
+            getEffectiveInitiative(combatant) {
+                // Individual combatants use their own initiative
+                if (this.isIndividual(combatant)) {
+                    return combatant.initiative;
+                }
+                // Grouped combatants use group initiative
+                const groupName = this.getCombatantGroup(combatant);
+                return this.groupInitiatives[groupName] ?? null;
+            },
+
+            isIndividual(combatant) {
+                const groupName = this.getCombatantGroup(combatant);
+                return groupName === '_individual';
+            },
+
+            getCombatantGroup(combatant) {
+                if (combatant.type === 'npc') {
+                    const sb = this.getStatblock(combatant.sourceId);
+                    return sb?.group || 'Group 1';
+                } else {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.group || 'Group 1';
+                }
             },
 
             clearCombat() {
