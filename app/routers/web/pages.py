@@ -15,20 +15,25 @@ templates = Jinja2Templates(directory="app/templates")
 templates.env.filters["markdown"] = render_markdown
 
 
-@router.get("/", response_class=HTMLResponse)
-async def home(request: Request, db: DbSession, lang: str | None = Cookie(default=None)):
-    translations = get_translations(request, lang)
-    current_lang = get_language(request, lang)
+@router.get("/")
+async def home():
+    return RedirectResponse(url="/cheatsheets/wwn-combat", status_code=status.HTTP_302_FOUND)
 
-    # Fetch all rulesets for system filter dropdown
-    stmt = select(models.RuleSet).order_by(models.RuleSet.name)
-    result = await db.execute(stmt)
-    rulesets = result.scalars().all()
 
-    return templates.TemplateResponse(
-        "index.html",
-        {"request": request, "t": translations, "current_lang": current_lang, "rulesets": rulesets},
-    )
+# @router.get("/", response_class=HTMLResponse)
+# async def home_search(request: Request, db: DbSession, lang: str | None = Cookie(default=None)):
+#     translations = get_translations(request, lang)
+#     current_lang = get_language(request, lang)
+#
+#     # Fetch all rulesets for system filter dropdown
+#     stmt = select(models.RuleSet).order_by(models.RuleSet.name)
+#     result = await db.execute(stmt)
+#     rulesets = result.scalars().all()
+#
+#     return templates.TemplateResponse(
+#         "index.html",
+#         {"request": request, "t": translations, "current_lang": current_lang, "rulesets": rulesets},
+#     )
 
 
 @router.get("/rules/{ruleset_slug}/{rule_slug}", response_class=HTMLResponse)

@@ -424,12 +424,6 @@
         border-radius: 0.25rem;
     }
 
-    @media print {
-        body { background: white; }
-        .no-print { display: none; }
-        .cheatsheet-card { break-inside: avoid; }
-    }
-
     .back-link {
         margin-bottom: 1rem;
     }
@@ -437,11 +431,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="back-link no-print">
+{# <div class="back-link">
     <a href="/">&larr; Back to Search</a>
     <a href="/cheatsheets/wwn-combat" style="margin-left: 1rem;">Combat Cheatsheet</a>
-    <button onclick="window.print()" style="float: right;">Print</button>
-</div>
+</div> #}
 
 <hgroup style="text-align: center; margin-bottom: 2rem;">
     <h1>Encounter Cheatsheet</h1>
