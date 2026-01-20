@@ -33,11 +33,36 @@
 
     .round-counter {
         margin-left: auto;
-        font-weight: bold;
-        padding: 0.5rem 1rem;
-        background: var(--pico-primary);
-        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--pico-code-background-color);
+        color: var(--pico-muted-color);
+        border: 1px solid var(--pico-muted-border-color);
         border-radius: var(--pico-border-radius);
+    }
+
+    .round-counter .round-number {
+        color: var(--pico-color);
+        font-weight: bold;
+    }
+
+    /* Round change animation */
+    @keyframes round-flash {
+        0% { background: var(--pico-primary); color: white; }
+        100% { background: var(--pico-code-background-color); color: var(--pico-muted-color); }
+    }
+
+    .round-counter.flash {
+        animation: round-flash 0.8s ease-out;
+    }
+
+    /* Button group separator */
+    .controls-separator {
+        width: 1px;
+        height: 1.5rem;
+        background: var(--pico-muted-border-color);
+        margin: 0 0.25rem;
     }
 
     /* Initiative list */
@@ -192,6 +217,24 @@
 
     .combatant-name {
         font-weight: 600;
+        cursor: pointer;
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.2rem;
+    }
+
+    .combatant-name:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    .combatant-info .combatant-name-input {
+        width: 10rem;
+        height: 1.4rem;
+        min-height: 0;
+        padding: 0.1rem 0.25rem;
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.2rem;
     }
 
     .combatant-stats {
@@ -548,13 +591,20 @@
     <div class="tracker-layout">
         <!-- Controls Bar -->
         <div class="controls-bar">
-            <button @click="startCombat()" :disabled="combatants.length === 0 || currentTurnId !== null" class="contrast">Start</button>
+            <!-- Setup phase -->
+            <button @click="rollAllInitiative()" :disabled="combatants.length === 0" class="outline">Roll Init</button>
+            <div class="controls-separator"></div>
+            <!-- Combat phase -->
+            <button @click="startCombat()" :disabled="!canStartCombat" class="contrast">Start</button>
             <button @click="prevTurn()" :disabled="!currentTurnId">Prev</button>
             <button @click="nextTurn()" :disabled="!currentTurnId">Next</button>
             <button @click="endCombat()" :disabled="!currentTurnId" class="secondary">End</button>
-            <button @click="rollAllInitiative()" :disabled="combatants.length === 0" class="outline">Roll Init</button>
-            <button class="secondary outline" @click="clearCombat()" :disabled="combatants.length === 0">Clear All</button>
-            <div class="round-counter">Round <span x-text="round"></span></div>
+            <div class="controls-separator"></div>
+            <!-- Management -->
+            <button class="secondary outline" @click="clearCombat()" :disabled="combatants.length === 0">Clear</button>
+            <div class="round-counter" :class="{ 'flash': roundFlash }" x-ref="roundCounter">
+                Round <span class="round-number" x-text="round"></span>
+            </div>
         </div>
 
         <!-- Initiative List -->
@@ -626,7 +676,18 @@
                             </div>
                             <!-- Name and Stats -->
                             <div class="combatant-info">
-                                <span class="combatant-name" x-text="getCombatantDisplayName(combatant)"></span>
+                                <span class="combatant-name"
+                                      x-show="editingCombatant !== combatant.id"
+                                      @dblclick="startEditingCombatant(combatant.id)"
+                                      x-text="getCombatantDisplayName(combatant)"
+                                      title="Double-click to rename"></span>
+                                <input x-show="editingCombatant === combatant.id"
+                                       type="text"
+                                       class="combatant-name-input"
+                                       :value="getCombatantDisplayName(combatant)"
+                                       @blur="finishEditingCombatant(combatant.id, $event.target.value)"
+                                       @keyup.enter="$event.target.blur()"
+                                       @keyup.escape="editingCombatant = null">
                                 <span style="font-size: 0.7rem; font-weight: 600; color: var(--pico-muted-color); margin-left: 0.25rem;" x-text="combatant.type === 'pc' ? 'PC' : 'NPC'"></span>
                                 <div class="combatant-stats">
                                     <template x-if="combatant.type === 'pc'">
@@ -674,8 +735,8 @@
 
             <!-- Add Buttons -->
             <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <button class="add-group-btn" @click="addIndividualCombatant()" style="flex: 1;">+ Add Combatant</button>
                 <button class="add-group-btn" @click="addNewGroup()" style="flex: 1;">+ Add Group</button>
-                <button class="add-group-btn" @click="addIndividualCombatant()" style="flex: 1;">+ Add Individual</button>
             </div>
         </div>
     </div>
@@ -700,7 +761,7 @@
                         <div class="form-row">
                             <div class="form-field flex-2">
                                 <label>Name</label>
-                                <input type="text" x-model="npcForm.name" placeholder="Goblin" @keyup.enter="addNPC()">
+                                <input type="text" x-model="npcForm.name" @keyup.enter="addNPC()">
                             </div>
                             <div class="form-field">
                                 <label>Count</label>
@@ -872,7 +933,7 @@
                         <div class="form-row">
                             <div class="form-field flex-2">
                                 <label>Character Name</label>
-                                <input type="text" x-model="pcForm.name" placeholder="Theron" @keyup.enter="addPC()">
+                                <input type="text" x-model="pcForm.name" @keyup.enter="addPC()">
                             </div>
                             <div class="form-field">
                                 <label>Level</label>
@@ -950,6 +1011,7 @@
         return {
             // State
             round: 1,
+            roundFlash: false,
             currentTurnId: null,
             combatants: [],
             statblocks: [],
@@ -964,7 +1026,7 @@
 
             // NPC Form
             npcForm: {
-                name: '',
+                name: 'Monster',
                 group: '',
                 count: 1,
                 hd: 1,
@@ -998,10 +1060,11 @@
             groupInitiatives: {},  // { "Group 1": 5, "Group 2": 3 }
             nextGroupNum: 1,       // For auto-naming groups
             editingGroup: null,    // Group name currently being edited
+            editingCombatant: null, // Combatant ID currently being edited
 
             // PC Form
             pcForm: {
-                name: '',
+                name: 'Adventurer',
                 group: '',
                 level: 1,
                 ac: 10,
@@ -1016,6 +1079,16 @@
                     const initB = b.initiative ?? -999;
                     return initB - initA;
                 });
+            },
+
+            get canStartCombat() {
+                // Need combatants, not already in combat, and at least one initiative set
+                if (this.combatants.length === 0) return false;
+                if (this.currentTurnId !== null) return false;
+                // Check if any group or individual has initiative
+                const hasGroupInit = Object.values(this.groupInitiatives).some(init => init !== null);
+                const hasIndividualInit = this.combatants.some(c => this.isIndividual(c) && c.initiative !== null);
+                return hasGroupInit || hasIndividualInit;
             },
 
             get allGroups() {
@@ -1129,6 +1202,8 @@
 
             getCombatantDisplayName(combatant) {
                 if (!combatant) return '';
+                // Return custom name if set
+                if (combatant.customName) return combatant.customName;
                 if (combatant.type === 'pc') {
                     const pc = this.getPC(combatant.sourceId);
                     return pc?.name || 'Unknown PC';
@@ -1357,6 +1432,47 @@
                 }
             },
 
+            startEditingCombatant(combatantId) {
+                this.editingCombatant = combatantId;
+                // Focus the input after Alpine updates the DOM
+                this.$nextTick(() => {
+                    const input = this.$el.querySelector('.combatant-name-input:not([style*="display: none"])');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                });
+            },
+
+            finishEditingCombatant(combatantId, newName) {
+                this.editingCombatant = null;
+                const combatant = this.combatants.find(c => c.id === combatantId);
+                if (combatant && newName !== undefined) {
+                    const trimmedName = newName.trim();
+                    const defaultName = this.getDefaultCombatantName(combatant);
+                    // Only store custom name if it differs from default
+                    if (trimmedName && trimmedName !== defaultName) {
+                        combatant.customName = trimmedName;
+                    } else {
+                        // Clear custom name to revert to default
+                        delete combatant.customName;
+                    }
+                    this.saveToStorage();
+                }
+            },
+
+            getDefaultCombatantName(combatant) {
+                if (!combatant) return '';
+                if (combatant.type === 'pc') {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.name || 'Unknown PC';
+                } else {
+                    const statblock = this.getStatblock(combatant.sourceId);
+                    const baseName = statblock?.name || 'Unknown';
+                    return combatant.instanceNum > 1 ? baseName + ' ' + combatant.instanceNum : baseName;
+                }
+            },
+
             removeGroup(groupName) {
                 if (!confirm(`Remove group "${groupName}" and all its combatants?`)) return;
 
@@ -1514,7 +1630,7 @@
                 this.combatants.push(combatant);
 
                 // Reset name but keep group for adding more to same group
-                this.pcForm.name = '';
+                this.pcForm.name = 'Adventurer';
                 this.saveToStorage();
                 this.closeAddModal();
             },
@@ -1574,6 +1690,7 @@
                     // Go to last combatant of previous round
                     if (this.round > 1) {
                         this.round--;
+                        this.flashRoundCounter();
                         this.currentTurnId = sorted[sorted.length - 1].id;
                     }
                 } else {
@@ -1590,9 +1707,19 @@
                 const nextIdx = (currentIdx + 1) % sorted.length;
                 if (nextIdx === 0) {
                     this.round++;
+                    this.flashRoundCounter();
                 }
                 this.currentTurnId = sorted[nextIdx].id;
                 this.saveToStorage();
+            },
+
+            flashRoundCounter() {
+                this.roundFlash = false;
+                // Force reflow to restart animation
+                this.$nextTick(() => {
+                    this.roundFlash = true;
+                    setTimeout(() => { this.roundFlash = false; }, 800);
+                });
             },
 
             getTurnOrder() {
