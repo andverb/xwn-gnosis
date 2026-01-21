@@ -382,6 +382,8 @@
         font-size: 0.65rem;
         color: var(--pico-muted-color);
         vertical-align: super;
+        border-bottom: 1px dotted var(--pico-muted-color);
+        cursor: help;
     }
 
     /* Trait badges */
@@ -715,6 +717,133 @@
     [x-cloak] {
         display: none !important;
     }
+
+    /* Tooltip indicator for headers */
+    .has-tooltip {
+        cursor: help;
+        border-bottom: 1px dotted var(--pico-muted-color);
+    }
+
+    /* Input mode toggle (Template/Paste) */
+    .input-mode-toggle {
+        display: flex;
+        gap: 0;
+    }
+
+    .input-mode-toggle button {
+        flex: 1;
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 0;
+        background: var(--pico-code-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    .input-mode-toggle button:first-child {
+        border-radius: var(--pico-border-radius) 0 0 var(--pico-border-radius);
+    }
+
+    .input-mode-toggle button:last-child {
+        border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
+    }
+
+    .input-mode-toggle button.active {
+        background: var(--pico-primary);
+        color: white;
+        border-color: var(--pico-primary);
+    }
+
+    /* Ability toggle button */
+    .icon-btn.ability-toggle {
+        color: #ffc107;
+        border-color: #ffc107;
+    }
+
+    .icon-btn.ability-toggle:hover,
+    .icon-btn.ability-toggle.active {
+        background: #ffc107;
+        color: #000;
+        border-color: #ffc107;
+    }
+
+    /* Expanded abilities section */
+    .abilities-expanded {
+        background: var(--pico-code-background-color);
+        border-bottom: 1px solid var(--pico-muted-border-color);
+        padding: 0.5rem 1rem 0.5rem 3.5rem;
+        font-size: 0.8rem;
+    }
+
+    .abilities-expanded.grouped {
+        padding-left: calc(3.5rem - 2px);
+        border-left: 2px solid var(--group-color, #6c757d);
+    }
+
+    .ability-item {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.25rem 0;
+        border-bottom: 1px dashed var(--pico-muted-border-color);
+    }
+
+    .ability-item:last-child {
+        border-bottom: none;
+    }
+
+    .ability-name {
+        font-weight: 600;
+        color: #ffc107;
+        white-space: nowrap;
+    }
+
+    .ability-name::after {
+        content: ':';
+    }
+
+    .ability-desc {
+        color: var(--pico-color);
+    }
+
+    /* Ability form inputs */
+    .abilities-list {
+        margin-bottom: 0.75rem;
+    }
+
+    .ability-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .ability-row input {
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.85rem;
+        height: auto;
+        min-height: 0;
+    }
+
+    .add-ability-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0;
+        font-size: 0.8rem;
+        background: transparent;
+        border: 1px dashed var(--pico-muted-border-color);
+        color: var(--pico-muted-color);
+        width: 100%;
+    }
+
+    .add-ability-btn:hover {
+        border-color: #ffc107;
+        color: #ffc107;
+        background: transparent;
+    }
 </style>
 {% endblock %}
 
@@ -746,12 +875,12 @@
                 <div class="col-init">#</div>
                 <div class="col-name">Name</div>
                 <div class="col-attack">Attack</div>
-                <div class="col-shock">Shock</div>
+                <div class="col-shock has-tooltip" title="On miss: deals damage if target AC ≤ threshold. x/- = any AC. Hits deal at least shock dmg.">Shock</div>
                 <div class="col-move">Move</div>
-                <div class="col-ml">ML</div>
-                <div class="col-inst">Inst</div>
-                <div class="col-skill">Skill</div>
-                <div class="col-save">Save</div>
+                <div class="col-ml has-tooltip" title="Morale Check: 2d6 > ML = Fail. NPC retreats or surrenders.">ML</div>
+                <div class="col-inst has-tooltip" title="Instinct Check: 1d10 ≤ Inst = Fail. NPC behaves impulsively.">Inst</div>
+                <div class="col-skill has-tooltip" title="Skill Check: 2d6 + Skill ≥ Difficulty = Success.">Skill</div>
+                <div class="col-save has-tooltip" title="Saving Throw: 1d20 ≥ Save = Success.">Save</div>
                 <div class="col-ac">AC</div>
                 <div class="col-hp">HP</div>
                 <div class="col-actions"></div>
@@ -804,6 +933,7 @@
 
                     <!-- Combatant Rows -->
                     <template x-for="combatant in item.combatants" :key="combatant.id">
+                        <div class="combatant-wrapper">
                         <div class="combatant-row"
                              :class="{
                                  'active': combatant.id === currentTurnId,
@@ -884,7 +1014,11 @@
                             <div class="combatant-move">
                                 <template x-if="combatant.type === 'npc'">
                                     <span>
-                                        <span x-text="getStatblock(combatant.sourceId)?.mv || '-'"></span><span class="move-suffix" x-text="getMoveSuffix(combatant)"></span>
+                                        <span x-text="getStatblock(combatant.sourceId)?.mv || '-'"></span><span class="move-suffix"
+                                              x-show="getMoveSuffix(combatant)"
+                                              x-text="getMoveSuffix(combatant)"
+                                              :title="getMoveTooltip(combatant)"
+                                              style="cursor: help;"></span>
                                     </span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
@@ -921,7 +1055,7 @@
                             <!-- Save Column -->
                             <div class="combatant-save">
                                 <template x-if="combatant.type === 'npc'">
-                                    <span x-text="getStatblock(combatant.sourceId)?.sv || '-'"></span>
+                                    <span x-text="(getStatblock(combatant.sourceId)?.sv || '-') + (getStatblock(combatant.sourceId)?.sv ? '+' : '')"></span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
                                     <span>-</span>
@@ -929,7 +1063,11 @@
                             </div>
                             <!-- AC Column -->
                             <div class="combatant-ac">
-                                <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
+                                <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix"
+                                      x-show="getAcSuffix(combatant)"
+                                      x-text="getAcSuffix(combatant)"
+                                      :title="getAcTooltip(combatant)"
+                                      style="cursor: help;"></span>
                             </div>
                             <!-- HP Column -->
                             <div class="combatant-hp" @click.stop="openHpModal(combatant)">
@@ -940,8 +1078,25 @@
                             </div>
                             <!-- Actions Column -->
                             <div class="combatant-actions">
+                                <template x-if="combatant.type === 'npc' && getStatblock(combatant.sourceId)?.abilities?.length > 0">
+                                    <button class="icon-btn ability-toggle"
+                                            :class="{ 'active': expandedAbilitiesId === combatant.id }"
+                                            @click.stop="expandedAbilitiesId = expandedAbilitiesId === combatant.id ? null : combatant.id"
+                                            title="Special Abilities">★</button>
+                                </template>
                                 <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
                             </div>
+                        </div>
+                        <!-- Expanded Abilities Section -->
+                        <div x-show="combatant.type === 'npc' && expandedAbilitiesId === combatant.id && getStatblock(combatant.sourceId)?.abilities?.length > 0"
+                             class="abilities-expanded" :class="{ 'grouped': item.type === 'group' }">
+                            <template x-for="ability in (getStatblock(combatant.sourceId)?.abilities || [])" :key="ability.name">
+                                <div class="ability-item">
+                                    <span class="ability-name" x-text="ability.name"></span>
+                                    <span class="ability-desc" x-text="ability.description"></span>
+                                </div>
+                            </template>
+                        </div>
                         </div>
                     </template>
                 </div>
@@ -972,6 +1127,42 @@
                 <!-- NPC Form -->
                 <template x-if="formTab === 'npc'">
                     <div>
+                        <!-- Template or Paste toggle -->
+                        <div class="form-row" style="margin-bottom: 0.5rem;">
+                            <div class="form-field" style="flex: 1;">
+                                <div class="input-mode-toggle">
+                                    <button type="button" :class="{ 'active': npcInputMode === 'template' }" @click="npcInputMode = 'template'">Template</button>
+                                    <button type="button" :class="{ 'active': npcInputMode === 'paste' }" @click="npcInputMode = 'paste'">Paste</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Template dropdown -->
+                        <div class="form-row" x-show="npcInputMode === 'template'">
+                            <div class="form-field" style="flex: 1;">
+                                <select @change="applyTemplate($event.target.value)">
+                                    <option value="">— Custom —</option>
+                                    <template x-for="category in npcTemplates" :key="category.category">
+                                        <optgroup :label="category.category">
+                                            <template x-for="tpl in category.templates" :key="tpl.name">
+                                                <option :value="category.category + '/' + tpl.name" x-text="tpl.name + ' (HD ' + tpl.hd + ')'"></option>
+                                            </template>
+                                        </optgroup>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Paste statblock -->
+                        <div class="form-row" x-show="npcInputMode === 'paste'">
+                            <div class="form-field" style="flex: 1;">
+                                <input type="text"
+                                       x-model="statblockPaste"
+                                       @input="parseStatblock()"
+                                       placeholder="Name HD AC +BAB DMG SHOCK MV ML INST +SKL SV">
+                                <small x-show="parseError" x-text="parseError" style="color: #dc3545;"></small>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-field flex-2">
                                 <label>Name</label>
@@ -1134,6 +1325,22 @@
                             </div>
                         </div>
 
+                        <div class="form-section-title">Special Abilities</div>
+                        <div class="abilities-list">
+                            <template x-for="(ability, index) in npcForm.abilities" :key="index">
+                                <div class="ability-row">
+                                    <div class="form-field" style="flex: 1; min-width: 100px;">
+                                        <input type="text" x-model="ability.name" placeholder="Ability name">
+                                    </div>
+                                    <div class="form-field" style="flex: 3; min-width: 200px;">
+                                        <input type="text" x-model="ability.description" placeholder="Description">
+                                    </div>
+                                    <button type="button" class="icon-btn danger" @click="npcForm.abilities.splice(index, 1)" title="Remove ability">&times;</button>
+                                </div>
+                            </template>
+                            <button type="button" class="add-ability-btn" @click="npcForm.abilities.push({name: '', description: ''})">+ Add Ability</button>
+                        </div>
+
                         <div class="form-actions">
                             <button class="secondary" @click="closeAddModal()">Cancel</button>
                             <button @click="addNPC()">Add NPC</button>
@@ -1221,6 +1428,64 @@
         '#6610f2', // indigo
     ];
 
+    // NPC Templates - predefined statblocks
+    const npcTemplates = [
+        { category: 'Humanoids', templates: [
+            { name: 'Villager', hd: 1, ac: 10, hasArmor: false, bab: 0, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 7, inst: 5, skl: 1, sv: 15 },
+            { name: 'Thug/Militia', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 8, inst: 4, skl: 1, sv: 15 },
+            { name: 'Vet Soldier', hd: 1, ac: 13, hasArmor: true, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 8, inst: 3, skl: 1, sv: 15 },
+            { name: 'Skilled Vet', hd: 2, ac: 15, hasArmor: true, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 2, skl: 1, sv: 14 },
+            { name: 'Elite Guard', hd: 3, ac: 18, hasArmor: true, bab: 4, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 14 },
+            { name: 'Knight', hd: 4, ac: 18, hasArmor: true, bab: 6, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 1, skl: 2, sv: 13 },
+            { name: 'Warrior Baron', hd: 6, ac: 18, hasArmor: true, bab: 8, attacks: 1, damageMode: 'weapon', dmgBonus: 3, shockOverride: false, mv: "30'", ml: 9, inst: 1, skl: 2, sv: 12 },
+            { name: 'Warlord', hd: 8, ac: 16, hasArmor: true, bab: 10, attacks: 2, damageMode: 'weapon', dmgBonus: 4, shockOverride: true, mv: "30'", ml: 10, inst: 3, skl: 2, sv: 11 },
+        ]},
+        { category: 'Mages', templates: [
+            { name: 'Petty Mage', hd: 2, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 8, inst: 4, skl: 1, sv: 14 },
+            { name: 'Shaman', hd: 4, ac: 10, hasArmor: false, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 1, sv: 13 },
+            { name: 'Sorcerer', hd: 5, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 2, sv: 13 },
+            { name: 'Master Wizard', hd: 8, ac: 13, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 3, skl: 2, sv: 11 },
+        ]},
+        { category: 'Beasts', templates: [
+            { name: 'Small Predator', hd: 1, ac: 12, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 4, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 7, inst: 6, skl: 1, sv: 15 },
+            { name: 'Large Predator', hd: 5, ac: 13, hasArmor: false, bab: 6, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "30'", ml: 8, inst: 6, skl: 1, sv: 13 },
+            { name: 'Apex Predator', hd: 6, ac: 13, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "40'", ml: 8, inst: 6, skl: 2, sv: 12 },
+            { name: 'Large Herbivore', hd: 4, ac: 13, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 9, inst: 6, skl: 1, sv: 13 },
+            { name: 'Hulking Predator', hd: 10, ac: 15, hasArmor: false, bab: 12, attacks: 2, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 3, shockValue: 6, shockAC: '15', mv: "30'", ml: 10, inst: 4, skl: 1, sv: 10 },
+            { name: 'Hellbeast', hd: 10, ac: 18, hasArmor: false, bab: 12, attacks: 4, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 5, shockValue: 6, shockAC: '-', mv: "60'", ml: 11, inst: 4, skl: 3, sv: 10 },
+        ]},
+        { category: 'Creatures', templates: [
+            { name: 'Unnatural Swarm', hd: 4, ac: 10, hasArmor: false, bab: 6, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "30'", ml: 10, inst: 5, skl: 1, sv: 13 },
+            { name: 'Slime/Ooze', hd: 6, ac: 10, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "20'", ml: 12, inst: 5, skl: 1, sv: 12 },
+        ]},
+        { category: 'Undead', templates: [
+            { name: 'Skeleton', hd: 1, ac: 13, hasArmor: false, bab: 1, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "30'", ml: 12, inst: 5, skl: 0, sv: 15 },
+            { name: 'Zombie', hd: 2, ac: 10, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "20'", ml: 12, inst: 6, skl: 0, sv: 14 },
+            { name: 'Angry Shade', hd: 4, ac: 20, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 12, inst: 6, skl: 1, sv: 13 },
+            { name: 'Revenant', hd: 8, ac: 13, hasArmor: true, bab: 10, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 10, inst: 5, skl: 2, sv: 11 },
+            { name: 'Lich', hd: 8, ac: 10, hasArmor: false, bab: 10, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 9, inst: 4, skl: 2, sv: 11 },
+            { name: 'Wraith Lord', hd: 10, ac: 20, hasArmor: false, bab: 10, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "30'", ml: 10, inst: 4, skl: 2, sv: 10 },
+            { name: 'Revenant King', hd: 12, ac: 18, hasArmor: true, bab: 14, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "30'", ml: 11, inst: 3, skl: 2, sv: 9 },
+        ]},
+        { category: 'Constructs', templates: [
+            { name: 'Automaton', hd: 2, ac: 13, hasArmor: false, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 12, inst: 3, skl: 1, sv: 14 },
+            { name: 'Military Robot', hd: 4, ac: 18, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 2, shockValue: 4, shockAC: '15', mv: "30'", ml: 12, inst: 3, skl: 1, sv: 13 },
+            { name: 'Guardian Commander', hd: 8, ac: 18, hasArmor: false, bab: 9, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 4, shockValue: 6, shockAC: '18', mv: "40'", ml: 12, inst: 3, skl: 2, sv: 11 },
+            { name: 'Warbot', hd: 10, ac: 20, hasArmor: false, bab: 12, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 7, shockAC: '-', mv: "40'", ml: 12, inst: 2, skl: 2, sv: 10 },
+            { name: 'Ancient Warbot', hd: 14, ac: 20, hasArmor: false, bab: 15, attacks: 3, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "60'", hasFly: true, ml: 12, inst: 2, skl: 2, sv: 8 },
+        ]},
+        { category: 'Demihumans', templates: [
+            { name: 'Dwarf', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 1, sv: 15 },
+            { name: 'Dwarf Veteran', hd: 2, ac: 16, hasArmor: true, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 3, skl: 1, sv: 14 },
+            { name: 'Dwarf Lord', hd: 10, ac: 20, hasArmor: true, bab: 11, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 10 },
+            { name: 'Elf Villager', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 2, skl: 2, sv: 15 },
+            { name: 'Elf Adventurer', hd: 3, ac: 15, hasArmor: true, bab: 5, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 14 },
+            { name: 'Elf Mage', hd: 5, ac: 10, hasArmor: false, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 1, skl: 2, sv: 13 },
+            { name: 'Elf Lord', hd: 10, ac: 20, hasArmor: true, bab: 11, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 1, skl: 3, sv: 10 },
+            { name: 'Elf ArchMage', hd: 10, ac: 13, hasArmor: false, bab: 8, attacks: 1, damageMode: 'weapon', dmgBonus: 3, shockOverride: true, mv: "30'", ml: 10, inst: 0, skl: 4, sv: 10 },
+        ]},
+    ];
+
     function combatTracker() {
         return {
             // State
@@ -1228,6 +1493,7 @@
             roundFlash: false,
             currentTurnId: null,
             openTooltipId: null,
+            expandedAbilitiesId: null,  // Combatant ID with expanded abilities
             combatants: [],
             statblocks: [],
             pcs: [],
@@ -1238,6 +1504,9 @@
             hpModalTarget: null,
             hpModalAmount: 0,
             formTab: 'npc',
+            npcInputMode: 'template',  // 'template' or 'paste'
+            statblockPaste: '',
+            parseError: '',
 
             // NPC Form
             npcForm: {
@@ -1268,7 +1537,8 @@
                 ml: 7,
                 inst: 5,
                 skl: 1,
-                sv: 15
+                sv: 15,
+                abilities: []  // Array of {name, description}
             },
 
             // Group initiative tracking
@@ -1286,6 +1556,9 @@
                 maxHp: 6,
                 systemStrain: 0
             },
+
+            // Templates reference (for Alpine access)
+            npcTemplates: npcTemplates,
 
             // Computed
             get sortedCombatants() {
@@ -1455,6 +1728,26 @@
                 if (sb.hasFly) suffix += 'f';
                 if (sb.hasSwim) suffix += 's';
                 return suffix;
+            },
+
+            getMoveTooltip(combatant) {
+                if (combatant.type === 'pc') return '';
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '';
+                const parts = [];
+                if (sb.hasFly) parts.push('Fly');
+                if (sb.hasSwim) parts.push('Swim');
+                return parts.join(', ');
+            },
+
+            getAcTooltip(combatant) {
+                if (combatant.type === 'pc') return '';
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '';
+                const parts = [];
+                if (sb.hasArmor) parts.push('Armor');
+                if (sb.hasShield) parts.push('Shield');
+                return parts.join(', ');
             },
 
             getNpcBab(combatant) {
@@ -1745,8 +2038,433 @@
 
             closeAddModal() {
                 this.addModalOpen = false;
-                // Reset count after closing
+                // Reset form state after closing
                 this.npcForm.count = 1;
+                this.npcForm.abilities = [];
+                this.statblockPaste = '';
+                this.parseError = '';
+                this.npcInputMode = 'template';
+            },
+
+            applyTemplate(value) {
+                if (!value) return;  // "Custom" selected, don't change anything
+
+                // Parse "Category/TemplateName"
+                const [categoryName, templateName] = value.split('/');
+                const category = npcTemplates.find(c => c.category === categoryName);
+                if (!category) return;
+                const template = category.templates.find(t => t.name === templateName);
+                if (!template) return;
+
+                // Apply template values to form
+                this.npcForm.name = template.name;
+                this.npcForm.hd = template.hd;
+                this.npcForm.ac = template.ac;
+                this.npcForm.hasArmor = template.hasArmor || false;
+                this.npcForm.hasShield = template.hasShield || false;
+                this.npcForm.bab = template.bab;
+                this.npcForm.attacks = template.attacks;
+                this.npcForm.damageMode = template.damageMode;
+                this.npcForm.dmgBonus = template.dmgBonus || 0;
+                this.npcForm.shockOverride = template.shockOverride || false;
+                this.npcForm.mv = template.mv;
+                this.npcForm.hasFly = template.hasFly || false;
+                this.npcForm.hasSwim = template.hasSwim || false;
+                this.npcForm.ml = template.ml;
+                this.npcForm.inst = template.inst;
+                this.npcForm.skl = template.skl;
+                this.npcForm.sv = template.sv;
+
+                // Dice mode specific fields
+                if (template.damageMode === 'dice') {
+                    this.npcForm.diceCount = template.diceCount || 1;
+                    this.npcForm.diceType = template.diceType || 6;
+                    this.npcForm.shockValue = template.shockValue || 0;
+                    this.npcForm.shockAC = template.shockAC || '10';
+                }
+            },
+
+            parseStatblock() {
+                const input = this.statblockPaste.trim();
+                if (!input) {
+                    this.parseError = '';
+                    return;
+                }
+
+                try {
+                    // Count ability markers (* and ¶)
+                    const starCount = (input.match(/\*/g) || []).length;
+                    const pilcrowCount = (input.match(/¶/g) || []).length;
+                    const abilityCount = starCount + pilcrowCount;
+
+                    // Check if it's compact format (has ¶ or no spaces between values)
+                    const hasCompactFormat = input.includes('¶') || !/\s{2,}/.test(input);
+
+                    let parsed;
+                    if (hasCompactFormat) {
+                        parsed = this.parseCompactStatblock(input);
+                    } else {
+                        parsed = this.parseSpacedStatblock(input);
+                    }
+
+                    if (!parsed) {
+                        this.parseError = 'Could not parse statblock';
+                        return;
+                    }
+
+                    // Apply parsed values to form
+                    this.npcForm.name = parsed.name;
+                    this.npcForm.hd = parsed.hd;
+                    this.npcForm.ac = parsed.ac;
+                    this.npcForm.hasArmor = parsed.hasArmor || false;
+                    this.npcForm.hasShield = parsed.hasShield || false;
+                    this.npcForm.bab = parsed.bab;
+                    this.npcForm.attacks = parsed.attacks || 1;
+                    this.npcForm.mv = parsed.mv;
+                    this.npcForm.hasFly = parsed.hasFly || false;
+                    this.npcForm.hasSwim = parsed.hasSwim || false;
+                    this.npcForm.ml = parsed.ml;
+                    this.npcForm.inst = parsed.inst;
+                    this.npcForm.skl = parsed.skl;
+                    this.npcForm.sv = parsed.sv;
+
+                    // Damage configuration
+                    if (parsed.damageMode === 'dice') {
+                        this.npcForm.damageMode = 'dice';
+                        this.npcForm.diceCount = parsed.diceCount || 1;
+                        this.npcForm.diceType = parsed.diceType || 6;
+                        this.npcForm.dmgBonus = parsed.dmgBonus || 0;
+                        this.npcForm.shockValue = parsed.shockValue || 0;
+                        this.npcForm.shockAC = parsed.shockAC || '-';
+                    } else {
+                        this.npcForm.damageMode = 'weapon';
+                        this.npcForm.dmgBonus = parsed.dmgBonus || 0;
+                        this.npcForm.shockOverride = parsed.shockOverride || false;
+                    }
+
+                    // Add placeholder abilities
+                    this.npcForm.abilities = [];
+                    for (let i = 0; i < abilityCount; i++) {
+                        this.npcForm.abilities.push({ name: 'Ability ' + (i + 1), description: '' });
+                    }
+
+                    this.parseError = '';
+                } catch (e) {
+                    this.parseError = 'Parse error: ' + e.message;
+                }
+            },
+
+            parseSpacedStatblock(input) {
+                // Format: Name  HD  AC  +BAB  DMG  SHOCK  MV  ML  INST  +SKL  SV
+                // Split on 2+ spaces
+                const parts = input.split(/\s{2,}/).map(p => p.trim()).filter(p => p);
+                if (parts.length < 10) return null;
+
+                const name = parts[0].replace(/[\*¶]/g, '').trim();
+                const hdMatch = parts[1].match(/(\d+)/);
+                const hd = hdMatch ? parseInt(hdMatch[1]) : 1;
+
+                // AC - may have 'a' or 's' suffix
+                const acMatch = parts[2].match(/(\d+)(a?)(s?)/);
+                const ac = acMatch ? parseInt(acMatch[1]) : 10;
+                const hasArmor = acMatch ? acMatch[2] === 'a' : false;
+                const hasShield = acMatch ? acMatch[3] === 's' : false;
+
+                // BAB - format: +N or +N xM
+                const babMatch = parts[3].match(/\+(\d+)(?:\s*x(\d+))?/);
+                const bab = babMatch ? parseInt(babMatch[1]) : 0;
+                const attacks = babMatch && babMatch[2] ? parseInt(babMatch[2]) : 1;
+
+                // Damage
+                const dmgParsed = this.parseDamage(parts[4]);
+
+                // Shock
+                const shockParsed = this.parseShock(parts[5]);
+
+                // Move
+                const mv = parts[6] || "30'";
+
+                // ML, Inst, Skill, Save
+                const ml = parseInt(parts[7]) || 7;
+                const inst = parseInt(parts[8]) || 5;
+                const sklMatch = parts[9].match(/\+?(\d+)/);
+                const skl = sklMatch ? parseInt(sklMatch[1]) : 1;
+                const svMatch = parts[10].match(/(\d+)/);
+                const sv = svMatch ? parseInt(svMatch[1]) : 15;
+
+                return {
+                    name, hd, ac, hasArmor, hasShield, bab, attacks,
+                    ...dmgParsed, ...shockParsed,
+                    mv, ml, inst, skl, sv
+                };
+            },
+
+            parseCompactStatblock(input) {
+                // PDF format: NameHDACAtk.Dmg.ShockMoveMLInst.SkillSave
+                // Example: Lesser Anak Warrior113a+1Wpn+1Wpn+120'74+115+
+                // Example: Undead Mage810+101d82/-30'94+211+
+                // Example: Ancient Warbot1420+15 x32d6+510/-60' fly122+28+
+
+                // Check for fly/swim before cleaning
+                const hasFly = /fly/i.test(input);
+                const hasSwim = /swim/i.test(input);
+                console.log('=== PRE-CLEAN ===', { input, hasFly, hasSwim });
+
+                // Clean input - remove header row if present, normalize
+                let cleanInput = input
+                    .replace(/HDACAtk\.?Dmg\.?Shock\.?Move\.?ML\.?Inst\.?Skill\.?Save\.?/gi, '')
+                    .replace(/\s*[\*¶]+\s*/g, '')  // Remove ability markers and surrounding spaces
+                    .replace(/\s*x\s*/g, 'x')  // Normalize "x2" attack notation (remove spaces)
+                    .replace(/\/\s*AC\s*/gi, '/')  // Normalize shock "2/AC 15" to "2/15"
+                    .replace(/[''′`]/g, "'")  // Normalize all quote-like chars to straight quote
+                    .replace(/'\s*(fly|swim)\s*/gi, "'")  // Remove fly/swim after move quote
+                    .replace(/\s*(fly|swim)\s*/gi, '')  // Remove fly/swim text
+                    .trim();
+                console.log('Cleaned input:', cleanInput);
+
+                // Use the step-by-step parser which handles constraints better
+                const result = this.parseCompactStatblockAlt(cleanInput);
+                if (result) {
+                    result.hasFly = hasFly;
+                    result.hasSwim = hasSwim;
+                }
+                return result;
+            },
+
+            parseCompactStatblockOld(input) {
+                // Old regex-based parser - kept for reference
+                const pattern = /^(.+?)(\d{1,2})(1[0-9]|20)(a?)(s?)(\+\d{1,2})(x\d+)?(Wpn(?:\+\d+)?|\d+d\d+(?:\+\d+)?)(Wpn(?:\+\d+)?|\d+\/?[-\d]*|None|-)(\d+['']?)(\d{1,2})(\d)(\+\d+)(\d+)\+?$/i;
+
+                const match = input.match(pattern);
+                if (!match) {
+                    return null;
+                }
+
+                const [, name, hd, ac, armor, shield, bab, attacksRaw, dmg, shock, mv, ml, inst, skl, sv] = match;
+
+                // Parse attacks
+                const attacks = attacksRaw ? parseInt(attacksRaw.replace('x', '')) : 1;
+
+                // Parse damage
+                const dmgParsed = this.parseDamage(dmg);
+
+                // Parse shock
+                const shockParsed = this.parseShock(shock);
+
+                return {
+                    name: name.trim(),
+                    hd: parseInt(hd),
+                    ac: parseInt(ac),
+                    hasArmor: armor === 'a',
+                    hasShield: shield === 's',
+                    bab: parseInt(bab.replace('+', '')),
+                    attacks,
+                    ...dmgParsed,
+                    ...shockParsed,
+                    mv: mv.includes("'") ? mv : mv + "'",
+                    ml: parseInt(ml),
+                    inst: parseInt(inst),
+                    skl: parseInt(skl.replace('+', '')),
+                    sv: parseInt(sv)
+                };
+            },
+
+            parseCompactStatblockAlt(input) {
+                // Parsing with game constraints:
+                // AC: 10-20, ML: 2-12, Inst: 1-10, Skill: +0 to +5, Save: 2-15
+
+                console.log('=== PARSE START ===');
+                console.log('Input:', input);
+
+                let rest = input;
+                let result = {};
+
+                // Extract name: everything before HD+AC pattern
+                // HD is 1-2 digits, AC is always 10+ (2 digits)
+                const nameMatch = rest.match(/^(.+?)(\d{1,2})(1[0-9]|20)/);
+                if (!nameMatch) { console.log('Name match failed'); return null; }
+                result.name = nameMatch[1].trim();
+                result.hd = parseInt(nameMatch[2]);
+                rest = rest.substring(nameMatch[1].length + nameMatch[2].length);
+                console.log('After name/HD:', { name: result.name, hd: result.hd, rest });
+
+                // AC (10-20 + optional a/s)
+                const acMatch = rest.match(/^(1[0-9]|20)(a?)(s?)/);
+                if (!acMatch) { console.log('AC match failed'); return null; }
+                result.ac = parseInt(acMatch[1]);
+                result.hasArmor = acMatch[2] === 'a';
+                result.hasShield = acMatch[3] === 's';
+                rest = rest.substring(acMatch[0].length);
+                console.log('After AC:', { ac: result.ac, rest });
+
+                // BAB (+1 to +20, optional xN where N is 2-9) - look ahead for Wpn or dice pattern
+                // Pattern: +digits followed by optional xN (single digit), then Wpn or NdN
+                const babMatch = rest.match(/^(\+\d{1,2})(x([2-9]))?(Wpn|\d+d)/i);
+                if (!babMatch) { console.log('BAB match failed on:', rest); return null; }
+                result.bab = parseInt(babMatch[1].replace('+', ''));
+                result.attacks = babMatch[3] ? parseInt(babMatch[3]) : 1;
+                // Only consume the BAB part and xN, not the damage lookahead
+                rest = rest.substring(babMatch[1].length + (babMatch[2] ? babMatch[2].length : 0));
+                console.log('After BAB:', { bab: result.bab, attacks: result.attacks, rest });
+
+                // Damage (Wpn+N or dice notation NdX+N where X is valid dice: 2,4,6,8,10,12,20, bonus max +9)
+                const dmgMatch = rest.match(/^(Wpn(?:\+[0-9])?|\d+d(20|12|10|8|6|4|2)(?:\+[0-9])?)/i);
+                if (dmgMatch) {
+                    Object.assign(result, this.parseDamage(dmgMatch[1]));
+                    rest = rest.substring(dmgMatch[0].length);
+                    console.log('After Damage:', { dmgMatch: dmgMatch[0], rest });
+                } else {
+                    console.log('Damage match failed on:', rest);
+                }
+
+                // Skip attack name (words like "swoop", "thorn whip" between damage and shock)
+                // Match spaces and letters but stop before None, Wpn, or digits
+                const attackNameMatch = rest.match(/^[\s]*[a-z\s]+?(?=None|Wpn|\d)/i);
+                if (attackNameMatch) {
+                    console.log('Skipping attack name:', attackNameMatch[0]);
+                    rest = rest.substring(attackNameMatch[0].length);
+                }
+
+                // Shock + Move combined (they often run together like "2/1530'" = shock 2/15, move 30')
+                // Shock value: 1-10, Shock AC: 10-20 or -
+                // Move: digits followed by quote(s) (fly/swim already removed at top level)
+                console.log('Trying shock+move on:', rest);
+                const shockMoveMatch = rest.match(/^(10|[1-9])\/(1[0-9]|20|-)(\d+)['′''`]*/);
+                if (shockMoveMatch) {
+                    result.shockValue = parseInt(shockMoveMatch[1]);
+                    result.shockAC = shockMoveMatch[2];
+                    result.mv = shockMoveMatch[3] + "'";
+                    rest = rest.substring(shockMoveMatch[0].length);
+                    console.log('After Shock+Move:', { shock: result.shockValue + '/' + result.shockAC, mv: result.mv, rest });
+                } else {
+                    console.log('Shock+Move match failed, trying alternatives');
+                    // Try None, Wpn shock (with optional /-), or -
+                    const altShockMatch = rest.match(/^(None|Wpn(?:\+\d+)?(?:\/-)?|-)/i);
+                    if (altShockMatch) {
+                        result.shockValue = 0;
+                        result.shockAC = '-';
+                        if (altShockMatch[1].toLowerCase().startsWith('wpn')) {
+                            result.shockOverride = altShockMatch[1].includes('/-');
+                        }
+                        rest = rest.substring(altShockMatch[0].length);
+                        console.log('After None/Wpn shock:', { shockOverride: result.shockOverride, rest });
+                    }
+                    // Move (digits + ' or "None")
+                    const mvMatch = rest.match(/^(None|\d+)['′''`]*/i);
+                    if (mvMatch) {
+                        result.mv = mvMatch[1].toLowerCase() === 'none' ? "0'" : mvMatch[1] + "'";
+                        rest = rest.substring(mvMatch[0].length);
+                        console.log('After Move:', { mv: result.mv, rest });
+                    } else {
+                        result.mv = "30'";
+                    }
+                }
+
+                // Remaining: ML (2-12) + Inst (1-10) + Skill (+0-5) + Save (2-15)+
+                // Parse from END first since Skill and Save have clear patterns
+                // e.g., "122+28+" = ML 12, Inst 2, Skill +2, Save 8+
+
+                // Strip any leading non-digit characters (stray quotes, spaces, etc.)
+                rest = rest.replace(/^[^0-9]+/, '');
+                console.log('Parsing trailing stats from:', rest);
+
+                // Save (2-15+) - from end, pattern: digits followed by +
+                let svMatch = rest.match(/(1[0-5]|[2-9])\+$/);
+                if (svMatch) {
+                    result.sv = parseInt(svMatch[1]);
+                    rest = rest.substring(0, rest.length - svMatch[0].length);
+                    console.log('After Save:', { sv: result.sv, rest });
+                } else {
+                    result.sv = 15;
+                    console.log('Save match failed, using default 15');
+                }
+
+                // Skill (+0 to +5) - from end, pattern: + followed by digit
+                const sklMatch = rest.match(/\+([0-5])$/);
+                if (sklMatch) {
+                    result.skl = parseInt(sklMatch[1]);
+                    rest = rest.substring(0, rest.length - sklMatch[0].length);
+                    console.log('After Skill:', { skl: result.skl, rest });
+                } else {
+                    result.skl = 1;
+                    console.log('Skill match failed, using default 1');
+                }
+
+                // Now rest should be ML + Inst (e.g., "122" = ML 12, Inst 2)
+                // ML: 2-12, Inst: 1-10
+                console.log('Parsing ML+Inst from:', rest);
+                // Try ML 2-digit (10, 11, 12) first
+                let mlMatch = rest.match(/^(1[0-2])/);
+                if (mlMatch) {
+                    result.ml = parseInt(mlMatch[1]);
+                    rest = rest.substring(mlMatch[0].length);
+                    console.log('ML (2-digit):', result.ml, 'rest:', rest);
+                } else {
+                    mlMatch = rest.match(/^([2-9])/);
+                    if (mlMatch) {
+                        result.ml = parseInt(mlMatch[1]);
+                        rest = rest.substring(mlMatch[0].length);
+                        console.log('ML (1-digit):', result.ml, 'rest:', rest);
+                    } else {
+                        result.ml = 7;
+                        console.log('ML match failed, using default 7');
+                    }
+                }
+
+                // Inst: remaining digits (1-10)
+                let instMatch = rest.match(/^(10|[1-9])/);
+                if (instMatch) {
+                    result.inst = parseInt(instMatch[1]);
+                    console.log('Inst:', result.inst);
+                } else {
+                    result.inst = 5;
+                    console.log('Inst match failed, using default 5');
+                }
+
+                console.log('=== PARSE RESULT ===', result);
+                return result;
+            },
+
+            parseDamage(dmgStr) {
+                if (!dmgStr || dmgStr.toLowerCase().startsWith('wpn')) {
+                    // Weapon mode
+                    const bonusMatch = dmgStr.match(/\+(\d+)/);
+                    return {
+                        damageMode: 'weapon',
+                        dmgBonus: bonusMatch ? parseInt(bonusMatch[1]) : 0
+                    };
+                }
+                // Dice mode (e.g., 1d6, 2d8+3)
+                const diceMatch = dmgStr.match(/(\d+)d(\d+)(\+(\d+))?/);
+                if (diceMatch) {
+                    return {
+                        damageMode: 'dice',
+                        diceCount: parseInt(diceMatch[1]),
+                        diceType: parseInt(diceMatch[2]),
+                        dmgBonus: diceMatch[4] ? parseInt(diceMatch[4]) : 0
+                    };
+                }
+                return { damageMode: 'weapon', dmgBonus: 0 };
+            },
+
+            parseShock(shockStr) {
+                if (!shockStr || shockStr === '-' || shockStr.toLowerCase() === 'none') {
+                    return { shockValue: 0, shockAC: '-' };
+                }
+                if (shockStr.toLowerCase().startsWith('wpn')) {
+                    // Weapon shock with possible override
+                    const override = shockStr.includes('/-');
+                    return { shockOverride: override };
+                }
+                // Format: N/AC or N/-
+                const match = shockStr.match(/(\d+)\/(-|\d+)/);
+                if (match) {
+                    return {
+                        shockValue: parseInt(match[1]),
+                        shockAC: match[2]
+                    };
+                }
+                return { shockValue: 0, shockAC: '-' };
             },
 
             openHpModal(combatant) {
@@ -1796,7 +2514,8 @@
                     ml: this.npcForm.ml,
                     inst: this.npcForm.inst,
                     skl: this.npcForm.skl,
-                    sv: this.npcForm.sv
+                    sv: this.npcForm.sv,
+                    abilities: [...this.npcForm.abilities]
                 };
                 this.statblocks.push(statblock);
 
