@@ -282,17 +282,19 @@
     }
   ],
   "traits": {
-    "2H": { "en": "Two-handed", "uk": "Дворучна" },
-    "T": { "en": "Throwable", "uk": "Метальна" },
-    "S": { "en": "Small (concealable)", "uk": "Мала (приховувана)" },
-    "LL": { "en": "Less Lethal", "uk": "Менш Смертельна" },
-    "R": { "en": "Reload (Move action)", "uk": "Перезарядка (Дія Руху)" },
-    "SR": { "en": "Slow Reload (Main action)", "uk": "Повільна Перезарядка (Основна дія)" },
-    "PM": { "en": "Precisely Made", "uk": "Точно Виготовлена" },
-    "L": { "en": "Long (reach)", "uk": "Довга (досяжність)" },
-    "B": { "en": "Bash (shield)", "uk": "Удар (щит)" },
-    "N": { "en": "Numerous (3 per enc)", "uk": "Численні (3 за навант.)" },
-    "SS": { "en": "Single Shot", "uk": "Один Постріл" },
-    "AP": { "en": "Armor Piercing", "uk": "Бронебійна" }
+    "2H": { "en": "Two Handed. Ranged two-handed weapons can't be fired while a foe is within melee range.", "uk": "Дворучна. Далекобійну дворучну зброю не можна використовувати, коли ворог в межах ближнього бою." },
+    "AP": { "en": "Armor Piercing. Ignores creatures' mundane armor & shields for purposes of its hit rolls.", "uk": "Бронебійна. Ігнорує звичайну броню та щити істот для кидків на влучання." },
+    "B": { "en": "Bash. If used as a weapon or in a dual-wielding attack, shields grant no AC or Shock protection until the wielder's next turn.", "uk": "Удар. Якщо використовується як зброя або в атаці двома руками, щити не дають захисту AC чи Shock до наступного ходу власника." },
+    "FX": { "en": "Fixed. Requires a fixed position & at least 5 mins to entrench it.", "uk": "Стаціонарна. Потребує фіксованої позиції та щонайменше 5 хв для встановлення." },
+    "L": { "en": "Long. Can attack foes from 10' (even through ally's space). Doesn't apply melee's typical threatening range until within 5'.", "uk": "Довга. Може атакувати ворогів з 10' (навіть через союзника). Не загрожує в ближньому бою поки ворог не наблизиться на 5'." },
+    "LL": { "en": "Less Lethal. Foes brought to zero HP can be left alive at the wielder's discretion.", "uk": "Менш Смертельна. Ворогів, що впали до 0 HP, можна залишити живими на розсуд власника." },
+    "N": { "en": "Numerous. 5 of these count as 1 Readied item.", "uk": "Численні. 5 таких предметів вважаються за 1 Готовий предмет." },
+    "PM": { "en": "Precisely Murderous. Imposes -1 penalty to Physical Saves during Execution attacks. x2 damage even on Success.", "uk": "Точно Вбивча. Накладає -1 штраф до Фізичних Рятівних під час Страти. x2 шкоди навіть при Успіху." },
+    "R": { "en": "Reload. Costs a Move Action to reload. If the user has Shoot+1 or higher, they can reload as an On Turn Action.", "uk": "Перезарядка. Коштує Дію Руху. Якщо власник має Стрільба+1 або вище, може перезарядити як Дію на Ходу." },
+    "S": { "en": "Subtle. Easily hidden in ordinary clothing or concealed in jewelry.", "uk": "Прихована. Легко ховається у звичайному одязі або прикрасах." },
+    "SR": { "en": "Slow Reload. Takes a Main Action to reload.", "uk": "Повільна Перезарядка. Потребує Основної Дії для перезарядки." },
+    "SS": { "en": "Single Shot. Takes 10 Rounds to reload. Reloading attempt is spoiled if a foe melees the wielder.", "uk": "Один Постріл. Потребує 10 Раундів для перезарядки. Спроба перезарядки зривається, якщо ворог атакує в ближньому бою." },
+    "T": { "en": "Throwable. Can be used in melee or thrown. Does not deal Shock if thrown. -4 to Hit if thrown while foe is in melee range.", "uk": "Метальна. Можна використовувати в ближньому бою або кидати. Не завдає Shock при киданні. -4 до Влучання якщо кидати поки ворог в межах ближнього бою." },
+    "U": { "en": "Untrained. Due to its simplicity, a user with less than 0 in the relevant Skill can use it at no unskilled hit penalty.", "uk": "Нетренована. Через простоту, користувач з навичкою менше 0 може використовувати без штрафу невмілості." }
   }
 }

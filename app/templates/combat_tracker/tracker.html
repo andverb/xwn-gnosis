@@ -101,6 +101,7 @@
         text-align: center;
     }
 
+
     /* Group headers */
     .group-header {
         display: grid;
@@ -286,11 +287,12 @@
         border-radius: var(--pico-border-radius);
         padding: 0.5rem 0.75rem;
         font-size: 0.75rem;
-        width: max-content;
-        max-width: 20rem;
+        width: 22rem;
         z-index: 100;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         margin-bottom: 0.25rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .weapon-tooltip::after {
@@ -303,9 +305,7 @@
     }
 
     .weapon-tooltip-row {
-        display: flex;
-        gap: 0.5rem;
-        padding: 0.2rem 0;
+        padding: 0.3rem 0;
         border-bottom: 1px solid var(--pico-muted-border-color);
     }
 
@@ -316,11 +316,14 @@
     .weapon-tooltip-label {
         font-weight: 600;
         color: var(--pico-primary);
-        white-space: nowrap;
     }
 
     .weapon-tooltip-desc {
         color: var(--pico-color);
+        display: block;
+        margin-top: 0.1rem;
+        white-space: normal;
+        word-wrap: break-word;
     }
 
     .attack-stats {
@@ -767,13 +770,13 @@
                     <template x-if="item.type === 'group'">
                         <div class="group-header colored">
                             <!-- Initiative Column -->
-                            <div style="display: flex; align-items: center; justify-content: center;">
+                            <div>
                                 <input type="text"
                                        :value="item.initiative"
                                        @input="updateGroupInitiative(item.name, $event.target.value)"
                                        placeholder="-"
                                        title="Initiative"
-                                       style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
+                                       style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
                             </div>
                             <!-- Group Name (spans middle columns) -->
                             <div style="grid-column: span 10;">
@@ -807,14 +810,14 @@
                                  'grouped': item.type === 'group'
                              }">
                             <!-- Initiative Column -->
-                            <div style="display: flex; align-items: center; justify-content: center;">
+                            <div>
                                 <template x-if="item.type === 'individual'">
                                     <input type="text"
                                            :value="combatant.initiative"
                                            @input="updateIndividualInitiative(combatant.id, $event.target.value)"
                                            placeholder="-"
                                            title="Initiative"
-                                           style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
+                                           style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
                                 </template>
                             </div>
                             <!-- Name Column -->
@@ -836,20 +839,22 @@
                             <div class="combatant-attack">
                                 <template x-if="combatant.type === 'npc'">
                                     <span style="display: contents;">
-                                        <span class="weapon-name"
-                                              @mouseenter="openTooltipId = combatant.id"
+                                        <span :class="{ 'weapon-name': hasWeaponTraits(combatant) }"
+                                              @mouseenter="hasWeaponTraits(combatant) && (openTooltipId = combatant.id)"
                                               @mouseleave="openTooltipId = null"
                                               style="position: relative;">
                                             <span x-text="getWeaponName(combatant)"></span>
                                             <!-- Weapon Tooltip (trait descriptions) -->
-                                            <div class="weapon-tooltip" x-show="openTooltipId === combatant.id && getWeaponTraits(combatant).length > 0" x-cloak>
-                                                <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
-                                                    <div class="weapon-tooltip-row">
-                                                        <span class="weapon-tooltip-label" x-text="trait.code"></span>
-                                                        <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
-                                                    </div>
-                                                </template>
-                                            </div>
+                                            <template x-if="hasWeaponTraits(combatant)">
+                                                <div class="weapon-tooltip" x-show="openTooltipId === combatant.id" x-cloak>
+                                                    <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
+                                                        <div class="weapon-tooltip-row">
+                                                            <span class="weapon-tooltip-label" x-text="trait.code"></span>
+                                                            <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
                                         </span>
                                         <span class="attack-stats">
                                             <template x-if="getStatblock(combatant.sourceId)?.attacks > 1">
@@ -1463,10 +1468,14 @@
                 const sb = this.getStatblock(combatant.sourceId);
                 if (!sb) return '-';
                 if (sb.damageMode === 'dice') {
-                    return 'Custom';
+                    return 'Attack';
                 }
                 const weapon = this.getWeapon(sb.weaponId);
                 return weapon?.name?.en || '-';
+            },
+
+            hasWeaponTraits(combatant) {
+                return this.getWeaponTraits(combatant).length > 0;
             },
 
             getNpcDamage(combatant) {
