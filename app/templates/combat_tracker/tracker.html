@@ -75,7 +75,7 @@
     /* Table header */
     .combatant-table-header {
         display: grid;
-        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
         gap: 0.3rem;
         padding: 0.5rem 0.5rem 0.5rem 1rem;
         background: var(--pico-code-background-color);
@@ -105,7 +105,7 @@
     /* Group headers */
     .group-header {
         display: grid;
-        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
         align-items: center;
         gap: 0.3rem;
         padding: 0.25rem 0.5rem 0.25rem 1rem;
@@ -207,10 +207,10 @@
 
     .combatant-row {
         display: grid;
-        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
         gap: 0.3rem;
         align-items: center;
-        padding: 0.3rem 0.5rem 0.3rem 1rem;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
         border-bottom: 1px solid var(--pico-muted-border-color);
         transition: background-color 0.15s;
         font-size: 0.8rem;
@@ -230,7 +230,27 @@
         padding-left: calc(1rem - 3px);
     }
 
-    /* Name column */
+    /* Name + Attack stacked cell */
+    .combatant-name-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+    }
+
+    .combatant-name-row {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .combatant-attack-row {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        padding-left: 0.25rem;
+    }
+
     .combatant-name {
         font-weight: 600;
         cursor: pointer;
@@ -245,24 +265,45 @@
         background: rgba(255,255,255,0.1);
     }
 
+    .combatant-hd {
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+        margin-left: 0.25rem;
+    }
+
+    .combatant-abilities-star {
+        font-size: 0.7rem;
+        color: #ffc107;
+        margin-left: 0.25rem;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .combatant-abilities-star:hover,
+    .combatant-abilities-star.active {
+        opacity: 1;
+    }
+
     .combatant-name-input {
-        width: 100%;
-        max-width: 10rem;
-        height: 1.4rem;
-        min-height: 0;
+        width: 10rem;
+        height: 1.4rem !important;
+        max-height: 1.4rem !important;
+        min-height: 0 !important;
         padding: 0.1rem 0.25rem;
         margin: 0;
         font-size: 0.8rem;
         font-weight: 600;
         border-radius: 0.2rem;
+        box-sizing: border-box;
     }
 
-    /* Attack column */
+    /* Attack info (below name) */
     .combatant-attack {
         display: flex;
         align-items: center;
         gap: 0.35rem;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
         white-space: nowrap;
     }
 
@@ -754,19 +795,6 @@
         border-color: var(--pico-primary);
     }
 
-    /* Ability toggle button */
-    .icon-btn.ability-toggle {
-        color: #ffc107;
-        border-color: #ffc107;
-    }
-
-    .icon-btn.ability-toggle:hover,
-    .icon-btn.ability-toggle.active {
-        background: #ffc107;
-        color: #000;
-        border-color: #ffc107;
-    }
-
     /* Expanded abilities section */
     .abilities-expanded {
         background: var(--pico-code-background-color);
@@ -874,7 +902,6 @@
             <div class="combatant-table-header" x-show="combatants.length > 0">
                 <div class="col-init">#</div>
                 <div class="col-name">Name</div>
-                <div class="col-attack">Attack</div>
                 <div class="col-shock has-tooltip" title="On miss: deals damage if target AC ≤ threshold. x/- = any AC. Hits deal at least shock dmg.">Shock</div>
                 <div class="col-move">Move</div>
                 <div class="col-ml has-tooltip" title="Morale Check: 2d6 > ML = Fail. NPC retreats or surrenders.">ML</div>
@@ -908,7 +935,7 @@
                                        style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
                             </div>
                             <!-- Group Name (spans middle columns) -->
-                            <div style="grid-column: span 10;">
+                            <div style="grid-column: span 9;">
                                 <span class="group-name"
                                       x-show="editingGroup !== item.name"
                                       @dblclick="startEditingGroup(item.name)"
@@ -950,56 +977,60 @@
                                            style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
                                 </template>
                             </div>
-                            <!-- Name Column -->
-                            <div>
-                                <span class="combatant-name"
-                                      x-show="editingCombatant !== combatant.id"
-                                      @dblclick="startEditingCombatant(combatant.id)"
-                                      x-text="getCombatantDisplayName(combatant)"
-                                      title="Double-click to rename"></span>
-                                <input x-show="editingCombatant === combatant.id"
-                                       type="text"
-                                       class="combatant-name-input"
-                                       :value="getCombatantDisplayName(combatant)"
-                                       @blur="finishEditingCombatant(combatant.id, $event.target.value)"
-                                       @keyup.enter="$event.target.blur()"
-                                       @keyup.escape="editingCombatant = null">
-                            </div>
-                            <!-- Attack Column -->
-                            <div class="combatant-attack">
-                                <template x-if="combatant.type === 'npc'">
-                                    <span style="display: contents;">
-                                        <span :class="{ 'weapon-name': hasWeaponTraits(combatant) }"
-                                              @mouseenter="hasWeaponTraits(combatant) && (openTooltipId = combatant.id)"
-                                              @mouseleave="openTooltipId = null"
-                                              style="position: relative;">
-                                            <span x-text="getWeaponName(combatant)"></span>
-                                            <!-- Weapon Tooltip (trait descriptions) -->
-                                            <template x-if="hasWeaponTraits(combatant)">
-                                                <div class="weapon-tooltip" x-show="openTooltipId === combatant.id" x-cloak>
-                                                    <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
-                                                        <div class="weapon-tooltip-row">
-                                                            <span class="weapon-tooltip-label" x-text="trait.code"></span>
-                                                            <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </template>
+                            <!-- Name + Attack Column (stacked) -->
+                            <div class="combatant-name-cell">
+                                <div class="combatant-name-row">
+                                    <span class="combatant-name"
+                                          x-show="editingCombatant !== combatant.id"
+                                          @dblclick="startEditingCombatant(combatant.id)"
+                                          x-text="getCombatantDisplayName(combatant)"
+                                          title="Double-click to rename"></span>
+                                    <span class="combatant-hd"
+                                          x-show="editingCombatant !== combatant.id"
+                                          x-text="'[' + (combatant.type === 'npc' ? getStatblock(combatant.sourceId)?.hd : getPC(combatant.sourceId)?.level) + ']'"></span>
+                                    <span class="combatant-abilities-star"
+                                          x-show="editingCombatant !== combatant.id && combatant.type === 'npc' && getStatblock(combatant.sourceId)?.abilities?.length > 0"
+                                          :class="{ 'active': expandedAbilitiesId === combatant.id }"
+                                          @click.stop="expandedAbilitiesId = expandedAbilitiesId === combatant.id ? null : combatant.id"
+                                          title="Special Abilities">★</span>
+                                    <input x-show="editingCombatant === combatant.id"
+                                           type="text"
+                                           class="combatant-name-input"
+                                           :value="getCombatantDisplayName(combatant)"
+                                           @blur="finishEditingCombatant(combatant.id, $event.target.value)"
+                                           @keyup.enter="$event.target.blur()"
+                                           @keyup.escape="editingCombatant = null">
+                                </div>
+                                <div class="combatant-attack-row">
+                                    <template x-if="combatant.type === 'npc'">
+                                        <span class="combatant-attack">
+                                            <span :class="{ 'weapon-name': hasWeaponTraits(combatant) }"
+                                                  @mouseenter="hasWeaponTraits(combatant) && (openTooltipId = combatant.id)"
+                                                  @mouseleave="openTooltipId = null"
+                                                  style="position: relative;">
+                                                <span x-text="getWeaponName(combatant)"></span>
+                                                <!-- Weapon Tooltip (trait descriptions) -->
+                                                <template x-if="hasWeaponTraits(combatant)">
+                                                    <div class="weapon-tooltip" x-show="openTooltipId === combatant.id" x-cloak>
+                                                        <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
+                                                            <div class="weapon-tooltip-row">
+                                                                <span class="weapon-tooltip-label" x-text="trait.code"></span>
+                                                                <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </span>
+                                            <span class="attack-stats">
+                                                <template x-if="getStatblock(combatant.sourceId)?.attacks > 1">
+                                                    <span x-text="'x' + getStatblock(combatant.sourceId)?.attacks"></span>
+                                                </template>
+                                                <span x-text="'+' + getStatblock(combatant.sourceId)?.bab"></span>
+                                                <span class="dice" x-text="getNpcDamage(combatant)"></span>
+                                            </span>
                                         </span>
-                                        <span class="attack-stats">
-                                            <template x-if="getStatblock(combatant.sourceId)?.attacks > 1">
-                                                <span x-text="'x' + getStatblock(combatant.sourceId)?.attacks"></span>
-                                            </template>
-                                            <span x-text="'+' + getStatblock(combatant.sourceId)?.bab"></span>
-                                            <span class="dice" x-text="getNpcDamage(combatant)"></span>
-                                        </span>
-                                    </span>
-                                </template>
-                                <template x-if="combatant.type === 'pc'">
-                                    <span style="color: var(--pico-muted-color); font-size: 0.8rem;">
-                                        Lvl <span x-text="getPC(combatant.sourceId)?.level"></span>
-                                    </span>
-                                </template>
+                                    </template>
+                                </div>
                             </div>
                             <!-- Shock Column -->
                             <div class="combatant-shock">
@@ -1078,12 +1109,6 @@
                             </div>
                             <!-- Actions Column -->
                             <div class="combatant-actions">
-                                <template x-if="combatant.type === 'npc' && getStatblock(combatant.sourceId)?.abilities?.length > 0">
-                                    <button class="icon-btn ability-toggle"
-                                            :class="{ 'active': expandedAbilitiesId === combatant.id }"
-                                            @click.stop="expandedAbilitiesId = expandedAbilitiesId === combatant.id ? null : combatant.id"
-                                            title="Special Abilities">★</button>
-                                </template>
                                 <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
                             </div>
                         </div>
