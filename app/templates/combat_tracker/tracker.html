@@ -70,22 +70,43 @@
         background: var(--pico-card-background-color);
         border: 1px solid var(--pico-muted-border-color);
         border-radius: var(--pico-border-radius);
-        padding: 1rem;
     }
 
-    .initiative-panel h3 {
-        margin: 0 0 1rem 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--pico-primary);
-        font-size: 1rem;
+    /* Table header */
+    .combatant-table-header {
+        display: grid;
+        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        gap: 0.3rem;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        background: var(--pico-code-background-color);
+        border-bottom: 1px solid var(--pico-muted-border-color);
+        font-weight: 600;
+        font-size: 0.7rem;
+        color: var(--pico-muted-color);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .combatant-table-header > div {
+        white-space: nowrap;
+    }
+
+    .combatant-table-header .col-ac,
+    .combatant-table-header .col-hp,
+    .combatant-table-header .col-move,
+    .combatant-table-header .col-ml,
+    .combatant-table-header .col-inst,
+    .combatant-table-header .col-skill,
+    .combatant-table-header .col-save {
+        text-align: center;
     }
 
     /* Group headers */
     .group-header {
         display: grid;
-        grid-template-columns: 2.5rem 1fr 4rem 4.5rem auto;
+        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
         padding: 0.25rem 0.5rem 0.25rem 1rem;
         background: var(--pico-code-background-color);
         border-bottom: 1px solid var(--pico-muted-border-color);
@@ -185,13 +206,13 @@
 
     .combatant-row {
         display: grid;
-        grid-template-columns: 2.5rem 1fr 4rem 4.5rem auto;
-        gap: 0.5rem;
+        grid-template-columns: 2.5rem minmax(4rem, 1fr) minmax(5rem, 2fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        gap: 0.3rem;
         align-items: center;
         padding: 0.3rem 0.5rem 0.3rem 1rem;
         border-bottom: 1px solid var(--pico-muted-border-color);
         transition: background-color 0.15s;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 
     .combatant-row:last-child {
@@ -208,26 +229,24 @@
         padding-left: calc(1rem - 3px);
     }
 
-    .combatant-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
+    /* Name column */
     .combatant-name {
         font-weight: 600;
         cursor: pointer;
         padding: 0.1rem 0.25rem;
         border-radius: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .combatant-name:hover {
         background: rgba(255,255,255,0.1);
     }
 
-    .combatant-info .combatant-name-input {
-        width: 10rem;
+    .combatant-name-input {
+        width: 100%;
+        max-width: 10rem;
         height: 1.4rem;
         min-height: 0;
         padding: 0.1rem 0.25rem;
@@ -237,27 +256,132 @@
         border-radius: 0.2rem;
     }
 
-    .combatant-stats {
-        font-size: 0.75rem;
-        color: var(--pico-muted-color);
+    /* Attack column */
+    .combatant-attack {
         display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .combatant-stats span {
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
         white-space: nowrap;
     }
 
-    .stat-label {
-        opacity: 0.7;
+    .weapon-name {
+        color: var(--pico-primary);
+        cursor: help;
+        position: relative;
+        border-bottom: 1px dotted var(--pico-primary);
     }
 
-    .weapon-traits {
+    .weapon-name:hover {
+        color: var(--pico-primary-hover, #0056b3);
+    }
+
+    /* Weapon tooltip popup */
+    .weapon-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        width: max-content;
+        max-width: 20rem;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        margin-bottom: 0.25rem;
+    }
+
+    .weapon-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        border: 6px solid transparent;
+        border-top-color: var(--pico-muted-border-color);
+    }
+
+    .weapon-tooltip-row {
         display: flex;
-        gap: 0.25rem;
+        gap: 0.5rem;
+        padding: 0.2rem 0;
+        border-bottom: 1px solid var(--pico-muted-border-color);
     }
 
+    .weapon-tooltip-row:last-child {
+        border-bottom: none;
+    }
+
+    .weapon-tooltip-label {
+        font-weight: 600;
+        color: var(--pico-primary);
+        white-space: nowrap;
+    }
+
+    .weapon-tooltip-desc {
+        color: var(--pico-color);
+    }
+
+    .attack-stats {
+        color: var(--pico-muted-color);
+    }
+
+    .attack-stats .dice {
+        color: var(--pico-primary);
+        font-weight: 600;
+    }
+
+    /* Shock column */
+    .combatant-shock {
+        text-align: left;
+        font-size: 0.8rem;
+    }
+
+    /* Move column */
+    .combatant-move {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* ML column */
+    .combatant-ml {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Inst column */
+    .combatant-inst {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Skill column */
+    .combatant-skill {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Save column */
+    .combatant-save {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* AC column */
+    .combatant-ac {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .ac-suffix,
+    .move-suffix {
+        font-size: 0.65rem;
+        color: var(--pico-muted-color);
+        vertical-align: super;
+    }
+
+    /* Trait badges */
     .trait-badge {
         font-size: 0.65rem;
         padding: 0.1rem 0.25rem;
@@ -583,6 +707,11 @@
         font-weight: bold;
         color: var(--pico-primary);
     }
+
+    /* Alpine cloak - hide elements until Alpine initializes */
+    [x-cloak] {
+        display: none !important;
+    }
 </style>
 {% endblock %}
 
@@ -609,7 +738,21 @@
 
         <!-- Initiative List -->
         <div class="initiative-panel">
-            <h3>Combat</h3>
+            <!-- Table Header -->
+            <div class="combatant-table-header" x-show="combatants.length > 0">
+                <div class="col-init">#</div>
+                <div class="col-name">Name</div>
+                <div class="col-attack">Attack</div>
+                <div class="col-shock">Shock</div>
+                <div class="col-move">Move</div>
+                <div class="col-ml">ML</div>
+                <div class="col-inst">Inst</div>
+                <div class="col-skill">Skill</div>
+                <div class="col-save">Save</div>
+                <div class="col-ac">AC</div>
+                <div class="col-hp">HP</div>
+                <div class="col-actions"></div>
+            </div>
 
             <template x-if="sortedGroups.length === 0">
                 <div class="empty-state">
@@ -632,8 +775,8 @@
                                        title="Initiative"
                                        style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
                             </div>
-                            <!-- Group Name (spans 3 middle columns) -->
-                            <div style="grid-column: span 3;">
+                            <!-- Group Name (spans middle columns) -->
+                            <div style="grid-column: span 10;">
                                 <span class="group-name"
                                       x-show="editingGroup !== item.name"
                                       @dblclick="startEditingGroup(item.name)"
@@ -674,8 +817,8 @@
                                            style="width: 2rem; height: 1.4rem; min-height: 0; padding: 0.1rem; text-align: center; font-size: 0.75rem; margin: 0;">
                                 </template>
                             </div>
-                            <!-- Name and Stats -->
-                            <div class="combatant-info">
+                            <!-- Name Column -->
+                            <div>
                                 <span class="combatant-name"
                                       x-show="editingCombatant !== combatant.id"
                                       @dblclick="startEditingCombatant(combatant.id)"
@@ -688,43 +831,109 @@
                                        @blur="finishEditingCombatant(combatant.id, $event.target.value)"
                                        @keyup.enter="$event.target.blur()"
                                        @keyup.escape="editingCombatant = null">
-                                <span style="font-size: 0.7rem; font-weight: 600; color: var(--pico-muted-color); margin-left: 0.25rem;" x-text="combatant.type === 'pc' ? 'PC' : 'NPC'"></span>
-                                <div class="combatant-stats">
-                                    <template x-if="combatant.type === 'pc'">
-                                        <span>
-                                            <span><span class="stat-label">Lvl:</span> <span x-text="getPC(combatant.sourceId)?.level"></span></span>
-                                            <span><span class="stat-label">Strain:</span> <span x-text="combatant.systemStrain || 0"></span></span>
-                                        </span>
-                                    </template>
-                                    <template x-if="combatant.type === 'npc'">
-                                        <span>
-                                            <span><span class="stat-label">Attack:</span> <span x-text="getNpcBab(combatant)"></span></span>
-                                            <span><span class="stat-label">Dmg:</span> <span class="dice" x-text="getNpcDamage(combatant)"></span></span>
-                                            <span><span class="stat-label">Shock:</span> <span x-text="getNpcShock(combatant)"></span></span>
-                                            <span><span class="stat-label">Move:</span> <span x-text="getNpcMove(combatant)"></span></span>
-                                            <span><span class="stat-label">ML:</span> <span x-text="getStatblock(combatant.sourceId)?.ml"></span></span>
-                                            <span><span class="stat-label">Inst:</span> <span x-text="getStatblock(combatant.sourceId)?.inst"></span></span>
-                                        </span>
-                                    </template>
-                                </div>
-                                <div class="weapon-traits" x-show="combatant.type === 'npc' && getWeaponTraits(combatant).length > 0">
-                                    <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
-                                        <span class="trait-badge" :data-tooltip="trait.desc" x-text="trait.code"></span>
-                                    </template>
-                                </div>
                             </div>
-                            <!-- AC -->
+                            <!-- Attack Column -->
+                            <div class="combatant-attack">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span style="display: contents;">
+                                        <span class="weapon-name"
+                                              @mouseenter="openTooltipId = combatant.id"
+                                              @mouseleave="openTooltipId = null"
+                                              style="position: relative;">
+                                            <span x-text="getWeaponName(combatant)"></span>
+                                            <!-- Weapon Tooltip (trait descriptions) -->
+                                            <div class="weapon-tooltip" x-show="openTooltipId === combatant.id && getWeaponTraits(combatant).length > 0" x-cloak>
+                                                <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
+                                                    <div class="weapon-tooltip-row">
+                                                        <span class="weapon-tooltip-label" x-text="trait.code"></span>
+                                                        <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </span>
+                                        <span class="attack-stats">
+                                            <template x-if="getStatblock(combatant.sourceId)?.attacks > 1">
+                                                <span x-text="'x' + getStatblock(combatant.sourceId)?.attacks"></span>
+                                            </template>
+                                            <span x-text="'+' + getStatblock(combatant.sourceId)?.bab"></span>
+                                            <span class="dice" x-text="getNpcDamage(combatant)"></span>
+                                        </span>
+                                    </span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span style="color: var(--pico-muted-color); font-size: 0.8rem;">
+                                        Lvl <span x-text="getPC(combatant.sourceId)?.level"></span>
+                                    </span>
+                                </template>
+                            </div>
+                            <!-- Shock Column -->
+                            <div class="combatant-shock">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="getNpcShock(combatant)"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Move Column -->
+                            <div class="combatant-move">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span>
+                                        <span x-text="getStatblock(combatant.sourceId)?.mv || '-'"></span><span class="move-suffix" x-text="getMoveSuffix(combatant)"></span>
+                                    </span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- ML Column -->
+                            <div class="combatant-ml">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="getStatblock(combatant.sourceId)?.ml || '-'"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Inst Column -->
+                            <div class="combatant-inst">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="getStatblock(combatant.sourceId)?.inst || '-'"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Skill Column -->
+                            <div class="combatant-skill">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="'+' + (getStatblock(combatant.sourceId)?.skl || 0)"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Save Column -->
+                            <div class="combatant-save">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="getStatblock(combatant.sourceId)?.sv || '-'"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- AC Column -->
                             <div class="combatant-ac">
-                                <span class="stat-label">AC:</span> <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
+                                <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix" x-text="getAcSuffix(combatant)"></span>
                             </div>
-                            <!-- HP -->
+                            <!-- HP Column -->
                             <div class="combatant-hp" @click.stop="openHpModal(combatant)">
                                 <span x-text="combatant.currentHp + '/' + combatant.maxHp"></span>
                                 <div class="hp-bar">
                                     <div class="hp-bar-fill" :style="'width: ' + Math.max(0, combatant.currentHp / combatant.maxHp * 100) + '%'"></div>
                                 </div>
                             </div>
-                            <!-- Actions -->
+                            <!-- Actions Column -->
                             <div class="combatant-actions">
                                 <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
                             </div>
@@ -734,7 +943,7 @@
             </template>
 
             <!-- Add Buttons -->
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; padding: 0.5rem;">
                 <button class="add-group-btn" @click="addIndividualCombatant()" style="flex: 1;">+ Add Combatant</button>
                 <button class="add-group-btn" @click="addNewGroup()" style="flex: 1;">+ Add Group</button>
             </div>
@@ -1013,6 +1222,7 @@
             round: 1,
             roundFlash: false,
             currentTurnId: null,
+            openTooltipId: null,
             combatants: [],
             statblocks: [],
             pcs: [],
@@ -1232,11 +1442,31 @@
                 return suffix;
             },
 
+            getMoveSuffix(combatant) {
+                if (combatant.type === 'pc') return '';
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '';
+                let suffix = '';
+                if (sb.hasFly) suffix += 'f';
+                if (sb.hasSwim) suffix += 's';
+                return suffix;
+            },
+
             getNpcBab(combatant) {
                 const sb = this.getStatblock(combatant.sourceId);
                 if (!sb) return '-';
                 const attacks = sb.attacks > 1 ? ' x' + sb.attacks : '';
                 return '+' + sb.bab + attacks;
+            },
+
+            getWeaponName(combatant) {
+                const sb = this.getStatblock(combatant.sourceId);
+                if (!sb) return '-';
+                if (sb.damageMode === 'dice') {
+                    return 'Custom';
+                }
+                const weapon = this.getWeapon(sb.weaponId);
+                return weapon?.name?.en || '-';
             },
 
             getNpcDamage(combatant) {
