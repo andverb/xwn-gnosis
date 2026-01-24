@@ -1273,6 +1273,10 @@
                         <!-- Dice Builder Mode -->
                         <template x-if="npcForm.damageMode === 'dice'">
                             <div class="form-row">
+                                <div class="form-field" style="flex: 1; min-width: 6rem;">
+                                    <label>Attack Name</label>
+                                    <input type="text" x-model="npcForm.attackName" placeholder="Claw">
+                                </div>
                                 <div class="form-field" style="max-width: 5rem;">
                                     <label>Dice Count</label>
                                     <input type="number" x-model.number="npcForm.diceCount" min="1" max="20" placeholder="1">
@@ -1551,6 +1555,7 @@
                 weaponId: 'spear-light',
                 diceCount: 1,
                 diceType: 6,
+                attackName: '',           // Custom attack name for dice mode
                 dmgBonus: 0,
                 shockValue: 0,
                 shockAC: '10',
@@ -1786,7 +1791,7 @@
                 const sb = this.getStatblock(combatant.sourceId);
                 if (!sb) return '-';
                 if (sb.damageMode === 'dice') {
-                    return 'Attack';
+                    return sb.attackName || 'Attack';
                 }
                 const weapon = this.getWeapon(sb.weaponId);
                 return weapon?.name?.en || '-';
@@ -2104,8 +2109,11 @@
                 if (template.damageMode === 'dice') {
                     this.npcForm.diceCount = template.diceCount || 1;
                     this.npcForm.diceType = template.diceType || 6;
+                    this.npcForm.attackName = template.attackName || '';
                     this.npcForm.shockValue = template.shockValue || 0;
                     this.npcForm.shockAC = template.shockAC || '10';
+                } else {
+                    this.npcForm.attackName = '';
                 }
             },
 
@@ -2158,11 +2166,13 @@
                         this.npcForm.damageMode = 'dice';
                         this.npcForm.diceCount = parsed.diceCount || 1;
                         this.npcForm.diceType = parsed.diceType || 6;
+                        this.npcForm.attackName = parsed.attackName || '';
                         this.npcForm.dmgBonus = parsed.dmgBonus || 0;
                         this.npcForm.shockValue = parsed.shockValue || 0;
                         this.npcForm.shockAC = parsed.shockAC || '-';
                     } else {
                         this.npcForm.damageMode = 'weapon';
+                        this.npcForm.attackName = '';
                         this.npcForm.dmgBonus = parsed.dmgBonus || 0;
                         this.npcForm.shockOverride = parsed.shockOverride || false;
                     }
@@ -2342,11 +2352,12 @@
                     console.log('Damage match failed on:', rest);
                 }
 
-                // Skip attack name (words like "swoop", "thorn whip" between damage and shock)
+                // Capture attack name (words like "swoop", "thorn whip" between damage and shock)
                 // Match spaces and letters but stop before None, Wpn, or digits
-                const attackNameMatch = rest.match(/^[\s]*[a-z\s]+?(?=None|Wpn|\d)/i);
+                const attackNameMatch = rest.match(/^[\s]*([a-z\s]+?)(?=None|Wpn|\d)/i);
                 if (attackNameMatch) {
-                    console.log('Skipping attack name:', attackNameMatch[0]);
+                    result.attackName = attackNameMatch[1].trim();
+                    console.log('Captured attack name:', result.attackName);
                     rest = rest.substring(attackNameMatch[0].length);
                 }
 
@@ -2529,6 +2540,7 @@
                     weaponId: this.npcForm.weaponId,
                     diceCount: this.npcForm.diceCount,
                     diceType: this.npcForm.diceType,
+                    attackName: this.npcForm.attackName,
                     dmgBonus: this.npcForm.dmgBonus,
                     shockValue: this.npcForm.shockValue,
                     shockAC: this.npcForm.shockAC,
