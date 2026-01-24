@@ -3,7 +3,6 @@
 {% block title %}Combat Tracker - Gnosis{% endblock %}
 
 {% block extra_head %}
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 <style>
     /* Single column layout */
     .tracker-layout {
@@ -300,9 +299,10 @@
     /* Attack info (below name) */
     .combatant-attack {
         display: flex;
-        align-items: center;
+        align-items: baseline;
         gap: 0.35rem;
         font-size: 0.75rem;
+        line-height: 1.2;
         color: var(--pico-muted-color);
         white-space: nowrap;
     }
@@ -310,8 +310,9 @@
     .weapon-name {
         color: var(--pico-primary);
         cursor: help;
-        position: relative;
-        border-bottom: 1px dotted var(--pico-primary);
+        text-decoration: underline dotted;
+        text-underline-offset: 2px;
+        line-height: 1.2;
     }
 
     .weapon-name:hover {
@@ -368,12 +369,25 @@
     }
 
     .attack-stats {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
         color: var(--pico-muted-color);
+        font-size: 0.75rem;
     }
 
-    .attack-stats .dice {
+    .attack-bab {
+        font-size: 0.75rem;
+    }
+
+    .attack-count {
+        font-size: 0.75rem;
+    }
+
+    .attack-damage {
         color: var(--pico-primary);
         font-weight: 600;
+        font-size: 0.75rem;
     }
 
     /* Shock column */
@@ -901,7 +915,7 @@
             <!-- Table Header -->
             <div class="combatant-table-header" x-show="combatants.length > 0">
                 <div class="col-init">#</div>
-                <div class="col-name">Name</div>
+                <div class="col-name">Name, HD, Attack</div>
                 <div class="col-shock has-tooltip" title="On miss: deals damage if target AC ≤ threshold. x/- = any AC. Hits deal at least shock dmg.">Shock</div>
                 <div class="col-move">Move</div>
                 <div class="col-ml has-tooltip" title="Morale Check: 2d6 > ML = Fail. NPC retreats or surrenders.">ML</div>
@@ -1022,11 +1036,17 @@
                                                 </template>
                                             </span>
                                             <span class="attack-stats">
+                                                <span class="attack-bab rollable"
+                                                      @click.stop="$store.dice.rollAttack(getStatblock(combatant.sourceId)?.bab, getCombatantDisplayName(combatant), getWeaponName(combatant))"
+                                                      x-text="'+' + getStatblock(combatant.sourceId)?.bab"></span>
                                                 <template x-if="getStatblock(combatant.sourceId)?.attacks > 1">
-                                                    <span x-text="'x' + getStatblock(combatant.sourceId)?.attacks"></span>
+                                                    <span class="attack-count rollable"
+                                                          @click.stop="$store.dice.rollMultipleAttacks(getStatblock(combatant.sourceId)?.attacks, getStatblock(combatant.sourceId)?.bab, getCombatantDisplayName(combatant), getWeaponName(combatant))"
+                                                          x-text="'x' + getStatblock(combatant.sourceId)?.attacks"></span>
                                                 </template>
-                                                <span x-text="'+' + getStatblock(combatant.sourceId)?.bab"></span>
-                                                <span class="dice" x-text="getNpcDamage(combatant)"></span>
+                                                <span class="attack-damage rollable"
+                                                      @click.stop="$store.dice.rollDamage(getNpcDamage(combatant), getCombatantDisplayName(combatant))"
+                                                      x-text="getNpcDamage(combatant)"></span>
                                             </span>
                                         </span>
                                     </template>
@@ -1059,7 +1079,9 @@
                             <!-- ML Column -->
                             <div class="combatant-ml">
                                 <template x-if="combatant.type === 'npc'">
-                                    <span x-text="getStatblock(combatant.sourceId)?.ml || '-'"></span>
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollMorale(getStatblock(combatant.sourceId)?.ml, getCombatantDisplayName(combatant))"
+                                          x-text="getStatblock(combatant.sourceId)?.ml || '-'"></span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
                                     <span>-</span>
@@ -1068,7 +1090,9 @@
                             <!-- Inst Column -->
                             <div class="combatant-inst">
                                 <template x-if="combatant.type === 'npc'">
-                                    <span x-text="getStatblock(combatant.sourceId)?.inst || '-'"></span>
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollInstinct(getStatblock(combatant.sourceId)?.inst, getCombatantDisplayName(combatant))"
+                                          x-text="getStatblock(combatant.sourceId)?.inst || '-'"></span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
                                     <span>-</span>
@@ -1077,7 +1101,9 @@
                             <!-- Skill Column -->
                             <div class="combatant-skill">
                                 <template x-if="combatant.type === 'npc'">
-                                    <span x-text="'+' + (getStatblock(combatant.sourceId)?.skl || 0)"></span>
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollSkill(getStatblock(combatant.sourceId)?.skl || 0, getCombatantDisplayName(combatant))"
+                                          x-text="'+' + (getStatblock(combatant.sourceId)?.skl || 0)"></span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
                                     <span>-</span>
@@ -1086,7 +1112,9 @@
                             <!-- Save Column -->
                             <div class="combatant-save">
                                 <template x-if="combatant.type === 'npc'">
-                                    <span x-text="(getStatblock(combatant.sourceId)?.sv || '-') + (getStatblock(combatant.sourceId)?.sv ? '+' : '')"></span>
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollSave(getStatblock(combatant.sourceId)?.sv, getCombatantDisplayName(combatant))"
+                                          x-text="(getStatblock(combatant.sourceId)?.sv || '-') + (getStatblock(combatant.sourceId)?.sv ? '+' : '')"></span>
                                 </template>
                                 <template x-if="combatant.type === 'pc'">
                                     <span>-</span>
