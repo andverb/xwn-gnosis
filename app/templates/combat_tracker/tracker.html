@@ -1719,11 +1719,17 @@
                     });
                 });
 
-                // Sort by initiative (highest first)
+                // Sort by initiative (highest first), PCs win ties
                 return items.sort((a, b) => {
                     const initA = a.initiative ?? -999;
                     const initB = b.initiative ?? -999;
-                    return initB - initA;
+                    if (initA !== initB) return initB - initA;
+                    // On tie, PCs go first
+                    const aHasPC = a.combatants.some(c => c.type === 'pc');
+                    const bHasPC = b.combatants.some(c => c.type === 'pc');
+                    if (aHasPC && !bHasPC) return -1;
+                    if (!aHasPC && bHasPC) return 1;
+                    return 0;
                 });
             },
 
@@ -2897,12 +2903,13 @@
             },
 
             getTurnOrder() {
-                // Sort all combatants by their effective initiative
-                return [...this.combatants].sort((a, b) => {
-                    const initA = this.getEffectiveInitiative(a) ?? -999;
-                    const initB = this.getEffectiveInitiative(b) ?? -999;
-                    return initB - initA;
+                // Derive turn order from visual order (sortedGroups) to ensure consistency
+                // This flattens groups so turn order matches top-to-bottom display
+                const order = [];
+                this.sortedGroups.forEach(item => {
+                    item.combatants.forEach(c => order.push(c));
                 });
+                return order;
             },
 
             getEffectiveInitiative(combatant) {
