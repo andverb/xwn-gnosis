@@ -1052,7 +1052,7 @@
                                                           x-text="'x' + combatant.attacks"></span>
                                                 </template>
                                                 <span class="attack-damage rollable"
-                                                      @click.stop="$store.dice.rollDamage(getNpcDamage(combatant), getCombatantDisplayName(combatant))"
+                                                      @click.stop="$store.dice.rollDamage(getNpcDamage(combatant), getCombatantDisplayName(combatant), getNpcShockValue(combatant))"
                                                       x-text="getNpcDamage(combatant)"></span>
                                             </span>
                                         </span>
@@ -1859,6 +1859,17 @@
                     // Check if shock override is enabled (applies to all AC)
                     const shockAC = combatant.shockOverride ? '-' : weapon.shock.ac;
                     return shockVal + '/' + shockAC;
+                }
+            },
+
+            getNpcShockValue(combatant) {
+                // Returns just the numeric shock damage value (for damage comparison)
+                if (combatant.damageMode === 'dice') {
+                    return combatant.shockValue || 0;
+                } else {
+                    const weapon = this.getWeapon(combatant.weaponId);
+                    if (!weapon?.shock) return 0;
+                    return weapon.shock.value + (combatant.dmgBonus || 0);
                 }
             },
 

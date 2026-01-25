@@ -136,20 +136,36 @@
                     return attacks;
                 },
 
-                rollDamage(notation, name = 'NPC') {
+                rollDamage(notation, name = 'NPC', shock = 0) {
                     const result = this.roll(notation);
                     // Parse notation to get base dice and modifier
                     const match = notation.match(/^(\d+d\d+)([+-]\d+)?$/i);
                     const diceBase = match ? match[1] : notation;
                     const modifier = match && match[2] ? parseInt(match[2]) : 0;
-                    this.displayResult(
-                        `${name} Damage`,
+
+                    // Check if shock is higher than rolled damage
+                    const useShock = shock > 0 && shock > result.total;
+                    const finalDamage = useShock ? shock : result.total;
+
+                    if (this.resultTimeout) clearTimeout(this.resultTimeout);
+
+                    this.lastRoll = {
+                        label: `${name} Damage`,
                         diceBase,
-                        result.rolls,
+                        rolls: result.rolls,
                         modifier,
-                        result.total
-                    );
-                    return result;
+                        total: result.total,
+                        useShock,
+                        shockValue: shock,
+                        finalDamage
+                    };
+                    this.showResult = true;
+
+                    this.resultTimeout = setTimeout(() => {
+                        this.showResult = false;
+                    }, 5000);
+
+                    return { ...result, finalDamage, useShock };
                 },
 
                 rollSkill(skill, name = 'NPC') {
@@ -194,7 +210,18 @@
                     <span class="dice-toast-dice" x-text="$store.dice?.lastRoll?.diceBase"></span><span class="dice-toast-rolls" x-text="'[' + ($store.dice?.lastRoll?.rolls?.join(', ') || '') + ']'"></span><span class="dice-toast-mod" x-show="$store.dice?.lastRoll?.modifier !== 0" x-text="$store.dice.formatMod($store.dice?.lastRoll?.modifier)"></span>
                 </span>
                 <span class="dice-toast-equals">=</span>
-                <span class="dice-toast-total" x-text="$store.dice?.lastRoll?.total"></span>
+                <!-- Show rolled total, struck through if shock is higher -->
+                <span class="dice-toast-total"
+                      :class="{ 'dice-toast-replaced': $store.dice?.lastRoll?.useShock }"
+                      x-text="$store.dice?.lastRoll?.total"></span>
+                <!-- Show shock replacement when applicable -->
+                <template x-if="$store.dice?.lastRoll?.useShock">
+                    <span class="dice-toast-shock">
+                        <span class="dice-toast-arrow">→</span>
+                        <span class="dice-toast-shock-value" x-text="$store.dice?.lastRoll?.shockValue"></span>
+                        <span class="dice-toast-shock-label">shock</span>
+                    </span>
+                </template>
                 <span class="dice-toast-status" x-show="$store.dice?.lastRoll?.status"
                       x-text="$store.dice?.lastRoll?.status === 'success' ? '✓' : '✗'"></span>
             </div>
@@ -282,6 +309,33 @@
 
     .dice-toast-total {
         color: var(--pico-color);
+    }
+
+    .dice-toast-replaced {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+
+    .dice-toast-shock {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 0.25rem;
+    }
+
+    .dice-toast-arrow {
+        color: var(--pico-primary);
+    }
+
+    .dice-toast-shock-value {
+        font-weight: bold;
+        color: var(--pico-primary);
+    }
+
+    .dice-toast-shock-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: var(--pico-muted-color);
     }
 
     .dice-toast-status {
