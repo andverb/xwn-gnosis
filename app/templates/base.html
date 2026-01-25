@@ -20,6 +20,16 @@
                 lastRoll: null,
                 showResult: false,
                 resultTimeout: null,
+                rollFlash: false,
+
+                // Trigger flash animation
+                triggerFlash() {
+                    this.rollFlash = false;
+                    // Small delay allows DOM to update before re-adding class
+                    setTimeout(() => {
+                        this.rollFlash = true;
+                    }, 10);
+                },
 
                 // Core dice rolling function
                 roll(notation) {
@@ -44,6 +54,7 @@
 
                     this.lastRoll = { label, diceBase, rolls, modifier, total, status };
                     this.showResult = true;
+                    this.triggerFlash();
 
                     this.resultTimeout = setTimeout(() => {
                         this.showResult = false;
@@ -127,6 +138,7 @@
                         modifier: bab
                     };
                     this.showResult = true;
+                    this.triggerFlash();
 
                     // Longer timeout for multiple attacks (2 extra seconds per attack)
                     this.resultTimeout = setTimeout(() => {
@@ -160,6 +172,7 @@
                         finalDamage
                     };
                     this.showResult = true;
+                    this.triggerFlash();
 
                     this.resultTimeout = setTimeout(() => {
                         this.showResult = false;
@@ -200,7 +213,8 @@
     <div class="dice-toast"
          :class="{
              'dice-toast-success': $store.dice?.lastRoll?.status === 'success',
-             'dice-toast-fail': $store.dice?.lastRoll?.status === 'fail'
+             'dice-toast-fail': $store.dice?.lastRoll?.status === 'fail',
+             'dice-toast-flash': $store.dice?.rollFlash
          }">
         <div class="dice-toast-label" x-text="$store.dice?.lastRoll?.label"></div>
         <!-- Single roll result -->
@@ -253,6 +267,15 @@
         padding: 0.75rem 1rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         min-width: 180px;
+    }
+
+    @keyframes dice-flash {
+        0% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .dice-toast-flash {
+        animation: dice-flash 0.3s ease-out;
     }
 
     .dice-toast-success {
