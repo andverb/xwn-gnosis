@@ -1,0 +1,973 @@
+{% extends "tools/base.html" %}
+
+{% block title %}Шпаргалка Зіткнень WWN - Гнозіс{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Alpine.js cloak */
+    [x-cloak] { display: none !important; }
+    /* Cheatsheet-specific styles */
+    .cheatsheet-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    @media (max-width: 1200px) {
+        .cheatsheet-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cheatsheet-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .cheatsheet-card {
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 1rem;
+    }
+
+    .cheatsheet-card h3 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--pico-primary);
+    }
+
+    .dice {
+        font-family: monospace;
+        font-weight: bold;
+        color: var(--pico-primary);
+        cursor: pointer;
+        padding: 0.1rem 0.4rem;
+        border-radius: 0.25rem;
+        transition: all 0.15s ease;
+    }
+
+    .dice:hover {
+        background-color: var(--pico-primary-focus);
+    }
+
+    .dice.rolled {
+        background-color: var(--pico-primary);
+        color: white;
+    }
+
+    .compact-table {
+        width: 100%;
+        font-size: 0.85rem;
+        border-collapse: collapse;
+        margin: 0.5rem 0;
+    }
+
+    .compact-table th,
+    .compact-table td {
+        padding: 0.3rem 0.5rem;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .compact-table th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .compact-table td:first-child {
+        font-weight: bold;
+        color: var(--pico-primary);
+        width: 3rem;
+        text-align: center;
+    }
+
+    .compact-table td:last-child {
+        color: var(--pico-muted-color);
+    }
+
+    .compact-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Turn Tracker */
+    .turn-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0.5rem;
+    }
+
+    .turn-table th,
+    .turn-table td {
+        padding: 0.25rem;
+        text-align: center;
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    .turn-table th {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        background: var(--pico-code-background-color);
+    }
+
+    .turn-table .row-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--pico-muted-color);
+        background: var(--pico-code-background-color);
+        width: 3rem;
+    }
+
+    .turn-table input[type="checkbox"] {
+        margin: 0;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .turn-legend {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+    }
+
+    .turn-table .reset-btn {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        font-size: 0.9rem;
+        line-height: 1;
+        margin: 0;
+        min-width: auto;
+    }
+
+    .time-costs {
+        font-size: 0.85rem;
+        color: var(--pico-muted-color);
+    }
+
+    .modifier-positive { color: #198754; font-weight: bold; }
+    .modifier-negative { color: #dc3545; font-weight: bold; }
+
+    .variant {
+        color: #6f42c1;
+        cursor: help;
+        border-bottom: 1px dotted #6f42c1;
+    }
+
+    [data-theme="dark"] .variant {
+        color: #b794f6;
+        border-bottom-color: #b794f6;
+    }
+
+    .action-item {
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .action-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .action-item h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1rem;
+    }
+
+    .action-item p, .action-item ul,
+    .cheatsheet-card > ul {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--pico-muted-color);
+    }
+
+    .action-item ul,
+    .cheatsheet-card > ul {
+        padding-left: 1.2rem;
+        margin-top: 0.25rem;
+    }
+
+    .action-item li,
+    .cheatsheet-card > ul > li {
+        margin-bottom: 0.25rem;
+    }
+
+    .formula-box {
+        background: var(--pico-code-background-color);
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        text-align: center;
+    }
+
+    .trigger-list {
+        font-size: 0.85rem;
+    }
+
+    .trigger-list li {
+        margin-bottom: 0.4rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid var(--pico-primary);
+    }
+
+    .instinct-table {
+        font-size: 0.85rem;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .instinct-table .inst-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3rem 0;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    .instinct-table .inst-row:last-child {
+        border-bottom: none;
+    }
+
+    .instinct-table .inst-score {
+        font-weight: bold;
+        color: var(--pico-primary);
+        min-width: 2rem;
+    }
+
+    .instinct-table .inst-desc {
+        color: var(--pico-muted-color);
+    }
+
+    /* Reaction table with color coding */
+    .reaction-table {
+        font-size: 0.85rem;
+        width: 100%;
+    }
+
+    .reaction-row {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.35rem 0.5rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .reaction-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .reaction-score {
+        font-weight: bold;
+        min-width: 2.5rem;
+    }
+
+    .reaction-hostile {
+        background: rgba(220, 53, 69, 0.2);
+    }
+
+    .reaction-unfriendly {
+        background: rgba(253, 126, 20, 0.15);
+    }
+
+    .reaction-neutral {
+        background: rgba(255, 193, 7, 0.15);
+    }
+
+    .reaction-friendly {
+        background: rgba(25, 135, 84, 0.15);
+    }
+
+    .reaction-helpful {
+        background: rgba(25, 135, 84, 0.25);
+    }
+
+    /* Light mode colors */
+    [data-theme="light"] .reaction-hostile { color: #dc3545; }
+    [data-theme="light"] .reaction-unfriendly { color: #d67212; }
+    [data-theme="light"] .reaction-neutral { color: #806600; }
+    [data-theme="light"] .reaction-friendly { color: #157347; }
+    [data-theme="light"] .reaction-helpful { color: #0f5132; }
+
+    /* Dark mode colors */
+    [data-theme="dark"] .reaction-hostile { color: #ff6b7a; }
+    [data-theme="dark"] .reaction-unfriendly { color: #ffa64d; }
+    [data-theme="dark"] .reaction-neutral { color: #ffda6a; }
+    [data-theme="dark"] .reaction-friendly { color: #5dd39e; }
+    [data-theme="dark"] .reaction-helpful { color: #75e8b0; }
+
+    /* Column span utilities */
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .span-2 {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 768px) {
+        .span-2 {
+            grid-column: span 1;
+        }
+    }
+
+    /* Calculator specific styles */
+    .calculator-sides {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .calculator-side {
+        background: var(--pico-code-background-color);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+    }
+
+    .calculator-side h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .side-foes h4 { color: #dc3545; }
+    .side-party h4 { color: #198754; }
+
+    .calculator-side .field-row {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .calculator-side .field-group {
+        flex: 1;
+        text-align: center;
+    }
+
+    .calculator-side input {
+        margin-bottom: 0;
+        padding: 0.4rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .calculator-side .field-label {
+        font-size: 0.7rem;
+        color: var(--pico-muted-color);
+        display: block;
+        margin-top: 0.2rem;
+    }
+
+    .calculator-result {
+        background: var(--pico-code-background-color);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
+    .calculator-result .scores {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .calculator-result .score-box {
+        text-align: center;
+    }
+
+    .calculator-result .score-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--pico-primary);
+    }
+
+    .calculator-result .score-label {
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+    }
+
+    .calculator-result .verdict {
+        font-weight: bold;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        margin-top: 0.5rem;
+    }
+
+    .verdict-rout { background: #dc3545; color: white; }
+    .verdict-deadly { background: #fd7e14; color: white; }
+    .verdict-hard { background: #ffc107; color: #212529; }
+    .verdict-fair { background: #198754; color: white; }
+    .verdict-easy { background: #0d6efd; color: white; }
+
+    .challenge-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+    }
+
+    .challenge-legend .legend-item {
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+    }
+
+    .back-link {
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<hgroup style="text-align: center; margin-bottom: 2rem;">
+    <h1>Шпаргалка Зіткнень WWN</h1>
+</hgroup>
+
+<div class="cheatsheet-grid">
+
+    <!-- Ruin Turns & Encounters -->
+    <article class="cheatsheet-card" x-data="turnTracker">
+        <h3>Ходи & Зіткнення</h3>
+
+        <table class="turn-table">
+            <thead>
+                <tr>
+                    <th><button class="reset-btn" @click="turns = 0" title="Скинути">↺</button></th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns < 6" x-text="time"></span>
+                        <span x-show="turns >= 6">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i">
+                        <td><input type="checkbox" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
+                        <span x-show="turns >= 12">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 6">
+                        <td><input type="checkbox" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
+                        <span x-show="turns >= 18">🔥</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 12">
+                        <td><input type="checkbox" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="row-label">
+                        <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
+                        <span x-show="turns >= 24">🔥🏮</span>
+                    </td>
+                    <template x-for="i in 6" :key="i + 18">
+                        <td><input type="checkbox" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
+                    </template>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="turn-legend">
+            <span>🔥 смолоскип (6 ходів )</span>
+            <span>🏮 ліхтар (24 ходи )</span>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.75rem 0;">
+            Кожен хід ≈ 10 хвилин. <strong>1 хід:</strong> рух між кімнатами, злом замка, знешкодження пастки, бій, перша допомога & обшук, обшук кімнати, переговори, імпровізований ремонт.
+        </p>
+
+        <div class="action-item">
+            <h4>Перевірка Зіткнення</h4>
+            <p>Кидок <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к6</span>. Зіткнення на 1 (або 1-2 в небезпечних зонах). Відстань: кімната = вхід, коридор = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к8</span> × 10 футів.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Частота Перевірок</h4>
+            <table class="compact-table">
+                <thead>
+                    <tr><th>Ходів</th><th>Тип Локації</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Місце в стані тривоги, організована оборона</td></tr>
+                    <tr><td>2</td><td>Спокійне місце, організована оборона</td></tr>
+                    <tr><td>3</td><td>Без організованої або активної оборони</td></tr>
+                    <tr><td>4</td><td>Дуже мало мобільних мешканців</td></tr>
+                    <tr><td>6</td><td>Покинуте або занедбане місце</td></tr>
+                    <tr><td>—</td><td>Прихована кімната, невідома місцевим</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- Reaction Rolls -->
+    <article class="cheatsheet-card">
+        <h3>Кидки на Реакцію</h3>
+
+        <div class="action-item">
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">2к6</span> + мод. ХАР
+                (якщо ПГ можуть привітатись)
+            </div>
+            <p>Кидайте для кожної зустрічі, окрім випадків неминучого кровопролиття. Дайте ПГ зрозуміти результат до їхніх дій.</p>
+        </div>
+
+        <div class="action-item">
+            <div class="reaction-table">
+                <div class="reaction-row reaction-hostile">
+                    <span class="reaction-score">2-</span>
+                    <span class="reaction-desc">Максимально ворожа</span>
+                </div>
+                <div class="reaction-row reaction-unfriendly">
+                    <span class="reaction-score">3-5</span>
+                    <span class="reaction-desc">Більш ворожа, ніж очікувалось</span>
+                </div>
+                <div class="reaction-row reaction-neutral">
+                    <span class="reaction-score">6-8</span>
+                    <span class="reaction-desc">Передбачувано ворожа або дружня</span>
+                </div>
+                <div class="reaction-row reaction-friendly">
+                    <span class="reaction-score">9-11</span>
+                    <span class="reaction-desc">Більш дружня, ніж очікувалось</span>
+                </div>
+                <div class="reaction-row reaction-helpful">
+                    <span class="reaction-score">12+</span>
+                    <span class="reaction-desc">Максимально дружня, готові допомагати</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-item">
+            <h4>Мирні Реакції</h4>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">Що означає "дружня" реакція для ворожих груп:</p>
+            <ul>
+                <li><strong>Вимагають хабар</strong> - Гроші, спорядження, їжа, похвала; можливий торг</li>
+                <li><strong>Відступають</strong> - Тримають дистанцію, пропускають групу; можуть донести пізніше</li>
+                <li><strong>Просять про послугу</strong> - Вбити ворога, виконати завдання; за це ігнорують ПГ</li>
+                <li><strong>Пропонують данину</strong> - Багатство, інформація, послуги, щоб їх залишили в спокої</li>
+                <li><strong>Охоче спілкуються</strong> - Самотні, переплутали з кимось знайомим, або просто балакучі</li>
+            </ul>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--pico-muted-color);">
+            <strong>Пам'ятайте:</strong> Кидки на реакцію - лише початок. Розумні слова, дарунки або образи можуть змінити ставлення.
+        </p>
+    </article>
+
+    <!-- Surprise & Initiative -->
+    <article class="cheatsheet-card">
+        <h3>Засідки & Ініціатива</h3>
+
+        <div class="action-item">
+            <h4>Несподіванка</h4>
+            <p>Якщо ГМ вирішує, що несподіванка можлива, кидок <strong>МУД/УВАГА</strong> проти <strong>СПР/СКРАДАННЯ</strong>. Якщо атакуючі перемагають, вони діють повний раунд перед кидком ініціативи.</p>
+            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Засідка може спровокувати перевірку Моралі у невійськових або недисциплінованих цілей (на розсуд ГМ).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Ініціатива</h4>
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к8</span> + найвищий мод. СПР <span class="variant" data-tooltip="Варіант правила">(або ІНТ)</span>
+            </div>
+            <p>Кожна сторона кидає. Переможці діють першими у будь-якому порядку, потім інша сторона. НІПи зазвичай без модифікаторів, якщо не швидкі. ПГ перемагають у нічиїх.</p>
+            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-top: 0.5rem;"><span class="variant" data-tooltip="Варіант індивідуальної ініціативи">Варіант:</span> Кожен учасник кидає власну ініціативу та діє по порядку.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Втеча & Порятунок</h4>
+            <p>Якщо вороги переслідують (багато не роблять цього), втікач із найкращою <strong>СПР/АТЛЕТИКА</strong> кидає проти найшвидшого переслідувача. Успіх = ~1 хід до безпеки.</p>
+            <div class="instinct-table" style="margin-top: 0.5rem;">
+                <div class="inst-row">
+                    <span class="inst-desc">Втікачів більше, ніж переслідувачів</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Хороший план втечі</span>
+                    <span class="inst-score modifier-positive">+1</span>
+                </div>
+                <div class="inst-row">
+                    <span class="inst-desc">Сповільнені найповільнішим членом</span>
+                    <span class="inst-score modifier-negative">-2</span>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Challenge Calculator -->
+    <article class="cheatsheet-card">
+        <h3>Розрахунок Складності</h3>
+
+        <form id="challenge-form"
+              hx-post="{% url 'tools:calculate_challenge' %}"
+              hx-target="#calculator-result"
+              hx-trigger="load, input delay:150ms, submit"
+              hx-swap="innerHTML"
+              hx-headers='{"Accept-Language": "uk"}'
+              autocomplete="off">
+            <input type="hidden" name="lang" value="uk">
+            <div class="calculator-sides">
+                <div class="calculator-side side-foes">
+                    <h4>Вороги</h4>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <input type="number" id="total_hd" name="total_hd" min="1" value="1">
+                            <span class="field-label">КХ (сумма)</span>
+                        </div>
+                        <div class="field-group">
+                            <input type="number" id="total_attacks" name="total_attacks" min="1" value="1">
+                            <span class="field-label">Атаки (сумма)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="calculator-side side-party">
+                    <h4>Група</h4>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <input type="number" id="num_pcs" name="num_pcs" min="1" value="4">
+                            <span class="field-label">К-сть ПГ</span>
+                        </div>
+                        <div class="field-group">
+                            <input type="number" id="total_pc_levels" name="total_pc_levels" min="1" value="4">
+                            <span class="field-label">Рівні (сумма)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div id="calculator-result">
+            {% include "tools/wwn/partials/_challenge_result_uk.html" %}
+        </div>
+
+        <div class="challenge-legend">
+            <span class="legend-item verdict-rout">&gt;4× Розгром</span>
+            <span class="legend-item verdict-deadly">~2× Смертельно</span>
+            <span class="legend-item verdict-hard">&gt;1× Важко</span>
+            <span class="legend-item verdict-fair">≤1× Справедливо</span>
+            <span class="legend-item verdict-easy">&lt;½× Легко</span>
+        </div>
+    </article>
+
+    <script>
+    (function() {
+        const hdInput = document.getElementById('total_hd');
+        const attacksInput = document.getElementById('total_attacks');
+        const pcsInput = document.getElementById('num_pcs');
+        const levelsInput = document.getElementById('total_pc_levels');
+
+        // Foes: HD up → attacks bumps up; attacks down → HD drops
+        hdInput.addEventListener('input', function() {
+            const hd = parseInt(this.value) || 1;
+            const attacks = parseInt(attacksInput.value) || 1;
+            if (attacks < hd) attacksInput.value = hd;
+        });
+
+        attacksInput.addEventListener('input', function() {
+            const hd = parseInt(hdInput.value) || 1;
+            const attacks = parseInt(this.value) || 1;
+            if (attacks < hd) hdInput.value = attacks;
+        });
+
+        // Party: PCs up → levels bumps up; levels down → PCs drops
+        pcsInput.addEventListener('input', function() {
+            const pcs = parseInt(this.value) || 1;
+            const levels = parseInt(levelsInput.value) || 1;
+            if (levels < pcs) levelsInput.value = pcs;
+        });
+
+        levelsInput.addEventListener('input', function() {
+            const pcs = parseInt(pcsInput.value) || 1;
+            const levels = parseInt(this.value) || 1;
+            if (levels < pcs) pcsInput.value = levels;
+        });
+    })();
+    </script>
+
+    <!-- Morale Checks -->
+    <article class="cheatsheet-card">
+        <h3>Перевірки Моралі</h3>
+
+        <div class="action-item">
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">2к6</span> &gt; Мораль = <span class="modifier-negative">Провал</span>
+            </div>
+            <p>При провалі: НІП відступає, здається або намагається втекти.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Коли Кидати</h4>
+            <ul class="trigger-list">
+                <li><strong>Перша втрата</strong> - Коли першого члена групи вбито або виведено з бою</li>
+                <li><strong>Програють</strong> - Група починає очевидно програвати або шанси на перемогу зменшуються</li>
+                <li><strong>Жах</strong> - Стикаються з жахливою магією, страхітливою різаниною або значно сильнішим ворогом</li>
+                <li><strong>Цивільні</strong> - Цивільні вперше стикаються з реальною фізичною загрозою</li>
+                <li><strong>Засідка</strong> - Недисципліновані цілі можуть перевіряти при несподіваній засідці (на розсуд ГМ)</li>
+            </ul>
+        </div>
+
+        <div class="action-item">
+            <h4>Наслідки Провалу</h4>
+            <ul>
+                <li><strong>Цивільні:</strong> Божевільна втеча, кидають все</li>
+                <li><strong>Треновані бійці:</strong> Бойовий відступ, намагаються втекти з товаришами</li>
+                <li><strong>Якщо втеча неможлива:</strong> Здаються, впадають у відчай, або б'ються з люттю</li>
+            </ul>
+        </div>
+
+        <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
+            <strong>Типова Мораль:</strong> 2-5 боягузи, 6-7 звичайні, 8-9 хоробрі, 10-11 безстрашні, 12 незламні. ПГ ніколи не кидають Мораль.
+        </p>
+    </article>
+
+    <!-- Instinct Checks -->
+    <article class="cheatsheet-card">
+        <h3>Перевірки Інстинкту</h3>
+
+        <div class="action-item">
+            <div class="formula-box">
+                <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1к10</span> &le; Інстинкт = <span class="modifier-negative">Провал</span>
+            </div>
+            <p>При провалі: НІП діє імпульсивно, короткозоро, інстинктивно.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>Коли Кидати</h4>
+            <ul class="trigger-list">
+                <li><strong>Раунд 2+</strong> - Другий раунд бою для недисциплінованих бійців</li>
+                <li><strong>Після Моралі</strong> - Істота щойно робила перевірку Моралі</li>
+                <li><strong>Збентеження</strong> - Ворог зробив щось заплутане або дезорієнтуюче</li>
+                <li><strong>Провокація</strong> - Ворог розлютив або безпосередньо залякав істоту</li>
+                <li><strong>Спокуса</strong> - Представлено щось бажане (їжа, гроші тощо)</li>
+            </ul>
+        </div>
+
+        <div class="action-item">
+            <h4>Приклади Провалу</h4>
+            <ul>
+                <li>Сліпо атакує неоптимальні цілі</li>
+                <li>Використовує беззбройні атаки замість зброї в руці</li>
+                <li>Спрямовує закляття/постріли на менш важливі цілі</li>
+                <li>Женеться за кинутою приманкою замість бою</li>
+            </ul>
+        </div>
+
+        <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
+            <strong>Типовий Інстинкт:</strong> 5+ звірі/цивільні, 3-4 ветерани, 1-2 загартовані, 0 найхолоднокровніші вбивці. ПГ ніколи не кидають Інстинкт. Опціонально.
+        </p>
+    </article>
+
+    <!-- Running NPC Combat & Fleeing -->
+    <article class="cheatsheet-card">
+        <h3>Керування НІПами</h3>
+
+        <div class="action-item">
+            <h4>Поради для Бою НІПів</h4>
+            <ul>
+                <li>НІПи не б'ються до смерті, якщо не змушені</li>
+                <li>Перевіряйте Мораль, коли справи йдуть погано</li>
+                <li>Перевіряйте Інстинкт при збентеженні або провокації</li>
+                <li>Дозволяйте НІПам робити тактичні помилки - вони не ідеальні</li>
+                <li>Після провалу Моралі сторона не битиметься з тими ж ворогами, доки ситуація не зміниться</li>
+            </ul>
+        </div>
+
+        <div class="action-item">
+            <h4>Поради для ГМ</h4>
+            <ul>
+                <li>Будьте поблажливі щодо втечі ПГ</li>
+                <li>Більшість переслідувачів не будуть невпинно наполегливими</li>
+                <li>Втеча - життєздатний варіант, а не привід померти втомленими</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- Chases -->
+    <article class="cheatsheet-card span-2">
+        <h3>Погоні & Переслідування</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <!-- Foot Chase -->
+            <div>
+                <h4 style="margin-top: 0;">Пішки</h4>
+                <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
+                    <li><strong>Темп втечі:</strong> Найкращий СПР/АТЛЕТИКА або СТА/АТЛЕТИКА у групі втікачів = <strong>Темп</strong></li>
+                    <li><strong>Помічники:</strong> Інші втікачі заважають переслідуванню (перевірка навички або рішення ГМ). Успіх = <span class="modifier-positive">+1</span> до Темпу кожен, макс <span class="modifier-positive">+3</span></li>
+                    <li><strong>Переслідувачі кидають:</strong> Один кидок СПР/АТЛЕТИКА або СТА/АТЛЕТИКА з модифікаторами</li>
+                    <li><strong>Результат:</strong> Перевищує Темп = <span class="modifier-negative">спіймано</span>. Рівно або менше = <span class="modifier-positive">втекли</span></li>
+                </ol>
+
+                <h4 style="margin-top: 0.75rem;">Модифікатори Темпу Пішки</h4>
+                <div class="instinct-table">
+                    <div class="inst-row">
+                        <span class="inst-desc">Без фори взагалі</span>
+                        <span class="inst-score">+2</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Один раунд фори</span>
+                        <span class="inst-score">+1</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">&lt;1 хв фори</span>
+                        <span class="inst-score">+0</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">&gt;1 хв фори</span>
+                        <span class="inst-score">-2</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Переслідувачів більше</span>
+                        <span class="inst-score">-1</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Знання місцевості</span>
+                        <span class="inst-score">-2 до +2</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Млявість / Лють</span>
+                        <span class="inst-score">-1 / +1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mounted Chase -->
+            <div>
+                <h4 style="margin-top: 0;">Верхи</h4>
+                <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
+                    <li><strong>Темп втечі:</strong> Втікач кидає СПР/ЇЗДА = <strong>Темп</strong></li>
+                    <li><strong>Кожен переслідувач кидає:</strong> СПР/ЇЗДА з модифікаторами</li>
+                    <li><strong>Результат:</strong> Рівно або більше Темпу = <span class="modifier-negative">наздогнав</span>. Менше = <span class="modifier-positive">відстав & загубив</span></li>
+                </ol>
+                <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.5rem 0;">
+                    <strong>Примітка:</strong> Пішоходи не можуть наздогнати верхових у короткочасних погонях.
+                </p>
+
+                <h4 style="margin-top: 0.75rem;">Модифікатори Темпу Верхи</h4>
+                <div class="instinct-table">
+                    <div class="inst-row">
+                        <span class="inst-desc">Не бачить втікача напряму</span>
+                        <span class="inst-score">-2</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Переслідувач летить, втікач ні</span>
+                        <span class="inst-score">+3</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Втікач летить, переслідувач ні</span>
+                        <span class="inst-score">-3</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Спостерігач передає позицію</span>
+                        <span class="inst-score">+1</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Знання місцевості</span>
+                        <span class="inst-score">-2 до +2</span>
+                    </div>
+                    <div class="inst-row">
+                        <span class="inst-desc">Млявість / Лють</span>
+                        <span class="inst-score">-1 / +1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+</div>
+
+<footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
+    <small>WWN від Кевіна Кроуфорда. Зміст шпаргалки зібрано для швидкого довідника.</small>
+</footer>
+
+<!-- Alpine.js + Simple Dice Roller -->
+<script>
+    // Simple dice roller - supports notation like "2d6", "1d8+2", "3d6-1"
+    function rollDice(notation) {
+        const match = notation.match(/^(\d+)?[dкк](\d+)([+-]\d+)?$/i);
+        if (!match) return null;
+        const count = parseInt(match[1]) || 1;
+        const sides = parseInt(match[2]);
+        const modifier = parseInt(match[3]) || 0;
+        const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+        return { total: rolls.reduce((a, b) => a + b, 0) + modifier, rolls };
+    }
+
+    // Register Alpine components BEFORE Alpine loads
+    document.addEventListener('alpine:init', () => {
+        // Turn tracker component
+        Alpine.data('turnTracker', () => ({
+            turns: 0,
+            get time() {
+                const mins = this.turns * 10;
+                const h = Math.floor(mins / 60);
+                const m = mins % 60;
+                if (h > 0 && m > 0) return `${h}г${m}хв`;
+                if (h > 0) return `${h}г`;
+                if (m > 0) return `${m}хв`;
+                return '';
+            }
+        }));
+
+        // Rollable dice component
+        Alpine.data('rollable', () => ({
+            notation: '',
+            displayText: '',
+            rolled: false,
+            timeout: null,
+            clickHandler: null,
+
+            init() {
+                this.notation = this.$el.dataset.notation || this.$el.textContent.trim();
+                this.displayText = this.notation;
+            },
+
+            roll() {
+                this.reset();
+                const r = rollDice(this.notation);
+                if (r) {
+                    this.displayText = `${r.total} [${r.rolls.join(',')}]`;
+                    this.rolled = true;
+
+                    // Reset after 3 seconds
+                    this.timeout = setTimeout(() => this.reset(), 3000);
+
+                    // Reset on click anywhere else
+                    this.clickHandler = (e) => {
+                        if (e.target !== this.$el) this.reset();
+                    };
+                    setTimeout(() => document.addEventListener('click', this.clickHandler, { once: true }), 10);
+                }
+            },
+
+            reset() {
+                if (this.timeout) clearTimeout(this.timeout);
+                if (this.clickHandler) document.removeEventListener('click', this.clickHandler);
+                this.displayText = this.notation;
+                this.rolled = false;
+                this.timeout = null;
+                this.clickHandler = null;
+            }
+        }));
+    });
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+{% endblock %}

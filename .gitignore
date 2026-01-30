@@ -41,6 +41,9 @@ Thumbs.db
 srd_data
 *.sql
 
+# Django generated files
+xwn_gnosis_django/staticfiles/
+
 # Development notes
 CLAUDE.md
 

@@ -1,0 +1,446 @@
+{% load static django_htmx %}
+<!DOCTYPE html>
+<html lang="{{ current_lang|default:"en" }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+    <!-- htmx (vendored by django-htmx, includes debug extension for error visibility) -->
+    {% htmx_script %}
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+    <script>
+        // Alpine Dice Store - available globally
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('dice', {
+                // Last roll result for display
+                lastRoll: null,
+                showResult: false,
+                resultTimeout: null,
+                rollFlash: false,
+
+                // Trigger flash animation
+                triggerFlash() {
+                    this.rollFlash = false;
+                    // Small delay allows DOM to update before re-adding class
+                    setTimeout(() => {
+                        this.rollFlash = true;
+                    }, 10);
+                },
+
+                // Core dice rolling function
+                roll(notation) {
+                    const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
+                    if (!match) return null;
+                    const count = parseInt(match[1]) || 1;
+                    const sides = parseInt(match[2]);
+                    const modifier = parseInt(match[3]) || 0;
+
+                    const rolls = [];
+                    for (let i = 0; i < count; i++) {
+                        rolls.push(Math.floor(Math.random() * sides) + 1);
+                    }
+                    const sum = rolls.reduce((a, b) => a + b, 0);
+                    return { rolls, modifier, total: sum + modifier };
+                },
+
+                // Display roll result toast
+                // diceBase: "1d20", rolls: [6], modifier: 7, total: 13
+                displayResult(label, diceBase, rolls, modifier, total, status = null) {
+                    if (this.resultTimeout) clearTimeout(this.resultTimeout);
+
+                    this.lastRoll = { label, diceBase, rolls, modifier, total, status };
+                    this.showResult = true;
+                    this.triggerFlash();
+
+                    this.resultTimeout = setTimeout(() => {
+                        this.showResult = false;
+                    }, 5000);
+                },
+
+                // Format modifier for display (+7, -2, or empty for 0)
+                formatMod(mod) {
+                    if (mod === 0) return '';
+                    return mod > 0 ? `+${mod}` : `${mod}`;
+                },
+
+                // Roll types with pass/fail logic
+                rollMorale(ml, name = 'NPC') {
+                    const result = this.roll('2d6');
+                    const success = result.total <= ml;
+                    this.displayResult(
+                        `${name} Morale (≤${ml})`,
+                        '2d6',
+                        result.rolls,
+                        0,
+                        result.total,
+                        success ? 'success' : 'fail'
+                    );
+                    return { ...result, success };
+                },
+
+                rollInstinct(inst, name = 'NPC') {
+                    const result = this.roll('1d10');
+                    const success = result.total > inst;
+                    this.displayResult(
+                        `${name} Instinct (>${inst})`,
+                        '1d10',
+                        result.rolls,
+                        0,
+                        result.total,
+                        success ? 'success' : 'fail'
+                    );
+                    return { ...result, success };
+                },
+
+                rollSave(save, name = 'NPC') {
+                    const result = this.roll('1d20');
+                    const success = result.total >= save;
+                    this.displayResult(
+                        `${name} Save (≥${save})`,
+                        '1d20',
+                        result.rolls,
+                        0,
+                        result.total,
+                        success ? 'success' : 'fail'
+                    );
+                    return { ...result, success };
+                },
+
+                rollAttack(bab, name = 'NPC', weaponName = 'Attack') {
+                    const result = this.roll('1d20');
+                    const total = result.total + bab;
+                    this.displayResult(
+                        `${name} ${weaponName}`,
+                        '1d20',
+                        result.rolls,
+                        bab,
+                        total
+                    );
+                    return { ...result, total };
+                },
+
+                rollMultipleAttacks(count, bab, name = 'NPC', weaponName = 'Attack') {
+                    const attacks = [];
+                    for (let i = 0; i < count; i++) {
+                        const roll = Math.floor(Math.random() * 20) + 1;
+                        attacks.push({ roll, total: roll + bab });
+                    }
+
+                    if (this.resultTimeout) clearTimeout(this.resultTimeout);
+
+                    this.lastRoll = {
+                        label: `${name} ${weaponName} x${count}`,
+                        multipleAttacks: attacks,
+                        modifier: bab
+                    };
+                    this.showResult = true;
+                    this.triggerFlash();
+
+                    // Longer timeout for multiple attacks (2 extra seconds per attack)
+                    this.resultTimeout = setTimeout(() => {
+                        this.showResult = false;
+                    }, 5000 + (count * 2000));
+
+                    return attacks;
+                },
+
+                rollDamage(notation, name = 'NPC', shock = 0) {
+                    const result = this.roll(notation);
+                    // Parse notation to get base dice and modifier
+                    const match = notation.match(/^(\d+d\d+)([+-]\d+)?$/i);
+                    const diceBase = match ? match[1] : notation;
+                    const modifier = match && match[2] ? parseInt(match[2]) : 0;
+
+                    // Check if shock is higher than rolled damage
+                    const useShock = shock > 0 && shock > result.total;
+                    const finalDamage = useShock ? shock : result.total;
+
+                    if (this.resultTimeout) clearTimeout(this.resultTimeout);
+
+                    this.lastRoll = {
+                        label: `${name} Damage`,
+                        diceBase,
+                        rolls: result.rolls,
+                        modifier,
+                        total: result.total,
+                        useShock,
+                        shockValue: shock,
+                        finalDamage
+                    };
+                    this.showResult = true;
+                    this.triggerFlash();
+
+                    this.resultTimeout = setTimeout(() => {
+                        this.showResult = false;
+                    }, 5000);
+
+                    return { ...result, finalDamage, useShock };
+                },
+
+                rollSkill(skill, name = 'NPC') {
+                    const result = this.roll('2d6');
+                    const total = result.total + skill;
+                    this.displayResult(
+                        `${name} Skill`,
+                        '2d6',
+                        result.rolls,
+                        skill,
+                        total
+                    );
+                    return { ...result, total };
+                }
+            });
+        });
+    </script>
+    <title>{% block title %}Gnosis - xWN Rules Database{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="dark" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+<!-- Dice Roll Result Toast -->
+<div x-data x-show="$store.dice?.showResult" x-cloak
+     style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999;"
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0 transform translate-y-2"
+     x-transition:enter-end="opacity-100 transform translate-y-0"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+    <div class="dice-toast"
+         :class="{
+             'dice-toast-success': $store.dice?.lastRoll?.status === 'success',
+             'dice-toast-fail': $store.dice?.lastRoll?.status === 'fail',
+             'dice-toast-flash': $store.dice?.rollFlash
+         }">
+        <div class="dice-toast-label" x-text="$store.dice?.lastRoll?.label"></div>
+        <!-- Single roll result -->
+        <template x-if="!$store.dice?.lastRoll?.multipleAttacks">
+            <div class="dice-toast-result">
+                <span class="dice-toast-formula">
+                    <span class="dice-toast-dice" x-text="$store.dice?.lastRoll?.diceBase"></span><span class="dice-toast-rolls" x-text="'[' + ($store.dice?.lastRoll?.rolls?.join(', ') || '') + ']'"></span><span class="dice-toast-mod" x-show="$store.dice?.lastRoll?.modifier !== 0" x-text="$store.dice.formatMod($store.dice?.lastRoll?.modifier)"></span>
+                </span>
+                <span class="dice-toast-equals">=</span>
+                <!-- Show rolled total, struck through if shock is higher -->
+                <span class="dice-toast-total"
+                      :class="{ 'dice-toast-replaced': $store.dice?.lastRoll?.useShock }"
+                      x-text="$store.dice?.lastRoll?.total"></span>
+                <!-- Show shock replacement when applicable -->
+                <template x-if="$store.dice?.lastRoll?.useShock">
+                    <span class="dice-toast-shock">
+                        <span class="dice-toast-arrow">→</span>
+                        <span class="dice-toast-shock-value" x-text="$store.dice?.lastRoll?.shockValue"></span>
+                        <span class="dice-toast-shock-label">shock</span>
+                    </span>
+                </template>
+                <span class="dice-toast-status" x-show="$store.dice?.lastRoll?.status"
+                      x-text="$store.dice?.lastRoll?.status === 'success' ? '✓' : '✗'"></span>
+            </div>
+        </template>
+        <!-- Multiple attack rolls -->
+        <template x-if="$store.dice?.lastRoll?.multipleAttacks">
+            <div class="dice-toast-multi">
+                <template x-for="(attack, index) in $store.dice?.lastRoll?.multipleAttacks" :key="index">
+                    <div class="dice-toast-result">
+                        <span class="dice-toast-formula">
+                            <span class="dice-toast-dice">1d20</span><span class="dice-toast-rolls" x-text="'[' + attack.roll + ']'"></span><span class="dice-toast-mod" x-show="$store.dice?.lastRoll?.modifier !== 0" x-text="$store.dice.formatMod($store.dice?.lastRoll?.modifier)"></span>
+                        </span>
+                        <span class="dice-toast-equals">=</span>
+                        <span class="dice-toast-total" x-text="attack.total"></span>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+
+    .dice-toast {
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 0.75rem 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        min-width: 180px;
+    }
+
+    @keyframes dice-flash {
+        0% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .dice-toast-flash {
+        animation: dice-flash 0.3s ease-out;
+    }
+
+    .dice-toast-success {
+        border-color: #28a745;
+        background: linear-gradient(135deg, var(--pico-card-background-color) 0%, rgba(40, 167, 69, 0.1) 100%);
+    }
+
+    .dice-toast-fail {
+        border-color: #dc3545;
+        background: linear-gradient(135deg, var(--pico-card-background-color) 0%, rgba(220, 53, 69, 0.1) 100%);
+    }
+
+    .dice-toast-label {
+        font-size: 0.75rem;
+        color: var(--pico-muted-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .dice-toast-result {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .dice-toast-multi {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .dice-toast-formula {
+        display: inline;
+    }
+
+    .dice-toast-dice {
+        color: var(--pico-color);
+    }
+
+    .dice-toast-rolls {
+        color: var(--pico-primary);
+        margin: 0 0.15rem;
+    }
+
+    .dice-toast-mod {
+        color: var(--pico-muted-color);
+    }
+
+    .dice-toast-equals {
+        color: var(--pico-muted-color);
+        font-weight: normal;
+    }
+
+    .dice-toast-total {
+        color: var(--pico-color);
+    }
+
+    .dice-toast-replaced {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+
+    .dice-toast-shock {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 0.25rem;
+    }
+
+    .dice-toast-arrow {
+        color: var(--pico-primary);
+    }
+
+    .dice-toast-shock-value {
+        font-weight: bold;
+        color: var(--pico-primary);
+    }
+
+    .dice-toast-shock-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: var(--pico-muted-color);
+    }
+
+    .dice-toast-status {
+        font-size: 1.2rem;
+    }
+
+    .dice-toast-success .dice-toast-status {
+        color: #28a745;
+    }
+
+    .dice-toast-fail .dice-toast-status {
+        color: #dc3545;
+    }
+
+    /* Rollable stat styling */
+    .rollable {
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 2px;
+    }
+
+    .rollable:hover {
+        color: var(--pico-primary);
+    }
+</style>
+
+<!-- Main content -->
+<main class="container">
+    <nav>
+        <ul>
+            <li><a href="{% url 'tools:combat_cheatsheet' %}">WWN Combat</a></li>
+            <li><a href="{% url 'tools:encounter_cheatsheet' %}">WWN Encounter</a></li>
+            <li><a href="{% url 'tools:combat_tracker' %}">Combat Tracker</a></li>
+        </ul>
+        <ul>
+            <li>
+                <a href="{% url 'tools:home' %}" style="text-decoration: none; color: inherit;">
+                    <hgroup style="text-align: center;">
+                        <h2>Welcome to Gnosis</h2>
+                        <p>Database of rules for xWN systems</p>
+                    </hgroup>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <button data-placement="left" data-tooltip="Made by John from DMK | xWN systems by Kevin Crawford">❓
+                </button>
+            </li>
+            <li>
+                <button data-placement="left"
+                        data-tooltip="Switch language"
+                        hx-get="{% url 'tools:set_language' lang=other_lang %}"
+                        hx-swap="none"
+                        hx-on::after-request="sessionStorage.clear(); localStorage.removeItem('htmx-cache'); window.location.reload(true);">
+                    {% if current_lang == "en" %}🇺🇦{% else %}🇬🇧{% endif %}
+                </button>
+            </li>
+            <li>
+                <button data-placement="left" id="theme-toggle" data-tooltip="Toggle theme">🌓</button>
+            </li>
+        </ul>
+    </nav>
+    {% block content %}{% endblock %}
+</main>
+
+{% block extra_scripts %}
+<script>
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+</script>
+
+{% endblock %}
+</body>
+</html>
