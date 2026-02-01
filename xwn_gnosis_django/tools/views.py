@@ -1,11 +1,14 @@
 """
 Django views for GM tools (cheatsheets, combat tracker).
+
+All views are async for better concurrency under load.
 """
 
 import json
 from functools import lru_cache
 from pathlib import Path
 
+import aiofiles
 import markdown
 from django.conf import settings
 from django.http import HttpResponse
@@ -44,7 +47,7 @@ def get_weapons_data() -> dict:
         return json.load(f)
 
 
-def combat_cheatsheet(request):
+async def combat_cheatsheet(request):
     """
     WWN Combat Cheatsheet view.
 
@@ -71,7 +74,7 @@ def combat_cheatsheet(request):
     )
 
 
-def encounter_cheatsheet(request):
+async def encounter_cheatsheet(request):
     """Encounter Cheatsheet - morale, instinct, challenge calculator."""
     current_lang = get_language(request)
     template = (
@@ -88,7 +91,7 @@ def encounter_cheatsheet(request):
 
 
 @require_POST  # This view ONLY accepts POST requests (htmx form submission)
-def calculate_challenge(request):
+async def calculate_challenge(request):
     """
     Calculate encounter challenge rating.
 
@@ -177,7 +180,7 @@ def calculate_challenge(request):
     )
 
 
-def combat_tracker(request):
+async def combat_tracker(request):
     """
     WWN Combat Tracker - initiative and HP tracking.
 
@@ -205,7 +208,7 @@ def combat_tracker(request):
     )
 
 
-def set_language(request, lang):
+async def set_language(request, lang):
     """
     Set language cookie and redirect back.
 
@@ -223,7 +226,7 @@ def set_language(request, lang):
     return response
 
 
-def health_check(request):
+async def health_check(request):
     """
     Simple health check endpoint for deployment monitoring.
 
@@ -355,7 +358,7 @@ def get_all_entities(lang: str) -> list[dict]:
     return entities
 
 
-def entity_browse(request):
+async def entity_browse(request):
     """
     Entity Browser main page.
 
@@ -373,7 +376,7 @@ def entity_browse(request):
     )
 
 
-def entity_search(request):
+async def entity_search(request):
     """
     htmx endpoint for entity search/filter.
 
@@ -496,7 +499,7 @@ SECTION_META = {
 }
 
 
-def get_section_pages(section: str, lang: str) -> list[dict]:
+async def get_section_pages(section: str, lang: str) -> list[dict]:
     """Get list of pages in a compendium section."""
     section_dir = COMPENDIUM_DIR / lang / section
     pages = []
@@ -506,8 +509,9 @@ def get_section_pages(section: str, lang: str) -> list[dict]:
             # Convert filename to title
             slug = md_file.stem
             # Read first line to get title (assumes # Title format)
-            with open(md_file, encoding="utf-8") as f:
-                first_line = f.readline().strip()
+            async with aiofiles.open(md_file, encoding="utf-8") as f:
+                first_line = await f.readline()
+                first_line = first_line.strip()
                 title = first_line.lstrip("#").strip() if first_line.startswith("#") else slug.replace("-", " ").title()
 
             pages.append({"slug": slug, "title": title})
@@ -523,7 +527,7 @@ def render_markdown(content: str) -> str:
     )
 
 
-def compendium_index(request):
+async def compendium_index(request):
     """Compendium main index page."""
     current_lang = get_language(request)
 
@@ -537,7 +541,7 @@ def compendium_index(request):
     )
 
 
-def compendium_section(request, section: str):
+async def compendium_section(request, section: str):
     """Compendium section landing page."""
     current_lang = get_language(request)
 
@@ -548,7 +552,7 @@ def compendium_section(request, section: str):
     section_description = meta.get("description", {}).get(current_lang, "")
 
     # Get pages in this section
-    pages = get_section_pages(section, current_lang)
+    pages = await get_section_pages(section, current_lang)
 
     return render(
         request,
@@ -565,7 +569,7 @@ def compendium_section(request, section: str):
     )
 
 
-def compendium_page(request, section: str, page: str):
+async def compendium_page(request, section: str, page: str):
     """Compendium content page - renders markdown file."""
     current_lang = get_language(request)
 
@@ -577,8 +581,8 @@ def compendium_page(request, section: str, page: str):
     md_file = COMPENDIUM_DIR / current_lang / section / f"{page}.md"
 
     if md_file.exists():
-        with open(md_file, encoding="utf-8") as f:
-            md_content = f.read()
+        async with aiofiles.open(md_file, encoding="utf-8") as f:
+            md_content = await f.read()
 
         # Extract title from first line
         lines = md_content.split("\n")
@@ -593,7 +597,7 @@ def compendium_page(request, section: str, page: str):
         content = f"<p class='text-body-secondary'>Content not found: {section}/{page}</p>"
 
     # Get pages for prev/next navigation
-    pages = get_section_pages(section, current_lang)
+    pages = await get_section_pages(section, current_lang)
     current_idx = next((i for i, p in enumerate(pages) if p["slug"] == page), -1)
 
     prev_page = pages[current_idx - 1] if current_idx > 0 else None
@@ -617,7 +621,7 @@ def compendium_page(request, section: str, page: str):
 
 
 @require_POST
-def suggest_typo(request):
+async def suggest_typo(request):
     """
     Handle typo suggestion submissions from compendium pages.
 
@@ -632,8 +636,8 @@ def suggest_typo(request):
     suggested_correction = request.POST.get("suggested_correction", "")
     page_url = request.POST.get("page_url", "")
 
-    # Create the suggestion record
-    TypoSuggestion.objects.create(
+    # Create the suggestion record (using async ORM)
+    await TypoSuggestion.objects.acreate(
         section=section,
         page=page,
         selected_text=selected_text,

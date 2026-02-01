@@ -43,10 +43,9 @@ USER adventurer
 ENV PORT=8000
 EXPOSE 8000
 
-# Production server options:
-# granian - Rust-based, fast, low memory (recommended)
-# hypercorn - Pure Python, supports HTTP/2 and HTTP/3
-#
-# Using sh -c to allow $PORT substitution at runtime
-CMD ["sh", "-c", "granian --interface wsgi --host 0.0.0.0 --port $PORT --workers 2 config.wsgi:application"]
-# CMD ["sh", "-c", "hypercorn config.asgi:application --bind 0.0.0.0:$PORT --workers 2"]
+# Granian ASGI server with HTTP/2 support
+# - --interface asgi: async views require ASGI
+# - --http 2: enable HTTP/2 (Railway handles TLS termination)
+# - --workers 2: multiple workers for concurrency
+# - sh -c: allows $PORT substitution at runtime
+CMD ["sh", "-c", "granian --interface asgi --http 2 --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]
