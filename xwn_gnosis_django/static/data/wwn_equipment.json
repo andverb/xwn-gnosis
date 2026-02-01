@@ -1,0 +1,91 @@
+{
+  "equipment": [
+    {
+      "id": "rope-50ft",
+      "name": {"en": "Rope (50 ft)", "uk": "Мотузка (50 футів)"},
+      "type": "equipment",
+      "cost": "1 sp",
+      "enc": 2,
+      "description": {"en": "Standard hemp rope, useful for climbing, binding, and countless other purposes. Can support up to 500 pounds.", "uk": "Стандартна конопляна мотузка, корисна для лазіння, зв'язування та незліченних інших цілей. Витримує до 500 фунтів."},
+      "tags": ["adventuring", "utility"]
+    },
+    {
+      "id": "lantern",
+      "name": {"en": "Lantern", "uk": "Ліхтар"},
+      "type": "equipment",
+      "cost": "10 sp",
+      "enc": 1,
+      "description": {"en": "A hooded lantern that burns oil. Provides bright light in a 30-foot radius. Burns for 4 hours on one pint of oil.", "uk": "Закритий ліхтар, що працює на олії. Забезпечує яскраве світло в радіусі 30 футів. Горить 4 години на одній пінті олії."},
+      "tags": ["light", "adventuring"]
+    },
+    {
+      "id": "healers-kit",
+      "name": {"en": "Healer's Kit", "uk": "Набір Цілителя"},
+      "type": "equipment",
+      "cost": "10 sp",
+      "enc": 1,
+      "description": {"en": "A leather pouch containing bandages, salves, and basic surgical tools. Provides +1 to Heal checks. Contains 10 uses.", "uk": "Шкіряний мішечок з бинтами, мазями та базовими хірургічними інструментами. Дає +1 до перевірок Лікування. Містить 10 використань."},
+      "tags": ["medical", "consumable"]
+    },
+    {
+      "id": "thieves-tools",
+      "name": {"en": "Thieves' Tools", "uk": "Інструменти Злодія"},
+      "type": "equipment",
+      "cost": "25 sp",
+      "enc": 1,
+      "description": {"en": "A set of lockpicks, tension wrenches, and other tools necessary for picking locks and disabling traps. Required for most such attempts.", "uk": "Набір відмичок, натяжних ключів та інших інструментів, необхідних для зламу замків та знешкодження пасток. Необхідний для більшості таких спроб."},
+      "tags": ["criminal", "utility"]
+    },
+    {
+      "id": "backpack",
+      "name": {"en": "Backpack", "uk": "Рюкзак"},
+      "type": "equipment",
+      "cost": "5 sp",
+      "enc": 0,
+      "description": {"en": "A sturdy canvas backpack that can hold items with a total encumbrance of up to 6 points without counting against the wearer's encumbrance.", "uk": "Міцний брезентовий рюкзак, який може вмістити предмети із загальною обтяжливістю до 6 пунктів, не враховуючи обтяжливість власника."},
+      "tags": ["container", "adventuring"]
+    }
+  ],
+  "armor": [
+    {
+      "id": "leather-armor",
+      "name": {"en": "Leather Armor", "uk": "Шкіряний Обладунок"},
+      "type": "armor",
+      "ac": 13,
+      "cost": "10 sp",
+      "enc": 1,
+      "description": {"en": "Hardened leather armor that provides basic protection without hindering movement.", "uk": "Загартований шкіряний обладунок, що забезпечує базовий захист без обмеження руху."},
+      "tags": ["light"]
+    },
+    {
+      "id": "chain-mail",
+      "name": {"en": "Chain Mail", "uk": "Кольчуга"},
+      "type": "armor",
+      "ac": 15,
+      "cost": "50 sp",
+      "enc": 2,
+      "description": {"en": "Interlocking metal rings form a flexible but heavy armor. May hinder swimming and climbing.", "uk": "Переплетені металеві кільця формують гнучкий, але важкий обладунок. Може ускладнювати плавання та лазіння."},
+      "tags": ["medium"]
+    },
+    {
+      "id": "plate-armor",
+      "name": {"en": "Plate Armor", "uk": "Латний Обладунок"},
+      "type": "armor",
+      "ac": 18,
+      "cost": "500 sp",
+      "enc": 3,
+      "description": {"en": "Full suit of articulated metal plates providing the best protection available. Very heavy and restricting.", "uk": "Повний комплект з'єднаних металевих пластин, що забезпечує найкращий доступний захист. Дуже важкий та обмежуючий."},
+      "tags": ["heavy"]
+    },
+    {
+      "id": "shield",
+      "name": {"en": "Shield", "uk": "Щит"},
+      "type": "armor",
+      "ac": "+1",
+      "cost": "10 sp",
+      "enc": 1,
+      "description": {"en": "A wooden or metal shield that provides +1 AC when wielded. Requires one free hand.", "uk": "Дерев'яний або металевий щит, що дає +1 КЗ при використанні. Потребує одну вільну руку."},
+      "tags": ["shield"]
+    }
+  ]
+}

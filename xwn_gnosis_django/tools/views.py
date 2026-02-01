@@ -10,7 +10,9 @@ import markdown
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_POST  # Decorator to restrict to POST only
+from django.views.decorators.http import require_POST
+
+from .models import TypoSuggestion
 
 # Path to JSON data files (in static/data/ for offline caching support)
 DATA_DIR = Path(settings.BASE_DIR) / "static" / "data"
@@ -194,6 +196,8 @@ def combat_tracker(request):
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
+            # Raw list for Django template iteration
+            "weapons": weapons_data["weapons"],
             # Pre-serialize to JSON for safe embedding in <script> tags
             "weapons_json": json.dumps(weapons_data["weapons"]),
             "weapon_traits_json": json.dumps(weapons_data["traits"]),
@@ -609,4 +613,38 @@ def compendium_page(request, section: str, page: str):
             "prev_page": prev_page,
             "next_page": next_page,
         },
+    )
+
+
+@require_POST
+def suggest_typo(request):
+    """
+    Handle typo suggestion submissions from compendium pages.
+
+    This is an htmx endpoint that receives POST data from the typo suggestion
+    modal and creates a TypoSuggestion record. Returns an HTML fragment for
+    success feedback.
+    """
+    section = request.POST.get("section", "")
+    page = request.POST.get("page", "")
+    selected_text = request.POST.get("selected_text", "")
+    context = request.POST.get("context", "")
+    suggested_correction = request.POST.get("suggested_correction", "")
+    page_url = request.POST.get("page_url", "")
+
+    # Create the suggestion record
+    TypoSuggestion.objects.create(
+        section=section,
+        page=page,
+        selected_text=selected_text,
+        context=context,
+        suggested_correction=suggested_correction,
+        page_url=page_url,
+    )
+
+    current_lang = get_language(request)
+    return render(
+        request,
+        "tools/compendium/_typo_success.html",
+        {"current_lang": current_lang},
     )

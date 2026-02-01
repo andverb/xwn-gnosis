@@ -1,0 +1,49 @@
+{
+  "spells": [
+    {
+      "id": "magic-missile",
+      "name": {"en": "Magic Missile", "uk": "Чарівна Стріла"},
+      "type": "spell",
+      "level": 1,
+      "tradition": "High Magic",
+      "description": {"en": "Hurl a bolt of arcane force at a visible target within 200 feet, automatically hitting for 1d6+1 damage. Each additional spell level adds another missile.", "uk": "Метнути снаряд аркановї сили у видиму ціль в межах 200 футів, автоматично влучаючи та завдаючи 1к6+1 пошкодження. Кожен додатковий рівень закляття додає ще один снаряд."},
+      "tags": ["attack", "arcane", "force"]
+    },
+    {
+      "id": "sleep",
+      "name": {"en": "Sleep", "uk": "Сон"},
+      "type": "spell",
+      "level": 1,
+      "tradition": "High Magic",
+      "description": {"en": "Cause creatures in a 20-foot radius within 100 feet to fall into a magical slumber. Affects 2d4 HD worth of creatures, starting with the weakest.", "uk": "Змусити істот у радіусі 20 футів в межах 100 футів впасти в магічний сон. Впливає на істот сумою 2к4 КХ, починаючи з найслабших."},
+      "tags": ["enchantment", "mind-affecting"]
+    },
+    {
+      "id": "fireball",
+      "name": {"en": "Fireball", "uk": "Вогняна Куля"},
+      "type": "spell",
+      "level": 3,
+      "tradition": "Elementalist",
+      "description": {"en": "Hurl an explosive ball of fire at a point within 200 feet. The blast fills a 20-foot radius, dealing 1d6 damage per caster level (max 10d6). Targets may save for half damage.", "uk": "Метнути вибухову кулю вогню в точку в межах 200 футів. Вибух заповнює радіус 20 футів, завдаючи 1к6 пошкодження за рівень заклинача (макс. 10к6). Цілі можуть зробити рятівний кидок для зменшення пошкодження вдвічі."},
+      "tags": ["attack", "fire", "area"]
+    },
+    {
+      "id": "invisibility",
+      "name": {"en": "Invisibility", "uk": "Невидимість"},
+      "type": "spell",
+      "level": 2,
+      "tradition": "High Magic",
+      "description": {"en": "Turn a touched creature invisible for one hour or until they attack or cast a spell. Invisible creatures gain +4 to hit surprised foes and cannot be targeted by attacks unless detected.", "uk": "Зробити дотикну істоту невидимою на одну годину або поки вона не атакує чи не застосує закляття. Невидимі істоти отримують +4 до влучання по здивованих ворогах і не можуть бути ціллю атак, якщо їх не виявлено."},
+      "tags": ["illusion", "utility"]
+    },
+    {
+      "id": "healing-touch",
+      "name": {"en": "Healing Touch", "uk": "Цілющий Дотик"},
+      "type": "spell",
+      "level": 1,
+      "tradition": "Healer",
+      "description": {"en": "Touch a creature to heal 1d6+1 hit points of damage. This spell cannot heal a creature more than once per day.", "uk": "Торкніться істоти, щоб вилікувати 1к6+1 хітів пошкоджень. Це закляття не може вилікувати істоту більше одного разу на день."},
+      "tags": ["healing", "touch"]
+    }
+  ]
+}

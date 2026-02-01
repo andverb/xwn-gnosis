@@ -1,0 +1,287 @@
+{% extends "tools/base.html" %}
+
+{% block extra_head %}
+<style>
+    /* Two-column layout */
+    .compendium-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+        min-height: calc(100vh - 150px);
+    }
+
+    @media (max-width: 991px) {
+        .compendium-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Sidebar */
+    .compendium-sidebar {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+
+    @media (max-width: 991px) {
+        .compendium-sidebar {
+            position: static;
+            max-height: none;
+        }
+    }
+
+    .sidebar-section {
+        margin-bottom: 0.5rem;
+    }
+
+    .sidebar-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 0.75rem;
+        background: var(--bs-tertiary-bg);
+        border-radius: var(--bs-border-radius);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .sidebar-section-title:hover {
+        background: rgba(var(--bs-primary-rgb), 0.15);
+    }
+
+    .sidebar-section-title i {
+        margin-right: 0.5rem;
+    }
+
+    .sidebar-section-title .chevron {
+        transition: transform 0.2s;
+    }
+
+    .sidebar-section.collapsed .chevron {
+        transform: rotate(-90deg);
+    }
+
+    .sidebar-section.collapsed .sidebar-links {
+        display: none;
+    }
+
+    .sidebar-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-link {
+        display: block;
+        padding: 0.35rem 0.75rem 0.35rem 2rem;
+        color: var(--bs-secondary-color);
+        text-decoration: none;
+        font-size: 0.85rem;
+        border-left: 2px solid transparent;
+        transition: all 0.15s;
+    }
+
+    .sidebar-link:hover {
+        color: var(--bs-primary);
+        background: rgba(var(--bs-primary-rgb), 0.1);
+        border-left-color: var(--bs-primary);
+    }
+
+    .sidebar-link.active {
+        color: var(--bs-primary);
+        font-weight: 600;
+        border-left-color: var(--bs-primary);
+        background: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    /* Content area */
+    .compendium-content {
+        max-width: 900px;
+    }
+
+    .compendium-content h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--bs-primary);
+    }
+
+    .compendium-content h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--bs-primary);
+    }
+
+    .compendium-content h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .compendium-content h4 {
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .compendium-content p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .compendium-content ul,
+    .compendium-content ol {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .compendium-content li {
+        margin-bottom: 0.25rem;
+    }
+
+    .compendium-content table {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-collapse: collapse;
+    }
+
+    .compendium-content th,
+    .compendium-content td {
+        padding: 0.5rem;
+        border: 1px solid var(--bs-border-color);
+        text-align: left;
+    }
+
+    .compendium-content th {
+        background: var(--bs-tertiary-bg);
+        font-weight: 600;
+    }
+
+    .compendium-content blockquote {
+        border-left: 4px solid var(--bs-primary);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-bottom: 1rem;
+        color: var(--bs-secondary-color);
+        font-style: italic;
+    }
+
+    .compendium-content code {
+        background: var(--bs-tertiary-bg);
+        padding: 0.1rem 0.3rem;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+    }
+
+    .compendium-content pre {
+        background: var(--bs-tertiary-bg);
+        padding: 1rem;
+        border-radius: var(--bs-border-radius);
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+
+    .compendium-content pre code {
+        background: none;
+        padding: 0;
+    }
+
+    .compendium-content strong {
+        color: var(--bs-primary);
+    }
+
+    /* Mobile sidebar toggle */
+    .sidebar-toggle {
+        display: none;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 991px) {
+        .sidebar-toggle {
+            display: block;
+        }
+
+        .compendium-sidebar.collapsed-mobile {
+            display: none;
+        }
+    }
+
+    /* Breadcrumb */
+    .compendium-breadcrumb {
+        margin-bottom: 1rem;
+    }
+
+    .compendium-breadcrumb .breadcrumb {
+        margin: 0;
+        padding: 0;
+        background: none;
+    }
+
+    .compendium-breadcrumb .breadcrumb-item {
+        font-size: 0.85rem;
+    }
+
+    /* Section index cards */
+    .section-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .section-card {
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: 1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        color: inherit;
+    }
+
+    .section-card h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        color: var(--bs-primary);
+    }
+
+    .section-card p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--bs-secondary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="compendium-layout">
+        <!-- Sidebar -->
+        <aside class="compendium-sidebar" id="compendiumSidebar">
+            {% include "tools/compendium/_sidebar.html" %}
+        </aside>
+
+        <!-- Main content -->
+        <main class="compendium-content">
+            <!-- Mobile sidebar toggle -->
+            <button class="btn btn-outline-secondary sidebar-toggle" onclick="document.getElementById('compendiumSidebar').classList.toggle('collapsed-mobile')">
+                <i class="bi bi-list"></i> Table of Contents
+            </button>
+
+            {% block compendium_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}

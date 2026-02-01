@@ -70,6 +70,9 @@ max-line-length = 120
 [tool.ruff.lint.per-file-ignores]
 "manage.py" = ["PLC0415"]  # Standard Django pattern: import in try/except for helpful error
 "tools/views.py" = ["RUF001"]  # Allow Cyrillic characters in i18n verdicts
+"**/migrations/*.py" = ["RUF012"]  # Django migrations use mutable class attributes by design
+"**/admin.py" = ["RUF012"]  # Django ModelAdmin uses mutable class attributes by design
+"**/models.py" = ["RUF012"]  # Django Model Meta classes use mutable class attributes
 "tests/**/*.py" = [
     "S106",    # Allow hardcoded passwords in tests
     "PLR2004", # Allow magic values in tests

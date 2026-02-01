@@ -1,0 +1,210 @@
+{% extends "tools/compendium/base_compendium.html" %}
+
+{% block title %}{{ page_title }} - Compendium - Gnosis{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<style>
+    /* Floating typo report button */
+    .typo-report-btn {
+        position: absolute;
+        z-index: 1050;
+        display: none;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .typo-report-btn.visible {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block compendium_content %}
+<!-- Breadcrumb -->
+<nav class="compendium-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'tools:compendium_index' %}">Compendium</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tools:compendium_section' section=section %}">{{ section_title }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+    </ol>
+</nav>
+
+<!-- Page content (rendered markdown) -->
+<div class="markdown-content">
+    {{ content|safe }}
+</div>
+
+<!-- Navigation -->
+{% if prev_page or next_page %}
+<nav class="d-flex justify-content-between mt-5 pt-4 border-top">
+    {% if prev_page %}
+    <a href="{% url 'tools:compendium_page' section=section page=prev_page.slug %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-1"></i> {{ prev_page.title }}
+    </a>
+    {% else %}
+    <span></span>
+    {% endif %}
+
+    {% if next_page %}
+    <a href="{% url 'tools:compendium_page' section=section page=next_page.slug %}" class="btn btn-outline-primary">
+        {{ next_page.title }} <i class="bi bi-arrow-right ms-1"></i>
+    </a>
+    {% endif %}
+</nav>
+{% endif %}
+
+<!-- Floating Typo Report Button (shown on text selection) -->
+<button type="button" class="btn btn-warning btn-sm typo-report-btn" id="typoReportBtn" data-bs-toggle="modal" data-bs-target="#typoModal">
+    <i class="bi bi-pencil"></i>
+    {% if current_lang == "uk" %}Запропонувати виправлення{% else %}Suggest a correction{% endif %}
+</button>
+
+<!-- Typo Suggestion Modal -->
+<div class="modal fade" id="typoModal" tabindex="-1" aria-labelledby="typoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="typoModalLabel">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    {% if current_lang == "uk" %}Запропонувати виправлення{% else %}Suggest a correction{% endif %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form hx-post="{% url 'tools:suggest_typo' %}" hx-target="#typoToastContainer" hx-swap="innerHTML">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="section" value="{{ section }}">
+                    <input type="hidden" name="page" value="{{ page }}">
+                    <input type="hidden" name="page_url" id="typoPageUrl">
+                    <input type="hidden" name="context" id="typoContext">
+
+                    <!-- Selected text (readonly) -->
+                    <div class="mb-3">
+                        <label for="typoSelectedText" class="form-label">
+                            {% if current_lang == "uk" %}Виділений текст{% else %}Selected text{% endif %}
+                        </label>
+                        <textarea class="form-control" id="typoSelectedText" name="selected_text" rows="2" readonly></textarea>
+                    </div>
+
+                    <!-- Suggested correction -->
+                    <div class="mb-3">
+                        <label for="typoSuggestedCorrection" class="form-label">
+                            {% if current_lang == "uk" %}Запропоноване виправлення{% else %}Suggested correction{% endif %}
+                            <span class="text-body-secondary">({% if current_lang == "uk" %}необов'язково{% else %}optional{% endif %})</span>
+                        </label>
+                        <textarea class="form-control" id="typoSuggestedCorrection" name="suggested_correction" rows="2" placeholder="{% if current_lang == "uk" %}Введіть виправлений текст...{% else %}Enter corrected text...{% endif %}"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% if current_lang == "uk" %}Скасувати{% else %}Cancel{% endif %}
+                    </button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="bi bi-send me-1"></i>
+                        {% if current_lang == "uk" %}Надіслати{% else %}Submit{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast container for success message -->
+<div id="typoToastContainer"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+(function() {
+    const contentArea = document.querySelector('.markdown-content');
+    const reportBtn = document.getElementById('typoReportBtn');
+    const selectedTextInput = document.getElementById('typoSelectedText');
+    const contextInput = document.getElementById('typoContext');
+    const pageUrlInput = document.getElementById('typoPageUrl');
+    const correctionInput = document.getElementById('typoSuggestedCorrection');
+
+    let currentSelection = '';
+
+    // Get surrounding context (~50 chars on each side)
+    function getContext(selection) {
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const text = container.textContent || '';
+        const selectedText = selection.toString();
+        const startIndex = text.indexOf(selectedText);
+
+        if (startIndex === -1) return '';
+
+        const contextStart = Math.max(0, startIndex - 50);
+        const contextEnd = Math.min(text.length, startIndex + selectedText.length + 50);
+        return text.substring(contextStart, contextEnd);
+    }
+
+    // Handle text selection in content area
+    contentArea.addEventListener('mouseup', function(e) {
+        // Small delay to ensure selection is finalized
+        setTimeout(function() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+
+            if (selectedText && selectedText.length > 0) {
+                currentSelection = selectedText;
+
+                // Position button near the selection
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+
+                // Position above the selection
+                reportBtn.style.left = (rect.left + window.scrollX) + 'px';
+                reportBtn.style.top = (rect.top + window.scrollY - 35) + 'px';
+                reportBtn.classList.add('visible');
+
+                // Store context
+                contextInput.value = getContext(selection);
+            } else {
+                reportBtn.classList.remove('visible');
+            }
+        }, 10);
+    });
+
+    // Hide button when clicking elsewhere (but not on the button itself)
+    document.addEventListener('mousedown', function(e) {
+        if (!reportBtn.contains(e.target) && !e.target.closest('#typoModal')) {
+            reportBtn.classList.remove('visible');
+        }
+    });
+
+    // Populate modal when button is clicked
+    reportBtn.addEventListener('click', function() {
+        selectedTextInput.value = currentSelection;
+        pageUrlInput.value = window.location.href;
+        correctionInput.value = '';  // Reset correction field
+    });
+
+    // Also support Ctrl+Enter to open modal when text is selected
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+
+            if (selectedText && contentArea.contains(selection.anchorNode)) {
+                currentSelection = selectedText;
+                contextInput.value = getContext(selection);
+                selectedTextInput.value = currentSelection;
+                pageUrlInput.value = window.location.href;
+                correctionInput.value = '';
+
+                const modal = new bootstrap.Modal(document.getElementById('typoModal'));
+                modal.show();
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

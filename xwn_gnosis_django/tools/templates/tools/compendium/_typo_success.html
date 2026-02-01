@@ -1,0 +1,26 @@
+<!-- Typo suggestion success toast - inserted via htmx -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1100;">
+    <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>
+                {% if current_lang == "uk" %}
+                    Дякуємо! Вашу пропозицію отримано.
+                {% else %}
+                    Thank you! Your suggestion has been received.
+                {% endif %}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<script>
+    // Auto-hide toast after 5 seconds
+    setTimeout(function() {
+        const toast = document.querySelector('.toast');
+        if (toast) {
+            toast.classList.remove('show');
+            setTimeout(() => toast.parentElement.remove(), 300);
+        }
+    }, 5000);
+</script>

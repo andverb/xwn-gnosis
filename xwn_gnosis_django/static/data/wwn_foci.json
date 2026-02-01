@@ -1,0 +1,44 @@
+{
+  "foci": [
+    {
+      "id": "armsmaster",
+      "name": {"en": "Armsmaster", "uk": "Зброймайстер"},
+      "type": "focus",
+      "category": "Combat",
+      "description": {"en": "You have an unusual competence with weapons. Level 1: Gain Stab as a bonus skill. Choose a weapon type; you gain +1 to hit with it and may use Dex as modifier. Level 2: +2 damage with chosen weapon, and may Snap Attack once per scene without penalty.", "uk": "Ви маєте незвичайну компетентність зі зброєю. Рівень 1: Отримайте Удар як бонусну навичку. Виберіть тип зброї; ви отримуєте +1 до влучання нею і можете використовувати Спр як модифікатор. Рівень 2: +2 до пошкодження обраною зброєю, і можете робити Миттєву Атаку раз за сцену без штрафу."},
+      "tags": ["warrior", "melee", "ranged"]
+    },
+    {
+      "id": "healer",
+      "name": {"en": "Healer", "uk": "Цілитель"},
+      "type": "focus",
+      "category": "Non-Combat",
+      "description": {"en": "You have remarkable medical skills. Level 1: Gain Heal as a bonus skill. You may attempt to stabilize a Mortally Wounded target as a Main Action. Level 2: Heal attempts gain +2, and your patients heal twice as fast during rest.", "uk": "Ви маєте чудові медичні навички. Рівень 1: Отримайте Лікування як бонусну навичку. Ви можете спробувати стабілізувати Смертельно Пораненого як Основну Дію. Рівень 2: Спроби лікування отримують +2, і ваші пацієнти зцілюються вдвічі швидше під час відпочинку."},
+      "tags": ["support", "healing"]
+    },
+    {
+      "id": "shocking-assault",
+      "name": {"en": "Shocking Assault", "uk": "Шокова Атака"},
+      "type": "focus",
+      "category": "Combat",
+      "description": {"en": "Your attacks are especially dangerous. Level 1: Gain Punch or Stab as a bonus skill. +2 Shock damage with all melee weapons. Level 2: +1d4 bonus damage on all melee hits.", "uk": "Ваші атаки особливо небезпечні. Рівень 1: Отримайте Удар або Кулак як бонусну навичку. +2 до Шокового пошкодження всією зброєю ближнього бою. Рівень 2: +1к4 бонусне пошкодження на всіх влученнях ближнього бою."},
+      "tags": ["warrior", "melee", "damage"]
+    },
+    {
+      "id": "sniper",
+      "name": {"en": "Sniper", "uk": "Снайпер"},
+      "type": "focus",
+      "category": "Combat",
+      "description": {"en": "You are expert at ranged attacks. Level 1: Gain Shoot as a bonus skill. +1 to hit with ranged weapons, ignore range penalties within normal range. Level 2: +2 damage with ranged weapons, and may aim for one round to gain +4 to hit.", "uk": "Ви експерт з далекобійних атак. Рівень 1: Отримайте Стрілянину як бонусну навичку. +1 до влучання далекобійною зброєю, ігноруйте штрафи за дистанцію в межах нормальної дальності. Рівень 2: +2 до пошкодження далекобійною зброєю, і можете прицілюватися один раунд для отримання +4 до влучання."},
+      "tags": ["warrior", "ranged"]
+    },
+    {
+      "id": "diplomatic-grace",
+      "name": {"en": "Diplomatic Grace", "uk": "Дипломатична Грація"},
+      "type": "focus",
+      "category": "Non-Combat",
+      "description": {"en": "You are exceptionally persuasive. Level 1: Gain Talk as a bonus skill. Reroll any 1s on social skill checks. Level 2: Once per scene, convert a failed social check to a success, though the target may later realize they were manipulated.", "uk": "Ви надзвичайно переконливі. Рівень 1: Отримайте Розмову як бонусну навичку. Перекидайте будь-які 1 на перевірках соціальних навичок. Рівень 2: Раз за сцену перетворіть невдалу соціальну перевірку на успіх, хоча ціль може пізніше зрозуміти, що нею маніпулювали."},
+      "tags": ["social", "persuasion"]
+    }
+  ]
+}
