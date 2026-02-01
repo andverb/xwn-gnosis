@@ -6,13 +6,18 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+import markdown
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST  # Decorator to restrict to POST only
 
-# Path to weapons JSON data (in static/data/ for offline caching support)
-WEAPONS_FILE = Path(settings.BASE_DIR) / "static" / "data" / "wwn_weapons.json"
+# Path to JSON data files (in static/data/ for offline caching support)
+DATA_DIR = Path(settings.BASE_DIR) / "static" / "data"
+WEAPONS_FILE = DATA_DIR / "wwn_weapons.json"
+SPELLS_FILE = DATA_DIR / "wwn_spells.json"
+FOCI_FILE = DATA_DIR / "wwn_foci.json"
+EQUIPMENT_FILE = DATA_DIR / "wwn_equipment.json"
 
 
 def get_language(request):
@@ -221,3 +226,387 @@ def health_check(request):
     HttpResponse is the base response class - we return plain text here.
     """
     return HttpResponse("OK", content_type="text/plain")
+
+
+# ============================================================================
+# Entity Browser Views
+# ============================================================================
+
+
+@lru_cache
+def get_spells_data() -> dict:
+    """Load spells data from JSON file (cached)."""
+    if SPELLS_FILE.exists():
+        with open(SPELLS_FILE) as f:
+            return json.load(f)
+    return {"spells": []}
+
+
+@lru_cache
+def get_foci_data() -> dict:
+    """Load foci data from JSON file (cached)."""
+    if FOCI_FILE.exists():
+        with open(FOCI_FILE) as f:
+            return json.load(f)
+    return {"foci": []}
+
+
+@lru_cache
+def get_equipment_data() -> dict:
+    """Load equipment data from JSON file (cached)."""
+    if EQUIPMENT_FILE.exists():
+        with open(EQUIPMENT_FILE) as f:
+            return json.load(f)
+    return {"equipment": [], "armor": []}
+
+
+def get_all_entities(lang: str) -> list[dict]:
+    """
+    Load and combine all entity types into a single list.
+
+    Each entity is normalized to have consistent fields for display:
+    - id, name, type, description, tags
+    - Plus type-specific fields (level, tradition, damage, etc.)
+    """
+    entities = []
+
+    # Load spells
+    spells_data = get_spells_data()
+    for spell in spells_data.get("spells", []):
+        entities.append(
+            {
+                "id": spell["id"],
+                "name": spell["name"].get(lang, spell["name"].get("en", "")),
+                "type": "spell",
+                "level": spell.get("level", 1),
+                "tradition": spell.get("tradition", ""),
+                "description": spell["description"].get(lang, spell["description"].get("en", "")),
+                "tags": spell.get("tags", []),
+            }
+        )
+
+    # Load foci
+    foci_data = get_foci_data()
+    for focus in foci_data.get("foci", []):
+        entities.append(
+            {
+                "id": focus["id"],
+                "name": focus["name"].get(lang, focus["name"].get("en", "")),
+                "type": "focus",
+                "category": focus.get("category", ""),
+                "description": focus["description"].get(lang, focus["description"].get("en", "")),
+                "tags": focus.get("tags", []),
+            }
+        )
+
+    # Load weapons
+    weapons_data = get_weapons_data()
+    for weapon in weapons_data.get("weapons", []):
+        shock_str = ""
+        if weapon.get("shock"):
+            shock_str = f"{weapon['shock']['value']}/{weapon['shock'].get('ac', '-')}"
+        entities.append(
+            {
+                "id": weapon["id"],
+                "name": weapon["name"].get(lang, weapon["name"].get("en", "")),
+                "type": "weapon",
+                "damage": weapon.get("damage", ""),
+                "shock": shock_str,
+                "range": weapon.get("range", ""),
+                "description": "",  # Weapons don't have descriptions in current data
+                "tags": weapon.get("traits", []),
+            }
+        )
+
+    # Load equipment
+    equipment_data = get_equipment_data()
+    for item in equipment_data.get("equipment", []):
+        entities.append(
+            {
+                "id": item["id"],
+                "name": item["name"].get(lang, item["name"].get("en", "")),
+                "type": "equipment",
+                "cost": item.get("cost", ""),
+                "enc": item.get("enc", ""),
+                "description": item["description"].get(lang, item["description"].get("en", "")),
+                "tags": item.get("tags", []),
+            }
+        )
+
+    # Load armor
+    for armor in equipment_data.get("armor", []):
+        entities.append(
+            {
+                "id": armor["id"],
+                "name": armor["name"].get(lang, armor["name"].get("en", "")),
+                "type": "armor",
+                "ac": armor.get("ac", ""),
+                "cost": armor.get("cost", ""),
+                "enc": armor.get("enc", ""),
+                "description": armor["description"].get(lang, armor["description"].get("en", "")),
+                "tags": armor.get("tags", []),
+            }
+        )
+
+    return entities
+
+
+def entity_browse(request):
+    """
+    Entity Browser main page.
+
+    Displays a searchable/filterable grid of game entities (spells, foci, weapons, etc.).
+    """
+    current_lang = get_language(request)
+
+    return render(
+        request,
+        "tools/entities/browse.html",
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+        },
+    )
+
+
+def entity_search(request):
+    """
+    htmx endpoint for entity search/filter.
+
+    Returns HTML fragment with filtered entity cards.
+    Supports query string filtering by:
+    - q: search text (matches name and description)
+    - type: entity type filter (spell, focus, weapon, armor, equipment)
+    """
+    current_lang = get_language(request)
+    query = request.GET.get("q", "").strip().lower()
+    entity_type = request.GET.get("type", "").strip().lower()
+
+    # Get all entities
+    entities = get_all_entities(current_lang)
+
+    # Filter by type
+    if entity_type:
+        entities = [e for e in entities if e["type"] == entity_type]
+
+    # Filter by search query
+    if query:
+        filtered = []
+        for entity in entities:
+            # Search in name, description, and tags
+            name_match = query in entity["name"].lower()
+            desc_match = query in entity.get("description", "").lower()
+            tag_match = any(query in tag.lower() for tag in entity.get("tags", []))
+
+            if name_match or desc_match or tag_match:
+                filtered.append(entity)
+        entities = filtered
+
+    # Sort by type, then name
+    type_order = {"spell": 0, "focus": 1, "weapon": 2, "armor": 3, "equipment": 4}
+    entities.sort(key=lambda e: (type_order.get(e["type"], 99), e["name"]))
+
+    return render(
+        request,
+        "tools/entities/_entity_list.html",
+        {
+            "entities": entities,
+            "current_lang": current_lang,
+        },
+    )
+
+
+# ============================================================================
+# Compendium Views
+# ============================================================================
+
+# Compendium content is stored in docs/wwn-lite/{lang}/{section}/{page}.md
+COMPENDIUM_DIR = Path(settings.BASE_DIR).parent / "docs" / "wwn-lite"
+
+# Section metadata (icon, description)
+SECTION_META = {
+    "basics": {
+        "title": {"en": "Basics", "uk": "Основи"},
+        "icon": "bi bi-star",
+        "description": {
+            "en": "Core mechanics, attribute checks, skill checks, and saving throws.",
+            "uk": "Основні механіки, перевірки атрибутів, навичок та рятівні кидки.",
+        },
+    },
+    "survival": {
+        "title": {"en": "Survival", "uk": "Виживання"},
+        "icon": "bi bi-heart-pulse",
+        "description": {
+            "en": "Hit points, healing, environmental perils, and travel.",
+            "uk": "Хіти, лікування, небезпеки середовища та подорожі.",
+        },
+    },
+    "combat": {
+        "title": {"en": "Combat", "uk": "Бій"},
+        "icon": "bi bi-shield",
+        "description": {
+            "en": "Combat basics, actions, attack rolls, damage, and shock.",
+            "uk": "Основи бою, дії, кидки атаки, пошкодження та шок.",
+        },
+    },
+    "equipment": {
+        "title": {"en": "Equipment", "uk": "Спорядження"},
+        "icon": "bi bi-backpack",
+        "description": {
+            "en": "Weapons, armor, gear, and encumbrance rules.",
+            "uk": "Зброя, обладунки, спорядження та правила обтяжливості.",
+        },
+    },
+    "magic": {
+        "title": {"en": "Magic", "uk": "Магія"},
+        "icon": "bi bi-magic",
+        "description": {
+            "en": "Magic basics, spells, and magical items.",
+            "uk": "Основи магії, закляття та магічні предмети.",
+        },
+    },
+    "character": {
+        "title": {"en": "Character", "uk": "Персонаж"},
+        "icon": "bi bi-person",
+        "description": {
+            "en": "Character creation, XP, and leveling.",
+            "uk": "Створення персонажа, досвід та підвищення рівня.",
+        },
+    },
+    "campaign": {
+        "title": {"en": "Campaign", "uk": "Кампанія"},
+        "icon": "bi bi-map",
+        "description": {
+            "en": "Downtime activities, hirelings, and renown.",
+            "uk": "Відпочинок, наймити та репутація.",
+        },
+    },
+    "reference": {
+        "title": {"en": "Reference", "uk": "Довідник"},
+        "icon": "bi bi-bookmark",
+        "description": {
+            "en": "NPC statistics, encounter difficulty, and quick reference tables.",
+            "uk": "Статистика НІПів, складність зустрічей та довідкові таблиці.",
+        },
+    },
+}
+
+
+def get_section_pages(section: str, lang: str) -> list[dict]:
+    """Get list of pages in a compendium section."""
+    section_dir = COMPENDIUM_DIR / lang / section
+    pages = []
+
+    if section_dir.exists():
+        for md_file in sorted(section_dir.glob("*.md")):
+            # Convert filename to title
+            slug = md_file.stem
+            # Read first line to get title (assumes # Title format)
+            with open(md_file, encoding="utf-8") as f:
+                first_line = f.readline().strip()
+                title = first_line.lstrip("#").strip() if first_line.startswith("#") else slug.replace("-", " ").title()
+
+            pages.append({"slug": slug, "title": title})
+
+    return pages
+
+
+def render_markdown(content: str) -> str:
+    """Render markdown to HTML."""
+    return markdown.markdown(
+        content,
+        extensions=["tables", "fenced_code", "toc"],
+    )
+
+
+def compendium_index(request):
+    """Compendium main index page."""
+    current_lang = get_language(request)
+
+    return render(
+        request,
+        "tools/compendium/index.html",
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+        },
+    )
+
+
+def compendium_section(request, section: str):
+    """Compendium section landing page."""
+    current_lang = get_language(request)
+
+    # Get section metadata
+    meta = SECTION_META.get(section, {})
+    section_title = meta.get("title", {}).get(current_lang, section.title())
+    section_icon = meta.get("icon", "bi bi-folder")
+    section_description = meta.get("description", {}).get(current_lang, "")
+
+    # Get pages in this section
+    pages = get_section_pages(section, current_lang)
+
+    return render(
+        request,
+        "tools/compendium/section.html",
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+            "section": section,
+            "section_title": section_title,
+            "section_icon": section_icon,
+            "section_description": section_description,
+            "pages": pages,
+        },
+    )
+
+
+def compendium_page(request, section: str, page: str):
+    """Compendium content page - renders markdown file."""
+    current_lang = get_language(request)
+
+    # Get section metadata
+    meta = SECTION_META.get(section, {})
+    section_title = meta.get("title", {}).get(current_lang, section.title())
+
+    # Load markdown file
+    md_file = COMPENDIUM_DIR / current_lang / section / f"{page}.md"
+
+    if md_file.exists():
+        with open(md_file, encoding="utf-8") as f:
+            md_content = f.read()
+
+        # Extract title from first line
+        lines = md_content.split("\n")
+        page_title = (
+            lines[0].lstrip("#").strip() if lines and lines[0].startswith("#") else page.replace("-", " ").title()
+        )
+
+        # Render markdown to HTML
+        content = render_markdown(md_content)
+    else:
+        page_title = page.replace("-", " ").title()
+        content = f"<p class='text-body-secondary'>Content not found: {section}/{page}</p>"
+
+    # Get pages for prev/next navigation
+    pages = get_section_pages(section, current_lang)
+    current_idx = next((i for i, p in enumerate(pages) if p["slug"] == page), -1)
+
+    prev_page = pages[current_idx - 1] if current_idx > 0 else None
+    next_page = pages[current_idx + 1] if current_idx >= 0 and current_idx < len(pages) - 1 else None
+
+    return render(
+        request,
+        "tools/compendium/page.html",
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+            "section": section,
+            "section_title": section_title,
+            "page": page,
+            "page_title": page_title,
+            "content": content,
+            "prev_page": prev_page,
+            "next_page": next_page,
+        },
+    )

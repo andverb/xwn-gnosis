@@ -1,16 +1,28 @@
 {% load static django_htmx %}
 <!DOCTYPE html>
-<html lang="{{ current_lang|default:"en" }}">
+<html lang="{{ current_lang|default:'en' }}" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <!-- htmx (vendored by django-htmx, includes debug extension for error visibility) -->
     {% htmx_script %}
+
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+
+    <!-- Theme initialization (before page render to prevent flash) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
+
     <script>
         // Alpine Dice Store - available globally
         document.addEventListener('alpine:init', () => {
@@ -195,10 +207,281 @@
             });
         });
     </script>
+
     <title>{% block title %}Gnosis - xWN Rules Database{% endblock %}</title>
+
+    <style>
+        /* Alpine.js cloak */
+        [x-cloak] { display: none !important; }
+
+        /* Dice Toast Styles - using Bootstrap variables */
+        .dice-toast {
+            background: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
+            border-radius: var(--bs-border-radius);
+            padding: 0.75rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 180px;
+        }
+
+        @keyframes dice-flash {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .dice-toast-flash {
+            animation: dice-flash 0.3s ease-out;
+        }
+
+        .dice-toast-success {
+            border-color: var(--bs-success);
+            background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(25, 135, 84, 0.1) 100%);
+        }
+
+        .dice-toast-fail {
+            border-color: var(--bs-danger);
+            background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(220, 53, 69, 0.1) 100%);
+        }
+
+        .dice-toast-label {
+            font-size: 0.75rem;
+            color: var(--bs-secondary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .dice-toast-result {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .dice-toast-multi {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .dice-toast-formula {
+            display: inline;
+        }
+
+        .dice-toast-dice {
+            color: var(--bs-body-color);
+        }
+
+        .dice-toast-rolls {
+            color: var(--bs-primary);
+            margin: 0 0.15rem;
+        }
+
+        .dice-toast-mod {
+            color: var(--bs-secondary-color);
+        }
+
+        .dice-toast-equals {
+            color: var(--bs-secondary-color);
+            font-weight: normal;
+        }
+
+        .dice-toast-total {
+            color: var(--bs-body-color);
+        }
+
+        .dice-toast-replaced {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .dice-toast-shock {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-left: 0.25rem;
+        }
+
+        .dice-toast-arrow {
+            color: var(--bs-primary);
+        }
+
+        .dice-toast-shock-value {
+            font-weight: bold;
+            color: var(--bs-primary);
+        }
+
+        .dice-toast-shock-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--bs-secondary-color);
+        }
+
+        .dice-toast-status {
+            font-size: 1.2rem;
+        }
+
+        .dice-toast-success .dice-toast-status {
+            color: var(--bs-success);
+        }
+
+        .dice-toast-fail .dice-toast-status {
+            color: var(--bs-danger);
+        }
+
+        /* Rollable stat styling */
+        .rollable {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 2px;
+        }
+
+        .rollable:hover {
+            color: var(--bs-primary);
+        }
+
+        /* Navbar brand styling */
+        .navbar-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .navbar-brand-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .navbar-brand-subtitle {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        /* Active nav link indicator */
+        .nav-link.active {
+            font-weight: 600;
+        }
+    </style>
+
     {% block extra_head %}{% endblock %}
 </head>
-<body class="dark" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'tools:home' %}">
+            <i class="bi bi-book"></i>
+            <span class="navbar-brand-text">
+                <span class="navbar-brand-title">Gnosis</span>
+                <span class="navbar-brand-subtitle">xWN Rules Database</span>
+            </span>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar content -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <!-- Left side nav items -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Tools dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-tools me-1"></i>Tools
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'tools:combat_cheatsheet' %}">
+                            <i class="bi bi-crosshair me-2"></i>Combat Cheatsheet
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:encounter_cheatsheet' %}">
+                            <i class="bi bi-people me-2"></i>Encounter Cheatsheet
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:combat_tracker' %}">
+                            <i class="bi bi-list-ol me-2"></i>Combat Tracker
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- Compendium dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'tools:compendium_index' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-journal-text me-1"></i>Compendium
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='basics' %}">
+                            <i class="bi bi-star me-2"></i>Basics
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='survival' %}">
+                            <i class="bi bi-heart-pulse me-2"></i>Survival
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='combat' %}">
+                            <i class="bi bi-shield me-2"></i>Combat
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='equipment' %}">
+                            <i class="bi bi-backpack me-2"></i>Equipment
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='magic' %}">
+                            <i class="bi bi-magic me-2"></i>Magic
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='character' %}">
+                            <i class="bi bi-person me-2"></i>Character
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='campaign' %}">
+                            <i class="bi bi-map me-2"></i>Campaign
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'tools:compendium_section' section='reference' %}">
+                            <i class="bi bi-bookmark me-2"></i>Reference
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- Entities link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tools:entity_browse' %}">
+                        <i class="bi bi-grid-3x3 me-1"></i>Entities
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right side controls -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Info button -->
+                <button class="btn btn-outline-secondary btn-sm" type="button"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Made by John from DMK | xWN systems by Kevin Crawford">
+                    <i class="bi bi-info-circle"></i>
+                </button>
+
+                <!-- Language toggle -->
+                <button class="btn btn-outline-secondary btn-sm" type="button"
+                        hx-get="{% url 'tools:set_language' lang=other_lang %}"
+                        hx-swap="none"
+                        hx-on::after-request="sessionStorage.clear(); localStorage.removeItem('htmx-cache'); window.location.reload(true);"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Switch language">
+                    {% if current_lang == "en" %}
+                        <span class="fi fi-ua"></span> UK
+                    {% else %}
+                        <span class="fi fi-gb"></span> EN
+                    {% endif %}
+                </button>
+
+                <!-- Theme toggle -->
+                <button class="btn btn-outline-secondary btn-sm" type="button" id="theme-toggle"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Toggle theme">
+                    <i class="bi bi-moon-stars" id="theme-icon-dark"></i>
+                    <i class="bi bi-sun" id="theme-icon-light" style="display: none;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <!-- Dice Roll Result Toast -->
 <div x-data x-show="$store.dice?.showResult" x-cloak
@@ -230,7 +513,7 @@
                 <!-- Show shock replacement when applicable -->
                 <template x-if="$store.dice?.lastRoll?.useShock">
                     <span class="dice-toast-shock">
-                        <span class="dice-toast-arrow">→</span>
+                        <span class="dice-toast-arrow">-></span>
                         <span class="dice-toast-shock-value" x-text="$store.dice?.lastRoll?.shockValue"></span>
                         <span class="dice-toast-shock-label">shock</span>
                     </span>
@@ -256,191 +539,49 @@
     </div>
 </div>
 
-<style>
-    [x-cloak] { display: none !important; }
-
-    .dice-toast {
-        background: var(--pico-card-background-color);
-        border: 1px solid var(--pico-muted-border-color);
-        border-radius: var(--pico-border-radius);
-        padding: 0.75rem 1rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        min-width: 180px;
-    }
-
-    @keyframes dice-flash {
-        0% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-
-    .dice-toast-flash {
-        animation: dice-flash 0.3s ease-out;
-    }
-
-    .dice-toast-success {
-        border-color: #28a745;
-        background: linear-gradient(135deg, var(--pico-card-background-color) 0%, rgba(40, 167, 69, 0.1) 100%);
-    }
-
-    .dice-toast-fail {
-        border-color: #dc3545;
-        background: linear-gradient(135deg, var(--pico-card-background-color) 0%, rgba(220, 53, 69, 0.1) 100%);
-    }
-
-    .dice-toast-label {
-        font-size: 0.75rem;
-        color: var(--pico-muted-color);
-        margin-bottom: 0.25rem;
-    }
-
-    .dice-toast-result {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .dice-toast-multi {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .dice-toast-formula {
-        display: inline;
-    }
-
-    .dice-toast-dice {
-        color: var(--pico-color);
-    }
-
-    .dice-toast-rolls {
-        color: var(--pico-primary);
-        margin: 0 0.15rem;
-    }
-
-    .dice-toast-mod {
-        color: var(--pico-muted-color);
-    }
-
-    .dice-toast-equals {
-        color: var(--pico-muted-color);
-        font-weight: normal;
-    }
-
-    .dice-toast-total {
-        color: var(--pico-color);
-    }
-
-    .dice-toast-replaced {
-        text-decoration: line-through;
-        opacity: 0.5;
-    }
-
-    .dice-toast-shock {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        margin-left: 0.25rem;
-    }
-
-    .dice-toast-arrow {
-        color: var(--pico-primary);
-    }
-
-    .dice-toast-shock-value {
-        font-weight: bold;
-        color: var(--pico-primary);
-    }
-
-    .dice-toast-shock-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        color: var(--pico-muted-color);
-    }
-
-    .dice-toast-status {
-        font-size: 1.2rem;
-    }
-
-    .dice-toast-success .dice-toast-status {
-        color: #28a745;
-    }
-
-    .dice-toast-fail .dice-toast-status {
-        color: #dc3545;
-    }
-
-    /* Rollable stat styling */
-    .rollable {
-        cursor: pointer;
-        text-decoration: underline;
-        text-decoration-style: dotted;
-        text-underline-offset: 2px;
-    }
-
-    .rollable:hover {
-        color: var(--pico-primary);
-    }
-</style>
-
 <!-- Main content -->
-<main class="container">
-    <nav>
-        <ul>
-            <li><a href="{% url 'tools:combat_cheatsheet' %}">WWN Combat</a></li>
-            <li><a href="{% url 'tools:encounter_cheatsheet' %}">WWN Encounter</a></li>
-            <li><a href="{% url 'tools:combat_tracker' %}">Combat Tracker</a></li>
-        </ul>
-        <ul>
-            <li>
-                <a href="{% url 'tools:home' %}" style="text-decoration: none; color: inherit;">
-                    <hgroup style="text-align: center;">
-                        <h2>Welcome to Gnosis</h2>
-                        <p>Database of rules for xWN systems</p>
-                    </hgroup>
-                </a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <button data-placement="left" data-tooltip="Made by John from DMK | xWN systems by Kevin Crawford">❓
-                </button>
-            </li>
-            <li>
-                <button data-placement="left"
-                        data-tooltip="Switch language"
-                        hx-get="{% url 'tools:set_language' lang=other_lang %}"
-                        hx-swap="none"
-                        hx-on::after-request="sessionStorage.clear(); localStorage.removeItem('htmx-cache'); window.location.reload(true);">
-                    {% if current_lang == "en" %}🇺🇦{% else %}🇬🇧{% endif %}
-                </button>
-            </li>
-            <li>
-                <button data-placement="left" id="theme-toggle" data-tooltip="Toggle theme">🌓</button>
-            </li>
-        </ul>
-    </nav>
+<main class="container-fluid py-4">
     {% block content %}{% endblock %}
 </main>
 
-{% block extra_scripts %}
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+<!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+<script>
+    // Initialize Bootstrap tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     });
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIconDark = document.getElementById('theme-icon-dark');
+    const themeIconLight = document.getElementById('theme-icon-light');
+
+    function updateThemeIcon(theme) {
+        if (theme === 'dark') {
+            themeIconDark.style.display = 'inline';
+            themeIconLight.style.display = 'none';
+        } else {
+            themeIconDark.style.display = 'none';
+            themeIconLight.style.display = 'inline';
+        }
+    }
+
+    // Initialize icon based on current theme
+    updateThemeIcon(document.documentElement.getAttribute('data-bs-theme'));
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
 </script>
 
-{% endblock %}
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>

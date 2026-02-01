@@ -25,6 +25,13 @@ urlpatterns = [
     path("cheatsheets/calculate-challenge", views.calculate_challenge, name="calculate_challenge"),
     # Combat tracker
     path("combat-tracker", views.combat_tracker, name="combat_tracker"),
+    # Entity browser
+    path("entities/", views.entity_browse, name="entity_browse"),
+    path("entities/search/", views.entity_search, name="entity_search"),
+    # Compendium
+    path("compendium/", views.compendium_index, name="compendium_index"),
+    path("compendium/<str:section>/", views.compendium_section, name="compendium_section"),
+    path("compendium/<str:section>/<str:page>/", views.compendium_page, name="compendium_page"),
     # Language switcher - <str:lang> captures "en" or "uk" from URL
     path("set-language/<str:lang>", views.set_language, name="set_language"),
     # Health check for deployment monitoring

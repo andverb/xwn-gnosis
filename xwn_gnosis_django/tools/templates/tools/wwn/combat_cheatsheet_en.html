@@ -1,582 +1,449 @@
-{% extends "tools/base.html" %}
+{% extends "tools/wwn/cheatsheet_base.html" %}
 
 {% block title %}WWN Combat Cheatsheet - Gnosis{% endblock %}
 
-{% block extra_head %}
+{% block cheatsheet_styles %}
 <style>
-    /* Cheatsheet-specific styles */
-    .cheatsheet-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-    }
-
-    @media (max-width: 1200px) {
-        .cheatsheet-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .cheatsheet-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .cheatsheet-card {
-        background: var(--pico-card-background-color);
-        border: 1px solid var(--pico-muted-border-color);
-        border-radius: var(--pico-border-radius);
-        padding: 1rem;
-    }
-
-    .cheatsheet-card h3 {
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--pico-primary);
-    }
-
-    .action-type {
-        display: inline-block;
-        padding: 0.15rem 0.5rem;
-        border-radius: 0.25rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-    }
-
-    .action-main { background: #0d6efd; color: white; }
-    .action-move { background: #198754; color: white; }
-    .action-onturn { background: #6f42c1; color: white; }
-    .action-instant { background: #dc3545; color: white; }
-    .action-special { background: #fd7e14; color: white; }
-
-    .dice {
-        font-family: monospace;
-        font-weight: bold;
-        color: var(--pico-primary);
-    }
-
-    .modifier-positive { color: #198754; font-weight: bold; }
-    .modifier-negative { color: #dc3545; font-weight: bold; }
-
-    .action-item {
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
-    .action-item:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-
-    .action-item h4 {
-        margin: 0 0 0.25rem 0;
-        font-size: 1rem;
-    }
-
-    .action-item p, .action-item ul,
-    .cheatsheet-card > ul {
-        margin: 0;
-        font-size: 0.9rem;
-        color: var(--pico-muted-color);
-    }
-
-    .action-item ul,
-    .cheatsheet-card > ul {
-        padding-left: 1.2rem;
-        margin-top: 0.25rem;
-    }
-
-    .action-item li,
-    .cheatsheet-card > ul > li {
-        margin-bottom: 0.25rem;
-    }
-
-    .formula-box {
-        background: var(--pico-code-background-color);
-        padding: 0.75rem;
-        border-radius: 0.25rem;
-        font-family: monospace;
-        font-size: 0.85rem;
-        margin: 0.5rem 0;
-    }
-
-    .formula-stacked {
-        background: var(--pico-code-background-color);
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.25rem;
-        font-size: 0.85rem;
-        margin: 0.5rem 0;
-    }
-
-    .formula-stacked .formula-line {
-        display: block;
-        padding: 0.1rem 0;
-        color: var(--pico-muted-color);
-    }
-
-    .formula-stacked .formula-line:first-child {
-        color: var(--pico-color);
-    }
-
-    .formula-stacked .formula-op {
-        color: var(--pico-primary);
-        font-weight: bold;
-        margin-right: 0.25rem;
-    }
-
-    .formula-stacked .formula-note {
-        font-size: 0.75rem;
-        opacity: 0.7;
-    }
-
-    .quick-ref {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-    }
-
-    .quick-ref-item {
-        background: var(--pico-code-background-color);
-        padding: 0.5rem;
-        border-radius: 0.25rem;
-        text-align: center;
-    }
-
-    .quick-ref-item strong {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--pico-muted-color);
-        margin-bottom: 0.25rem;
-    }
-
-    .modifier-table {
-        font-size: 0.8rem;
-        width: 100%;
-        margin: 0.5rem 0;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0 1rem;
-    }
-
-    .modifier-table .mod-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.25rem 0;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
-    .modifier-table .mod-row .mod-desc {
-        color: var(--pico-muted-color);
-    }
-
-    @media (max-width: 768px) {
-        .modifier-table {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Single column modifier list */
-    .modifier-list {
-        font-size: 0.8rem;
-    }
-
-    .modifier-list .mod-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.2rem 0;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
-    .modifier-list .mod-row:last-child {
-        border-bottom: none;
-    }
-
-    .modifier-list .mod-desc {
-        color: var(--pico-muted-color);
-    }
-
-    /* Column span utilities */
-    .full-width {
-        grid-column: 1 / -1;
-    }
-
-    .span-2 {
-        grid-column: span 2;
-    }
-
-    @media (max-width: 768px) {
-        .span-2 {
-            grid-column: span 1;
-        }
-    }
-
-    .back-link {
-        margin-bottom: 1rem;
-    }
+    /* Action type badges */
+    .action-main { background-color: #0d6efd !important; }
+    .action-move { background-color: #198754 !important; }
+    .action-onturn { background-color: #6f42c1 !important; }
+    .action-instant { background-color: #dc3545 !important; }
+    .action-special { background-color: #fd7e14 !important; }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="h2">WWN Combat Cheatsheet</h1>
+    </div>
 
-<hgroup style="text-align: center; margin-bottom: 2rem;">
-    <h1>WWN Combat Cheatsheet</h1>
-</hgroup>
-
-<!-- Action Types Overview -->
-<section style="margin-bottom: 2rem;">
-    <div class="quick-ref" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="quick-ref-item">
-            <span class="action-type action-main">Main</span>
-            <strong>1 per round</strong>
-            Attack, cast, use skill...
+    <!-- Action Types Overview -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="quick-ref-item">
+                <span class="badge action-main">Main</span>
+                <strong>1 per round</strong>
+                Attack, cast, use skill...
+            </div>
         </div>
-        <div class="quick-ref-item">
-            <span class="action-type action-move">Move</span>
-            <strong>1 per round</strong>
-            30' (half for climb/swim)
+        <div class="col-6 col-md-3">
+            <div class="quick-ref-item">
+                <span class="badge action-move">Move</span>
+                <strong>1 per round</strong>
+                30' (half for climb/swim)
+            </div>
         </div>
-        <div class="quick-ref-item">
-            <span class="action-type action-onturn">On Turn</span>
-            <strong>GM discretion (AKA Bonus action)</strong>
-            Draw item, fall prone...
+        <div class="col-6 col-md-3">
+            <div class="quick-ref-item">
+                <span class="badge action-onturn">On Turn</span>
+                <strong>GM discretion (AKA Bonus action)</strong>
+                Draw item, fall prone...
+            </div>
         </div>
-        <div class="quick-ref-item">
-            <span class="action-type action-instant">Instant</span>
-            <strong>Anytime (AKA Reaction)</strong>
-            Fast, simple actions
+        <div class="col-6 col-md-3">
+            <div class="quick-ref-item">
+                <span class="badge action-instant">Instant</span>
+                <strong>Anytime (AKA Reaction)</strong>
+                Fast, simple actions
+            </div>
         </div>
     </div>
-</section>
 
-<div class="cheatsheet-grid">
+    <!-- Main Grid -->
+    <div class="row g-3">
 
-    <!-- Hit Roll Modifiers -->
-    <article class="cheatsheet-card">
-        <h3>Hit Roll Modifiers</h3>
+        <!-- Hit Roll Modifiers -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Hit Roll Modifiers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="modifier-list">
+                        <div class="mod-row">
+                            <span class="mod-desc">Shoot/melee adjacent prone foe</span>
+                            <span class="modifier-positive">+2</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Half Cover</span>
+                            <span class="modifier-negative">-2</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Shoot outside first range</span>
+                            <span class="modifier-negative">-2</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Shoot at distant prone foe</span>
+                            <span class="modifier-negative">-2</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Near-Complete Cover</span>
+                            <span class="modifier-negative">-4</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Thrown while being meleed</span>
+                            <span class="modifier-negative">-4</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Melee attack while prone</span>
+                            <span class="modifier-negative">-4</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Making a Snap Attack</span>
+                            <span class="modifier-negative">-4</span>
+                        </div>
+                        <div class="mod-row">
+                            <span class="mod-desc">Shoot bow while being meleed</span>
+                            <strong>N/A</strong>
+                        </div>
+                    </div>
 
-        <div class="modifier-list">
-                <div class="mod-row">
-                    <span class="mod-desc">Shoot/melee adjacent prone foe</span>
-                    <span class="modifier-positive">+2</span>
+                    <h6 class="mt-3 pt-2 border-top">Magic in Combat</h6>
+                    <ul class="small text-body-secondary ps-3 mb-0">
+                        <li><strong>Can't cast Spells if:</strong> damaged this round (incl. Shock), drew/stowed item with casting hand, or badly jostled (grappled/pushed)</li>
+                        <li><strong>If damaged while casting</strong> (targeted by Snap Attack, for example) = spell fizzles &amp; slot is wasted</li>
+                        <li><strong>Arts can't be interrupted in this way</strong> - only Spells can</li>
+                        <li><strong>Armour restriction:</strong> can't cast spells or use arts while wearing armor, restrictive clothing, using a shield - this limitation can be overriden by Foci or class features</li>
+                        <li><strong>General advice:</strong> be wary of <strong>Snap attacks</strong> and <strong>Swarm attacks</strong> - they are the most common ways to interrupt your Spells. Your allies can <strong>Screen an ally</strong> as a way to protect you.</li>
+                    </ul>
                 </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Half Cover</span>
-                    <span class="modifier-negative">-2</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Shoot outside first range</span>
-                    <span class="modifier-negative">-2</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Shoot at distant prone foe</span>
-                    <span class="modifier-negative">-2</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Near-Complete Cover</span>
-                    <span class="modifier-negative">-4</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Thrown while being meleed</span>
-                    <span class="modifier-negative">-4</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Melee attack while prone</span>
-                    <span class="modifier-negative">-4</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Making a Snap Attack</span>
-                    <span class="modifier-negative">-4</span>
-                </div>
-                <div class="mod-row">
-                    <span class="mod-desc">Shoot bow while being meleed</span>
-                    <strong>N/A</strong>
-                </div>
-            </div>
-
-        <h4 style="margin-top: 1rem; margin-bottom: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--pico-muted-border-color);">Magic in Combat</h4>
-        <ul style="margin: 0; font-size: 0.9rem; color: var(--pico-muted-color); padding-left: 1.2rem;">
-            <li><strong>Can't cast Spells  if:</strong> damaged this round (incl. Shock), drew/stowed item with casting hand, or badly jostled (grappled/pushed)</li>
-            <li><strong>If damaged while casting</strong> (targeted by Snap Attack, for example) = spell fizzles &amp; slot is wasted</li>
-            <li><strong>Arts can't be interrupted in this way</strong> - only Spells can</li>
-            <li><strong>Armour restriction:</strong> can't cast spells or use arts while wearing armor, restrictive clothing, using a shield - this limitation can be overriden by Foci or class features</li>
-            <li><strong>General advice:</strong> be wary of <strong>Snap attacks</strong> and <strong>Swarm attacks</strong> - they are the most common ways to interrupt your Spells. Your allies can <strong>Screen an ally</strong> as a way to protect you.</li>
-        </ul>
-
-    </article>
-
-    <!-- Hit, Damage & Shock -->
-    <article class="cheatsheet-card">
-        <h3>Hit, Damage & Shock</h3>
-
-        <div class="action-item">
-            <h4>Hit Bonus</h4>
-            <div class="formula-stacked">
-                <span class="formula-line">Class Attack Bonus</span>
-                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
-                <span class="formula-line"><span class="formula-op">+</span>Skill <span class="formula-note">(<span class="modifier-negative">-2</span> if Skill &lt; 0)</span></span>
-                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
-                <span class="formula-line"><span class="formula-op">+</span>Circumstance Mods</span>
             </div>
         </div>
 
-        <div class="action-item">
-            <h4>Damage Rolls</h4>
-            <div class="formula-stacked">
-                <span class="formula-line">Weapon Damage Die</span>
-                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
-                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+        <!-- Hit, Damage & Shock -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Hit, Damage &amp; Shock</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Hit Bonus</h5>
+                        <div class="formula-box">
+                            <span class="formula-line">Class Attack Bonus</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Skill <span class="formula-note">(<span class="modifier-negative">-2</span> if Skill &lt; 0)</span></span>
+                            <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Circumstance Mods</span>
+                        </div>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Damage Rolls</h5>
+                        <div class="formula-box">
+                            <span class="formula-line">Weapon Damage Die</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+                        </div>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Shock Damage</h5>
+                        <div class="formula-box">
+                            <span class="formula-line">Weapon Shock</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
+                            <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+                        </div>
+                        <ul class="small text-body-secondary ps-3 mb-0">
+                            <li>Defender announces AC so roller knows if Shock applies</li>
+                            <li>On a <strong>miss</strong>: weapon inflicts Shock if target's AC &le; weapon's Shock value</li>
+                            <li>Throwable weapon's Shock only applies to melee attacks</li>
+                            <li>On a <strong>hit</strong>: damage can't be &lt; Shock if target would be susceptible</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="action-item">
-            <h4>Shock Damage</h4>
-            <div class="formula-stacked">
-                <span class="formula-line">Weapon Shock</span>
-                <span class="formula-line"><span class="formula-op">+</span>Attribute Mod</span>
-                <span class="formula-line"><span class="formula-op">+</span>Foci / Abilities / Magic / Weapon Mods</span>
+        <!-- Common Actions -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Common Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Make an Attack</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Melee a foe within range or shoot a foe with a Ranged attack using a Readied weapon.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Cast a Spell</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Can't cast if: damaged this Round, drawn/sheathed item with casting hand, or badly jostled. Damage while casting = spell fizzles &amp; slot wasted.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Use a Skill</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Perform a Skill that can be done in 6 secs (stabilize wounded ally, turn a crank...)</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Ready/Stow an Item</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Draw a weapon or item from a pack. Changes from Readied to Stowed, or vice versa.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Dash</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Take additional Move action this turn (any of them).</p>
+                    </div>
+                </div>
             </div>
-            <ul>
-                <li>Defender announces AC so roller knows if Shock applies</li>
-                <li>On a <strong>miss</strong>: weapon inflicts Shock if target's AC &le; weapon's Shock value</li>
-                <li>Throwable weapon's Shock only applies to melee attacks</li>
-                <li>On a <strong>hit</strong>: damage can't be &lt; Shock if target would be susceptible</li>
-            </ul>
-        </div>
-    </article>
-
-    <!-- Make an Attack & Cast a Spell -->
-    <article class="cheatsheet-card">
-        <h3>Common Actions</h3>
-
-        <div class="action-item">
-            <h4>Make an Attack</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Melee a foe within range or shoot a foe with a Ranged attack using a Readied weapon.</p>
         </div>
 
-        <div class="action-item">
-            <h4>Cast a Spell</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Can't cast if: damaged this Round, drawn/sheathed item with casting hand, or badly jostled. Damage while casting = spell fizzles &amp; slot wasted.</p>
+        <!-- Move Actions -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Move Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Run</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <p>Move normal combat movement (typically 30'). Cannot split movement. Half speed to crawl, climb, swim, difficult terrain...</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Stand</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <p>Gets up from prone, gathering any dropped belongings.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Hold an Action</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <span class="badge action-instant mb-1">Instant</span>
+                        <p>Hold remainder of your Actions until later in the Round, <strong>activating them as an Instant Action.</strong></p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Pick Up an Item</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <p>Grab an object with a free hand. Picked up objects are "Readied."</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Screen an Ally</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <ul class="ps-3 mb-0">
+                            <li>Select an ally within 10' to Screen until your next turn</li>
+                            <li>Attackers must succeed opposed Str or Dex check (their weapon Skill vs screener's weapon Skill). Failure = attack directed at screener</li>
+                            <li>Can screen # of attackers = Combat Skill. Skill &lt; 1 can't effectively screen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Use a Skill</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Perform a Skill that can be done in 6 secs (stabilize wounded ally, turn a crank...)</p>
+        <!-- On Turn & Instant Actions -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">On Turn &amp; Instant</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Go Prone</h5>
+                        <span class="badge action-onturn mb-1">On Turn</span>
+                        <p>Fall flat. Distant ranged attackers: <span class="modifier-negative">-2</span> to hit. Adjacent foes: <span class="modifier-positive">+2</span> to hit.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Delay an Action</h5>
+                        <span class="badge action-onturn mb-1">On Turn</span>
+                        <p>Delay remainder of your Actions this turn <strong>until AFTER a specified target has acted.</strong></p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Drop an Item</h5>
+                        <span class="badge action-instant mb-1">Instant</span>
+                        <p>Drop an item to free up your hands.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Snap Attack</h5>
+                        <span class="badge action-instant mb-1">Instant</span>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Attack outside your turn. <span class="modifier-negative">-4</span> to hit &amp; uses your Main Action for the turn. GM resolves order of multiple snap attacks. Typically reserved for PCs or powerful combatants (No Name = No Snap attacks).</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Total Defense</h5>
+                        <span class="badge action-instant mb-1">Instant</span>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Costs Main Action (can't use if Main already spent). Avoids all Shock damage &amp; gain <span class="modifier-positive">+2</span> AC until next turn. CAN prevent Shock from Swarm attack.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Ready/Stow an Item</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Draw a weapon or item from a pack. Changes from Readied to Stowed, or vice versa.</p>
+        <!-- Special -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Special</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Shove</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Roll to hit. On success: no damage, but roll opposed Str/Punch or Str/Exert check. On success: attacker chooses whether opponent falls prone or is knocked back 10'.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Shatter a Shield</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Requires axe, mace, Foci-improved unarmed attack... Roll to hit. Success = no damage, but roll opposed Str/Stab check (<span class="modifier-positive">+1</span> to defender). Success = shield breaks. Magic shields immune. Craft-0 &amp; 1 scene to repair.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Fighting Withdrawal</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Disengage from foes within melee range, preventing free attacks. You still must Move.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Charge</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <span class="badge action-move mb-1">Move</span>
+                        <p>Requires min 10' to build momentum. Move x2 normal Movement Speed in a straight line before making a melee or thrown attack at <span class="modifier-positive">+2</span> to hit. After the attack: <span class="modifier-negative">-2</span> to AC for rest of Round.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Dash</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Take additional Move action this turn (any of them).</p>
-        </div>
-    </article>
-
-    <!-- Move Actions -->
-    <article class="cheatsheet-card">
-        <h3>Move Actions</h3>
-
-        <div class="action-item">
-            <h4>Run</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Move normal combat movement (typically 30'). Cannot split movement. Half speed to crawl, climb, swim, difficult terrain...</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Stand</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Gets up from prone, gathering any dropped belongings.</p>
+        <!-- Swarm Attack -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Swarm Attack</h5>
+                </div>
+                <div class="card-body">
+                    <span class="badge action-main mb-2">Main</span>
+                    <ul class="ps-3 mb-0 small text-body-secondary">
+                        <li>Each willing attacker takes this Action, targeting a foe within range</li>
+                        <li>Once final attacker has acted, 1 assailant makes an immediate attack (<span class="modifier-positive">+2</span> to hit &amp; <span class="modifier-positive">+1</span> to damage per additional assailant, max <span class="modifier-positive">+6/+3</span>)</li>
+                        <li>Damage can't exceed max of their normal attack &amp; is not applied to Shock</li>
+                        <li>Even on a miss, Shock always harms target regardless of AC, shield use, or Foci immunity to Shock</li>
+                        <li><strong>Total Defense CAN prevent this Shock damage</strong></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Hold an Action</h4>
-            <span class="action-type action-move">Move</span> <span class="action-type action-instant">Instant</span>
-            <p>Hold remainder of your Actions until later in the Round, <strong>activating them as an Instant Action.</strong></p>
+        <!-- Grapple -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Grapple a Foe</h5>
+                </div>
+                <div class="card-body">
+                    <span class="badge action-main mb-2">Main</span>
+                    <ul class="ps-3 mb-0 small text-body-secondary">
+                        <li>Roll to hit with Punch. On success: no damage, but roll opposed Str/Punch check. On success: target is grappled</li>
+                        <li>While grappled: neither attacker nor defender can move, nor fight with anything but unarmed attacks</li>
+                        <li><strong>To escape:</strong> defender uses Main Action &amp; rolls 1 opposed Str/Punch check vs each grappling attacker</li>
+                        <li>End of each Round: defender takes damage as if hit with Punch from each grappling foe</li>
+                        <li>Target larger than attacker: <span class="modifier-negative">-2</span> to Grapple Check, or <span class="modifier-negative">-4</span> for barely plausible targets</li>
+                        <li><strong>To move grappled foe:</strong> Main Action + opposed Str/Punch. Success = move target 10' with you, or throw 5' &amp; knock prone. Failure = defender breaks free</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Pick Up an Item</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Grab an object with a free hand. Picked up objects are "Readied."</p>
+        <!-- Execution Attacks -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Execution Attacks</h5>
+                </div>
+                <div class="card-body">
+                    <span class="badge action-main mb-2">Main</span>
+                    <ul class="ps-3 mb-0 small text-body-secondary">
+                        <li>Requires: target oblivious of danger, 1 min setup time, &amp; a weapon (unless Foci/ability states otherwise)</li>
+                        <li>Target's AC is irrelevant (assuming weapon can harm them)</li>
+                        <li><strong>Ranged:</strong> Dex/Shoot check. Point Blank: DC6. Normal Range: DC8. Extreme Range: DC10</li>
+                        <li><strong>Melee:</strong> Always hits</li>
+                        <li>Warrior can use Veteran's Luck only to reroll a failed check</li>
+                        <li><strong>If hit:</strong> target makes Physical Save at penalty = attacker's relevant Skill. Fail = Mortally Wounded (or unconscious if non-lethal &amp; chosen). Success = Max damage</li>
+                        <li>Attacking unconscious/incapacitated targets always leaves them Mortally Wounded</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Screen an Ally</h4>
-            <span class="action-type action-move">Move</span>
-            <ul>
-                <li>Select an ally within 10' to Screen until your next turn</li>
-                <li>Attackers must succeed opposed Str or Dex check (their weapon Skill vs screener's weapon Skill). Failure = attack directed at screener</li>
-                <li>Can screen # of attackers = Combat Skill. Skill &lt; 1 can't effectively screen</li>
-            </ul>
-        </div>
-    </article>
+        <!-- Reload -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Reload Ranged Weapon</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Slow Reload (crossbow)</h5>
+                        <span class="badge action-main mb-1">Main</span>
+                        <p>Reload a weapon with the Slow Reload property.</p>
+                    </div>
 
-    <!-- On Turn & Instant Actions -->
-    <article class="cheatsheet-card">
-        <h3>On Turn & Instant</h3>
+                    <div class="action-item">
+                        <h5>Reload (bow, untrained)</h5>
+                        <span class="badge action-move mb-1">Move</span>
+                        <p>Reload a weapon with the Reload property untrained or without a quiver readied.</p>
+                    </div>
 
-        <div class="action-item">
-            <h4>Go Prone</h4>
-            <span class="action-type action-onturn">On Turn</span>
-            <p>Fall flat. Distant ranged attackers: <span class="modifier-negative">-2</span> to hit. Adjacent foes: <span class="modifier-positive">+2</span> to hit.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Delay an Action</h4>
-            <span class="action-type action-onturn">On Turn</span>
-            <p>Delay remainder of your Actions this turn <strong>until AFTER a specified target has acted.</strong></p>
-        </div>
-
-        <div class="action-item">
-            <h4>Drop an Item</h4>
-            <span class="action-type action-instant">Instant</span>
-            <p>Drop an item to free up your hands.</p>
+                    <div class="action-item">
+                        <h5>Reload (bow, trained)</h5>
+                        <span class="badge action-onturn mb-1">On Turn</span>
+                        <p>Reload a weapon with Reload property with Shoot+1 &amp; a readied quiver.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Snap Attack</h4>
-            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
-            <p>Attack outside your turn. <span class="modifier-negative">-4</span> to hit &amp; uses your Main Action for the turn. GM resolves order of multiple snap attacks. Typically reserved for PCs or powerful combatants (No Name = No Snap attacks).</p>
+        <!-- Dual Wielding -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Dual Wielding</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="ps-3 mb-0 small text-body-secondary">
+                        <li>Requires Stab+1. <span class="modifier-positive">+2</span> bonus to Damage (NOT Shock Damage). <span class="modifier-negative">-1</span> To Hit. Choose which weapon hits. Unarmed can't dual-wield.</li>
+                        <li>Shields can be used for dual-wielding attacks, but grant no AC bonus or Shock protection until the wielder's next turn if used so.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Total Defense</h4>
-            <span class="action-type action-instant">Instant</span> <span class="action-type action-main">Main</span>
-            <p>Costs Main Action (can't use if Main already spent). Avoids all Shock damage &amp; gain <span class="modifier-positive">+2</span> AC until next turn. CAN prevent Shock from Swarm attack.</p>
-        </div>
-    </article>
-
-    <!-- Special -->
-    <article class="cheatsheet-card">
-        <h3>Special</h3>
-
-        <div class="action-item">
-            <h4>Shove</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Roll to hit. On success: no damage, but roll opposed Str/Punch or Str/Exert check. On success: attacker chooses whether opponent falls prone or is knocked back 10'.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Shatter a Shield</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Requires axe, mace, Foci-improved unarmed attack... Roll to hit. Success = no damage, but roll opposed Str/Stab check (<span class="modifier-positive">+1</span> to defender). Success = shield breaks. Magic shields immune. Craft-0 &amp; 1 scene to repair.</p>
+        <!-- Mounted Combat -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Mounted Combat</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="ps-3 mb-0 small text-body-secondary">
+                        <li>Riders w/ &lt; Ride-0 suffer <span class="modifier-negative">-1</span> to hit. Longbows, rifles, &amp; spells are unusable while riding.</li>
+                        <li>Mounts share their rider's Initiative, but have their own Main &amp; Move Action, which they can split around their rider's actions.</li>
+                        <li>Mounting or dismounting requires a Move Action.</li>
+                        <li>Trained war-animals can attack, but ordinary riding beasts fight only in self-defense &amp; require a Morale or Instinct check each Round or flee w/ their rider. A rider can force obedience w/ a Cha/Ride or Dex/Ride check made as a Move Action.</li>
+                        <li>A mount reduced to 0HP dumps its rider prone as it falls.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="action-item">
-            <h4>Fighting Withdrawal</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Disengage from foes within melee range, preventing free attacks. You still must Move.</p>
-        </div>
+    </div>
 
-        <div class="action-item">
-            <h4>Charge</h4>
-            <span class="action-type action-main">Main</span> <span class="action-type action-move">Move</span>
-            <p>Requires min 10' to build momentum. Move x2 normal Movement Speed in a straight line before making a melee or thrown attack at <span class="modifier-positive">+2</span> to hit. After the attack: <span class="modifier-negative">-2</span> to AC for rest of Round.</p>
-        </div>
-    </article>
-
-    <!-- Swarm Attack -->
-    <article class="cheatsheet-card">
-        <h3>Swarm Attack</h3>
-        <span class="action-type action-main">Main</span>
-        <ul>
-            <li>Each willing attacker takes this Action, targeting a foe within range</li>
-            <li>Once final attacker has acted, 1 assailant makes an immediate attack (<span class="modifier-positive">+2</span> to hit &amp; <span class="modifier-positive">+1</span> to damage per additional assailant, max <span class="modifier-positive">+6/+3</span>)</li>
-            <li>Damage can't exceed max of their normal attack &amp; is not applied to Shock</li>
-            <li>Even on a miss, Shock always harms target regardless of AC, shield use, or Foci immunity to Shock</li>
-            <li><strong>Total Defense CAN prevent this Shock damage</strong></li>
-        </ul>
-    </article>
-
-    <!-- Grapple -->
-    <article class="cheatsheet-card span-2">
-        <h3>Grapple a Foe</h3>
-        <span class="action-type action-main">Main</span>
-        <ul>
-            <li>Roll to hit with Punch. On success: no damage, but roll opposed Str/Punch check. On success: target is grappled</li>
-            <li>While grappled: neither attacker nor defender can move, nor fight with anything but unarmed attacks</li>
-            <li><strong>To escape:</strong> defender uses Main Action &amp; rolls 1 opposed Str/Punch check vs each grappling attacker</li>
-            <li>End of each Round: defender takes damage as if hit with Punch from each grappling foe</li>
-            <li>Target larger than attacker: <span class="modifier-negative">-2</span> to Grapple Check, or <span class="modifier-negative">-4</span> for barely plausible targets</li>
-            <li><strong>To move grappled foe:</strong> Main Action + opposed Str/Punch. Success = move target 10' with you, or throw 5' &amp; knock prone. Failure = defender breaks free</li>
-        </ul>
-    </article>
-
-    <!-- Execution Attacks -->
-    <article class="cheatsheet-card span-2">
-        <h3>Execution Attacks</h3>
-        <span class="action-type action-main">Main</span>
-        <ul>
-            <li>Requires: target oblivious of danger, 1 min setup time, &amp; a weapon (unless Foci/ability states otherwise)</li>
-            <li>Target's AC is irrelevant (assuming weapon can harm them)</li>
-            <li><strong>Ranged:</strong> Dex/Shoot check. Point Blank: DC6. Normal Range: DC8. Extreme Range: DC10</li>
-            <li><strong>Melee:</strong> Always hits</li>
-            <li>Warrior can use Veteran's Luck only to reroll a failed check</li>
-            <li><strong>If hit:</strong> target makes Physical Save at penalty = attacker's relevant Skill. Fail = Mortally Wounded (or unconscious if non-lethal &amp; chosen). Success = Max damage</li>
-            <li>Attacking unconscious/incapacitated targets always leaves them Mortally Wounded</li>
-        </ul>
-    </article>
-
-    <!-- Reload -->
-    <article class="cheatsheet-card">
-        <h3>Reload Ranged Weapon</h3>
-
-        <div class="action-item">
-            <h4>Slow Reload (crossbow)</h4>
-            <span class="action-type action-main">Main</span>
-            <p>Reload a weapon with the Slow Reload property.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Reload (bow, untrained)</h4>
-            <span class="action-type action-move">Move</span>
-            <p>Reload a weapon with the Reload property untrained or without a quiver readied.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Reload (bow, trained)</h4>
-            <span class="action-type action-onturn">On Turn</span>
-            <p>Reload a weapon with Reload property with Shoot+1 &amp; a readied quiver.</p>
-        </div>
-    </article>
-
-    <!-- Dual Wielding -->
-    <article class="cheatsheet-card">
-        <h3>Dual Wielding</h3>
-        <ul>
-            <li>Requires Stab+1. <span class="modifier-positive">+2</span> bonus to Damage (NOT Shock Damage). <span class="modifier-negative">-1</span> To Hit. Choose which weapon hits. Unarmed can't dual-wield.</li>
-            <li>Shields can be used for dual-wielding attacks, but grant no AC bonus or Shock protection until the wielder's next turn if used so.</li>
-        </ul>
-    </article>
-
-    <!-- Mounted Combat -->
-    <article class="cheatsheet-card span-2">
-        <h3>Mounted Combat</h3>
-        <ul>
-            <li>Riders w/ &lt; Ride-0 suffer <span class="modifier-negative">-1</span> to hit. Longbows, rifles, &amp; spells are unusable while riding.</li>
-            <li>Mounts share their rider's Initiative, but have their own Main &amp; Move Action, which they can split around their rider's actions.</li>
-            <li>Mounting or dismounting requires a Move Action.</li>
-            <li>Trained war-animals can attack, but ordinary riding beasts fight only in self-defense &amp; require a Morale or Instinct check each Round or flee w/ their rider. A rider can force obedience w/ a Cha/Ride or Dex/Ride check made as a Move Action.</li>
-            <li>A mount reduced to 0HP dumps its rider prone as it falls.</li>
-        </ul>
-    </article>
-
+    <footer class="text-center mt-4 pt-3 border-top">
+        <small class="text-body-secondary">WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
+    </footer>
 </div>
-
-<footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
-    <small>WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
-</footer>
 {% endblock %}

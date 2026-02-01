@@ -1,97 +1,29 @@
-{% extends "tools/base.html" %}
+{% extends "tools/wwn/cheatsheet_base.html" %}
 
 {% block title %}Encounter Cheatsheet - Gnosis{% endblock %}
 
-{% block extra_head %}
+{% block cheatsheet_styles %}
 <style>
-    /* Alpine.js cloak */
-    [x-cloak] { display: none !important; }
-    /* Cheatsheet-specific styles */
-    .cheatsheet-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-    }
-
-    @media (max-width: 1200px) {
-        .cheatsheet-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .cheatsheet-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .cheatsheet-card {
-        background: var(--pico-card-background-color);
-        border: 1px solid var(--pico-muted-border-color);
-        border-radius: var(--pico-border-radius);
-        padding: 1rem;
-    }
-
-    .cheatsheet-card h3 {
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--pico-primary);
-    }
-
-    .dice {
-        font-family: monospace;
-        font-weight: bold;
-        color: var(--pico-primary);
-        cursor: pointer;
-        padding: 0.1rem 0.4rem;
-        border-radius: 0.25rem;
-        transition: all 0.15s ease;
-    }
-
-    .dice:hover {
-        background-color: var(--pico-primary-focus);
-    }
-
-    .dice.rolled {
-        background-color: var(--pico-primary);
-        color: white;
-    }
-
+    /* Compact table */
     .compact-table {
         width: 100%;
         font-size: 0.85rem;
-        border-collapse: collapse;
         margin: 0.5rem 0;
     }
-
-    .compact-table th,
-    .compact-table td {
-        padding: 0.3rem 0.5rem;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
     .compact-table th {
-        text-align: left;
         font-weight: 600;
-        color: var(--pico-muted-color);
+        color: var(--bs-secondary-color);
         font-size: 0.75rem;
         text-transform: uppercase;
     }
-
     .compact-table td:first-child {
         font-weight: bold;
-        color: var(--pico-primary);
+        color: var(--bs-primary);
         width: 3rem;
         text-align: center;
     }
-
     .compact-table td:last-child {
-        color: var(--pico-muted-color);
-    }
-
-    .compact-table tbody tr:last-child td {
-        border-bottom: none;
+        color: var(--bs-secondary-color);
     }
 
     /* Turn Tracker */
@@ -100,43 +32,37 @@
         border-collapse: collapse;
         margin-bottom: 0.5rem;
     }
-
     .turn-table th,
     .turn-table td {
         padding: 0.25rem;
         text-align: center;
-        border: 1px solid var(--pico-muted-border-color);
+        border: 1px solid var(--bs-border-color);
     }
-
     .turn-table th {
         font-size: 0.7rem;
         font-weight: 600;
-        color: var(--pico-muted-color);
-        background: var(--pico-code-background-color);
+        color: var(--bs-secondary-color);
+        background: var(--bs-tertiary-bg);
     }
-
     .turn-table .row-label {
         font-size: 0.7rem;
         font-weight: 600;
-        color: var(--pico-muted-color);
-        background: var(--pico-code-background-color);
+        color: var(--bs-secondary-color);
+        background: var(--bs-tertiary-bg);
         width: 3rem;
     }
-
     .turn-table input[type="checkbox"] {
         margin: 0;
         width: 1.1rem;
         height: 1.1rem;
     }
-
     .turn-legend {
         display: flex;
         gap: 1rem;
         align-items: center;
         font-size: 0.75rem;
-        color: var(--pico-muted-color);
+        color: var(--bs-secondary-color);
     }
-
     .turn-table .reset-btn {
         width: 1.5rem;
         height: 1.5rem;
@@ -144,108 +70,37 @@
         font-size: 0.9rem;
         line-height: 1;
         margin: 0;
-        min-width: auto;
     }
 
-    .time-costs {
-        font-size: 0.85rem;
-        color: var(--pico-muted-color);
+    /* Formula box (centered, monospace - encounter specific) */
+    .formula-box {
+        font-family: monospace;
+        font-size: 1rem;
+        text-align: center;
+        padding: 0.75rem;
     }
 
-    .modifier-positive { color: #198754; font-weight: bold; }
-    .modifier-negative { color: #dc3545; font-weight: bold; }
-
+    /* Variant rule styling */
     .variant {
         color: #6f42c1;
         cursor: help;
         border-bottom: 1px dotted #6f42c1;
     }
-
-    [data-theme="dark"] .variant {
+    [data-bs-theme="dark"] .variant {
         color: #b794f6;
         border-bottom-color: #b794f6;
     }
 
-    .action-item {
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
-    .action-item:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-
-    .action-item h4 {
-        margin: 0 0 0.25rem 0;
-        font-size: 1rem;
-    }
-
-    .action-item p, .action-item ul,
-    .cheatsheet-card > ul {
-        margin: 0;
-        font-size: 0.9rem;
-        color: var(--pico-muted-color);
-    }
-
-    .action-item ul,
-    .cheatsheet-card > ul {
-        padding-left: 1.2rem;
-        margin-top: 0.25rem;
-    }
-
-    .action-item li,
-    .cheatsheet-card > ul > li {
-        margin-bottom: 0.25rem;
-    }
-
-    .formula-box {
-        background: var(--pico-code-background-color);
-        padding: 0.75rem;
-        border-radius: 0.25rem;
-        font-family: monospace;
-        font-size: 1rem;
-        margin: 0.5rem 0;
-        text-align: center;
-    }
-
+    /* Trigger list */
     .trigger-list {
         font-size: 0.85rem;
+        list-style: none;
+        padding-left: 0;
     }
-
     .trigger-list li {
         margin-bottom: 0.4rem;
-        padding-left: 0.5rem;
-        border-left: 3px solid var(--pico-primary);
-    }
-
-    .instinct-table {
-        font-size: 0.85rem;
-        width: 100%;
-        margin: 0.5rem 0;
-    }
-
-    .instinct-table .inst-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.3rem 0;
-        border-bottom: 1px solid var(--pico-muted-border-color);
-    }
-
-    .instinct-table .inst-row:last-child {
-        border-bottom: none;
-    }
-
-    .instinct-table .inst-score {
-        font-weight: bold;
-        color: var(--pico-primary);
-        min-width: 2rem;
-    }
-
-    .instinct-table .inst-desc {
-        color: var(--pico-muted-color);
+        padding-left: 0.75rem;
+        border-left: 3px solid var(--bs-primary);
     }
 
     /* Reaction table with color coding */
@@ -253,7 +108,6 @@
         font-size: 0.85rem;
         width: 100%;
     }
-
     .reaction-row {
         display: flex;
         gap: 0.5rem;
@@ -261,64 +115,18 @@
         border-radius: 0.25rem;
         margin-bottom: 0.25rem;
     }
-
     .reaction-row:last-child {
         margin-bottom: 0;
     }
-
     .reaction-score {
         font-weight: bold;
         min-width: 2.5rem;
     }
-
-    .reaction-hostile {
-        background: rgba(220, 53, 69, 0.2);
-    }
-
-    .reaction-unfriendly {
-        background: rgba(253, 126, 20, 0.15);
-    }
-
-    .reaction-neutral {
-        background: rgba(255, 193, 7, 0.15);
-    }
-
-    .reaction-friendly {
-        background: rgba(25, 135, 84, 0.15);
-    }
-
-    .reaction-helpful {
-        background: rgba(25, 135, 84, 0.25);
-    }
-
-    /* Light mode colors */
-    [data-theme="light"] .reaction-hostile { color: #dc3545; }
-    [data-theme="light"] .reaction-unfriendly { color: #d67212; }
-    [data-theme="light"] .reaction-neutral { color: #806600; }
-    [data-theme="light"] .reaction-friendly { color: #157347; }
-    [data-theme="light"] .reaction-helpful { color: #0f5132; }
-
-    /* Dark mode colors */
-    [data-theme="dark"] .reaction-hostile { color: #ff6b7a; }
-    [data-theme="dark"] .reaction-unfriendly { color: #ffa64d; }
-    [data-theme="dark"] .reaction-neutral { color: #ffda6a; }
-    [data-theme="dark"] .reaction-friendly { color: #5dd39e; }
-    [data-theme="dark"] .reaction-helpful { color: #75e8b0; }
-
-    /* Column span utilities */
-    .full-width {
-        grid-column: 1 / -1;
-    }
-
-    .span-2 {
-        grid-column: span 2;
-    }
-
-    @media (max-width: 768px) {
-        .span-2 {
-            grid-column: span 1;
-        }
-    }
+    .reaction-hostile { background: rgba(220, 53, 69, 0.2); color: var(--bs-danger); }
+    .reaction-unfriendly { background: rgba(253, 126, 20, 0.15); color: #fd7e14; }
+    .reaction-neutral { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+    .reaction-friendly { background: rgba(25, 135, 84, 0.15); color: var(--bs-success); }
+    .reaction-helpful { background: rgba(25, 135, 84, 0.25); color: var(--bs-success); }
 
     /* Calculator specific styles */
     .calculator-sides {
@@ -327,88 +135,73 @@
         gap: 0.5rem;
         margin-bottom: 0.75rem;
     }
-
     .calculator-side {
-        background: var(--pico-code-background-color);
+        background: var(--bs-tertiary-bg);
         padding: 0.75rem;
         border-radius: 0.5rem;
     }
-
-    .calculator-side h4 {
+    .calculator-side h5 {
         margin: 0 0 0.5rem 0;
         font-size: 0.9rem;
         text-align: center;
     }
-
-    .side-foes h4 { color: #dc3545; }
-    .side-party h4 { color: #198754; }
-
+    .side-foes h5 { color: var(--bs-danger); }
+    .side-party h5 { color: var(--bs-success); }
     .calculator-side .field-row {
         display: flex;
         gap: 0.5rem;
     }
-
     .calculator-side .field-group {
         flex: 1;
         text-align: center;
     }
-
     .calculator-side input {
         margin-bottom: 0;
         padding: 0.4rem;
         text-align: center;
         width: 100%;
     }
-
     .calculator-side .field-label {
         font-size: 0.7rem;
-        color: var(--pico-muted-color);
+        color: var(--bs-secondary-color);
         display: block;
         margin-top: 0.2rem;
     }
-
     .calculator-result {
-        background: var(--pico-code-background-color);
+        background: var(--bs-tertiary-bg);
         padding: 1rem;
         border-radius: 0.5rem;
         text-align: center;
     }
-
     .calculator-result .scores {
         display: flex;
         justify-content: space-around;
         margin-bottom: 0.75rem;
         font-size: 0.9rem;
     }
-
     .calculator-result .score-box {
         text-align: center;
     }
-
     .calculator-result .score-value {
         font-size: 1.5rem;
         font-weight: bold;
-        color: var(--pico-primary);
+        color: var(--bs-primary);
     }
-
     .calculator-result .score-label {
         font-size: 0.75rem;
-        color: var(--pico-muted-color);
+        color: var(--bs-secondary-color);
     }
-
     .calculator-result .verdict {
         font-weight: bold;
         padding: 0.5rem;
         border-radius: 0.25rem;
         margin-top: 0.5rem;
     }
-
     .verdict-rout { background: #dc3545; color: white; }
     .verdict-deadly { background: #fd7e14; color: white; }
     .verdict-hard { background: #ffc107; color: #212529; }
     .verdict-fair { background: #198754; color: white; }
     .verdict-easy { background: #0d6efd; color: white; }
-
     .challenge-legend {
         display: flex;
         flex-wrap: wrap;
@@ -416,499 +209,489 @@
         gap: 0.4rem;
         margin-top: 0.75rem;
     }
-
     .challenge-legend .legend-item {
         font-size: 0.7rem;
         font-weight: bold;
         padding: 0.2rem 0.5rem;
         border-radius: 0.25rem;
     }
-
-    .back-link {
-        margin-bottom: 1rem;
-    }
 </style>
 {% endblock %}
 
 {% block content %}
-<hgroup style="text-align: center; margin-bottom: 2rem;">
-    <h1>Encounter Cheatsheet</h1>
-</hgroup>
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="h2">Encounter Cheatsheet</h1>
+    </div>
 
-<div class="cheatsheet-grid">
+    <div class="row g-3">
 
-    <!-- Ruin Turns & Encounters -->
-    <article class="cheatsheet-card" x-data="turnTracker">
-        <h3>Ruin Turns & Encounters</h3>
-
-        <table class="turn-table">
-            <thead>
-                <tr>
-                    <th><button class="reset-btn" @click="turns = 0" title="Reset">↺</button></th>
-                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns < 6" x-text="time"></span>
-                        <span x-show="turns >= 6">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i">
-                        <td><input type="checkbox" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
-                        <span x-show="turns >= 12">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 6">
-                        <td><input type="checkbox" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
-                        <span x-show="turns >= 18">🔥</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 12">
-                        <td><input type="checkbox" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
-                    </template>
-                </tr>
-                <tr>
-                    <td class="row-label">
-                        <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
-                        <span x-show="turns >= 24">🔥🏮</span>
-                    </td>
-                    <template x-for="i in 6" :key="i + 18">
-                        <td><input type="checkbox" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="turn-legend">
-            <span>🔥 torch (6 turns / 1h)</span>
-            <span>🏮 lantern (24 turns / 4h)</span>
-        </div>
-
-        <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.75rem 0;">
-            Each turn ≈ 10 minutes. <strong>1 turn:</strong> move room → room, pick lock, disarm trap, fight, first aid & loot, search room, parley, jury-rig device.
-        </p>
-
-        <div class="action-item">
-            <h4>Encounter Check</h4>
-            <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas). Distance: room = entrance, corridor = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10'.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Check Frequency</h4>
-            <table class="compact-table">
-                <thead>
-                    <tr><th>Turns</th><th>Location Type</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
-                    <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
-                    <tr><td>3</td><td>No organized or active defense</td></tr>
-                    <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
-                    <tr><td>6</td><td>Abandoned or disused area</td></tr>
-                    <tr><td>—</td><td>Hidden chamber unknown to natives</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </article>
-
-    <!-- Reaction Rolls -->
-    <article class="cheatsheet-card">
-        <h3>Reaction Rolls</h3>
-
-        <div class="action-item">
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod
-                (if PCs can greet)
-            </div>
-            <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
-        </div>
-
-        <div class="action-item">
-            <div class="reaction-table">
-                <div class="reaction-row reaction-hostile">
-                    <span class="reaction-score">2-</span>
-                    <span class="reaction-desc">Hostile as the situation allows</span>
+        <!-- Ruin Turns & Encounters -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100" x-data="turnTracker">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ruin Turns &amp; Encounters</h5>
                 </div>
-                <div class="reaction-row reaction-unfriendly">
-                    <span class="reaction-score">3-5</span>
-                    <span class="reaction-desc">More unfriendly than expected</span>
-                </div>
-                <div class="reaction-row reaction-neutral">
-                    <span class="reaction-score">6-8</span>
-                    <span class="reaction-desc">Predictably hostile or friendly</span>
-                </div>
-                <div class="reaction-row reaction-friendly">
-                    <span class="reaction-score">9-11</span>
-                    <span class="reaction-desc">More friendly than expected</span>
-                </div>
-                <div class="reaction-row reaction-helpful">
-                    <span class="reaction-score">12+</span>
-                    <span class="reaction-desc">As friendly and helpful as possible</span>
-                </div>
-            </div>
-        </div>
+                <div class="card-body">
+                    <table class="turn-table">
+                        <thead>
+                            <tr>
+                                <th><button class="btn btn-sm btn-outline-secondary reset-btn" @click="turns = 0" title="Reset">&#8634;</button></th>
+                                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-label">
+                                    <span x-show="turns < 6" x-text="time"></span>
+                                    <span x-show="turns >= 6">&#128293;</span>
+                                </td>
+                                <template x-for="i in 6" :key="i">
+                                    <td><input type="checkbox" class="form-check-input" :checked="turns >= i" @change="turns = turns >= i ? i - 1 : i"></td>
+                                </template>
+                            </tr>
+                            <tr>
+                                <td class="row-label">
+                                    <span x-show="turns >= 6 && turns < 12" x-text="time"></span>
+                                    <span x-show="turns >= 12">&#128293;</span>
+                                </td>
+                                <template x-for="i in 6" :key="i + 6">
+                                    <td><input type="checkbox" class="form-check-input" :checked="turns >= i + 6" @change="turns = turns >= i + 6 ? i + 5 : i + 6"></td>
+                                </template>
+                            </tr>
+                            <tr>
+                                <td class="row-label">
+                                    <span x-show="turns >= 12 && turns < 18" x-text="time"></span>
+                                    <span x-show="turns >= 18">&#128293;</span>
+                                </td>
+                                <template x-for="i in 6" :key="i + 12">
+                                    <td><input type="checkbox" class="form-check-input" :checked="turns >= i + 12" @change="turns = turns >= i + 12 ? i + 11 : i + 12"></td>
+                                </template>
+                            </tr>
+                            <tr>
+                                <td class="row-label">
+                                    <span x-show="turns >= 18 && turns < 24" x-text="time"></span>
+                                    <span x-show="turns >= 24">&#128293;&#127982;</span>
+                                </td>
+                                <template x-for="i in 6" :key="i + 18">
+                                    <td><input type="checkbox" class="form-check-input" :checked="turns >= i + 18" @change="turns = turns >= i + 18 ? i + 17 : i + 18"></td>
+                                </template>
+                            </tr>
+                        </tbody>
+                    </table>
 
-        <div class="action-item">
-            <h4>Peaceful Reactions</h4>
-            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-bottom: 0.5rem;">What "friendly" means for hostile groups:</p>
-            <ul>
-                <li><strong>Demand a bribe</strong> - Money, gear, food, praise; haggling possible</li>
-                <li><strong>Back off</strong> - Keep distance, let groups pass; may report later</li>
-                <li><strong>Ask for favors</strong> - Enemy killed, task done; offer to ignore PCs in return</li>
-                <li><strong>Offer tribute</strong> - Wealth, info, services to be left alone</li>
-                <li><strong>Willingly socialize</strong> - Lonely, mistaken identity, or just chatty</li>
-            </ul>
-        </div>
+                    <div class="turn-legend">
+                        <span>&#128293; torch (6 turns / 1h)</span>
+                        <span>&#127982; lantern (24 turns / 4h)</span>
+                    </div>
 
-        <p style="font-size: 0.85rem; color: var(--pico-muted-color);">
-            <strong>Remember:</strong> Reaction rolls are just the start. Clever words, gifts, or insults can shift attitudes.
-        </p>
-    </article>
+                    <p class="small text-body-secondary mt-2 mb-3">
+                        Each turn = 10 minutes. <strong>1 turn:</strong> move room to room, pick lock, disarm trap, fight, first aid &amp; loot, search room, parley, jury-rig device.
+                    </p>
 
-    <!-- Surprise & Initiative -->
-    <article class="cheatsheet-card">
-        <h3>Surprise & Initiative</h3>
+                    <div class="action-item">
+                        <h5>Encounter Check</h5>
+                        <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas). Distance: room = entrance, corridor = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> x 10'.</p>
+                    </div>
 
-        <div class="action-item">
-            <h4>Surprise</h4>
-            <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
-            <p style="font-size: 0.85rem; color: var(--pico-muted-color);">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Initiative</h4>
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + highest Dex <span class="variant" data-tooltip="Variant rule">(or Int)</span> mod
-            </div>
-            <p>Each side rolls. Winning side acts first in any order, then the other. NPCs usually have no modifier unless quick. PCs win ties.</p>
-            <p style="font-size: 0.8rem; color: var(--pico-muted-color); margin-top: 0.5rem;"><span class="variant" data-tooltip="Individual Initiative variant">Variant:</span> Each participant rolls their own initiative and acts in order.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>Fleeing & Escape</h4>
-            <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
-            <div class="instinct-table" style="margin-top: 0.5rem;">
-                <div class="inst-row">
-                    <span class="inst-desc">Escapees outnumber pursuers</span>
-                    <span class="inst-score modifier-positive">+1</span>
-                </div>
-                <div class="inst-row">
-                    <span class="inst-desc">Good escape plan</span>
-                    <span class="inst-score modifier-positive">+1</span>
-                </div>
-                <div class="inst-row">
-                    <span class="inst-desc">Slowed by slowest member</span>
-                    <span class="inst-score modifier-negative">-2</span>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <!-- Challenge Calculator -->
-    <article class="cheatsheet-card">
-        <h3>Challenge Calculator</h3>
-
-        <form id="challenge-form"
-              hx-post="{% url 'tools:calculate_challenge' %}"
-              hx-target="#calculator-result"
-              hx-trigger="load, input delay:150ms, submit"
-              hx-swap="innerHTML"
-              autocomplete="off">
-            <div class="calculator-sides">
-                <div class="calculator-side side-foes">
-                    <h4>Foes</h4>
-                    <div class="field-row">
-                        <div class="field-group">
-                            <input type="number" id="total_hd" name="total_hd" min="1" value="1">
-                            <span class="field-label">HD (total)</span>
-                        </div>
-                        <div class="field-group">
-                            <input type="number" id="total_attacks" name="total_attacks" min="1" value="1">
-                            <span class="field-label">Attacks (total)</span>
-                        </div>
+                    <div class="action-item">
+                        <h5>Check Frequency</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Turns</th><th>Location Type</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>Alerted site, organized defenders</td></tr>
+                                <tr><td>2</td><td>Unalert site, organized defenders</td></tr>
+                                <tr><td>3</td><td>No organized or active defense</td></tr>
+                                <tr><td>4</td><td>Very few mobile inhabitants</td></tr>
+                                <tr><td>6</td><td>Abandoned or disused area</td></tr>
+                                <tr><td>-</td><td>Hidden chamber unknown to natives</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="calculator-side side-party">
-                    <h4>Party</h4>
-                    <div class="field-row">
-                        <div class="field-group">
-                            <input type="number" id="num_pcs" name="num_pcs" min="1" value="4">
-                            <span class="field-label"># of PCs</span>
+            </div>
+        </div>
+
+        <!-- Reaction Rolls -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Reaction Rolls</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="formula-box">
+                            <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> + Cha mod (if PCs can greet)
                         </div>
-                        <div class="field-group">
-                            <input type="number" id="total_pc_levels" name="total_pc_levels" min="1" value="4">
-                            <span class="field-label">Levels (total)</span>
+                        <p>Roll for every encounter unless bloodshed is inevitable. Clue PCs into results before they act.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <div class="reaction-table">
+                            <div class="reaction-row reaction-hostile">
+                                <span class="reaction-score">2-</span>
+                                <span class="reaction-desc">Hostile as the situation allows</span>
+                            </div>
+                            <div class="reaction-row reaction-unfriendly">
+                                <span class="reaction-score">3-5</span>
+                                <span class="reaction-desc">More unfriendly than expected</span>
+                            </div>
+                            <div class="reaction-row reaction-neutral">
+                                <span class="reaction-score">6-8</span>
+                                <span class="reaction-desc">Predictably hostile or friendly</span>
+                            </div>
+                            <div class="reaction-row reaction-friendly">
+                                <span class="reaction-score">9-11</span>
+                                <span class="reaction-desc">More friendly than expected</span>
+                            </div>
+                            <div class="reaction-row reaction-helpful">
+                                <span class="reaction-score">12+</span>
+                                <span class="reaction-desc">As friendly and helpful as possible</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Peaceful Reactions</h5>
+                        <p class="small text-body-secondary mb-2">What "friendly" means for hostile groups:</p>
+                        <ul class="small ps-3">
+                            <li><strong>Demand a bribe</strong> - Money, gear, food, praise; haggling possible</li>
+                            <li><strong>Back off</strong> - Keep distance, let groups pass; may report later</li>
+                            <li><strong>Ask for favors</strong> - Enemy killed, task done; offer to ignore PCs in return</li>
+                            <li><strong>Offer tribute</strong> - Wealth, info, services to be left alone</li>
+                            <li><strong>Willingly socialize</strong> - Lonely, mistaken identity, or just chatty</li>
+                        </ul>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Remember:</strong> Reaction rolls are just the start. Clever words, gifts, or insults can shift attitudes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Surprise & Initiative -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Surprise &amp; Initiative</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Surprise</h5>
+                        <p>If GM decides surprise is possible, roll <strong>Wis/Notice</strong> vs <strong>Dex/Sneak</strong>. If attackers win, they act full round before initiative is rolled.</p>
+                        <p class="small text-body-secondary">Ambush might provoke Morale check from unmilitary or undisciplined targets (GM discretion).</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Initiative</h5>
+                        <div class="formula-box">
+                            <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> + highest Dex <span class="variant" title="Variant rule">(or Int)</span> mod
+                        </div>
+                        <p>Each side rolls. Winning side acts first in any order, then the other. NPCs usually have no modifier unless quick. PCs win ties.</p>
+                        <p class="small text-body-secondary mt-2"><span class="variant" title="Individual Initiative variant">Variant:</span> Each participant rolls their own initiative and acts in order.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Fleeing &amp; Escape</h5>
+                        <p>If foes pursue (many don't), escapee with best <strong>Dex/Exert</strong> rolls vs fastest pursuer. Success = ~1 turn to safety.</p>
+                        <div class="modifier-table mt-2">
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Escapees outnumber pursuers</span>
+                                <span class="mod-table-value modifier-positive">+1</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Good escape plan</span>
+                                <span class="mod-table-value modifier-positive">+1</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Slowed by slowest member</span>
+                                <span class="mod-table-value modifier-negative">-2</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-
-        <div id="calculator-result">
-            {% include "tools/wwn/partials/_challenge_result_en.html" %}
         </div>
 
-        <div class="challenge-legend">
-            <span class="legend-item verdict-rout">&gt;4× Rout</span>
-            <span class="legend-item verdict-deadly">~2× Deadly</span>
-            <span class="legend-item verdict-hard">&gt;1× Hard</span>
-            <span class="legend-item verdict-fair">≤1× Fair</span>
-            <span class="legend-item verdict-easy">&lt;½× Easy</span>
-        </div>
-    </article>
-
-    <script>
-    (function() {
-        const hdInput = document.getElementById('total_hd');
-        const attacksInput = document.getElementById('total_attacks');
-        const pcsInput = document.getElementById('num_pcs');
-        const levelsInput = document.getElementById('total_pc_levels');
-
-        // Foes: HD up → attacks bumps up; attacks down → HD drops
-        hdInput.addEventListener('input', function() {
-            const hd = parseInt(this.value) || 1;
-            const attacks = parseInt(attacksInput.value) || 1;
-            if (attacks < hd) attacksInput.value = hd;
-        });
-
-        attacksInput.addEventListener('input', function() {
-            const hd = parseInt(hdInput.value) || 1;
-            const attacks = parseInt(this.value) || 1;
-            if (attacks < hd) hdInput.value = attacks;
-        });
-
-        // Party: PCs up → levels bumps up; levels down → PCs drops
-        pcsInput.addEventListener('input', function() {
-            const pcs = parseInt(this.value) || 1;
-            const levels = parseInt(levelsInput.value) || 1;
-            if (levels < pcs) levelsInput.value = pcs;
-        });
-
-        levelsInput.addEventListener('input', function() {
-            const pcs = parseInt(pcsInput.value) || 1;
-            const levels = parseInt(this.value) || 1;
-            if (levels < pcs) pcsInput.value = levels;
-        });
-    })();
-    </script>
-
-    <!-- Morale Checks -->
-    <article class="cheatsheet-card">
-        <h3>Morale Checks</h3>
-
-        <div class="action-item">
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> &gt; ML = <span class="modifier-negative">Fail</span>
-            </div>
-            <p>On failure: NPC retreats, surrenders, or seeks to escape.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>When to Roll</h4>
-            <ul class="trigger-list">
-                <li><strong>First casualty</strong> - When first member of a group is killed or incapacitated</li>
-                <li><strong>Losing badly</strong> - Group starts to visibly lose or odds of victory shrink</li>
-                <li><strong>Terror</strong> - Facing terrifying magic, horrendous slaughter, or vastly superior foe</li>
-                <li><strong>Non-combatant</strong> - Civilian first faced with serious physical harm</li>
-                <li><strong>Ambush</strong> - Undisciplined targets may check when ambushed (GM discretion)</li>
-            </ul>
-        </div>
-
-        <div class="action-item">
-            <h4>Failure Consequences</h4>
-            <ul>
-                <li><strong>Non-combatants:</strong> Flee madly, drop everything</li>
-                <li><strong>Trained fighters:</strong> Fighting withdrawal, try to escape with comrades</li>
-                <li><strong>If escape impossible:</strong> Surrender, collapse in despair, or fight with frenzy</li>
-            </ul>
-        </div>
-
-        <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
-            <strong>Typical ML:</strong> 2-5 cowardly, 6-7 average, 8-9 brave, 10-11 fearless, 12 unbreakable. PCs never check.
-        </p>
-    </article>
-
-    <!-- Instinct Checks -->
-    <article class="cheatsheet-card">
-        <h3>Instinct Checks</h3>
-
-        <div class="action-item">
-            <div class="formula-box">
-                <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d10</span> &le; Inst = <span class="modifier-negative">Fail</span>
-            </div>
-            <p>On failure: NPC acts impulsively, short-sightedly, instinctually.</p>
-        </div>
-
-        <div class="action-item">
-            <h4>When to Roll</h4>
-            <ul class="trigger-list">
-                <li><strong>Round 2+</strong> - Second round of combat for mobs and undisciplined fighters</li>
-                <li><strong>After Morale</strong> - Creature just had to make a Morale check</li>
-                <li><strong>Confusion</strong> - Enemy did something confusing or disorienting</li>
-                <li><strong>Provoked</strong> - Enemy enraged or directly intimidated the creature</li>
-                <li><strong>Temptation</strong> - Presented with something it desires (food, money, etc.)</li>
-            </ul>
-        </div>
-
-        <div class="action-item">
-            <h4>Failure Examples</h4>
-            <ul>
-                <li>Attack sub-optimal targets blindly</li>
-                <li>Use unarmed attacks instead of weapon in hand</li>
-                <li>Aim spells/shots at targets of lesser importance</li>
-                <li>Chase after dropped bait instead of fighting</li>
-            </ul>
-        </div>
-
-        <p style="font-size: 0.8rem; color: var(--pico-muted-color);">
-            <strong>Typical Inst:</strong> 5+ beasts/civilians, 3-4 veterans, 1-2 hardened, 0 coldest killers. PCs never check. Optional.
-        </p>
-    </article>
-
-    <!-- Running NPC Combat & Fleeing -->
-    <article class="cheatsheet-card">
-        <h3>Running NPCs & Fleeing</h3>
-
-        <div class="action-item">
-            <h4>NPC Combat Tips</h4>
-            <ul>
-                <li>NPCs won't fight to the death unless they must</li>
-                <li>Check Morale when things go badly</li>
-                <li>Check Instinct when confused or provoked</li>
-                <li>Let NPCs make tactical errors - they're not perfect</li>
-                <li>Once Morale fails, side won't fight those foes until courage recovered</li>
-            </ul>
-        </div>
-
-        <div class="action-item">
-            <h4>GM Guidance</h4>
-            <ul>
-                <li>Be charitable about letting PCs run away</li>
-                <li>Most pursuers won't be relentlessly persistent</li>
-                <li>Running away is a viable option, not an excuse to die tired</li>
-            </ul>
-        </div>
-    </article>
-
-    <!-- Chases -->
-    <article class="cheatsheet-card span-2">
-        <h3>Chases & Pursuit</h3>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <!-- Foot Chase -->
-            <div>
-                <h4 style="margin-top: 0;">Foot Chase</h4>
-                <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
-                    <li><strong>Fleeing pace:</strong> Best Dex/Exert or Con/Exert in fleeing group rolls = <strong>Pace</strong></li>
-                    <li><strong>Helpers:</strong> Other fleeing members hinder pursuit (skill check or GM judgment). Success = <span class="modifier-positive">+1</span> to Pace each, max <span class="modifier-positive">+3</span></li>
-                    <li><strong>Pursuers roll:</strong> Single Dex/Exert or Con/Exert check with modifiers</li>
-                    <li><strong>Result:</strong> Beat Pace = <span class="modifier-negative">caught</span>. Tie or less = <span class="modifier-positive">escaped</span></li>
-                </ol>
-
-                <h4 style="margin-top: 0.75rem;">Foot Chase Pace Modifiers</h4>
-                <div class="instinct-table">
-                    <div class="inst-row">
-                        <span class="inst-desc">No head start at all</span>
-                        <span class="inst-score">+2</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">One round head start</span>
-                        <span class="inst-score">+1</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">&lt;1 minute head start</span>
-                        <span class="inst-score">+0</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">&gt;1 minute head start</span>
-                        <span class="inst-score">-2</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">More pursuers than pursued</span>
-                        <span class="inst-score">-1</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Terrain knowledge</span>
-                        <span class="inst-score">-2 to +2</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Half-hearted / Enraged</span>
-                        <span class="inst-score">-1 / +1</span>
-                    </div>
+        <!-- Challenge Calculator -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Challenge Calculator</h5>
                 </div>
-            </div>
+                <div class="card-body">
+                    <form id="challenge-form"
+                          hx-post="{% url 'tools:calculate_challenge' %}"
+                          hx-target="#calculator-result"
+                          hx-trigger="load, input delay:150ms, submit"
+                          hx-swap="innerHTML"
+                          autocomplete="off">
+                        <div class="calculator-sides">
+                            <div class="calculator-side side-foes">
+                                <h5>Foes</h5>
+                                <div class="field-row">
+                                    <div class="field-group">
+                                        <input type="number" class="form-control form-control-sm" id="total_hd" name="total_hd" min="1" value="1">
+                                        <span class="field-label">HD (total)</span>
+                                    </div>
+                                    <div class="field-group">
+                                        <input type="number" class="form-control form-control-sm" id="total_attacks" name="total_attacks" min="1" value="1">
+                                        <span class="field-label">Attacks (total)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calculator-side side-party">
+                                <h5>Party</h5>
+                                <div class="field-row">
+                                    <div class="field-group">
+                                        <input type="number" class="form-control form-control-sm" id="num_pcs" name="num_pcs" min="1" value="4">
+                                        <span class="field-label"># of PCs</span>
+                                    </div>
+                                    <div class="field-group">
+                                        <input type="number" class="form-control form-control-sm" id="total_pc_levels" name="total_pc_levels" min="1" value="4">
+                                        <span class="field-label">Levels (total)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
 
-            <!-- Mounted Chase -->
-            <div>
-                <h4 style="margin-top: 0;">Mounted Chase</h4>
-                <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--pico-muted-color);">
-                    <li><strong>Fleeing pace:</strong> Fleeing rider rolls Dex/Ride = <strong>Pace</strong></li>
-                    <li><strong>Each pursuer rolls:</strong> Dex/Ride with modifiers</li>
-                    <li><strong>Result:</strong> Meet or exceed Pace = <span class="modifier-negative">catch up</span>. Fail = <span class="modifier-positive">fall behind & lost</span></li>
-                </ol>
-                <p style="font-size: 0.85rem; color: var(--pico-muted-color); margin: 0.5rem 0;">
-                    <strong>Note:</strong> Unmounted pursuers cannot catch mounted evaders in short-term chases.
-                </p>
+                    <div id="calculator-result">
+                        {% include "tools/wwn/partials/_challenge_result_en.html" %}
+                    </div>
 
-                <h4 style="margin-top: 0.75rem;">Mounted Chase Pace Modifiers</h4>
-                <div class="instinct-table">
-                    <div class="inst-row">
-                        <span class="inst-desc">Can't directly see pursued</span>
-                        <span class="inst-score">-2</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Pursuer flying, pursued not</span>
-                        <span class="inst-score">+3</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Pursued flying, pursuer not</span>
-                        <span class="inst-score">-3</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Spotter relaying position</span>
-                        <span class="inst-score">+1</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Terrain knowledge</span>
-                        <span class="inst-score">-2 to +2</span>
-                    </div>
-                    <div class="inst-row">
-                        <span class="inst-desc">Half-hearted / Enraged</span>
-                        <span class="inst-score">-1 / +1</span>
+                    <div class="challenge-legend">
+                        <span class="legend-item verdict-rout">&gt;4x Rout</span>
+                        <span class="legend-item verdict-deadly">~2x Deadly</span>
+                        <span class="legend-item verdict-hard">&gt;1x Hard</span>
+                        <span class="legend-item verdict-fair">&le;1x Fair</span>
+                        <span class="legend-item verdict-easy">&lt;1/2x Easy</span>
                     </div>
                 </div>
             </div>
         </div>
-    </article>
 
+        <!-- Morale Checks -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Morale Checks</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="formula-box">
+                            <span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> &gt; ML = <span class="modifier-negative">Fail</span>
+                        </div>
+                        <p>On failure: NPC retreats, surrenders, or seeks to escape.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>When to Roll</h5>
+                        <ul class="trigger-list">
+                            <li><strong>First casualty</strong> - When first member of a group is killed or incapacitated</li>
+                            <li><strong>Losing badly</strong> - Group starts to visibly lose or odds of victory shrink</li>
+                            <li><strong>Terror</strong> - Facing terrifying magic, horrendous slaughter, or vastly superior foe</li>
+                            <li><strong>Non-combatant</strong> - Civilian first faced with serious physical harm</li>
+                            <li><strong>Ambush</strong> - Undisciplined targets may check when ambushed (GM discretion)</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Failure Consequences</h5>
+                        <ul class="small ps-3 mb-0">
+                            <li><strong>Non-combatants:</strong> Flee madly, drop everything</li>
+                            <li><strong>Trained fighters:</strong> Fighting withdrawal, try to escape with comrades</li>
+                            <li><strong>If escape impossible:</strong> Surrender, collapse in despair, or fight with frenzy</li>
+                        </ul>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Typical ML:</strong> 2-5 cowardly, 6-7 average, 8-9 brave, 10-11 fearless, 12 unbreakable. PCs never check.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instinct Checks -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Instinct Checks</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="formula-box">
+                            <span class="dice" x-data="rollable" data-notation="1d10" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d10</span> &le; Inst = <span class="modifier-negative">Fail</span>
+                        </div>
+                        <p>On failure: NPC acts impulsively, short-sightedly, instinctually.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>When to Roll</h5>
+                        <ul class="trigger-list">
+                            <li><strong>Round 2+</strong> - Second round of combat for mobs and undisciplined fighters</li>
+                            <li><strong>After Morale</strong> - Creature just had to make a Morale check</li>
+                            <li><strong>Confusion</strong> - Enemy did something confusing or disorienting</li>
+                            <li><strong>Provoked</strong> - Enemy enraged or directly intimidated the creature</li>
+                            <li><strong>Temptation</strong> - Presented with something it desires (food, money, etc.)</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Failure Examples</h5>
+                        <ul class="small ps-3 mb-0">
+                            <li>Attack sub-optimal targets blindly</li>
+                            <li>Use unarmed attacks instead of weapon in hand</li>
+                            <li>Aim spells/shots at targets of lesser importance</li>
+                            <li>Chase after dropped bait instead of fighting</li>
+                        </ul>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Typical Inst:</strong> 5+ beasts/civilians, 3-4 veterans, 1-2 hardened, 0 coldest killers. PCs never check. Optional.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Running NPC Combat & Fleeing -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Running NPCs &amp; Fleeing</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>NPC Combat Tips</h5>
+                        <ul class="small ps-3 mb-0">
+                            <li>NPCs won't fight to the death unless they must</li>
+                            <li>Check Morale when things go badly</li>
+                            <li>Check Instinct when confused or provoked</li>
+                            <li>Let NPCs make tactical errors - they're not perfect</li>
+                            <li>Once Morale fails, side won't fight those foes until courage recovered</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>GM Guidance</h5>
+                        <ul class="small ps-3 mb-0">
+                            <li>Be charitable about letting PCs run away</li>
+                            <li>Most pursuers won't be relentlessly persistent</li>
+                            <li>Running away is a viable option, not an excuse to die tired</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chases -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Chases &amp; Pursuit</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Foot Chase -->
+                        <div class="col-md-6">
+                            <h6>Foot Chase</h6>
+                            <ol class="small text-body-secondary ps-3 mb-3">
+                                <li><strong>Fleeing pace:</strong> Best Dex/Exert or Con/Exert in fleeing group rolls = <strong>Pace</strong></li>
+                                <li><strong>Helpers:</strong> Other fleeing members hinder pursuit (skill check or GM judgment). Success = <span class="modifier-positive">+1</span> to Pace each, max <span class="modifier-positive">+3</span></li>
+                                <li><strong>Pursuers roll:</strong> Single Dex/Exert or Con/Exert check with modifiers</li>
+                                <li><strong>Result:</strong> Beat Pace = <span class="modifier-negative">caught</span>. Tie or less = <span class="modifier-positive">escaped</span></li>
+                            </ol>
+
+                            <h6>Foot Chase Pace Modifiers</h6>
+                            <div class="modifier-table">
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">No head start at all</span>
+                                    <span class="mod-table-value modifier-positive">+2</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">One round head start</span>
+                                    <span class="mod-table-value modifier-positive">+1</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">&lt;1 minute head start</span>
+                                    <span class="mod-table-value">+0</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">&gt;1 minute head start</span>
+                                    <span class="mod-table-value modifier-negative">-2</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">More pursuers than pursued</span>
+                                    <span class="mod-table-value modifier-negative">-1</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Terrain knowledge</span>
+                                    <span class="mod-table-value"><span class="modifier-negative">-2</span> to <span class="modifier-positive">+2</span></span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Half-hearted / Enraged</span>
+                                    <span class="mod-table-value"><span class="modifier-negative">-1</span> / <span class="modifier-positive">+1</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mounted Chase -->
+                        <div class="col-md-6">
+                            <h6>Mounted Chase</h6>
+                            <ol class="small text-body-secondary ps-3 mb-3">
+                                <li><strong>Fleeing pace:</strong> Fleeing rider rolls Dex/Ride = <strong>Pace</strong></li>
+                                <li><strong>Each pursuer rolls:</strong> Dex/Ride with modifiers</li>
+                                <li><strong>Result:</strong> Meet or exceed Pace = <span class="modifier-negative">catch up</span>. Fail = <span class="modifier-positive">fall behind &amp; lost</span></li>
+                            </ol>
+                            <p class="small text-body-secondary mb-3">
+                                <strong>Note:</strong> Unmounted pursuers cannot catch mounted evaders in short-term chases.
+                            </p>
+
+                            <h6>Mounted Chase Pace Modifiers</h6>
+                            <div class="modifier-table">
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Can't directly see pursued</span>
+                                    <span class="mod-table-value modifier-negative">-2</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Pursuer flying, pursued not</span>
+                                    <span class="mod-table-value modifier-positive">+3</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Pursued flying, pursuer not</span>
+                                    <span class="mod-table-value modifier-negative">-3</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Spotter relaying position</span>
+                                    <span class="mod-table-value modifier-positive">+1</span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Terrain knowledge</span>
+                                    <span class="mod-table-value"><span class="modifier-negative">-2</span> to <span class="modifier-positive">+2</span></span>
+                                </div>
+                                <div class="mod-table-row">
+                                    <span class="mod-table-desc">Half-hearted / Enraged</span>
+                                    <span class="mod-table-value"><span class="modifier-negative">-1</span> / <span class="modifier-positive">+1</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="text-center mt-4 pt-3 border-top">
+        <small class="text-body-secondary">WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
+    </footer>
 </div>
 
-<footer style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--pico-muted-border-color);">
-    <small>WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
-</footer>
-
-<!-- Alpine.js + Simple Dice Roller -->
+<!-- Alpine.js Components (uses $store.dice from base.html) -->
 <script>
-    // Simple dice roller - supports notation like "2d6", "1d8+2", "3d6-1"
-    function rollDice(notation) {
-        const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
-        if (!match) return null;
-        const count = parseInt(match[1]) || 1;
-        const sides = parseInt(match[2]);
-        const modifier = parseInt(match[3]) || 0;
-        const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
-        return { total: rolls.reduce((a, b) => a + b, 0) + modifier, rolls };
-    }
-
     // Register Alpine components BEFORE Alpine loads
     document.addEventListener('alpine:init', () => {
         // Turn tracker component
@@ -925,7 +708,7 @@
             }
         }));
 
-        // Rollable dice component
+        // Rollable dice component - uses $store.dice.roll() from base.html
         Alpine.data('rollable', () => ({
             notation: '',
             displayText: '',
@@ -940,7 +723,7 @@
 
             roll() {
                 this.reset();
-                const r = rollDice(this.notation);
+                const r = Alpine.store('dice').roll(this.notation);
                 if (r) {
                     this.displayText = `${r.total} [${r.rolls.join(',')}]`;
                     this.rolled = true;
@@ -967,5 +750,39 @@
         }));
     });
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+
+<script>
+(function() {
+    const hdInput = document.getElementById('total_hd');
+    const attacksInput = document.getElementById('total_attacks');
+    const pcsInput = document.getElementById('num_pcs');
+    const levelsInput = document.getElementById('total_pc_levels');
+
+    // Foes: HD up -> attacks bumps up; attacks down -> HD drops
+    hdInput.addEventListener('input', function() {
+        const hd = parseInt(this.value) || 1;
+        const attacks = parseInt(attacksInput.value) || 1;
+        if (attacks < hd) attacksInput.value = hd;
+    });
+
+    attacksInput.addEventListener('input', function() {
+        const hd = parseInt(hdInput.value) || 1;
+        const attacks = parseInt(this.value) || 1;
+        if (attacks < hd) hdInput.value = attacks;
+    });
+
+    // Party: PCs up -> levels bumps up; levels down -> PCs drops
+    pcsInput.addEventListener('input', function() {
+        const pcs = parseInt(this.value) || 1;
+        const levels = parseInt(levelsInput.value) || 1;
+        if (levels < pcs) levelsInput.value = pcs;
+    });
+
+    levelsInput.addEventListener('input', function() {
+        const pcs = parseInt(pcsInput.value) || 1;
+        const levels = parseInt(this.value) || 1;
+        if (levels < pcs) pcsInput.value = levels;
+    });
+})();
+</script>
 {% endblock %}
