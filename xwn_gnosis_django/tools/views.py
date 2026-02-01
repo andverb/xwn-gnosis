@@ -108,8 +108,8 @@ def calculate_challenge(request):
     # Language from form takes precedence, then cookie
     current_lang = lang or get_language(request)
 
-    # Game logic: ensure attacks >= HD
-    attacks = max(total_attacks, total_hd, 1)
+    # Ensure minimum values of 1
+    attacks = max(total_attacks, 1)
     hd = max(total_hd, 1)
 
     foe_score = attacks * hd

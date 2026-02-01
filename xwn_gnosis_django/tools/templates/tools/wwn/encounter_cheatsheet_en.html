@@ -758,18 +758,7 @@
     const pcsInput = document.getElementById('num_pcs');
     const levelsInput = document.getElementById('total_pc_levels');
 
-    // Foes: HD up -> attacks bumps up; attacks down -> HD drops
-    hdInput.addEventListener('input', function() {
-        const hd = parseInt(this.value) || 1;
-        const attacks = parseInt(attacksInput.value) || 1;
-        if (attacks < hd) attacksInput.value = hd;
-    });
-
-    attacksInput.addEventListener('input', function() {
-        const hd = parseInt(hdInput.value) || 1;
-        const attacks = parseInt(this.value) || 1;
-        if (attacks < hd) hdInput.value = attacks;
-    });
+    // HD and attacks are independent - no constraints between them
 
     // Party: PCs up -> levels bumps up; levels down -> PCs drops
     pcsInput.addEventListener('input', function() {

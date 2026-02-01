@@ -512,18 +512,18 @@
         font-size: 0.75rem;
     }
 
-    /* Modal */
-    .modal-backdrop {
+    /* Modal - z-index must be higher than Bootstrap sticky-top navbar (1020) */
+    .tracker-modal-backdrop {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
-        z-index: 999;
+        z-index: 1050;
     }
 
-    .modal {
+    .tracker-modal {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -532,20 +532,20 @@
         border: 1px solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
         padding: 1.5rem;
-        z-index: 1000;
+        z-index: 1055;
         max-width: 700px;
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
     }
 
-    .modal h3 {
+    .tracker-modal h3 {
         margin: 0 0 1rem 0;
         padding-bottom: 0.5rem;
         border-bottom: 2px solid var(--bs-primary);
     }
 
-    .modal-close {
+    .tracker-modal-close {
         position: absolute;
         top: 0.75rem;
         right: 0.75rem;
@@ -559,7 +559,7 @@
         line-height: 1;
     }
 
-    .modal-close:hover {
+    .tracker-modal-close:hover {
         color: var(--bs-body-color);
     }
 
@@ -611,24 +611,16 @@
         margin: 0;
     }
 
-    .form-field input,
-    .form-field select {
+    /* Let Bootstrap handle input/select styling via form-control-sm and form-select-sm */
+    .form-field .form-control,
+    .form-field .form-select {
         margin: 0;
-        padding: 0.4rem 0.5rem;
-        font-size: 0.9rem;
-        height: auto;
-        min-height: 0;
-    }
-
-    .form-field select {
-        padding-top: 0.4rem;
-        padding-bottom: 0.4rem;
     }
 
     .form-field.flex-2 { flex: 2; min-width: 120px; }
     .form-field.flex-1 { flex: 1; min-width: 80px; }
 
-    .form-field input[type="number"] {
+    .form-field input[type="number"].form-control {
         width: 4.5rem;
     }
 
@@ -1179,9 +1171,9 @@
     <!-- Add Combatant Modal -->
     <template x-if="addModalOpen">
         <div>
-            <div class="modal-backdrop" @click="closeAddModal()"></div>
-            <div class="modal">
-                <button class="modal-close" @click="closeAddModal()">&times;</button>
+            <div class="tracker-modal-backdrop" @click="closeAddModal()"></div>
+            <div class="tracker-modal">
+                <button class="tracker-modal-close" @click="closeAddModal()">&times;</button>
                 <h3 x-text="editModalCombatantId ? 'Edit Combatant' : 'Add Combatant'"></h3>
 
                 <!-- Tabs -->
@@ -1206,7 +1198,7 @@
                         <!-- Template dropdown -->
                         <div class="form-row" x-show="npcInputMode === 'template'">
                             <div class="form-field" style="flex: 1;">
-                                <select @change="applyTemplate($event.target.value)">
+                                <select class="form-select form-select-sm" @change="applyTemplate($event.target.value)">
                                     <option value="">— Custom —</option>
                                     <template x-for="category in npcTemplates" :key="category.category">
                                         <optgroup :label="category.category">
@@ -1222,7 +1214,7 @@
                         <!-- Paste statblock -->
                         <div class="form-row" x-show="npcInputMode === 'paste'">
                             <div class="form-field" style="flex: 1;">
-                                <input type="text"
+                                <input type="text" class="form-control form-control-sm"
                                        x-model="statblockPaste"
                                        @input="parseStatblock()"
                                        placeholder="Name HD AC +BAB DMG SHOCK MV ML INST +SKL SV">
@@ -1232,15 +1224,15 @@
                         <div class="form-row">
                             <div class="form-field flex-2">
                                 <label>Name</label>
-                                <input type="text" x-model="npcForm.name" @keyup.enter="addNPC()">
+                                <input type="text" class="form-control form-control-sm" x-model="npcForm.name" @keyup.enter="addNPC()">
                             </div>
                             <div class="form-field" x-show="!editModalCombatantId">
                                 <label>Count</label>
-                                <input type="number" x-model.number="npcForm.count" min="1" max="20" style="width: 3.5rem;">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.count" min="1" max="20" style="width: 3.5rem;">
                             </div>
                             <div class="form-field">
                                 <label>HD</label>
-                                <input type="number" x-model.number="npcForm.hd" min="1">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.hd" min="1">
                             </div>
                         </div>
 
@@ -1253,15 +1245,15 @@
                         <div class="form-row" style="align-items: flex-end;">
                             <div class="form-field">
                                 <label>Attack Bonus</label>
-                                <input type="number" x-model.number="npcForm.bab" min="0">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.bab" min="0">
                             </div>
                             <div class="form-field">
                                 <label># Attacks</label>
-                                <input type="number" x-model.number="npcForm.attacks" min="1">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.attacks" min="1">
                             </div>
                             <div class="form-field" style="max-width: 5rem;">
                                 <label>AC</label>
-                                <input type="number" x-model.number="npcForm.ac" min="0">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.ac" min="0">
                             </div>
                             <div class="checkbox-field">
                                 <input type="checkbox" id="npc-armor" x-model="npcForm.hasArmor">
@@ -1293,7 +1285,7 @@
                                 <div class="form-row" style="align-items: flex-end;">
                                     <div class="form-field flex-1">
                                         <label>Weapon</label>
-                                        <select x-model="npcForm.weaponId">
+                                        <select class="form-select form-select-sm" x-model="npcForm.weaponId">
                                             {% for weapon in weapons %}
                                             <option value="{{ weapon.id }}">{{ weapon.name.en }}</option>
                                             {% endfor %}
@@ -1301,7 +1293,7 @@
                                     </div>
                                     <div class="form-field">
                                         <label>+Dmg Bonus</label>
-                                        <input type="number" x-model.number="npcForm.dmgBonus" min="0">
+                                        <input type="number" class="form-control form-control-sm" x-model.number="npcForm.dmgBonus" min="0">
                                     </div>
                                     <div class="checkbox-field">
                                         <input type="checkbox" id="weapon-shock-override" x-model="npcForm.shockOverride">
@@ -1316,15 +1308,15 @@
                             <div class="form-row">
                                 <div class="form-field" style="flex: 1; min-width: 6rem;">
                                     <label>Attack Name</label>
-                                    <input type="text" x-model="npcForm.attackName" placeholder="Attack">
+                                    <input type="text" class="form-control form-control-sm" x-model="npcForm.attackName" placeholder="Attack">
                                 </div>
                                 <div class="form-field" style="max-width: 5rem;">
                                     <label>Dice Count</label>
-                                    <input type="number" x-model.number="npcForm.diceCount" min="1" max="20" placeholder="1">
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.diceCount" min="1" max="20" placeholder="1">
                                 </div>
                                 <div class="form-field" style="min-width: 5.5rem; max-width: 6rem;">
                                     <label>Dice Type</label>
-                                    <select x-model.number="npcForm.diceType">
+                                    <select class="form-select form-select-sm" x-model.number="npcForm.diceType">
                                         <option value="2">d2</option>
                                         <option value="4">d4</option>
                                         <option value="6">d6</option>
@@ -1336,15 +1328,15 @@
                                 </div>
                                 <div class="form-field">
                                     <label>+Dmg Bonus</label>
-                                    <input type="number" x-model.number="npcForm.dmgBonus" min="0">
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.dmgBonus" min="0">
                                 </div>
                                 <div class="form-field">
                                     <label>Shock Value</label>
-                                    <input type="number" x-model.number="npcForm.shockValue" min="0" placeholder="0">
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.shockValue" min="0" placeholder="0">
                                 </div>
                                 <div class="form-field" style="min-width: 5.5rem;">
                                     <label>Shock AC</label>
-                                    <select x-model="npcForm.shockAC">
+                                    <select class="form-select form-select-sm" x-model="npcForm.shockAC">
                                         <option value="10">10</option>
                                         <option value="11">11</option>
                                         <option value="12">12</option>
@@ -1366,7 +1358,7 @@
                         <div class="form-row" style="gap: 0.5rem; flex-wrap: nowrap;">
                             <div class="form-field" style="flex: 0 0 3.5rem;">
                                 <label>Move</label>
-                                <input type="text" x-model="npcForm.mv" style="width: 100%;">
+                                <input type="text" class="form-control form-control-sm" x-model="npcForm.mv" style="width: 100%;">
                             </div>
                             <div class="form-field" style="flex: 0 0 auto;">
                                 <label>&nbsp;</label>
@@ -1379,19 +1371,19 @@
                             </div>
                             <div class="form-field" style="flex: 0 0 4rem;">
                                 <label>Morale</label>
-                                <input type="number" x-model.number="npcForm.ml" min="2" max="12" style="width: 100%;">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.ml" min="2" max="12" style="width: 100%;">
                             </div>
                             <div class="form-field" style="flex: 0 0 4.5rem;">
                                 <label>Instinct</label>
-                                <input type="number" x-model.number="npcForm.inst" min="0" max="10" style="width: 100%;">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.inst" min="0" max="10" style="width: 100%;">
                             </div>
                             <div class="form-field" style="flex: 0 0 3.5rem;">
                                 <label>Skill</label>
-                                <input type="number" x-model.number="npcForm.skl" min="0" style="width: 100%;">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.skl" min="0" style="width: 100%;">
                             </div>
                             <div class="form-field" style="flex: 0 0 3.5rem;">
                                 <label>Save</label>
-                                <input type="number" x-model.number="npcForm.sv" min="1" max="20" style="width: 100%;">
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.sv" min="1" max="20" style="width: 100%;">
                             </div>
                         </div>
 
@@ -1400,10 +1392,10 @@
                             <template x-for="(ability, index) in npcForm.abilities" :key="index">
                                 <div class="ability-row">
                                     <div class="form-field" style="flex: 1; min-width: 100px;">
-                                        <input type="text" x-model="ability.name" placeholder="Ability name">
+                                        <input type="text" class="form-control form-control-sm" x-model="ability.name" placeholder="Ability name">
                                     </div>
                                     <div class="form-field" style="flex: 3; min-width: 200px;">
-                                        <input type="text" x-model="ability.description" placeholder="Description">
+                                        <input type="text" class="form-control form-control-sm" x-model="ability.description" placeholder="Description">
                                     </div>
                                     <button type="button" class="icon-btn danger" @click="npcForm.abilities.splice(index, 1)" title="Remove ability">&times;</button>
                                 </div>
@@ -1424,25 +1416,25 @@
                         <div class="form-row">
                             <div class="form-field flex-2">
                                 <label>Character Name</label>
-                                <input type="text" x-model="pcForm.name" @keyup.enter="addPC()">
+                                <input type="text" class="form-control form-control-sm" x-model="pcForm.name" @keyup.enter="addPC()">
                             </div>
                             <div class="form-field">
                                 <label>Level</label>
-                                <input type="number" x-model.number="pcForm.level" min="1" max="10">
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.level" min="1" max="10">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-field">
                                 <label>AC</label>
-                                <input type="number" x-model.number="pcForm.ac" min="0">
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.ac" min="0">
                             </div>
                             <div class="form-field">
                                 <label>Max HP</label>
-                                <input type="number" x-model.number="pcForm.maxHp" min="1">
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.maxHp" min="1">
                             </div>
                             <div class="form-field">
                                 <label>System Strain</label>
-                                <input type="number" x-model.number="pcForm.systemStrain" min="0">
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.systemStrain" min="0">
                             </div>
                         </div>
                         <div class="form-actions">
@@ -1458,16 +1450,16 @@
     <!-- HP Modal (Damage/Heal) -->
     <template x-if="hpModalOpen">
         <div>
-            <div class="modal-backdrop" @click="closeHpModal()"></div>
-            <div class="modal" style="max-width: 300px;">
-                <button class="modal-close" @click="closeHpModal()">&times;</button>
+            <div class="tracker-modal-backdrop" @click="closeHpModal()"></div>
+            <div class="tracker-modal" style="max-width: 300px;">
+                <button class="tracker-modal-close" @click="closeHpModal()">&times;</button>
                 <h3 x-text="getCombatantDisplayName(hpModalTarget)"></h3>
                 <div class="hp-modal-current">
                     <span x-text="hpModalTarget?.currentHp"></span> / <span x-text="hpModalTarget?.maxHp"></span> HP
                 </div>
                 <div class="form-field" style="margin-bottom: 1rem;">
                     <label>Amount</label>
-                    <input type="number" x-model.number="hpModalAmount" min="0" placeholder="0"
+                    <input type="number" class="form-control form-control-sm" x-model.number="hpModalAmount" min="0" placeholder="0"
                            @keyup.enter="applyDamage()" x-ref="hpInput">
                 </div>
                 <div class="hp-modal-buttons">
