@@ -37,6 +37,8 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    # ServeStatic: use same static file handling in dev as production
+    "servestatic.runserver_nostatic",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,7 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # Serves static files in production
+    "servestatic.middleware.ServeStaticMiddleware",  # Async-compatible static file serving
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -136,12 +138,18 @@ STATICFILES_DIRS = [
 # Directory where collectstatic copies files for production
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WhiteNoise serves static files efficiently in production
+# ServeStatic serves static files efficiently in production (async-compatible)
+# Uses Brotli + gzip compression for smaller file sizes
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "servestatic.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# ServeStatic configuration
+# https://archmonger.github.io/ServeStatic/latest/django-settings/
+SERVESTATIC_MAX_AGE = 60 * 60 * 24 * 365 if not DEBUG else 0  # 1 year for production
+SERVESTATIC_KEEP_ONLY_HASHED_FILES = True  # Save space: only store hashed versions
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
