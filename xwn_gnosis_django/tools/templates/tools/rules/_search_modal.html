@@ -71,6 +71,15 @@
     #searchModal .form-control {
         border: none;
         background: transparent;
+        color: var(--bs-body-color) !important;
+    }
+
+    #searchModal .input-group-text i {
+        color: var(--bs-secondary-color);
+    }
+
+    #searchModal .form-control::placeholder {
+        color: var(--bs-secondary-color);
     }
 
     #searchModal .form-control:focus {
@@ -81,41 +90,46 @@
         padding: 0.5rem;
     }
 
-    /* Results styling */
-    .search-result {
+    /* Results styling - override Bootstrap list-group-item-action colors */
+    #searchModal .search-result.list-group-item-action {
         padding: 0.75rem 1rem;
         border: none;
         border-radius: var(--bs-border-radius);
         margin-bottom: 0.25rem;
         cursor: pointer;
-        transition: background 0.15s;
+        transition: background-color 0.15s ease-in-out;
+        color: var(--bs-body-color) !important;
+        background-color: transparent;
     }
 
-    .search-result:hover,
-    .search-result.active {
-        background: var(--bs-tertiary-bg);
+    #searchModal .search-result.list-group-item-action:hover,
+    #searchModal .search-result.list-group-item-action:focus,
+    #searchModal .search-result.list-group-item-action.active {
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color) !important;
     }
 
-    .search-result-title {
+    #searchModal .search-result-title {
         font-weight: 600;
         margin-bottom: 0.25rem;
+        color: var(--bs-body-color) !important;
     }
 
-    .search-result-section {
+    #searchModal .search-result-section {
         font-size: 0.8rem;
-        color: var(--bs-secondary-color);
+        color: var(--bs-secondary-color) !important;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .search-result-section i {
+    #searchModal .search-result-section i {
         font-size: 0.75rem;
     }
 
-    .search-result-snippet {
+    #searchModal .search-result-snippet {
         font-size: 0.85rem;
-        color: var(--bs-body-color);
+        color: var(--bs-body-color) !important;
         margin-top: 0.25rem;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -124,10 +138,16 @@
         -webkit-box-orient: vertical;
     }
 
-    .search-result-snippet mark {
+    #searchModal .search-result-snippet mark {
         background: rgba(var(--bs-primary-rgb), 0.3);
+        color: var(--bs-body-color) !important;
         padding: 0 0.1rem;
         border-radius: 2px;
+    }
+
+    /* Keyboard hints section - explicit color for light mode compatibility */
+    #searchModal .modal-header .text-body-secondary {
+        color: var(--bs-secondary-color) !important;
     }
 
     /* Keyboard hint styling */
@@ -138,5 +158,6 @@
         padding: 0.1rem 0.35rem;
         font-size: 0.75rem;
         font-family: inherit;
+        color: var(--bs-body-color) !important;
     }
 </style>

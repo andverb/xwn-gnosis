@@ -149,6 +149,59 @@
         font-weight: 600;
     }
 
+    /* Collapsible h4 sections */
+    .rules-content .h4-collapsible {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        border-radius: var(--bs-border-radius);
+        transition: background-color 0.15s ease-in-out;
+        user-select: none;
+    }
+
+    .rules-content .h4-collapsible:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .rules-content .h4-collapsible .h4-chevron {
+        font-size: 0.75rem;
+        transition: transform 0.2s ease-in-out;
+        color: var(--bs-secondary-color);
+        flex-shrink: 0;
+    }
+
+    .rules-content .h4-collapsible[aria-expanded="true"] .h4-chevron {
+        transform: rotate(90deg);
+    }
+
+    .rules-content .h4-collapsible[aria-expanded="false"] .h4-chevron {
+        transform: rotate(0deg);
+    }
+
+    .rules-content .h4-collapsible .h4-title {
+        flex-grow: 1;
+    }
+
+    /* Move the heading anchor into the title area */
+    .rules-content .h4-collapsible .heading-anchor {
+        margin-left: auto;
+    }
+
+    .rules-content .h4-collapse-content {
+        padding-left: 1.25rem;
+        border-left: 2px solid var(--bs-border-color);
+        margin-left: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .rules-content .h4-collapse-content > *:last-child {
+        margin-bottom: 0;
+    }
+
     .rules-content p {
         margin-bottom: 1rem;
         line-height: 1.6;
@@ -412,5 +465,99 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 });
+
+// Transform h4 elements into collapsible sections
+(function() {
+    const content = document.querySelector('.rules-content');
+    if (!content) return;
+
+    const h4s = content.querySelectorAll('h4');
+    if (h4s.length === 0) return;
+
+    h4s.forEach(function(h4, index) {
+        // Get the heading ID or create one
+        const headingId = h4.id || 'h4-' + index;
+        const collapseId = 'collapse-' + headingId;
+
+        // Collect all sibling elements until next h2, h3, h4, or end
+        const contentElements = [];
+        let sibling = h4.nextElementSibling;
+
+        while (sibling && !['H1', 'H2', 'H3', 'H4'].includes(sibling.tagName)) {
+            contentElements.push(sibling);
+            sibling = sibling.nextElementSibling;
+        }
+
+        // Skip if no content to collapse
+        if (contentElements.length === 0) return;
+
+        // Extract the heading text and anchor
+        const anchor = h4.querySelector('.heading-anchor');
+        const headingText = h4.textContent.trim();
+
+        // Create the collapsible h4 structure
+        h4.innerHTML = '';
+        h4.className = 'h4-collapsible collapsed';
+        h4.setAttribute('data-bs-toggle', 'collapse');
+        h4.setAttribute('data-bs-target', '#' + collapseId);
+        h4.setAttribute('aria-expanded', 'false');
+        h4.setAttribute('aria-controls', collapseId);
+
+        // Add chevron icon
+        const chevron = document.createElement('i');
+        chevron.className = 'bi bi-chevron-right h4-chevron';
+        h4.appendChild(chevron);
+
+        // Add title span
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'h4-title';
+        titleSpan.textContent = headingText;
+        h4.appendChild(titleSpan);
+
+        // Re-add the anchor if it existed
+        if (anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent collapse toggle when clicking anchor
+            });
+            h4.appendChild(anchor);
+        }
+
+        // Create collapse container
+        const collapseDiv = document.createElement('div');
+        collapseDiv.id = collapseId;
+        collapseDiv.className = 'collapse h4-collapse-content';
+
+        // Move content elements into collapse container
+        contentElements.forEach(function(el) {
+            collapseDiv.appendChild(el);
+        });
+
+        // Insert collapse container after h4
+        h4.parentNode.insertBefore(collapseDiv, h4.nextSibling);
+    });
+
+    // Handle URL hash - expand section if hash points to an h4
+    function expandHashTarget() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const targetH4 = content.querySelector('h4#' + CSS.escape(targetId));
+            if (targetH4 && targetH4.classList.contains('h4-collapsible')) {
+                const collapseId = targetH4.getAttribute('data-bs-target');
+                const collapseEl = document.querySelector(collapseId);
+                if (collapseEl) {
+                    const collapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+                    collapse.show();
+                    targetH4.setAttribute('aria-expanded', 'true');
+                    targetH4.classList.remove('collapsed');
+                }
+            }
+        }
+    }
+
+    // Expand on page load and hash change
+    expandHashTarget();
+    window.addEventListener('hashchange', expandHashTarget);
+})();
 </script>
 {% endblock %}
