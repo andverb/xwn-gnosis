@@ -1,10 +1,11 @@
 ## Step 1: Generate Attributes
 
 **Attribute generation:**
-- Roll 3d6 six times.
-- Assign them in order to Str, Dex, Con, Int, Wis, & Cha.
-- You may choose one to change to 14.
-- (Homebrew) You can swap 2 attribute values
+
+- Roll 3d6 six times  
+- Assign them in order to Str, Dex, Con, Int, Wis, & Cha  
+- You may choose one to change to 14  
+- (Homebrew) You can swap 2 attribute values  
 
 **Attributes Score & Modifier**
 

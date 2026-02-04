@@ -95,6 +95,30 @@
           "title": "Character Creation"
         },
         {
+          "slug": "step-1-attributes",
+          "title": "Step 1 Attributes"
+        },
+        {
+          "slug": "step-2-background",
+          "title": "Step 2 Background"
+        },
+        {
+          "slug": "step-3-class",
+          "title": "Step 3 Class"
+        },
+        {
+          "slug": "step-4-foci",
+          "title": "Step 4 Foci"
+        },
+        {
+          "slug": "step-5-equipment",
+          "title": "Step 5 Equipment"
+        },
+        {
+          "slug": "step-6-magic",
+          "title": "Step 6 Magic"
+        },
+        {
           "slug": "xp-leveling",
           "title": "Xp Leveling"
         }

@@ -8,7 +8,6 @@ This eliminates per-request file I/O for sidebar and prev/next navigation.
 """
 
 import json
-from functools import lru_cache
 from pathlib import Path
 
 from django.conf import settings
@@ -17,7 +16,7 @@ from django.conf import settings
 DATA_DIR = Path(settings.BASE_DIR) / "static" / "data"
 
 
-@lru_cache(maxsize=2)  # Cache both en and uk
+# @lru_cache(maxsize=2)  # Cache both en and uk - DISABLED FOR DEBUGGING
 def get_nav(lang: str) -> dict:
     """
     Load navigation structure (cached forever until restart).
@@ -83,4 +82,5 @@ def clear_nav_cache():
 
     Useful after rebuilding the index.
     """
-    get_nav.cache_clear()
+    if hasattr(get_nav, "cache_clear"):
+        get_nav.cache_clear()
