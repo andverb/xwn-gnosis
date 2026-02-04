@@ -178,15 +178,18 @@ class Command(BaseCommand):
         """
         Extract page title from markdown content.
 
-        Only uses H1 (# Title) as page title. Falls back to humanized filename
-        if no H1 is found, since many pages start with H2/H3 content headings.
+        Uses first H1 (# Title) or H2 (## Title) as page title.
+        Falls back to humanized filename if neither is found.
         """
         lines = content.split("\n")
         for line in lines[:10]:  # Check first 10 lines
             stripped = line.strip()
-            # Only match H1 (single #) as page title
+            # Match H1 (# Title)
             if stripped.startswith("# ") and not stripped.startswith("## "):
                 return stripped[2:].strip()
+            # Match H2 (## Title)
+            if stripped.startswith("## ") and not stripped.startswith("### "):
+                return stripped[3:].strip()
         # Fallback to humanized slug (delving -> Delving, healing-hazards -> Healing Hazards)
         return fallback_slug.replace("-", " ").title()
 

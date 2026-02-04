@@ -6,7 +6,7 @@
       "pages": [
         {
           "slug": "index",
-          "title": "Index"
+          "title": "Скорочення"
         }
       ]
     },
@@ -92,31 +92,31 @@
       "pages": [
         {
           "slug": "character-creation",
-          "title": "Character Creation"
+          "title": "Швидке створення персонажа"
         },
         {
           "slug": "step-1-attributes",
-          "title": "Step 1 Attributes"
+          "title": "Крок 1: Розподіліть Здібності"
         },
         {
           "slug": "step-2-background",
-          "title": "Step 2 Background"
+          "title": "Крок 2: Оберіть Передісторію та Навички"
         },
         {
           "slug": "step-3-class",
-          "title": "Step 3 Class"
+          "title": "Крок 3: Оберіть Клас"
         },
         {
           "slug": "step-4-foci",
-          "title": "Step 4 Foci"
+          "title": "Крок 4: Оберіть Фокуси"
         },
         {
           "slug": "step-5-equipment",
-          "title": "Step 5 Equipment"
+          "title": "Крок 5: Виберіть Набір Спорядження"
         },
         {
           "slug": "step-6-magic",
-          "title": "Step 6 Magic"
+          "title": "Крок 6: Маги Обирають Традицію та Заклинання"
         },
         {
           "slug": "xp-leveling",
