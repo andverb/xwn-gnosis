@@ -1,0 +1,106 @@
+{% load static %}
+
+<!-- Basics -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-star"></i> Basics</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'basics' and page == 'core-mechanics' %} active{% endif %}" href="{% url 'tools:rules_page' section='basics' page='core-mechanics' %}">Core Mechanics</a></li>
+        <li><a class="sidebar-link{% if section == 'basics' and page == 'attribute-checks' %} active{% endif %}" href="{% url 'tools:rules_page' section='basics' page='attribute-checks' %}">Attribute Checks</a></li>
+        <li><a class="sidebar-link{% if section == 'basics' and page == 'skill-checks' %} active{% endif %}" href="{% url 'tools:rules_page' section='basics' page='skill-checks' %}">Skill Checks</a></li>
+        <li><a class="sidebar-link{% if section == 'basics' and page == 'saving-throws' %} active{% endif %}" href="{% url 'tools:rules_page' section='basics' page='saving-throws' %}">Saving Throws</a></li>
+    </ul>
+</div>
+
+<!-- Survival -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-heart-pulse"></i> Survival</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'survival' and page == 'hit-points' %} active{% endif %}" href="{% url 'tools:rules_page' section='survival' page='hit-points' %}">Hit Points</a></li>
+        <li><a class="sidebar-link{% if section == 'survival' and page == 'healing' %} active{% endif %}" href="{% url 'tools:rules_page' section='survival' page='healing' %}">Healing</a></li>
+        <li><a class="sidebar-link{% if section == 'survival' and page == 'environmental-perils' %} active{% endif %}" href="{% url 'tools:rules_page' section='survival' page='environmental-perils' %}">Environmental Perils</a></li>
+        <li><a class="sidebar-link{% if section == 'survival' and page == 'travel' %} active{% endif %}" href="{% url 'tools:rules_page' section='survival' page='travel' %}">Travel</a></li>
+    </ul>
+</div>
+
+<!-- Combat -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-shield"></i> Combat</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'combat' and page == 'combat-basics' %} active{% endif %}" href="{% url 'tools:rules_page' section='combat' page='combat-basics' %}">Combat Basics</a></li>
+        <li><a class="sidebar-link{% if section == 'combat' and page == 'combat-actions' %} active{% endif %}" href="{% url 'tools:rules_page' section='combat' page='combat-actions' %}">Combat Actions</a></li>
+        <li><a class="sidebar-link{% if section == 'combat' and page == 'attack-rolls' %} active{% endif %}" href="{% url 'tools:rules_page' section='combat' page='attack-rolls' %}">Attack Rolls</a></li>
+        <li><a class="sidebar-link{% if section == 'combat' and page == 'damage-shock' %} active{% endif %}" href="{% url 'tools:rules_page' section='combat' page='damage-shock' %}">Damage & Shock</a></li>
+    </ul>
+</div>
+
+<!-- Equipment -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-backpack"></i> Equipment</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'equipment' and page == 'weapons' %} active{% endif %}" href="{% url 'tools:rules_page' section='equipment' page='weapons' %}">Weapons</a></li>
+        <li><a class="sidebar-link{% if section == 'equipment' and page == 'armor' %} active{% endif %}" href="{% url 'tools:rules_page' section='equipment' page='armor' %}">Armor</a></li>
+        <li><a class="sidebar-link{% if section == 'equipment' and page == 'gear' %} active{% endif %}" href="{% url 'tools:rules_page' section='equipment' page='gear' %}">Gear</a></li>
+        <li><a class="sidebar-link{% if section == 'equipment' and page == 'encumbrance' %} active{% endif %}" href="{% url 'tools:rules_page' section='equipment' page='encumbrance' %}">Encumbrance</a></li>
+    </ul>
+</div>
+
+<!-- Magic -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-magic"></i> Magic</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'magic' and page == 'magic-basics' %} active{% endif %}" href="{% url 'tools:rules_page' section='magic' page='magic-basics' %}">Magic Basics</a></li>
+        <li><a class="sidebar-link{% if section == 'magic' and page == 'magical-items' %} active{% endif %}" href="{% url 'tools:rules_page' section='magic' page='magical-items' %}">Magical Items</a></li>
+    </ul>
+</div>
+
+<!-- Character -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-person"></i> Character</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'character' and page == 'character-creation' %} active{% endif %}" href="{% url 'tools:rules_page' section='character' page='character-creation' %}">Character Creation</a></li>
+        <li><a class="sidebar-link{% if section == 'character' and page == 'xp-leveling' %} active{% endif %}" href="{% url 'tools:rules_page' section='character' page='xp-leveling' %}">XP & Leveling</a></li>
+    </ul>
+</div>
+
+<!-- Campaign -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-map"></i> Campaign</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'campaign' and page == 'downtime' %} active{% endif %}" href="{% url 'tools:rules_page' section='campaign' page='downtime' %}">Downtime</a></li>
+        <li><a class="sidebar-link{% if section == 'campaign' and page == 'hirelings' %} active{% endif %}" href="{% url 'tools:rules_page' section='campaign' page='hirelings' %}">Hirelings</a></li>
+        <li><a class="sidebar-link{% if section == 'campaign' and page == 'renown' %} active{% endif %}" href="{% url 'tools:rules_page' section='campaign' page='renown' %}">Renown</a></li>
+    </ul>
+</div>
+
+<!-- Reference -->
+<div class="sidebar-section">
+    <div class="sidebar-section-title" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span><i class="bi bi-bookmark"></i> Reference</span>
+        <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a class="sidebar-link{% if section == 'reference' and page == 'npc-statistics' %} active{% endif %}" href="{% url 'tools:rules_page' section='reference' page='npc-statistics' %}">NPC Statistics</a></li>
+        <li><a class="sidebar-link{% if section == 'reference' and page == 'encounter-difficulty' %} active{% endif %}" href="{% url 'tools:rules_page' section='reference' page='encounter-difficulty' %}">Encounter Difficulty</a></li>
+    </ul>
+</div>
