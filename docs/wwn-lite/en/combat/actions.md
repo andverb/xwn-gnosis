@@ -1,3 +1,5 @@
+## Combat Actions
+
 ### Action Types
 **MAIN ACTION**: attack, manipulate a device, apply first aid, casting a spell…
 

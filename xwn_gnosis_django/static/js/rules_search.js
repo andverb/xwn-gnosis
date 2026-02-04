@@ -158,13 +158,14 @@
 
             // Build lunr index
             searchIndex = lunr(function() {
+                // Use Russian stemmer for Ukrainian (close enough linguistically)
+                if (lang === 'uk' && lunr.ru) {
+                    this.use(lunr.ru);
+                }
+
                 this.ref('location');
                 this.field('title', { boost: 10 });
                 this.field('text');
-
-                // Use simple tokenizer for better Ukrainian support
-                this.pipeline.remove(lunr.stemmer);
-                this.pipeline.remove(lunr.stopWordFilter);
 
                 data.docs.forEach(doc => {
                     this.add(doc);

@@ -75,12 +75,12 @@
       "icon": "bi bi-shield",
       "pages": [
         {
-          "slug": "actions",
-          "title": "Actions"
+          "slug": "01-combat-basics",
+          "title": "Combat Basics"
         },
         {
-          "slug": "combat-basics",
-          "title": "Combat Basics"
+          "slug": "actions",
+          "title": "Combat Actions"
         }
       ]
     },
