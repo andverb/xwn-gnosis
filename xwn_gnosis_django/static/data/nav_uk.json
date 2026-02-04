@@ -1,0 +1,160 @@
+{
+  "sections": {
+    "basics": {
+      "title": "Основи",
+      "icon": "bi bi-star",
+      "pages": [
+        {
+          "slug": "index",
+          "title": "Index"
+        }
+      ]
+    },
+    "survival": {
+      "title": "Виживання",
+      "icon": "bi bi-heart-pulse",
+      "pages": [
+        {
+          "slug": "delving",
+          "title": "Delving"
+        },
+        {
+          "slug": "healing-hazards",
+          "title": "Healing Hazards"
+        },
+        {
+          "slug": "overland-travel",
+          "title": "Overland Travel"
+        },
+        {
+          "slug": "sea-travel",
+          "title": "Sea Travel"
+        }
+      ]
+    },
+    "combat": {
+      "title": "Бій",
+      "icon": "bi bi-shield",
+      "pages": [
+        {
+          "slug": "actions",
+          "title": "Actions"
+        },
+        {
+          "slug": "combat-basics",
+          "title": "Combat Basics"
+        }
+      ]
+    },
+    "equipment": {
+      "title": "Спорядження",
+      "icon": "bi bi-backpack",
+      "pages": [
+        {
+          "slug": "alchemy",
+          "title": "Alchemy"
+        },
+        {
+          "slug": "armors-weapons",
+          "title": "Armors Weapons"
+        },
+        {
+          "slug": "crafting",
+          "title": "Crafting"
+        },
+        {
+          "slug": "gear",
+          "title": "Gear"
+        },
+        {
+          "slug": "modifications",
+          "title": "Modifications"
+        }
+      ]
+    },
+    "magic": {
+      "title": "Магія",
+      "icon": "bi bi-magic",
+      "pages": [
+        {
+          "slug": "magic-basics",
+          "title": "Magic Basics"
+        },
+        {
+          "slug": "magical-items",
+          "title": "Magical Items"
+        }
+      ]
+    },
+    "character": {
+      "title": "Персонаж",
+      "icon": "bi bi-person",
+      "pages": [
+        {
+          "slug": "character-creation",
+          "title": "Character Creation"
+        },
+        {
+          "slug": "xp-leveling",
+          "title": "Xp Leveling"
+        }
+      ]
+    },
+    "campaign": {
+      "title": "Кампанія",
+      "icon": "bi bi-map",
+      "pages": [
+        {
+          "slug": "building-structures",
+          "title": "Building Structures"
+        },
+        {
+          "slug": "downtime",
+          "title": "Downtime"
+        },
+        {
+          "slug": "hirelings",
+          "title": "Hirelings"
+        },
+        {
+          "slug": "hiring-armies",
+          "title": "Hiring Armies"
+        },
+        {
+          "slug": "land-ownership",
+          "title": "Land Ownership"
+        },
+        {
+          "slug": "living-expenses",
+          "title": "Living Expenses"
+        },
+        {
+          "slug": "magical-workings",
+          "title": "Magical Workings"
+        },
+        {
+          "slug": "patronage",
+          "title": "Patronage"
+        },
+        {
+          "slug": "renown",
+          "title": "Renown"
+        }
+      ]
+    },
+    "reference": {
+      "title": "Довідник",
+      "icon": "bi bi-bookmark",
+      "pages": [
+        {
+          "slug": "encounter-difficulty",
+          "title": "Encounter Difficulty"
+        },
+        {
+          "slug": "npc-statistics",
+          "title": "Npc Statistics"
+        }
+      ]
+    }
+  }
+}

@@ -16,8 +16,8 @@ from . import views
 app_name = "tools"
 
 urlpatterns = [
-    # Home page - defaults to combat cheatsheet
-    path("", views.combat_cheatsheet, name="home"),
+    # Home page - defaults to rules index
+    path("", views.rules_index, name="home"),
     # Cheatsheets
     path("cheatsheets/wwn-combat", views.combat_cheatsheet, name="combat_cheatsheet"),
     path("cheatsheets/wwn-encounter", views.encounter_cheatsheet, name="encounter_cheatsheet"),

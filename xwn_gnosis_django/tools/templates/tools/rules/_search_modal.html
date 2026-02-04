@@ -1,0 +1,142 @@
+{% load static %}
+<!-- Search Modal (Bootstrap 5) -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <div class="w-100">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text"
+                               class="form-control border-start-0 ps-0"
+                               id="searchQuery"
+                               placeholder="{% if current_lang == 'uk' %}Пошук правил...{% else %}Search rules...{% endif %}"
+                               autocomplete="off"
+                               autofocus>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2 small text-body-secondary">
+                        <span>
+                            <kbd>↑</kbd> <kbd>↓</kbd> {% if current_lang == 'uk' %}навігація{% else %}navigate{% endif %}
+                            <kbd>Enter</kbd> {% if current_lang == 'uk' %}обрати{% else %}select{% endif %}
+                            <kbd>Esc</kbd> {% if current_lang == 'uk' %}закрити{% else %}close{% endif %}
+                        </span>
+                        <span id="searchStatus"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body pt-2">
+                <!-- Loading state -->
+                <div id="searchLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span class="ms-2 text-body-secondary">
+                        {% if current_lang == 'uk' %}Завантаження індексу...{% else %}Loading index...{% endif %}
+                    </span>
+                </div>
+
+                <!-- Empty state -->
+                <div id="searchEmpty" class="text-center py-4 text-body-secondary">
+                    <i class="bi bi-search fs-1 mb-2 d-block opacity-50"></i>
+                    {% if current_lang == 'uk' %}Почніть вводити для пошуку{% else %}Start typing to search{% endif %}
+                </div>
+
+                <!-- No results state -->
+                <div id="searchNoResults" class="text-center py-4 text-body-secondary d-none">
+                    <i class="bi bi-emoji-frown fs-1 mb-2 d-block opacity-50"></i>
+                    {% if current_lang == 'uk' %}Нічого не знайдено{% else %}No results found{% endif %}
+                </div>
+
+                <!-- Results list -->
+                <div id="searchResults" class="list-group list-group-flush"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Search modal styles */
+    #searchModal .modal-content {
+        max-height: 80vh;
+    }
+
+    #searchModal .input-group {
+        border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    #searchModal .input-group-text,
+    #searchModal .form-control {
+        border: none;
+        background: transparent;
+    }
+
+    #searchModal .form-control:focus {
+        box-shadow: none;
+    }
+
+    #searchModal .btn-close {
+        padding: 0.5rem;
+    }
+
+    /* Results styling */
+    .search-result {
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: var(--bs-border-radius);
+        margin-bottom: 0.25rem;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .search-result:hover,
+    .search-result.active {
+        background: var(--bs-tertiary-bg);
+    }
+
+    .search-result-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .search-result-section {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .search-result-section i {
+        font-size: 0.75rem;
+    }
+
+    .search-result-snippet {
+        font-size: 0.85rem;
+        color: var(--bs-body-color);
+        margin-top: 0.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .search-result-snippet mark {
+        background: rgba(var(--bs-primary-rgb), 0.3);
+        padding: 0 0.1rem;
+        border-radius: 2px;
+    }
+
+    /* Keyboard hint styling */
+    #searchModal kbd {
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 3px;
+        padding: 0.1rem 0.35rem;
+        font-size: 0.75rem;
+        font-family: inherit;
+    }
+</style>

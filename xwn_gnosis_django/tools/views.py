@@ -5,6 +5,8 @@ All views are async for better concurrency under load.
 """
 
 import json
+import re
+import unicodedata
 from functools import lru_cache
 from pathlib import Path
 
@@ -16,6 +18,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
 from .models import TypoSuggestion
+from .nav import get_section_pages as get_cached_section_pages
 
 # Path to JSON data files (in static/data/ for offline caching support)
 DATA_DIR = Path(settings.BASE_DIR) / "static" / "data"
@@ -499,32 +502,68 @@ SECTION_META = {
 }
 
 
-async def get_section_pages(section: str, lang: str) -> list[dict]:
-    """Get list of pages in a rules section."""
+def get_section_pages(section: str, lang: str) -> list[dict]:
+    """
+    Get list of pages in a rules section.
+
+    Uses cached navigation from pre-built JSON files.
+    Falls back to file scanning if cache is not available.
+    """
+    pages = get_cached_section_pages(section, lang)
+    if pages:
+        return pages
+
+    # Fallback: scan files directly (for development without build step)
     section_dir = RULES_DIR / lang / section
-    pages = []
+    fallback_pages = []
 
     if section_dir.exists():
         for md_file in sorted(section_dir.glob("*.md")):
-            # Convert filename to title
             slug = md_file.stem
-            # Read first line to get title (assumes # Title format)
-            async with aiofiles.open(md_file, encoding="utf-8") as f:
-                first_line = await f.readline()
-                first_line = first_line.strip()
+            # Read first line to get title
+            with open(md_file, encoding="utf-8") as f:
+                first_line = f.readline().strip()
                 title = first_line.lstrip("#").strip() if first_line.startswith("#") else slug.replace("-", " ").title()
+            fallback_pages.append({"slug": slug, "title": title})
 
-            pages.append({"slug": slug, "title": title})
-
-    return pages
+    return fallback_pages
 
 
 def render_markdown(content: str) -> str:
-    """Render markdown to HTML."""
+    """Render markdown to HTML with linkable headings."""
     return markdown.markdown(
         content,
-        extensions=["tables", "fenced_code", "toc"],
+        extensions=[
+            "tables",
+            "fenced_code",
+            "toc",
+        ],
+        extension_configs={
+            "toc": {
+                # Add IDs to all headings
+                "slugify": lambda value, separator: slugify_heading(value),
+                # Add permalink anchor after each heading (link icon)
+                "permalink": "",  # Empty string, we'll use CSS for the icon
+                "permalink_class": "heading-anchor",
+                "permalink_title": "Copy link",
+            },
+        },
     )
+
+
+def slugify_heading(value: str) -> str:
+    """Convert heading text to URL-safe slug."""
+    # Normalize unicode characters
+    value = unicodedata.normalize("NFKD", value)
+    # Convert to lowercase
+    value = value.lower()
+    # Remove non-alphanumeric characters (keep spaces and hyphens)
+    value = re.sub(r"[^\w\s-]", "", value)
+    # Replace spaces with hyphens
+    value = re.sub(r"[\s_]+", "-", value)
+    # Remove multiple hyphens
+    value = re.sub(r"-+", "-", value)
+    return value.strip("-")
 
 
 async def rules_index(request):
@@ -551,8 +590,8 @@ async def rules_section(request, section: str):
     section_icon = meta.get("icon", "bi bi-folder")
     section_description = meta.get("description", {}).get(current_lang, "")
 
-    # Get pages in this section
-    pages = await get_section_pages(section, current_lang)
+    # Get pages in this section (cached from nav.json)
+    pages = get_section_pages(section, current_lang)
 
     return render(
         request,
@@ -596,8 +635,8 @@ async def rules_page(request, section: str, page: str):
         page_title = page.replace("-", " ").title()
         content = f"<p class='text-body-secondary'>Content not found: {section}/{page}</p>"
 
-    # Get pages for prev/next navigation
-    pages = await get_section_pages(section, current_lang)
+    # Get pages for prev/next navigation (cached from nav.json)
+    pages = get_section_pages(section, current_lang)
     current_idx = next((i for i, p in enumerate(pages) if p["slug"] == page), -1)
 
     prev_page = pages[current_idx - 1] if current_idx > 0 else None

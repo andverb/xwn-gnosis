@@ -414,6 +414,13 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <!-- Left side nav items -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Rules link (primary) -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tools:rules_index' %}">
+                        <i class="bi bi-journal-text me-1"></i>Rules
+                    </a>
+                </li>
+
                 <!-- Tools dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -429,39 +436,6 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'tools:combat_tracker' %}">
                             <i class="bi bi-list-ol me-2"></i>Combat Tracker
-                        </a></li>
-                    </ul>
-                </li>
-
-                <!-- Rules dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'tools:rules_index' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-journal-text me-1"></i>Rules
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='basics' %}">
-                            <i class="bi bi-star me-2"></i>Basics
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='survival' %}">
-                            <i class="bi bi-heart-pulse me-2"></i>Survival
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='combat' %}">
-                            <i class="bi bi-shield me-2"></i>Combat
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='equipment' %}">
-                            <i class="bi bi-backpack me-2"></i>Equipment
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='magic' %}">
-                            <i class="bi bi-magic me-2"></i>Magic
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='character' %}">
-                            <i class="bi bi-person me-2"></i>Character
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='campaign' %}">
-                            <i class="bi bi-map me-2"></i>Campaign
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:rules_section' section='reference' %}">
-                            <i class="bi bi-bookmark me-2"></i>Reference
                         </a></li>
                     </ul>
                 </li>
