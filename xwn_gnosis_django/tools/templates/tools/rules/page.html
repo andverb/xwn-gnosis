@@ -20,42 +20,85 @@
         align-items: center;
         gap: 0.25rem;
     }
+
+    /* TOC sticky positioning */
+    .page-toc {
+        position: sticky;
+        top: 80px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+
+    /* Hide TOC on smaller screens (below LG breakpoint) */
+    @media (max-width: 991px) {
+        .page-toc {
+            display: none !important;
+        }
+    }
+
+    /* Scrollspy active state styling */
+    .page-toc .nav-link.active {
+        color: var(--bs-primary) !important;
+        font-weight: 600;
+        border-left: 2px solid var(--bs-primary);
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    .page-toc .nav-link {
+        border-left: 2px solid transparent;
+        margin-left: 0;
+        padding-left: 0.75rem;
+    }
 </style>
 {% endblock %}
 
 {% block rules_content %}
-<!-- Breadcrumb -->
-<nav class="compendium-breadcrumb" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'tools:rules_index' %}">WWN Rules</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'tools:rules_section' section=section %}">{{ section_title }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
-    </ol>
-</nav>
+<div class="row">
+    <!-- Main content column -->
+    <div class="{% if show_toc %}col-lg-9{% else %}col-12{% endif %}">
+        <!-- Breadcrumb -->
+        <nav class="compendium-breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'tools:rules_index' %}">WWN Rules</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'tools:rules_section' section=section %}">{{ section_title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+            </ol>
+        </nav>
 
-<!-- Page content (rendered markdown) -->
-<div class="markdown-content">
-    {{ content|safe }}
+        <!-- Page content (rendered markdown) -->
+        <div class="markdown-content">
+            {{ content|safe }}
+        </div>
+
+        <!-- Navigation -->
+        {% if prev_page or next_page %}
+        <nav class="d-flex justify-content-between mt-5 pt-4 border-top">
+            {% if prev_page %}
+            <a href="{% url 'tools:rules_page' section=section page=prev_page.slug %}" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-1"></i> {{ prev_page.title }}
+            </a>
+            {% else %}
+            <span></span>
+            {% endif %}
+
+            {% if next_page %}
+            <a href="{% url 'tools:rules_page' section=section page=next_page.slug %}" class="btn btn-outline-primary">
+                {{ next_page.title }} <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+
+    <!-- TOC column (only shown for pages with many headings) -->
+    {% if show_toc %}
+    <div class="col-lg-3 d-none d-lg-block">
+        <div class="page-toc">
+            {% include "tools/rules/_toc.html" with toc_tokens=toc_tokens %}
+        </div>
+    </div>
+    {% endif %}
 </div>
-
-<!-- Navigation -->
-{% if prev_page or next_page %}
-<nav class="d-flex justify-content-between mt-5 pt-4 border-top">
-    {% if prev_page %}
-    <a href="{% url 'tools:rules_page' section=section page=prev_page.slug %}" class="btn btn-outline-primary">
-        <i class="bi bi-arrow-left me-1"></i> {{ prev_page.title }}
-    </a>
-    {% else %}
-    <span></span>
-    {% endif %}
-
-    {% if next_page %}
-    <a href="{% url 'tools:rules_page' section=section page=next_page.slug %}" class="btn btn-outline-primary">
-        {{ next_page.title }} <i class="bi bi-arrow-right ms-1"></i>
-    </a>
-    {% endif %}
-</nav>
-{% endif %}
 
 <!-- Floating Typo Report Button (shown on text selection) -->
 <button type="button" class="btn btn-warning btn-sm typo-report-btn" id="typoReportBtn" data-bs-toggle="modal" data-bs-target="#typoModal">
@@ -206,5 +249,19 @@
         }
     });
 })();
+
+{% if show_toc %}
+// Initialize Scrollspy on document body for TOC highlighting
+document.addEventListener('DOMContentLoaded', function() {
+    const tocNav = document.getElementById('tocNav');
+    if (tocNav) {
+        new bootstrap.ScrollSpy(document.body, {
+            target: '#tocNav',
+            smoothScroll: true,
+            rootMargin: '0px 0px -60%'  // Activate when heading is near top
+        });
+    }
+});
+{% endif %}
 </script>
 {% endblock %}

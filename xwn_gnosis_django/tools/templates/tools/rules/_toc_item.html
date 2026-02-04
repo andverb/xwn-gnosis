@@ -1,0 +1,14 @@
+{% comment %}
+Single TOC item (recursive for nested items).
+Uses Bootstrap nav-link with ms-3 for nested indentation.
+{% endcomment %}
+
+<a class="nav-link py-1{% if depth > 0 %} ms-3 small text-body-secondary{% endif %}" href="#{{ item.id }}">{{ item.name }}</a>
+
+{% if item.children %}
+<nav class="nav nav-pills flex-column">
+    {% for child in item.children %}
+        {% include "tools/rules/_toc_item.html" with item=child depth=1 %}
+    {% endfor %}
+</nav>
+{% endif %}

@@ -529,10 +529,17 @@ def get_section_pages(section: str, lang: str) -> list[dict]:
     return fallback_pages
 
 
-def render_markdown(content: str) -> str:
-    """Render markdown to HTML with linkable headings."""
-    return markdown.markdown(
-        content,
+def render_markdown(content: str) -> tuple[str, str, list]:
+    """
+    Render markdown to HTML with linkable headings.
+
+    Returns:
+        tuple: (html_content, toc_html, toc_tokens)
+            - html_content: The rendered HTML
+            - toc_html: HTML for table of contents
+            - toc_tokens: List of heading dicts for programmatic use
+    """
+    md = markdown.Markdown(
         extensions=[
             "tables",
             "fenced_code",
@@ -546,9 +553,15 @@ def render_markdown(content: str) -> str:
                 "permalink": "",  # Empty string, we'll use CSS for the icon
                 "permalink_class": "heading-anchor",
                 "permalink_title": "Copy link",
+                # Generate TOC tokens for programmatic access
+                "toc_depth": "2-4",  # Include H2, H3, H4 in TOC
             },
         },
     )
+    html_content = md.convert(content)
+    # md.toc is the generated TOC HTML
+    # md.toc_tokens is a list of heading dicts with 'level', 'id', 'name', 'children'
+    return html_content, md.toc, getattr(md, "toc_tokens", [])
 
 
 def slugify_heading(value: str) -> str:
@@ -619,6 +632,9 @@ async def rules_page(request, section: str, page: str):
     # Load markdown file
     md_file = RULES_DIR / current_lang / section / f"{page}.md"
 
+    toc_html = ""
+    toc_tokens = []
+
     if md_file.exists():
         async with aiofiles.open(md_file, encoding="utf-8") as f:
             md_content = await f.read()
@@ -629,11 +645,20 @@ async def rules_page(request, section: str, page: str):
             lines[0].lstrip("#").strip() if lines and lines[0].startswith("#") else page.replace("-", " ").title()
         )
 
-        # Render markdown to HTML
-        content = render_markdown(md_content)
+        # Render markdown to HTML (returns content, toc_html, toc_tokens)
+        content, toc_html, toc_tokens = render_markdown(md_content)
     else:
         page_title = page.replace("-", " ").title()
         content = f"<p class='text-body-secondary'>Content not found: {section}/{page}</p>"
+
+    # Count headings to decide if TOC should be shown (show if > 5 headings)
+    def count_headings(tokens):
+        count = len(tokens)
+        for token in tokens:
+            count += count_headings(token.get("children", []))
+        return count
+
+    show_toc = count_headings(toc_tokens) > 5
 
     # Get pages for prev/next navigation (cached from nav.json)
     pages = get_section_pages(section, current_lang)
@@ -655,6 +680,9 @@ async def rules_page(request, section: str, page: str):
             "content": content,
             "prev_page": prev_page,
             "next_page": next_page,
+            "toc_html": toc_html,
+            "toc_tokens": toc_tokens,
+            "show_toc": show_toc,
         },
     )
 

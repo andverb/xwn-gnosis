@@ -1,0 +1,20 @@
+{% comment %}
+Table of Contents navigation with Bootstrap Scrollspy support.
+Uses Bootstrap's nav components for proper active state handling.
+
+Expected context:
+- toc_tokens: List of heading dicts with 'level', 'id', 'name', 'children'
+{% endcomment %}
+
+{% if toc_tokens %}
+<nav id="tocNav" class="h-100 flex-column align-items-stretch pe-3 border-start">
+    <div class="text-secondary text-uppercase fw-semibold small mb-2 ps-2">
+        {% if current_lang == 'uk' %}На цій сторінці{% else %}On this page{% endif %}
+    </div>
+    <nav class="nav nav-pills flex-column">
+        {% for item in toc_tokens %}
+            {% include "tools/rules/_toc_item.html" with item=item depth=0 %}
+        {% endfor %}
+    </nav>
+</nav>
+{% endif %}
