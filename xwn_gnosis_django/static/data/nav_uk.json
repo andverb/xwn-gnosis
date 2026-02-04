@@ -1,5 +1,43 @@
 {
   "sections": {
+    "character": {
+      "title": "Персонаж",
+      "icon": "bi bi-person",
+      "pages": [
+        {
+          "slug": "character-creation",
+          "title": "Швидке створення персонажа"
+        },
+        {
+          "slug": "step-1-attributes",
+          "title": "Крок 1: Розподіліть Здібності"
+        },
+        {
+          "slug": "step-2-background",
+          "title": "Крок 2: Оберіть Передісторію та Навички"
+        },
+        {
+          "slug": "step-3-class",
+          "title": "Крок 3: Оберіть Клас"
+        },
+        {
+          "slug": "step-4-foci",
+          "title": "Крок 4: Оберіть Фокуси"
+        },
+        {
+          "slug": "step-5-equipment",
+          "title": "Крок 5: Виберіть Набір Спорядження"
+        },
+        {
+          "slug": "step-6-magic",
+          "title": "Крок 6: Маги Обирають Традицію та Заклинання"
+        },
+        {
+          "slug": "xp-leveling",
+          "title": "Розвиток Персонажа"
+        }
+      ]
+    },
     "basics": {
       "title": "Основи",
       "icon": "bi bi-star",
@@ -11,7 +49,7 @@
       ]
     },
     "survival": {
-      "title": "Виживання",
+      "title": "Подорожі та Виживання",
       "icon": "bi bi-heart-pulse",
       "pages": [
         {
@@ -78,49 +116,19 @@
       "pages": [
         {
           "slug": "magic-basics",
-          "title": "Magic Basics"
+          "title": "Основи Магії"
         },
         {
           "slug": "magical-items",
-          "title": "Magical Items"
-        }
-      ]
-    },
-    "character": {
-      "title": "Персонаж",
-      "icon": "bi bi-person",
-      "pages": [
-        {
-          "slug": "character-creation",
-          "title": "Швидке створення персонажа"
+          "title": "Магічні Предмети"
         },
         {
-          "slug": "step-1-attributes",
-          "title": "Крок 1: Розподіліть Здібності"
+          "slug": "magical-workings",
+          "title": "Магічні Конструкції"
         },
         {
-          "slug": "step-2-background",
-          "title": "Крок 2: Оберіть Передісторію та Навички"
-        },
-        {
-          "slug": "step-3-class",
-          "title": "Крок 3: Оберіть Клас"
-        },
-        {
-          "slug": "step-4-foci",
-          "title": "Крок 4: Оберіть Фокуси"
-        },
-        {
-          "slug": "step-5-equipment",
-          "title": "Крок 5: Виберіть Набір Спорядження"
-        },
-        {
-          "slug": "step-6-magic",
-          "title": "Крок 6: Маги Обирають Традицію та Заклинання"
-        },
-        {
-          "slug": "xp-leveling",
-          "title": "Xp Leveling"
+          "slug": "new-spells",
+          "title": "Розробка Нових Заклинань"
         }
       ]
     },
@@ -151,10 +159,6 @@
         {
           "slug": "living-expenses",
           "title": "Living Expenses"
-        },
-        {
-          "slug": "magical-workings",
-          "title": "Magical Workings"
         },
         {
           "slug": "patronage",

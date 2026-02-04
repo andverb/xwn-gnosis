@@ -27,8 +27,12 @@ SECTION_META = {
         "title": {"en": "Basics", "uk": "Основи"},
         "icon": "bi bi-star",
     },
+    "character": {
+        "title": {"en": "Character", "uk": "Персонаж"},
+        "icon": "bi bi-person",
+    },
     "survival": {
-        "title": {"en": "Survival", "uk": "Виживання"},
+        "title": {"en": "Travel & Survival", "uk": "Подорожі та Виживання"},
         "icon": "bi bi-heart-pulse",
     },
     "combat": {
@@ -43,10 +47,6 @@ SECTION_META = {
         "title": {"en": "Magic", "uk": "Магія"},
         "icon": "bi bi-magic",
     },
-    "character": {
-        "title": {"en": "Character", "uk": "Персонаж"},
-        "icon": "bi bi-person",
-    },
     "campaign": {
         "title": {"en": "Campaign", "uk": "Кампанія"},
         "icon": "bi bi-map",
@@ -59,12 +59,12 @@ SECTION_META = {
 
 # Order of sections for navigation
 SECTION_ORDER = [
+    "character",
     "basics",
     "survival",
     "combat",
     "equipment",
     "magic",
-    "character",
     "campaign",
     "reference",
 ]

@@ -1,3 +1,5 @@
+## Magic Items
+
 ### Creating Magical Items
 - Permanent magic items require ≥ 1 adventure to acquire the required components.
 - Int/Magic Skill check to create. Success: Item is created. Failure: Initial time & money is lost. PCs roll for Item Flaw.

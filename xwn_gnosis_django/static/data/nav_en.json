@@ -1,5 +1,43 @@
 {
   "sections": {
+    "character": {
+      "title": "Character",
+      "icon": "bi bi-person",
+      "pages": [
+        {
+          "slug": "character-creation",
+          "title": "Quick character creation flow"
+        },
+        {
+          "slug": "step-1-attributes",
+          "title": "Step 1: Generate Attributes"
+        },
+        {
+          "slug": "step-2-background",
+          "title": "Step 2: Choose a Backgrounds & Skills"
+        },
+        {
+          "slug": "step-3-class",
+          "title": "Step 3: Choose a Class & Take Its Abilities"
+        },
+        {
+          "slug": "step-4-foci",
+          "title": "Step 4: Choose Foci"
+        },
+        {
+          "slug": "step-5-equipment",
+          "title": "Step 5: Choose an Equipment Pack"
+        },
+        {
+          "slug": "step-6-magic",
+          "title": "Step 6: Mages Choose Tradition & Pick Spells"
+        },
+        {
+          "slug": "xp-leveling",
+          "title": "Character Advancement"
+        }
+      ]
+    },
     "basics": {
       "title": "Basics",
       "icon": "bi bi-star",
@@ -11,7 +49,7 @@
       ]
     },
     "survival": {
-      "title": "Survival",
+      "title": "Travel & Survival",
       "icon": "bi bi-heart-pulse",
       "pages": [
         {
@@ -82,45 +120,15 @@
         },
         {
           "slug": "magical-items",
-          "title": "Magical Items"
-        }
-      ]
-    },
-    "character": {
-      "title": "Character",
-      "icon": "bi bi-person",
-      "pages": [
-        {
-          "slug": "character-creation",
-          "title": "Quick character creation flow"
+          "title": "Magic Items"
         },
         {
-          "slug": "step-1-attributes",
-          "title": "Step 1: Generate Attributes"
+          "slug": "magical-workings",
+          "title": "Magical Workings"
         },
         {
-          "slug": "step-2-background",
-          "title": "Step 2: Choose a Backgrounds & Skills"
-        },
-        {
-          "slug": "step-3-class",
-          "title": "Step 3: Choose a Class & Take Its Abilities"
-        },
-        {
-          "slug": "step-4-foci",
-          "title": "Step 4: Choose Foci"
-        },
-        {
-          "slug": "step-5-equipment",
-          "title": "Step 5: Choose an Equipment Pack"
-        },
-        {
-          "slug": "step-6-magic",
-          "title": "Step 6: Mages Choose Tradition & Pick Spells"
-        },
-        {
-          "slug": "xp-leveling",
-          "title": "Xp Leveling"
+          "slug": "new-spells",
+          "title": "Developing New Spells"
         }
       ]
     },
@@ -151,10 +159,6 @@
         {
           "slug": "living-expenses",
           "title": "Living Expenses"
-        },
-        {
-          "slug": "magical-workings",
-          "title": "Magical Workings"
         },
         {
           "slug": "patronage",

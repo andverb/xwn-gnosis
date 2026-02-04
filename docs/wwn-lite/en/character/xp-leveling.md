@@ -1,3 +1,5 @@
+## Character Advancement
+
 ### Gaining XP
 - PCs gain 1xp per every 1 $p of loot retrieved from dangerous locales, returned to civilization, & blown carousing.
 - **Carousing Cost**: 1 night & d10×100 $p in towns or d10×200 $p in cities. XP gained = cost.
