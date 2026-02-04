@@ -424,11 +424,11 @@ async def entity_search(request):
 
 
 # ============================================================================
-# Compendium Views
+# Rules Views
 # ============================================================================
 
-# Compendium content is stored in docs/wwn-lite/{lang}/{section}/{page}.md
-COMPENDIUM_DIR = Path(settings.BASE_DIR).parent / "docs" / "wwn-lite"
+# Rules content is stored in docs/wwn-lite/{lang}/{section}/{page}.md
+RULES_DIR = Path(settings.BASE_DIR).parent / "docs" / "wwn-lite"
 
 # Section metadata (icon, description)
 SECTION_META = {
@@ -500,8 +500,8 @@ SECTION_META = {
 
 
 async def get_section_pages(section: str, lang: str) -> list[dict]:
-    """Get list of pages in a compendium section."""
-    section_dir = COMPENDIUM_DIR / lang / section
+    """Get list of pages in a rules section."""
+    section_dir = RULES_DIR / lang / section
     pages = []
 
     if section_dir.exists():
@@ -527,13 +527,13 @@ def render_markdown(content: str) -> str:
     )
 
 
-async def compendium_index(request):
-    """Compendium main index page."""
+async def rules_index(request):
+    """Rules main index page."""
     current_lang = get_language(request)
 
     return render(
         request,
-        "tools/compendium/index.html",
+        "tools/rules/index.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -541,8 +541,8 @@ async def compendium_index(request):
     )
 
 
-async def compendium_section(request, section: str):
-    """Compendium section landing page."""
+async def rules_section(request, section: str):
+    """Rules section landing page."""
     current_lang = get_language(request)
 
     # Get section metadata
@@ -556,7 +556,7 @@ async def compendium_section(request, section: str):
 
     return render(
         request,
-        "tools/compendium/section.html",
+        "tools/rules/section.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -569,8 +569,8 @@ async def compendium_section(request, section: str):
     )
 
 
-async def compendium_page(request, section: str, page: str):
-    """Compendium content page - renders markdown file."""
+async def rules_page(request, section: str, page: str):
+    """Rules content page - renders markdown file."""
     current_lang = get_language(request)
 
     # Get section metadata
@@ -578,7 +578,7 @@ async def compendium_page(request, section: str, page: str):
     section_title = meta.get("title", {}).get(current_lang, section.title())
 
     # Load markdown file
-    md_file = COMPENDIUM_DIR / current_lang / section / f"{page}.md"
+    md_file = RULES_DIR / current_lang / section / f"{page}.md"
 
     if md_file.exists():
         async with aiofiles.open(md_file, encoding="utf-8") as f:
@@ -605,7 +605,7 @@ async def compendium_page(request, section: str, page: str):
 
     return render(
         request,
-        "tools/compendium/page.html",
+        "tools/rules/page.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -623,7 +623,7 @@ async def compendium_page(request, section: str, page: str):
 @require_POST
 async def suggest_typo(request):
     """
-    Handle typo suggestion submissions from compendium pages.
+    Handle typo suggestion submissions from rules pages.
 
     This is an htmx endpoint that receives POST data from the typo suggestion
     modal and creates a TypoSuggestion record. Returns an HTML fragment for
@@ -649,6 +649,6 @@ async def suggest_typo(request):
     current_lang = get_language(request)
     return render(
         request,
-        "tools/compendium/_typo_success.html",
+        "tools/rules/_typo_success.html",
         {"current_lang": current_lang},
     )

@@ -28,11 +28,11 @@ urlpatterns = [
     # Entity browser
     path("entities/", views.entity_browse, name="entity_browse"),
     path("entities/search/", views.entity_search, name="entity_search"),
-    # Compendium
-    path("compendium/", views.compendium_index, name="compendium_index"),
-    path("compendium/suggest-typo/", views.suggest_typo, name="suggest_typo"),
-    path("compendium/<str:section>/", views.compendium_section, name="compendium_section"),
-    path("compendium/<str:section>/<str:page>/", views.compendium_page, name="compendium_page"),
+    # Rules (WWN)
+    path("rules/wwn/", views.rules_index, name="rules_index"),
+    path("rules/wwn/suggest-typo/", views.suggest_typo, name="suggest_typo"),
+    path("rules/wwn/<str:section>/", views.rules_section, name="rules_section"),
+    path("rules/wwn/<str:section>/<str:page>/", views.rules_page, name="rules_page"),
     # Language switcher - <str:lang> captures "en" or "uk" from URL
     path("set-language/<str:lang>", views.set_language, name="set_language"),
     # Health check for deployment monitoring
