@@ -59,8 +59,8 @@ SECTION_META = {
 
 # Order of sections for navigation
 SECTION_ORDER = [
-    "character",
     "basics",
+    "character",
     "survival",
     "combat",
     "equipment",

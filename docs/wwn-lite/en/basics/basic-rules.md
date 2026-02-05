@@ -1,4 +1,6 @@
-## Shorthand
+## Rules of the game
+
+### Shorthand
 - Rounded Up/Down: ↑/↓.
 - Greater than (or equal to) >(≥).
 - Less than (or equal to): < (≤).
@@ -7,7 +9,7 @@
 - Damage: Dmg.
 - Line of Sight: LoS.
 
-## Attributes
+### Attributes
 Score & Modifier (Mod): 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +2
 
 **Strength (Str)**: Lift, break, melee, carry gear.
@@ -22,7 +24,7 @@ Score & Modifier (Mod): 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +
 
 **Charisma (Cha)**: Force of character. Charm others, attract attention, win loyalty...
 
-## Skills
+### Skills
 Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci may raise Skills past Level Cap after character Gen.
 
 **ADMINISTER**: Navigate the courts, know law, heraldry, & nobility, scribe well, delve archives, authenticate or forge records…
@@ -67,13 +69,13 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **TRADE**: Buy & sell @ profit, appraise loot, deal w/ merchants, navigate the black-market, know contraband law...
 
-## Skill Checks
+### Skill Checks
 - **Checks**: 2d6 + Attribute mod + Skill (-1 if no relevant Skill).
 - **DC6**: Trivial, **DC8**: Easy, **DC10**: Average, **DC12**: Hard, **DC14**: Near Impossible (Adjust based on circumstance & urgency).
 - **PCs can attempt to Aid another** by performing a helpful Check themselves. Their attempt need not be the same Skill it's providing aid for. Success = +1 bonus. Multiple PCs can attempt to Aid, but the acting PC can't earn > +1.
 - **Opposed checks**: NPCs rolls plain 2d6, can add +skill if it makes sense that NPC is good at relevant skill. Ties go to PCs.
 
-## Saving Throws
+### Saving Throws
 - **Saves**: A subject rolls a d20 & tries to roll ≥ the relevant Save score.
 - Favorable or unfavorable circumstance can adjust the difficulty by ±2 or ±4.
 - A PC trained in a helpful Skill can aid another's Save w/o Check. They add their relevant Skill x2 (Min +1) to the roll.
@@ -86,5 +88,5 @@ Caps by Level: +1 @Level 1, +2 @Level 2, +3 @Level 6, & +4 (Max) @Level 8. Foci 
 
 **Luck**: (16 - Level) For occasions of blind random fortune.
 
-## Language
+### Language
 PCs speak their native language + the common language + a # of languages = to their Connect + Know Skills.

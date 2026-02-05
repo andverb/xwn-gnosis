@@ -1,5 +1,19 @@
 {
   "sections": {
+    "basics": {
+      "title": "Basics",
+      "icon": "bi bi-star",
+      "pages": [
+        {
+          "slug": "about",
+          "title": "Information"
+        },
+        {
+          "slug": "basic-rules",
+          "title": "Rules of the game"
+        }
+      ]
+    },
     "character": {
       "title": "Character",
       "icon": "bi bi-person",
@@ -35,16 +49,6 @@
         {
           "slug": "xp-leveling",
           "title": "Character Advancement"
-        }
-      ]
-    },
-    "basics": {
-      "title": "Basics",
-      "icon": "bi bi-star",
-      "pages": [
-        {
-          "slug": "index",
-          "title": "Shorthand"
         }
       ]
     },
@@ -89,24 +93,28 @@
       "icon": "bi bi-backpack",
       "pages": [
         {
-          "slug": "alchemy",
-          "title": "Alchemy"
+          "slug": "01-weapons",
+          "title": "Weapons"
         },
         {
-          "slug": "armors-weapons",
-          "title": "Armors Weapons"
+          "slug": "02-armor",
+          "title": "Armor"
         },
         {
-          "slug": "crafting",
+          "slug": "03-gear",
+          "title": "Equipment"
+        },
+        {
+          "slug": "04-crafting",
           "title": "Crafting"
         },
         {
-          "slug": "gear",
-          "title": "Gear"
+          "slug": "05-modifications",
+          "title": "Modifications"
         },
         {
-          "slug": "modifications",
-          "title": "Modifications"
+          "slug": "06-alchemy",
+          "title": "Alchemical works"
         }
       ]
     },

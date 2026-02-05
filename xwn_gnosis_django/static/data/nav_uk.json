@@ -1,5 +1,19 @@
 {
   "sections": {
+    "basics": {
+      "title": "Основи",
+      "icon": "bi bi-star",
+      "pages": [
+        {
+          "slug": "about",
+          "title": "Інформація"
+        },
+        {
+          "slug": "basic-rules",
+          "title": "Правила Гри"
+        }
+      ]
+    },
     "character": {
       "title": "Персонаж",
       "icon": "bi bi-person",
@@ -35,16 +49,6 @@
         {
           "slug": "xp-leveling",
           "title": "Розвиток Персонажа"
-        }
-      ]
-    },
-    "basics": {
-      "title": "Основи",
-      "icon": "bi bi-star",
-      "pages": [
-        {
-          "slug": "index",
-          "title": "Скорочення"
         }
       ]
     },
@@ -89,24 +93,28 @@
       "icon": "bi bi-backpack",
       "pages": [
         {
-          "slug": "alchemy",
-          "title": "Alchemy"
+          "slug": "01-weapons",
+          "title": "Зброя"
         },
         {
-          "slug": "armors-weapons",
-          "title": "Armors Weapons"
+          "slug": "02-armor",
+          "title": "Броня"
         },
         {
-          "slug": "crafting",
-          "title": "Crafting"
+          "slug": "03-gear",
+          "title": "Спорядження"
         },
         {
-          "slug": "gear",
-          "title": "Gear"
+          "slug": "04-crafting",
+          "title": "Крафтинг"
         },
         {
-          "slug": "modifications",
-          "title": "Modifications"
+          "slug": "05-modifications",
+          "title": "Модифікації"
+        },
+        {
+          "slug": "06-alchemy",
+          "title": "Алхімічні витвори"
         }
       ]
     },
