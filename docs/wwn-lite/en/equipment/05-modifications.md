@@ -1,8 +1,13 @@
-- Adding Mods to gear requires Expert or Partial Expert, ≤ Craft+1, & rare "salvage" material. Takes 1 week x Mod's required level of Craft to install. ½ time w/ Craft-0 Assistant, or if all waking hours are spent working on the mod.
-- Mods can Stack, but can't increase attack or damage bonus > +3 or Skill Check bonus > +1.
-- Expert/Partial Expert can Maintain a # of Mods = Int + Con Modifiers + (3 x Craft Level). A modification requires maintenance every 24 hrs or it stops working (assumed to be done automatically by an expert/partial expert). If unmaintained for a 1 week item becomes unfit for use. After 1 yr it may become destroyed. Requires 1 hr of work to clean up a maintenance backlog.
+## Modifications
 
-### Mods
+- Adding Mods to gear requires Expert or Partial Expert, ≤ Craft+1, & sometimes rare "Esoteric Salvage" material - monster parts or other exotic components not available on general sale. 
+- Takes 1 week x Mod's required level of Craft to install. ½ time w/ Craft-0 Assistant, or if all waking hours are spent working on the mod.
+- Mods can Stack, but can't increase attack or damage bonus > +3 or Skill Check bonus > +1.
+- Expert/Partial Expert can Maintain a # of Mods = Int + Con Modifiers + (3 x Craft Level).
+- A modification requires maintenance every 24 hrs or it stops working (assumed to be done automatically by an expert/partial expert).
+- If unmaintained for a 1 week item becomes unfit for use. After 1 yr it may become destroyed. Requires 1 hr of work to clean up a maintenance backlog.
+
+### List of Mods
 
 **Arrow Storm (Craft+2)**: A ranged weapon automatically generates its own ammunition. The conjured projectiles vanish after 1 Round. This mod does not increase reload speed. Cost: 1 Salvage & 5k $p.
 
