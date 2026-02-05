@@ -1,6 +1,24 @@
 ## Character Advancement
 
-### Gaining XP
+
+### Gaining XP: Mission-Based
+PCs gain 3 XP per successful mission. XP totals are cumulative (don't reset on level-up).
+
+| Level | Fast leveling | Slow leveling |
+|-------|---------------|---------------|
+| 1     | 0             | 0             |
+| 2     | 3             | 6             |
+| 3     | 6             | 15            |
+| 4     | 12            | 24            |
+| 5     | 18            | 36            |
+| 6     | 27            | 51            |
+| 7     | 39            | 69            |
+| 8     | 54            | 87            |
+| 9     | 72            | 105           |
+| 10    | 93            | 139           |
+
+
+### Alternative XP system: silver-for-xp
 - PCs gain 1xp per every 1 $p of loot retrieved from dangerous locales, returned to civilization, & blown carousing.
 - **Carousing Cost**: 1 night & d10×100 $p in towns or d10×200 $p in cities. XP gained = cost.
 
@@ -15,6 +33,8 @@
 - Level 8: 128k xp
 - Level 9: 256k xp
 - Level 10: 512k xp
+
+
 
 ### Leveling Up
 When a PC has accumulated enough xp to advance a level they achieve the following:

@@ -205,16 +205,6 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: You don't miss ranged Execution attacks. A target hit takes a -4 penalty on their Phys Save. Even if the save is successful, the target takes x2 normal damage inflicted by the attack.
 
-#### SPECIAL ORIGINS (CUPOFCOFFEE HB & HB)
-
-(A PC can take an Special Origin focus at level 1 in addition to their usual level 1 Foci. A PC who takes this option doesn't get their usual level 2 Focus.)
-
-**Dwarf**: +1 to Str or Con mod & -1 to Dex or Wis mod. You can feel movement out to 30' provided both you & it's cause share contact w/ a stone surface. You can sense the presence of precious metals & gems by scent. +2 to Saves vs magic or poison.
-
-**Elf**: +1 to Wis or Int mod & -1 to Con or Cha mod. You are immune to mind-altering effects & do not sleep. You require only 4hrs of conscious trancing a day. You can strain to hear specific words from a familiar voice w/in 1 mi, barring obstructions.
-
-**Halfling**: +1 to Dex or Cha mod & -1 to Str or Int. When you hide from creatures not already aware of your presence, you are treated as though invisible provided you remain motionless. +1 AC vs creatures larger than humans. You are too light to set off traps or hazards triggered by weight.
-
 #### SPECIALIST
 (You may take this Focus more than once for different Skills.)
 
@@ -289,3 +279,13 @@ Create Mods even if you are not an Expert.
 **Level 1**: Gain Exert or Punch. Roll 3d6 & drop the lowest die for Skill checks related to shoving & grappling. You ignore the size penalty for grappling & shoving significantly larger creatures, & may move grappled targets smaller than you w/o additional Actions or Checks.
 
 **Level 2**: When shoving a creature, you can choose to move them ≤ 20' away & have them fall prone. As a Move Action, whenever you successfully attack a creature w/ a punch attack, you can force them to go prone. You ignore the size penalty for grappling & shoving only barely plausible large creatures.
+
+#### SPECIAL ORIGINS/SPECIES FOCI (CUPOFCOFFEE HB)
+
+(A PC can take an Special Origin focus at level 1 in addition to their usual level 1 Foci. A PC who takes this option doesn't get their usual level 2 Focus.)
+
+**Dwarf**: +1 to Str or Con mod & -1 to Dex or Wis mod. You can feel movement out to 30' provided both you & it's cause share contact w/ a stone surface. You can sense the presence of precious metals & gems by scent. +2 to Saves vs magic or poison.
+
+**Elf**: +1 to Wis or Int mod & -1 to Con or Cha mod. You are immune to mind-altering effects & do not sleep. You require only 4hrs of conscious trancing a day. You can strain to hear specific words from a familiar voice w/in 1 mi, barring obstructions.
+
+**Halfling**: +1 to Dex or Cha mod & -1 to Str or Int. When you hide from creatures not already aware of your presence, you are treated as though invisible provided you remain motionless. +1 AC vs creatures larger than humans. You are too light to set off traps or hazards triggered by weight.

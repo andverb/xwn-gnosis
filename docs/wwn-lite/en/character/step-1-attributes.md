@@ -7,6 +7,10 @@
 - You may choose one to change to 14  
 - (Homebrew) You can swap 2 attribute values  
 
+**OR**
+
+- Assign following array or attribute values as you wish: 14, 12, 11, 10, 9, 7
+
 **Attributes Score & Modifier**
 
 3 = -2, 4 to 7 = -1, 8 to 13 = +0, 14 to 17 = +1, 18 = +2
