@@ -427,11 +427,11 @@
                         <i class="bi bi-card-checklist me-1"></i>{% if current_lang == "uk" %}Шпаргалки{% else %}Cheatsheets{% endif %}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'tools:combat_cheatsheet' %}">
-                            <i class="bi bi-crosshair me-2"></i>{% if current_lang == "uk" %}Дії в Бою{% else %}Combat Cheatsheet{% endif %}
+                        <li><a class="dropdown-item" href="{% url 'tools:combat_actions' %}">
+                            <i class="bi bi-crosshair me-2"></i>{% if current_lang == "uk" %}Дії в Бою{% else %}Combat Actions{% endif %}
                         </a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:encounter_cheatsheet' %}">
-                            <i class="bi bi-people me-2"></i>{% if current_lang == "uk" %}Підземелля і зіткнення{% else %}Encounter Cheatsheet{% endif %}
+                        <li><a class="dropdown-item" href="{% url 'tools:site_exploration' %}">
+                            <i class="bi bi-people me-2"></i>{% if current_lang == "uk" %}Дослідження Локацій{% else %}Site Exploration{% endif %}
                         </a></li>
                     </ul>
                 </li>

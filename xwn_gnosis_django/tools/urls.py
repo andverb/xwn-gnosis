@@ -30,8 +30,8 @@ urlpatterns = [
     path("wwn/rules/<str:section>/", views.rules_section, name="rules_section"),
     path("wwn/rules/<str:section>/<str:page>/", views.rules_page, name="rules_page"),
     # Cheatsheets
-    path("wwn/cheatsheets/combat/", views.combat_cheatsheet, name="combat_cheatsheet"),
-    path("wwn/cheatsheets/encounter/", views.encounter_cheatsheet, name="encounter_cheatsheet"),
+    path("wwn/cheatsheets/combat-actions/", views.combat_actions, name="combat_actions"),
+    path("wwn/cheatsheets/site-exploration/", views.site_exploration, name="site_exploration"),
     path("wwn/cheatsheets/calculate-challenge/", views.calculate_challenge, name="calculate_challenge"),
     # --- Shared tools ---
     path("tools/combat-tracker/", views.combat_tracker, name="combat_tracker"),

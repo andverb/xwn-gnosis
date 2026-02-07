@@ -50,24 +50,13 @@ def get_weapons_data() -> dict:
         return json.load(f)
 
 
-async def combat_cheatsheet(request):
-    """
-    WWN Combat Cheatsheet view.
-
-    Django's render() function:
-    1. Takes the request object (required by Django)
-    2. Template path (relative to app's templates/ folder)
-    3. Context dictionary - variables available in the template
-
-    Template selection based on language is simple: different templates for each language.
-    """
+async def combat_actions(request):
+    """Combat Actions - all combat action types and their rules."""
     current_lang = get_language(request)
-
-    # Select template based on language (templates organized by system: wwn/)
     template = (
-        "tools/wwn/cheatsheets/combat_cheatsheet_uk.html"
+        "tools/wwn/cheatsheets/combat_actions_uk.html"
         if current_lang == "uk"
-        else "tools/wwn/cheatsheets/combat_cheatsheet_en.html"
+        else "tools/wwn/cheatsheets/combat_actions_en.html"
     )
 
     # Context dict - these become template variables: {{ current_lang }}, {{ other_lang }}
@@ -81,13 +70,13 @@ async def combat_cheatsheet(request):
     )
 
 
-async def encounter_cheatsheet(request):
-    """Encounter Cheatsheet - morale, instinct, challenge calculator."""
+async def site_exploration(request):
+    """Site Exploration - dungeon turns, encounters, morale, instinct, chases."""
     current_lang = get_language(request)
     template = (
-        "tools/wwn/cheatsheets/encounter_cheatsheet_uk.html"
+        "tools/wwn/cheatsheets/site_exploration_uk.html"
         if current_lang == "uk"
-        else "tools/wwn/cheatsheets/encounter_cheatsheet_en.html"
+        else "tools/wwn/cheatsheets/site_exploration_en.html"
     )
     return render(
         request,
