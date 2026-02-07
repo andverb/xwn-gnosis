@@ -41,8 +41,9 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 
 - Increase attack Bonus according to your Class.
 - Gain Arts according to your Class (if any).
-- Gain New Foci @ levels 2, 5, 7, & 10.
-- Increase HP. (1D6 + Class HP Adjustment + Con Mod) X Level. Min increase of +1 from your previous Max HP.
+- Full Mages add 2 spells to their grimoire, half-Mages that cast spells add 1.
+- Gain New Foci @ levels 2, 5, 7, & 10. **Foci that grant Skills grant 3 SP to invest into corresponding skill instead**.
+- Increase HP. (1d6 + Class HP Adjustment + Con Mod) X Level. Min increase of +1 from your previous Max HP.
 - PC Saves decrease by 1 (Saves = 16 - character Level - Best Relevant Attr).
 - Gain 3 SP to save or spend on improving Skills or Attr. Full & Partial Experts gain +1 SP to spend on a non-combat Skill.
 

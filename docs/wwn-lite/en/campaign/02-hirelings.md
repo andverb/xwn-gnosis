@@ -1,3 +1,5 @@
+## Hirelings
+
 ### Hireling Types
 - **Non-Adventuring Hirelings** require daily pay + food & lodging if unable to return home. Their # is finite & they may be missed by other NPCs. They'll not fight unless forced, refuse to enter dungeons, & require morale checks after facing exceptional peril.
 - **Adventuring Hirelings** require daily pay + food & lodging if unable to return home. Their # is finite & they may be missed by other NPCs. They'll fight if it's their job, & enter dungeons for a ½ share of loot, but require morale checks if faced w/ exceptional peril.

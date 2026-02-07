@@ -1,0 +1,359 @@
+{% extends "tools/wwn/cheatsheets/cheatsheet_base.html" %}
+
+{% block title %}Wilderness Exploration - Gnosis{% endblock %}
+
+{% block cheatsheet_styles %}
+<style>
+    /* Compact table */
+    .compact-table {
+        width: 100%;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+    .compact-table th {
+        font-weight: 600;
+        color: var(--bs-secondary-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    .compact-table td:first-child {
+        font-weight: bold;
+        color: var(--bs-primary);
+        width: 3rem;
+        text-align: center;
+    }
+    .compact-table td:last-child {
+        color: var(--bs-secondary-color);
+    }
+
+    /* Formula box (centered, monospace) */
+    .formula-box {
+        font-family: monospace;
+        font-size: 1rem;
+        text-align: center;
+        padding: 0.75rem;
+    }
+
+    /* Encounter event table color-coded first column */
+    .event-encounter { color: var(--bs-danger); }
+    .event-signs { color: #fd7e14; }
+    .event-resource { color: #ffc107; }
+    .event-shift { color: var(--bs-info); }
+    .event-free { color: var(--bs-success); }
+</style>
+{% endblock %}
+
+{% block cheatsheet_content %}
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="h2">Wilderness Exploration</h1>
+    </div>
+
+    <div class="row g-3">
+
+        <!-- Overland Travel -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Overland Travel</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Travel Pace</h5>
+                        <p>PCs can travel <strong>10 hours per day</strong>.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Hex Crossing Times</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Terrain</th><th>Hours</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Road</td><td>2</td></tr>
+                                <tr><td>Hills, Desert, Forest</td><td>3</td></tr>
+                                <tr><td>Jungle, Mountains, Swamp</td><td>4</td></tr>
+                                <tr><td>Bad Weather / Difficult Terrain</td><td>&times;2</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Hex Exploration</h5>
+                        <p>Exploring a 6-mile hex for points of interest takes <strong>&frac12; day</strong> (longer if the task is especially difficult).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wilderness Encounters -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Wilderness Encounters</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Encounter Check</h5>
+                        <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span> once per day of travel + once per night camping outdoors.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Event Table</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Roll</th><th>Event</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="event-encounter">1</td><td>Encounter</td></tr>
+                                <tr><td class="event-signs">2</td><td>Signs of the next encounter</td></tr>
+                                <tr><td class="event-resource">3</td><td>A resource is unexpectedly depleted</td></tr>
+                                <tr><td class="event-shift">4</td><td>Shift (weather, hazards, etc.)</td></tr>
+                                <tr><td class="event-free">5-6</td><td>Free turn</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Encounter Distance</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Terrain</th><th>Distance</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: auto;">Dungeons, Alleyways</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span> &times; 10'</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: auto;">Forest, Hills</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">2d6</span> &times; 10'</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: auto;">Mts, Deserts, Plains, Tundra, Sea</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="4d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">4d6</span> &times; 10 yds</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Detection:</strong> Opposed <strong>Wis/Notice</strong> &mdash; the group that spots first can usually avoid the encounter.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Foraging & Supplies -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Foraging &amp; Supplies</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <p>PCs in <strong>non-barren terrain</strong> with a caravan or wagon need not worry about food, drink, or shelter.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Foraging Check</h5>
+                        <p><strong>1 hour</strong>, DC 10</p>
+                        <div class="formula-box">
+                            Success = <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span> FU + group's Survive (max 10)
+                        </div>
+                        <ul class="small ps-3 mb-0">
+                            <li>Each successive day in same hex: <strong>-1 DC</strong></li>
+                            <li>Foraged food spoils in <strong>3 days</strong></li>
+                            <li>Preservation: 1 Watch + 1 FU of firewood</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Forage Unit Equivalents</h5>
+                        <div class="modifier-table">
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">1 day's food / person</span>
+                                <span class="mod-table-value">1 enc (&frac12; bundled)</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">1 day's water / person</span>
+                                <span class="mod-table-value">1 enc</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">1 night's firewood</span>
+                                <span class="mod-table-value">4 enc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privation -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Privation</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>System Strain from Privation</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Condition</th><th>Strain</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Night w/o shelter/fire</td><td>+0</td></tr>
+                                <tr><td style="width: auto;">1st day w/o food</td><td>+0</td></tr>
+                                <tr><td style="width: auto; color: #fd7e14;">1st day w/o water</td><td style="color: #fd7e14;">+2</td></tr>
+                                <tr><td style="width: auto;">Harsh night w/o shelter</td><td>+1</td></tr>
+                                <tr><td style="width: auto;">Consecutive day w/o food</td><td>+1</td></tr>
+                                <tr><td style="width: auto; color: var(--bs-danger);">Consecutive day w/o water</td><td style="color: var(--bs-danger);">+3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>System Strain</h5>
+                        <p>Max System Strain = <strong>Con score</strong>. Exceeding max is <span class="modifier-negative">lethal</span>.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Night's Rest Recovery</h5>
+                        <p class="small mb-1">Requires food + water + shelter + sleep:</p>
+                        <ul class="small ps-3 mb-0">
+                            <li>Regain <strong>level</strong> in HP</li>
+                            <li>Regain all spell slots &amp; Effort</li>
+                            <li>Lose <strong>1</strong> System Strain</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environmental Hazards -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Environmental Hazards</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Falling</h5>
+                        <p><span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span> damage per 10 feet of fall.</p>
+                        <p class="small text-body-secondary mb-0">&frac12; damage if controlled descent with a successful <strong>Exert</strong> check (DC 7 + 1 per 10').</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Suffocation</h5>
+                        <p>Act normally without air for <strong>1 round &times; Con score</strong>.</p>
+                        <p class="small text-body-secondary mb-0">NPCs last 10 rounds. After that, lose <strong>1 HP &times; level</strong> per round.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Poison &amp; Disease</h5>
+                        <p><strong>Physical Save</strong> to avoid.</p>
+                        <p class="small text-body-secondary mb-0">Effects: HP loss, hallucination, increased Strain, death, debuffs. Lingering maladies may require multiple Saves &mdash; failure worsens effects or causes death.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beasts of Burden -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Beasts of Burden</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <p>In <strong>non-arid terrain</strong>, beasts need no fodder or water.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Daily Needs (Arid Terrain)</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Beast</th><th>Fodder</th><th>Water</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Small (Mule)</td><td>2 enc</td><td>4 enc</td></tr>
+                                <tr><td style="width: auto;">Large (Horse)</td><td>4 enc</td><td>8 enc</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Carrying Capacity</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Beast</th><th>Capacity</th><th>Laden</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Riding Horse</td><td>20 enc</td><td>5 enc</td></tr>
+                                <tr><td style="width: auto;">Mule / Heavy Pack Horse</td><td>15 enc</td><td>30 enc</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Butchering</h5>
+                        <p class="small mb-0">A beast can be butchered into rations equal to its enc capacity in days.</p>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Porters</strong> (non-adventuring hirelings): 1 porter = 12 enc / 2 w/ shared litter = 30 enc.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Alpine.js Components (uses $store.dice from base.html) -->
+<script>
+    document.addEventListener('alpine:init', () => {
+        // Rollable dice component - uses $store.dice.roll() from base.html
+        Alpine.data('rollable', () => ({
+            notation: '',
+            displayText: '',
+            rolled: false,
+            timeout: null,
+            clickHandler: null,
+
+            init() {
+                this.notation = this.$el.dataset.notation || this.$el.textContent.trim();
+                this.displayText = this.notation;
+            },
+
+            roll() {
+                this.reset();
+                const r = Alpine.store('dice').roll(this.notation);
+                if (r) {
+                    this.displayText = `${r.total} [${r.rolls.join(',')}]`;
+                    this.rolled = true;
+
+                    // Reset after 3 seconds
+                    this.timeout = setTimeout(() => this.reset(), 3000);
+
+                    // Reset on click anywhere else
+                    this.clickHandler = (e) => {
+                        if (e.target !== this.$el) this.reset();
+                    };
+                    setTimeout(() => document.addEventListener('click', this.clickHandler, { once: true }), 10);
+                }
+            },
+
+            reset() {
+                if (this.timeout) clearTimeout(this.timeout);
+                if (this.clickHandler) document.removeEventListener('click', this.clickHandler);
+                this.displayText = this.notation;
+                this.rolled = false;
+                this.timeout = null;
+                this.clickHandler = null;
+            }
+        }));
+    });
+</script>
+{% endblock %}

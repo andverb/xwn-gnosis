@@ -1,0 +1,359 @@
+{% extends "tools/wwn/cheatsheets/cheatsheet_base.html" %}
+
+{% block title %}Подорожі та Виживання - Гнозис{% endblock %}
+
+{% block cheatsheet_styles %}
+<style>
+    /* Compact table */
+    .compact-table {
+        width: 100%;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+    .compact-table th {
+        font-weight: 600;
+        color: var(--bs-secondary-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    .compact-table td:first-child {
+        font-weight: bold;
+        color: var(--bs-primary);
+        width: 3rem;
+        text-align: center;
+    }
+    .compact-table td:last-child {
+        color: var(--bs-secondary-color);
+    }
+
+    /* Formula box (centered, monospace) */
+    .formula-box {
+        font-family: monospace;
+        font-size: 1rem;
+        text-align: center;
+        padding: 0.75rem;
+    }
+
+    /* Encounter event table color-coded first column */
+    .event-encounter { color: var(--bs-danger); }
+    .event-signs { color: #fd7e14; }
+    .event-resource { color: #ffc107; }
+    .event-shift { color: var(--bs-info); }
+    .event-free { color: var(--bs-success); }
+</style>
+{% endblock %}
+
+{% block cheatsheet_content %}
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="h2">Подорожі та Виживання</h1>
+    </div>
+
+    <div class="row g-3">
+
+        <!-- Час Подорожі -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Подорож по Землі</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Темп Подорожі</h5>
+                        <p>Персонажі можуть подорожувати <strong>10 годин на день</strong>.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Час Перетину Гексу</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Місцевість</th><th>Години</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Дорога</td><td>2</td></tr>
+                                <tr><td>Пагорби, Пустеля, Ліс</td><td>3</td></tr>
+                                <tr><td>Джунглі, Гори, Болота</td><td>4</td></tr>
+                                <tr><td>Погана Погода / Складна Місцевість</td><td>&times;2</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Дослідження Гексу</h5>
+                        <p>Дослідження 6-мильного гексу для пошуку цікавих місць: <strong>&frac12; дня</strong> (довше, якщо завдання особливо складне).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Зустрічі в Дикій Місцевості -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Зустрічі в Дикій Місцевості</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Перевірка Зустрічей</h5>
+                        <p>Кидок <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1d6</span> раз на день подорожі та раз на ніч у таборі.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Таблиця Подій</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Кидок</th><th>Подія</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="event-encounter">1</td><td>Зустріч</td></tr>
+                                <tr><td class="event-signs">2</td><td>Ознаки наступної зустрічі</td></tr>
+                                <tr><td class="event-resource">3</td><td>Неочікувана втрата ресурсів</td></tr>
+                                <tr><td class="event-shift">4</td><td>Зміна (погода, небезпеки тощо)</td></tr>
+                                <tr><td class="event-free">5-6</td><td>Вільний хід</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Дистанція Зустрічі</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Місцевість</th><th>Дистанція</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: auto;">Підземелля, Провулки</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1d6</span> &times; 10'</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: auto;">Ліс, Пагорби</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="2d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">2d6</span> &times; 10'</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: auto;">Гори, Пустелі, Рівнини, Тундра, Море</td>
+                                    <td><span class="dice" x-data="rollable" data-notation="4d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">4d6</span> &times; 10 ярдів</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Виявлення:</strong> Протиставлена <strong>МУД/УВАГА</strong> &mdash; група, що помітить першою, зазвичай може уникнути зустрічі.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Збір Припасів -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Збір Припасів</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <p>Персонажі у <strong>родючій місцевості</strong> з караваном або возом не турбуються про їжу, воду чи укриття.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Перевірка Збору</h5>
+                        <p><strong>1 година</strong>, КС 10</p>
+                        <div class="formula-box">
+                            Успіх = <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1d6</span> ОП + ВИЖИВАННЯ групи (макс 10)
+                        </div>
+                        <ul class="small ps-3 mb-0">
+                            <li>Кожен наступний день у тому ж гексі: <strong>-1 КС</strong></li>
+                            <li>Зібрана їжа псується через <strong>3 дні</strong></li>
+                            <li>Консервація: 1 Варта + 1 ОП дров</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Еквіваленти Одиниці Припасів</h5>
+                        <div class="modifier-table">
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Денний запас їжі / особу</span>
+                                <span class="mod-table-value">1Ж (&frac12;Ж у зв'язках)</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Денний запас води / особу</span>
+                                <span class="mod-table-value">1Ж</span>
+                            </div>
+                            <div class="mod-table-row">
+                                <span class="mod-table-desc">Нічний запас дров</span>
+                                <span class="mod-table-value">4Ж</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нестатки -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Нестатки</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Виснаження від Нестатків</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Умова</th><th>Виснаження</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Ніч без укриття/вогню</td><td>+0</td></tr>
+                                <tr><td style="width: auto;">1-й день без їжі</td><td>+0</td></tr>
+                                <tr><td style="width: auto; color: #fd7e14;">1-й день без води</td><td style="color: #fd7e14;">+2</td></tr>
+                                <tr><td style="width: auto;">Сувора ніч без укриття</td><td>+1</td></tr>
+                                <tr><td style="width: auto;">Наступний день без їжі</td><td>+1</td></tr>
+                                <tr><td style="width: auto; color: var(--bs-danger);">Наступний день без води</td><td style="color: var(--bs-danger);">+3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Виснаження</h5>
+                        <p>Максимум Виснаження = показник <strong>СТА</strong>. Перевищення максимуму &mdash; <span class="modifier-negative">смерть</span>.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Нічний Відпочинок</h5>
+                        <p class="small mb-1">Потрібні їжа + вода + укриття + сон:</p>
+                        <ul class="small ps-3 mb-0">
+                            <li>Відновлення ПЗ = <strong>рівень</strong></li>
+                            <li>Відновлення всіх слотів заклять та Зусилля</li>
+                            <li>Зниження Виснаження на <strong>1</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Небезпеки Середовища -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Небезпеки Середовища</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <h5>Падіння</h5>
+                        <p><span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Натисніть для кидка" x-text="displayText">1d6</span> ушкоджень за кожні 10 футів.</p>
+                        <p class="small text-body-secondary mb-0">&frac12; при контрольованому спуску та успішній перевірці <strong>АТЛЕТИКА</strong> (КС 7 + 1 за кожні 10').</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Удушення</h5>
+                        <p>Діє нормально без повітря <strong>1 раунд &times; показник СТА</strong>.</p>
+                        <p class="small text-body-secondary mb-0">НІПи витримують 10 раундів. Далі втрата <strong>1 ПЗ &times; рівень</strong> за раунд.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Отруєння та Хвороби</h5>
+                        <p><strong>Фізичний ряткидок</strong>, щоб уникнути.</p>
+                        <p class="small text-body-secondary mb-0">Наслідки: втрата ПЗ, галюцинації, збільшення Виснаження, смерть, дебафи. Довготривалі хвороби можуть вимагати кілька порятунків &mdash; невдача погіршує стан або призводить до смерті.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- В'ючні Тварини -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">В'ючні Тварини</h5>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <p>На <strong>родючій місцевості</strong> тварини не потребують додаткового корму чи води.</p>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Денні Потреби (Посушлива Місцевість)</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Тварина</th><th>Корм</th><th>Вода</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Мала (Мул)</td><td>2Ж</td><td>4Ж</td></tr>
+                                <tr><td style="width: auto;">Велика (Кінь)</td><td>4Ж</td><td>8Ж</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Вантажність</h5>
+                        <table class="table table-sm compact-table">
+                            <thead>
+                                <tr><th>Тварина</th><th>Вантажність</th><th>З Вершником</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="width: auto;">Кінь</td><td>20Ж</td><td>5Ж</td></tr>
+                                <tr><td style="width: auto;">Мул / Вантажний Кінь</td><td>15Ж</td><td>30Ж</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-item">
+                        <h5>Забій</h5>
+                        <p class="small mb-0">Тварину можна забити на харчі &mdash; запас їжі на кількість днів = її вантажності.</p>
+                    </div>
+
+                    <p class="small text-body-secondary mb-0">
+                        <strong>Носильники</strong> (наймані працівники): 1 носильник = 12Ж / 2 разом = 30Ж.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Alpine.js Components (uses $store.dice from base.html) -->
+<script>
+    document.addEventListener('alpine:init', () => {
+        // Rollable dice component - uses $store.dice.roll() from base.html
+        Alpine.data('rollable', () => ({
+            notation: '',
+            displayText: '',
+            rolled: false,
+            timeout: null,
+            clickHandler: null,
+
+            init() {
+                this.notation = this.$el.dataset.notation || this.$el.textContent.trim();
+                this.displayText = this.notation;
+            },
+
+            roll() {
+                this.reset();
+                const r = Alpine.store('dice').roll(this.notation);
+                if (r) {
+                    this.displayText = `${r.total} [${r.rolls.join(',')}]`;
+                    this.rolled = true;
+
+                    // Reset after 3 seconds
+                    this.timeout = setTimeout(() => this.reset(), 3000);
+
+                    // Reset on click anywhere else
+                    this.clickHandler = (e) => {
+                        if (e.target !== this.$el) this.reset();
+                    };
+                    setTimeout(() => document.addEventListener('click', this.clickHandler, { once: true }), 10);
+                }
+            },
+
+            reset() {
+                if (this.timeout) clearTimeout(this.timeout);
+                if (this.clickHandler) document.removeEventListener('click', this.clickHandler);
+                this.displayText = this.notation;
+                this.rolled = false;
+                this.timeout = null;
+                this.clickHandler = null;
+            }
+        }));
+    });
+</script>
+{% endblock %}

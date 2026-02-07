@@ -1,4 +1,5 @@
 ### Travel Times
+- Usually PCs can see rough
 - PCs can travel 10hrs per day.
 - **Hours spent to cross a hex:**
   - Road Hex: 2

@@ -2,7 +2,7 @@
 - 1 Unskilled worker = 5 $p/day worth of construction.
 - 1 Skilled worker = 25 $p/day worth of construction.
 - Capable PC overseeing construction: -10% to cost.
-- Lrg or complex structures built w/ < 10% skilled labor may be subpar.
+- Large or complex structures built w/ < 10% skilled labor may be subpar.
 
 ### Building Materials
 - Wooden object 10'x10'x10': 50$p

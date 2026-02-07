@@ -1,3 +1,5 @@
+## Armies & Mass Combat
+
 ### Mass Combat Rules
 - Each side divides its Combat Strength by 10 & ↑. They gain an = # of d6s. Advantages may warrant bonus d6s be awarded.
 - Highest roll wins. Loser's Combat Strength drops = to the difference in rolls. Both sides suffer losses = # of dice the other rolled.

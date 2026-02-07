@@ -88,6 +88,24 @@ async def site_exploration(request):
     )
 
 
+async def wilderness_exploration(request):
+    """Wilderness Exploration - overland travel, foraging, privation, hazards."""
+    current_lang = get_language(request)
+    template = (
+        "tools/wwn/cheatsheets/wilderness_exploration_uk.html"
+        if current_lang == "uk"
+        else "tools/wwn/cheatsheets/wilderness_exploration_en.html"
+    )
+    return render(
+        request,
+        template,
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+        },
+    )
+
+
 @require_POST  # This view ONLY accepts POST requests (htmx form submission)
 async def calculate_challenge(request):
     """

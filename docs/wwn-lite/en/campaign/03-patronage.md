@@ -1,4 +1,6 @@
-Costs x2 to bribe a patron. Will accept substantial risk, but not likely personal ruin.
+## Monetary Rewards
+
+### Patronage and Monetary rewards
 
 | Patron Type | Reward |
 |-------------|--------|
@@ -15,6 +17,9 @@ Costs x2 to bribe a patron. Will accept substantial risk, but not likely persona
 | Chief High Priest | 25k $p |
 | Monarch or Merchant Prince | 50k $p |
 
+**Bribes:**  
+- Costs x2 to bribe a patron. Will accept substantial risk, but not likely personal ruin.
+
 **Modifiers:**
 
 - Paid in land or goods, not cash: x2
@@ -27,12 +32,3 @@ Costs x2 to bribe a patron. Will accept substantial risk, but not likely persona
 - Wilderness (good farmland): 15k $p
 - Preestablished farming villages, business monopolies, or other personal estates: 20 x the property's yearly income
 
-### Income/Year Calculations
-
-| INCOME/YEAR | HEX TYPE | X POPULATION | X SECURITY |
-|-------------|----------|--------------|------------|
-| 10k | Has a major mine or rare resource | x10 A major city is present there | x2 Unusually safe & orderly |
-| 5k | Rich agricultural land | x4 A minor city is present there | x1 Ordinary civilized terrain |
-| 2k | Marginal crop or pasture land | x2 Villages & market towns | x0.5 Dangerous frontier |
-| 1k | Poor & barely-habitable terrain | x0.5 Frontier population density | x0.25 Untamed wilderness. No law. |
-| 0 | Wastelands & barren | x0.1 Barely-inhabited wilderness | x0 Active warfare. |
