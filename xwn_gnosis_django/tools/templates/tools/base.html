@@ -234,7 +234,7 @@
         });
     </script>
 
-    <title>{% block title %}Gnosis - xWN Rules Database{% endblock %}</title>
+    <title>{% block title %}{% if current_lang == "uk" %}Гнозис — xWN Правила & Інструменти{% else %}Gnosis — xWN Rules & Tools{% endif %}{% endblock %}</title>
 
     <style>
         /* Alpine.js cloak */
@@ -400,8 +400,8 @@
         <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'tools:home' %}">
             <i class="bi bi-book"></i>
             <span class="navbar-brand-text">
-                <span class="navbar-brand-title">Gnosis</span>
-                <span class="navbar-brand-subtitle">xWN Rules Database</span>
+                <span class="navbar-brand-title">{% if current_lang == "uk" %}Гнозис{% else %}Gnosis{% endif %}</span>
+                <span class="navbar-brand-subtitle">{% if current_lang == "uk" %}xWN Правила & Інструменти{% else %}xWN Rules & Tools{% endif %}</span>
             </span>
         </a>
 
@@ -417,35 +417,40 @@
                 <!-- Rules link (primary) -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'tools:rules_index' %}">
-                        <i class="bi bi-journal-text me-1"></i>Rules
+                        <i class="bi bi-journal-text me-1"></i>{% if current_lang == "uk" %}Правила{% else %}Rules{% endif %}
                     </a>
                 </li>
 
-                <!-- Tools dropdown -->
+                <!-- Cheatsheets dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-tools me-1"></i>Tools
+                        <i class="bi bi-card-checklist me-1"></i>{% if current_lang == "uk" %}Шпаргалки{% else %}Cheatsheets{% endif %}
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'tools:combat_cheatsheet' %}">
-                            <i class="bi bi-crosshair me-2"></i>Combat Cheatsheet
+                            <i class="bi bi-crosshair me-2"></i>{% if current_lang == "uk" %}Дії в Бою{% else %}Combat Cheatsheet{% endif %}
                         </a></li>
                         <li><a class="dropdown-item" href="{% url 'tools:encounter_cheatsheet' %}">
-                            <i class="bi bi-people me-2"></i>Encounter Cheatsheet
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'tools:combat_tracker' %}">
-                            <i class="bi bi-list-ol me-2"></i>Combat Tracker
+                            <i class="bi bi-people me-2"></i>{% if current_lang == "uk" %}Підземелля і зіткнення{% else %}Encounter Cheatsheet{% endif %}
                         </a></li>
                     </ul>
                 </li>
 
-                <!-- Entities link -->
+                <!-- Combat Tracker -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tools:combat_tracker' %}">
+                        <i class="bi bi-list-ol me-1"></i>{% if current_lang == "uk" %}Трекер бою{% else %}Combat Tracker{% endif %}
+                    </a>
+                </li>
+
+                <!-- Entities link (hidden until implemented) -->
+                {% comment %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'tools:entity_browse' %}">
                         <i class="bi bi-grid-3x3 me-1"></i>Entities
                     </a>
                 </li>
+                {% endcomment %}
             </ul>
 
             <!-- Right side controls -->

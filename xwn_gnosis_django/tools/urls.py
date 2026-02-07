@@ -6,6 +6,11 @@ Django URL patterns explained:
 - The 'name' is used in templates: {% url 'app_name:name' %}
 - <str:lang> captures a string from URL and passes to view as 'lang' parameter
 - app_name creates a namespace to avoid conflicts between apps
+
+URL hierarchy:
+- /<system>/          → system-specific content (rules, cheatsheets)
+- /tools/             → shared tools (combat tracker, entities)
+- /                   → global (home, language, health)
 """
 
 from django.urls import path
@@ -16,25 +21,23 @@ from . import views
 app_name = "tools"
 
 urlpatterns = [
-    # Home page - defaults to rules index
+    # Home page
     path("", views.rules_index, name="home"),
+    # --- WWN system-specific ---
+    # Rules
+    path("wwn/rules/", views.rules_index, name="rules_index"),
+    path("wwn/rules/suggest-typo/", views.suggest_typo, name="suggest_typo"),
+    path("wwn/rules/<str:section>/", views.rules_section, name="rules_section"),
+    path("wwn/rules/<str:section>/<str:page>/", views.rules_page, name="rules_page"),
     # Cheatsheets
-    path("cheatsheets/wwn-combat", views.combat_cheatsheet, name="combat_cheatsheet"),
-    path("cheatsheets/wwn-encounter", views.encounter_cheatsheet, name="encounter_cheatsheet"),
-    # htmx endpoint for challenge calculator (POST only)
-    path("cheatsheets/calculate-challenge", views.calculate_challenge, name="calculate_challenge"),
-    # Combat tracker
-    path("combat-tracker", views.combat_tracker, name="combat_tracker"),
-    # Entity browser
-    path("entities/", views.entity_browse, name="entity_browse"),
-    path("entities/search/", views.entity_search, name="entity_search"),
-    # Rules (WWN)
-    path("rules/wwn/", views.rules_index, name="rules_index"),
-    path("rules/wwn/suggest-typo/", views.suggest_typo, name="suggest_typo"),
-    path("rules/wwn/<str:section>/", views.rules_section, name="rules_section"),
-    path("rules/wwn/<str:section>/<str:page>/", views.rules_page, name="rules_page"),
-    # Language switcher - <str:lang> captures "en" or "uk" from URL
+    path("wwn/cheatsheets/combat/", views.combat_cheatsheet, name="combat_cheatsheet"),
+    path("wwn/cheatsheets/encounter/", views.encounter_cheatsheet, name="encounter_cheatsheet"),
+    path("wwn/cheatsheets/calculate-challenge/", views.calculate_challenge, name="calculate_challenge"),
+    # --- Shared tools ---
+    path("tools/combat-tracker/", views.combat_tracker, name="combat_tracker"),
+    path("tools/entities/", views.entity_browse, name="entity_browse"),
+    path("tools/entities/search/", views.entity_search, name="entity_search"),
+    # --- Global ---
     path("set-language/<str:lang>", views.set_language, name="set_language"),
-    # Health check for deployment monitoring
     path("health", views.health_check, name="health_check"),
 ]

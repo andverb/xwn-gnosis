@@ -1,4 +1,4 @@
-{% extends "tools/wwn/cheatsheet_base.html" %}
+{% extends "tools/wwn/cheatsheets/cheatsheet_base.html" %}
 
 {% block title %}Encounter Cheatsheet - Gnosis{% endblock %}
 
@@ -218,7 +218,7 @@
 </style>
 {% endblock %}
 
-{% block content %}
+{% block cheatsheet_content %}
 <div class="container">
     <div class="text-center mb-4">
         <h1 class="h2">Encounter Cheatsheet</h1>
@@ -285,13 +285,26 @@
                         <span>&#127982; lantern (24 turns / 4h)</span>
                     </div>
 
-                    <p class="small text-body-secondary mt-2 mb-3">
-                        Each turn = 10 minutes. <strong>1 turn:</strong> move room to room, pick lock, disarm trap, fight, first aid &amp; loot, search room, parley, jury-rig device.
-                    </p>
+                    <div class="small text-body-secondary mt-2 mb-3">
+                        <p class="mb-1"><strong>1 turn = 10 minutes:</strong></p>
+                        <ul class="mb-0">
+                            <li>Move room to room</li>
+                            <li>Pick lock</li>
+                            <li>Disarm trap</li>
+                            <li>Fight</li>
+                            <li>First aid &amp; loot</li>
+                            <li>Search room</li>
+                            <li>Parley</li>
+                            <li>Jury-rig device</li>
+                        </ul>
+                    </div>
 
                     <div class="action-item">
                         <h5>Encounter Check</h5>
-                        <p>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span>. Encounter on 1 (or 1-2 in dangerous areas). Distance: room = entrance, corridor = <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> x 10'.</p>
+                        <ul class="mb-0">
+                            <li>Roll <span class="dice" x-data="rollable" data-notation="1d6" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d6</span> — encounter on <strong>1</strong> (on <strong>1–2</strong> in dangerous areas)</li>
+                            <li>Distance: room — nearest entrance; corridor — <span class="dice" x-data="rollable" data-notation="1d8" @click="roll()" :class="{ 'rolled': rolled }" title="Click to roll" x-text="displayText">1d8</span> × 10'</li>
+                        </ul>
                     </div>
 
                     <div class="action-item">
@@ -460,7 +473,7 @@
                     </form>
 
                     <div id="calculator-result">
-                        {% include "tools/wwn/partials/_challenge_result_en.html" %}
+                        {% include "tools/wwn/cheatsheets/partials/_challenge_result_en.html" %}
                     </div>
 
                     <div class="challenge-legend">
@@ -684,10 +697,6 @@
         </div>
 
     </div>
-
-    <footer class="text-center mt-4 pt-3 border-top">
-        <small class="text-body-secondary">WWN by Kevin Crawford. Cheatsheet content compiled for quick reference.</small>
-    </footer>
 </div>
 
 <!-- Alpine.js Components (uses $store.dice from base.html) -->

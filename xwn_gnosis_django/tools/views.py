@@ -64,7 +64,11 @@ async def combat_cheatsheet(request):
     current_lang = get_language(request)
 
     # Select template based on language (templates organized by system: wwn/)
-    template = "tools/wwn/combat_cheatsheet_uk.html" if current_lang == "uk" else "tools/wwn/combat_cheatsheet_en.html"
+    template = (
+        "tools/wwn/cheatsheets/combat_cheatsheet_uk.html"
+        if current_lang == "uk"
+        else "tools/wwn/cheatsheets/combat_cheatsheet_en.html"
+    )
 
     # Context dict - these become template variables: {{ current_lang }}, {{ other_lang }}
     return render(
@@ -81,7 +85,9 @@ async def encounter_cheatsheet(request):
     """Encounter Cheatsheet - morale, instinct, challenge calculator."""
     current_lang = get_language(request)
     template = (
-        "tools/wwn/encounter_cheatsheet_uk.html" if current_lang == "uk" else "tools/wwn/encounter_cheatsheet_en.html"
+        "tools/wwn/cheatsheets/encounter_cheatsheet_uk.html"
+        if current_lang == "uk"
+        else "tools/wwn/cheatsheets/encounter_cheatsheet_en.html"
     )
     return render(
         request,
@@ -166,9 +172,9 @@ async def calculate_challenge(request):
 
     # Return partial template (HTML fragment for htmx)
     template_name = (
-        "tools/wwn/partials/_challenge_result_uk.html"
+        "tools/wwn/cheatsheets/partials/_challenge_result_uk.html"
         if current_lang == "uk"
-        else "tools/wwn/partials/_challenge_result_en.html"
+        else "tools/wwn/cheatsheets/partials/_challenge_result_en.html"
     )
 
     return render(
@@ -198,7 +204,7 @@ async def combat_tracker(request):
 
     return render(
         request,
-        "tools/wwn/combat_tracker.html",
+        "tools/wwn/combat-tracker/combat_tracker.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -371,7 +377,7 @@ async def entity_browse(request):
 
     return render(
         request,
-        "tools/entities/browse.html",
+        "tools/wwn/entities/browse.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -418,7 +424,7 @@ async def entity_search(request):
 
     return render(
         request,
-        "tools/entities/_entity_list.html",
+        "tools/wwn/entities/_entity_list.html",
         {
             "entities": entities,
             "current_lang": current_lang,
@@ -570,12 +576,25 @@ async def rules_index(request):
     """Rules main index page."""
     current_lang = get_language(request)
 
+    # Build sections list from SECTION_META for the template
+    sections = []
+    for key, meta in SECTION_META.items():
+        sections.append(
+            {
+                "key": key,
+                "title": meta["title"].get(current_lang, key.title()),
+                "icon": meta["icon"],
+                "description": meta["description"].get(current_lang, ""),
+            }
+        )
+
     return render(
         request,
-        "tools/rules/index.html",
+        "tools/wwn/rules/index.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
+            "sections": sections,
         },
     )
 
@@ -595,7 +614,7 @@ async def rules_section(request, section: str):
 
     return render(
         request,
-        "tools/rules/section.html",
+        "tools/wwn/rules/section.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -644,7 +663,7 @@ async def rules_page(request, section: str, page: str):
 
     return render(
         request,
-        "tools/rules/page.html",
+        "tools/wwn/rules/page.html",
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
@@ -688,6 +707,6 @@ async def suggest_typo(request):
     current_lang = get_language(request)
     return render(
         request,
-        "tools/rules/_typo_success.html",
+        "tools/wwn/rules/_typo_success.html",
         {"current_lang": current_lang},
     )

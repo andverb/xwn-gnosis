@@ -143,3 +143,13 @@
 
 {% block cheatsheet_styles %}{% endblock %}
 {% endblock %}
+
+{% block content %}
+{% block cheatsheet_content %}{% endblock %}
+
+<footer class="text-center mt-4 pt-3 border-top">
+    <small class="text-body-secondary">
+        {% if current_lang == "uk" %}Системи xWN від Кевіна Кроуфорда. Зміст шпаргалки зібрано для швидкого довідника.{% else %}xWN systems by Kevin Crawford. Cheatsheet content compiled for quick reference.{% endif %}
+    </small>
+</footer>
+{% endblock %}
