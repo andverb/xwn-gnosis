@@ -1,0 +1,204 @@
+[project]
+name = "xwn-gnosis"
+version = "0.1.0"
+description = "XWN TRPG rules vault"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.16.5",
+    "asyncpg>=0.30.0",
+    "bleach>=6.2.0",
+    "fastapi[standard]>=0.115.12",
+    "granian>=2.5.4",
+    "itsdangerous>=2.2.0",
+    "markdown>=3.9",
+    "mkdocs-material>=9.6.22",
+    "pre-commit>=4.3.0",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.11.3",
+    "pydantic-settings>=2.11.0",
+    "pymdown-extensions>=10.16.1",
+    "python-dotenv>=1.1.0",
+    "python-slugify>=8.0.4",
+    "ruff>=0.11.5",
+    "sqlalchemy[asyncio]>=2.0.43",
+    "starlette-admin>=0.15.1",
+    "structlog>=25.5.0",
+]
+
+[dependency-groups]
+dev = [
+    "aiosqlite>=0.20.0",
+    "coverage>=7.11.0",
+    "httpx>=0.28.1",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+  "C",
+  "DTZ",
+  "E",
+  "F",
+  "FLY",
+  "G002",
+  "G003",
+  "G010",
+  "G101",
+  "I",
+  "N",
+  "PL",
+  "Q",
+  "RET",
+  "RUF",
+  "S",
+  "T10",
+  "T20",
+  "UP",
+  "W",
+]
+ignore = [
+  "N805",
+  "PLR0912",
+  "PLR0913",
+  "RUF100",
+  "S101",
+  "S104",
+    "PLR2004",
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+"app/i18n.py" = ["RUF001"]  # Allow Cyrillic characters in translations
+"app/routers/web/cheatsheets.py" = ["RUF001"]  # Allow Cyrillic characters in i18n verdicts
+"app/admin.py" = ["RUF012"]  # Starlette Admin ModelView class attributes
+"scripts/**/*.py" = ["T201", "RUF001"]  # Allow print statements and Cyrillic characters in CLI scripts
+"tests/**/*.py" = [
+    "S106",    # Allow hardcoded passwords in tests
+    "PLR2004", # Allow magic values in tests
+    "PLC0415", # Allow imports inside functions in tests
+    "DTZ005",  # Allow datetime without timezone in tests
+]
+
+[tool.alembic]
+
+# path to migration scripts.
+# this is typically a path given in POSIX (e.g. forward slashes)
+# format, relative to the token %(here)s which refers to the location of this
+# ini file
+script_location = "%(here)s/migrations"
+
+# template used to generate migration file names; The default value is %%(rev)s_%%(slug)s
+# Uncomment the line below if you want the files to be prepended with date and time
+# see https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file
+# for all available tokens
+# file_template = "%%(year)d_%%(month).2d_%%(day).2d_%%(hour).2d%%(minute).2d-%%(rev)s_%%(slug)s"
+
+# additional paths to be prepended to sys.path. defaults to the current working directory.
+prepend_sys_path = [
+    "."
+]
+
+# timezone to use when rendering the date within the migration file
+# as well as the filename.
+# If specified, requires the python>=3.9 or backports.zoneinfo library and tzdata library.
+# Any required deps can installed by adding `alembic[tz]` to the pip requirements
+# string value is passed to ZoneInfo()
+# leave blank for localtime
+# timezone =
+
+# max length of characters to apply to the "slug" field
+# truncate_slug_length = 40
+
+# set to 'true' to run the environment during
+# the 'revision' command, regardless of autogenerate
+# revision_environment = false
+
+# set to 'true' to allow .pyc and .pyo files without
+# a source .py file to be detected as revisions in the
+# versions/ directory
+# sourceless = false
+
+# version location specification; This defaults
+# to <script_location>/versions.  When using multiple version
+# directories, initial revisions must be specified with --version-path.
+# version_locations = [
+#    "%(here)s/migrations/versions",
+#    "%(here)s/foo/bar"
+# ]
+
+
+# set to 'true' to search source files recursively
+# in each "version_locations" directory
+# new in Alembic version 1.10
+# recursive_version_locations = false
+
+# the output encoding used when revision files
+# are written from script.py.mako
+# output_encoding = "utf-8"
+
+# This section defines scripts or Python functions that are run
+# on newly generated revision scripts.  See the documentation for further
+# detail and examples
+
+[[tool.alembic.post_write_hooks]]
+# lint with attempts to fix using "ruff" - use the module runner, against the "ruff" module
+name = "ruff"
+type = "module"
+module = "ruff"
+options = "check --fix REVISION_SCRIPT_FILENAME"
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff_format"
+type = "module"
+module = "ruff"
+options = "format REVISION_SCRIPT_FILENAME"
+
+
+# [[tool.alembic.post_write_hooks]]
+# Alternatively, use the exec runner to execute a binary found on your PATH
+# name = "ruff"
+# type = "exec"
+# executable = "ruff"
+# options = "check --fix REVISION_SCRIPT_FILENAME"
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/scripts/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+[tool.uv.workspace]
+members = [
+    "xwn_gnosis_django",
+]
+
