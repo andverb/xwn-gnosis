@@ -31,8 +31,11 @@ COPY . .
 ENV PATH="/code/.venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=config.settings
 
-# Collect static files for whitenoise
+# Collect static files for ServeStatic
 RUN python manage.py collectstatic --noinput
+
+# Run migrations (SQLite)
+RUN python manage.py migrate --noinput
 
 # Create non-root user for security
 RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m

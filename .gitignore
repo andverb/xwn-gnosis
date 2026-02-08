@@ -42,7 +42,7 @@ srd_data
 *.sql
 
 # Django generated files
-xwn_gnosis_django/staticfiles/
+staticfiles/
 
 # Development notes
 CLAUDE.md
