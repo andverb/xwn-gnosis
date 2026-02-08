@@ -35,7 +35,7 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 # DEBUG is off in production unless explicitly overridden
 DEBUG = os.getenv("DEBUG", str(ENVIRONMENT != "production")).lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # Required for POST requests (htmx, CSRF) when behind a reverse proxy
 # Railway: https://your-app.up.railway.app
