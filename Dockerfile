@@ -40,10 +40,8 @@ RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m
 RUN chown -R adventurer:adventurer /code
 USER adventurer
 
-EXPOSE 8000
-
 # Granian ASGI server
+# - Railway injects PORT env var at runtime; app must listen on it
 # - --interface asginl: ASGI without lifespan (Django doesn't implement lifespan protocol)
-# - --port 8000: hardcoded to match EXPOSE (Railway routes traffic to EXPOSE port)
 # - --workers 2: multiple workers for concurrency
-CMD ["sh", "-c", "python manage.py migrate --noinput && granian --interface asginl --host 0.0.0.0 --port 8000 --workers 2 config.asgi:application"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && granian --interface asginl --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]
