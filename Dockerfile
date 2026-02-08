@@ -46,9 +46,9 @@ USER adventurer
 ENV PORT=8000
 EXPOSE 8000
 
-# Granian ASGI server with HTTP/2 support
+# Granian ASGI server
 # - --interface asgi: async views require ASGI
-# - --http 2: enable HTTP/2 (Railway handles TLS termination)
 # - --workers 2: multiple workers for concurrency
 # - sh -c: allows $PORT substitution at runtime
-CMD ["sh", "-c", "granian --interface asgi --http 2 --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]
+# Note: no --http 2 (Railway terminates TLS, connects to container over plain HTTP/1.1)
+CMD ["sh", "-c", "granian --interface asginl --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]
