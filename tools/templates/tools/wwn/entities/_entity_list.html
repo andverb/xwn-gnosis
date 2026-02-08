@@ -1,0 +1,74 @@
+{% if entities %}
+<div class="entity-grid">
+    {% for entity in entities %}
+    <div class="entity-card">
+        <div class="entity-card-header">
+            <h3 class="entity-card-title">{{ entity.name }}</h3>
+            <span class="entity-card-type type-{{ entity.type }}">{{ entity.type }}</span>
+        </div>
+
+        {% if entity.type == "spell" %}
+        <div class="entity-card-meta">
+            <span class="entity-meta-badge">Level {{ entity.level }}</span>
+            <span class="entity-meta-badge">{{ entity.tradition }}</span>
+        </div>
+        {% elif entity.type == "focus" %}
+        <div class="entity-card-meta">
+            <span class="entity-meta-badge">{{ entity.category }}</span>
+        </div>
+        {% elif entity.type == "weapon" %}
+        <div class="entity-stats">
+            <div class="entity-stat">
+                <span class="entity-stat-value">{{ entity.damage }}</span>
+                <span class="entity-stat-label">Damage</span>
+            </div>
+            {% if entity.shock %}
+            <div class="entity-stat">
+                <span class="entity-stat-value">{{ entity.shock }}</span>
+                <span class="entity-stat-label">Shock</span>
+            </div>
+            {% endif %}
+            {% if entity.range %}
+            <div class="entity-stat">
+                <span class="entity-stat-value">{{ entity.range }}</span>
+                <span class="entity-stat-label">Range</span>
+            </div>
+            {% endif %}
+        </div>
+        {% elif entity.type == "armor" %}
+        <div class="entity-stats">
+            <div class="entity-stat">
+                <span class="entity-stat-value">{{ entity.ac }}</span>
+                <span class="entity-stat-label">AC</span>
+            </div>
+        </div>
+        {% elif entity.type == "equipment" %}
+        <div class="entity-card-meta">
+            {% if entity.cost %}
+            <span class="entity-meta-badge">{{ entity.cost }}</span>
+            {% endif %}
+            {% if entity.enc %}
+            <span class="entity-meta-badge">Enc: {{ entity.enc }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <p class="entity-card-desc">{{ entity.description|truncatewords:30 }}</p>
+
+        {% if entity.tags %}
+        <div class="entity-tags">
+            {% for tag in entity.tags %}
+            <span class="entity-tag">{{ tag }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <i class="bi bi-search"></i>
+    <p class="h5">No entities found</p>
+    <p class="text-body-secondary">Try adjusting your search or filters</p>
+</div>
+{% endif %}

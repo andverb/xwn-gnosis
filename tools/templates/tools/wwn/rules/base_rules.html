@@ -1,0 +1,565 @@
+{% extends "tools/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<!-- lunr.js for client-side search -->
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script src="https://unpkg.com/lunr-languages/lunr.stemmer.support.js"></script>
+<script src="https://unpkg.com/lunr-languages/lunr.ru.js"></script>
+<style>
+    /* Two-column layout */
+    .rules-wrapper {
+        display: flex;
+        gap: 2rem;
+        min-height: calc(100vh - 150px);
+    }
+
+    /* Sidebar */
+    .rules-sidebar {
+        width: 280px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+        padding-right: 1rem;
+        border-right: 1px solid var(--bs-border-color);
+    }
+
+    /* Mobile: hide sidebar, show toggle */
+    @media (max-width: 991px) {
+        .rules-sidebar {
+            display: none;
+        }
+
+        .rules-sidebar.show {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bs-body-bg);
+            z-index: 1040;
+            padding: 1rem;
+            border-right: 1px solid var(--bs-border-color);
+        }
+
+        .sidebar-backdrop {
+            display: none;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1039;
+        }
+    }
+
+    .sidebar-section {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Sidebar toggle button (Bootstrap pattern) */
+    .sidebar-section-title {
+        padding: 0.5rem 0.75rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--bs-emphasis-color);
+        background-color: transparent;
+    }
+
+    .sidebar-section-title:hover,
+    .sidebar-section-title:focus {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .sidebar-section-title[aria-expanded="true"] {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+    }
+
+    /* Chevron rotation based on aria-expanded (Bootstrap pattern) */
+    .sidebar-section-title .chevron {
+        transition: transform 0.35s ease;
+    }
+
+    .sidebar-section-title[aria-expanded="true"] .chevron {
+        transform: rotate(0deg);
+    }
+
+    .sidebar-section-title[aria-expanded="false"] .chevron {
+        transform: rotate(-90deg);
+    }
+
+    /* Sidebar links (Bootstrap btn-toggle-nav pattern) */
+    .btn-toggle-nav a {
+        padding: 0.1875rem 0.5rem;
+        margin-top: 0.125rem;
+        margin-left: 1.25rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .btn-toggle-nav a:hover,
+    .btn-toggle-nav a:focus {
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-emphasis-color);
+    }
+
+    .btn-toggle-nav a.active {
+        color: var(--bs-primary);
+        font-weight: 600;
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    /* Content area */
+    .rules-content {
+        flex: 1;
+        max-width: 900px;
+        min-width: 0;
+    }
+
+    .rules-content h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--bs-primary);
+    }
+
+    .rules-content h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--bs-primary);
+    }
+
+    .rules-content h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .rules-content h4 {
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    /* Collapsible h4 sections */
+    .rules-content .h4-collapsible {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        border-radius: var(--bs-border-radius);
+        transition: background-color 0.15s ease-in-out;
+        user-select: none;
+    }
+
+    .rules-content .h4-collapsible:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .rules-content .h4-collapsible .h4-chevron {
+        font-size: 0.75rem;
+        transition: transform 0.2s ease-in-out;
+        color: var(--bs-secondary-color);
+        flex-shrink: 0;
+    }
+
+    .rules-content .h4-collapsible[aria-expanded="true"] .h4-chevron {
+        transform: rotate(90deg);
+    }
+
+    .rules-content .h4-collapsible[aria-expanded="false"] .h4-chevron {
+        transform: rotate(0deg);
+    }
+
+    .rules-content .h4-collapsible .h4-title {
+        flex-grow: 1;
+    }
+
+    /* Move the heading anchor into the title area */
+    .rules-content .h4-collapsible .heading-anchor {
+        margin-left: auto;
+    }
+
+    .rules-content .h4-collapse-content {
+        padding-left: 1.25rem;
+        border-left: 2px solid var(--bs-border-color);
+        margin-left: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .rules-content .h4-collapse-content > *:last-child {
+        margin-bottom: 0;
+    }
+
+    .rules-content p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .rules-content ul,
+    .rules-content ol {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .rules-content li {
+        margin-bottom: 0.25rem;
+    }
+
+    .rules-content table {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-collapse: collapse;
+    }
+
+    .rules-content th,
+    .rules-content td {
+        padding: 0.5rem;
+        border: 1px solid var(--bs-border-color);
+        text-align: left;
+    }
+
+    .rules-content th {
+        background: var(--bs-tertiary-bg);
+        font-weight: 600;
+    }
+
+    .rules-content blockquote {
+        border-left: 4px solid var(--bs-primary);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-bottom: 1rem;
+        color: var(--bs-secondary-color);
+        font-style: italic;
+    }
+
+    .rules-content code {
+        background: var(--bs-tertiary-bg);
+        padding: 0.1rem 0.3rem;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+    }
+
+    .rules-content pre {
+        background: var(--bs-tertiary-bg);
+        padding: 1rem;
+        border-radius: var(--bs-border-radius);
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+
+    .rules-content pre code {
+        background: none;
+        padding: 0;
+    }
+
+    .rules-content strong {
+        color: var(--bs-primary);
+    }
+
+    /* Linkable headings */
+    .rules-content h1,
+    .rules-content h2,
+    .rules-content h3,
+    .rules-content h4,
+    .rules-content h5,
+    .rules-content h6 {
+        position: relative;
+        scroll-margin-top: 80px;
+    }
+
+    .rules-content .heading-anchor {
+        opacity: 0;
+        margin-left: 0.5rem;
+        font-size: 1.1em;
+        color: var(--bs-secondary-color);
+        text-decoration: none;
+        transition: opacity 0.15s, color 0.15s;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    .rules-content .heading-anchor::before {
+        font-family: "bootstrap-icons";
+        content: "\f470";
+    }
+
+    .rules-content h1:hover .heading-anchor,
+    .rules-content h2:hover .heading-anchor,
+    .rules-content h3:hover .heading-anchor,
+    .rules-content h4:hover .heading-anchor,
+    .rules-content h5:hover .heading-anchor,
+    .rules-content h6:hover .heading-anchor,
+    .rules-content .heading-anchor:focus {
+        opacity: 1;
+    }
+
+    .rules-content .heading-anchor:hover {
+        color: var(--bs-primary);
+    }
+
+    .rules-content .heading-anchor.copied::before {
+        content: "\f26e";
+        color: var(--bs-success);
+    }
+
+    /* Mobile toggle */
+    .mobile-sidebar-toggle {
+        display: none;
+        position: fixed;
+        bottom: 1rem;
+        left: 1rem;
+        z-index: 1030;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    @media (max-width: 991px) {
+        .mobile-sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    /* Section cards */
+    .section-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .section-card {
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: 1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        color: inherit;
+    }
+
+    .section-card h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        color: var(--bs-primary);
+    }
+
+    .section-card p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--bs-secondary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Mobile sidebar toggle -->
+<button class="btn btn-primary mobile-sidebar-toggle shadow" id="sidebarToggle">
+    <i class="bi bi-list fs-4"></i>
+</button>
+
+<!-- Backdrop for mobile sidebar -->
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="container-fluid">
+    <div class="rules-wrapper">
+        <!-- Sidebar -->
+        <aside class="rules-sidebar" id="rulesSidebar">
+            <!-- Search button -->
+            <button class="btn btn-outline-secondary w-100 mb-3 d-flex align-items-center justify-content-between"
+                    data-bs-toggle="modal" data-bs-target="#searchModal">
+                <span><i class="bi bi-search me-2"></i>{% if current_lang == 'uk' %}Пошук{% else %}Search{% endif %}</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+
+            <!-- Navigation -->
+            <nav id="rulesNav">
+                {% include "tools/wwn/rules/_sidebar.html" %}
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="rules-content">
+            {% block rules_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+
+<!-- Search Modal -->
+{% include "tools/wwn/rules/_search_modal.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/rules_search.js' %}"></script>
+<script>
+// Copy heading link to clipboard
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('heading-anchor')) {
+        e.preventDefault();
+        const url = e.target.href;
+        navigator.clipboard.writeText(url).then(function() {
+            e.target.classList.add('copied');
+            setTimeout(function() {
+                e.target.classList.remove('copied');
+            }, 1500);
+        });
+    }
+});
+
+// Mobile sidebar toggle
+(function() {
+    const toggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('rulesSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+
+    function openSidebar() {
+        sidebar.classList.add('show');
+        backdrop.classList.add('show');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('show');
+        backdrop.classList.remove('show');
+    }
+
+    toggle.addEventListener('click', openSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+
+    // Close on link click (mobile)
+    sidebar.querySelectorAll('.sidebar-link').forEach(function(link) {
+        link.addEventListener('click', closeSidebar);
+    });
+})();
+
+// Expand sidebar section containing active link
+document.addEventListener('DOMContentLoaded', function() {
+    const activeLink = document.querySelector('.sidebar-link.active');
+    if (activeLink) {
+        const collapseEl = activeLink.closest('.collapse');
+        if (collapseEl) {
+            const collapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+            collapse.show();
+        }
+        setTimeout(function() {
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }, 100);
+    }
+});
+
+// Transform h4 elements into collapsible sections
+(function() {
+    const content = document.querySelector('.rules-content');
+    if (!content) return;
+
+    const h4s = content.querySelectorAll('h4');
+    if (h4s.length === 0) return;
+
+    h4s.forEach(function(h4, index) {
+        // Get the heading ID or create one
+        const headingId = h4.id || 'h4-' + index;
+        const collapseId = 'collapse-' + headingId;
+
+        // Collect all sibling elements until next h2, h3, h4, or end
+        const contentElements = [];
+        let sibling = h4.nextElementSibling;
+
+        while (sibling && !['H1', 'H2', 'H3', 'H4'].includes(sibling.tagName)) {
+            contentElements.push(sibling);
+            sibling = sibling.nextElementSibling;
+        }
+
+        // Skip if no content to collapse
+        if (contentElements.length === 0) return;
+
+        // Extract the heading text and anchor
+        const anchor = h4.querySelector('.heading-anchor');
+        const headingText = h4.textContent.trim();
+
+        // Create the collapsible h4 structure
+        h4.innerHTML = '';
+        h4.className = 'h4-collapsible collapsed';
+        h4.setAttribute('data-bs-toggle', 'collapse');
+        h4.setAttribute('data-bs-target', '#' + collapseId);
+        h4.setAttribute('aria-expanded', 'false');
+        h4.setAttribute('aria-controls', collapseId);
+
+        // Add chevron icon
+        const chevron = document.createElement('i');
+        chevron.className = 'bi bi-chevron-right h4-chevron';
+        h4.appendChild(chevron);
+
+        // Add title span
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'h4-title';
+        titleSpan.textContent = headingText;
+        h4.appendChild(titleSpan);
+
+        // Re-add the anchor if it existed
+        if (anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent collapse toggle when clicking anchor
+            });
+            h4.appendChild(anchor);
+        }
+
+        // Create collapse container
+        const collapseDiv = document.createElement('div');
+        collapseDiv.id = collapseId;
+        collapseDiv.className = 'collapse h4-collapse-content';
+
+        // Move content elements into collapse container
+        contentElements.forEach(function(el) {
+            collapseDiv.appendChild(el);
+        });
+
+        // Insert collapse container after h4
+        h4.parentNode.insertBefore(collapseDiv, h4.nextSibling);
+    });
+
+    // Handle URL hash - expand section if hash points to an h4
+    function expandHashTarget() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const targetH4 = content.querySelector('h4#' + CSS.escape(targetId));
+            if (targetH4 && targetH4.classList.contains('h4-collapsible')) {
+                const collapseId = targetH4.getAttribute('data-bs-target');
+                const collapseEl = document.querySelector(collapseId);
+                if (collapseEl) {
+                    const collapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+                    collapse.show();
+                    targetH4.setAttribute('aria-expanded', 'true');
+                    targetH4.classList.remove('collapsed');
+                }
+            }
+        }
+    }
+
+    // Expand on page load and hash change
+    expandHashTarget();
+    window.addEventListener('hashchange', expandHashTarget);
+})();
+</script>
+{% endblock %}

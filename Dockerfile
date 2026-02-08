@@ -1,45 +1,54 @@
-# Multi-stage build for optimization
-# Build stage
+# Multi-stage build for smaller final image
+# Stage 1: Build - install dependencies
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
 WORKDIR /code
 
-# Enable bytecode compilation
+# Enable bytecode compilation for faster startup
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
-# Let uv handle venv creation in Docker
+# Install dependencies (cached if pyproject.toml/uv.lock unchanged)
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
-# Production stage
+
+# Stage 2: Production - run the app
 FROM python:3.12-slim AS production
 
 WORKDIR /code
 
-# Install uv in production stage
+# Copy uv binary for potential future use
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Copy virtual environment from builder
+# Copy virtual environment from builder stage
 COPY --from=builder /code/.venv /code/.venv
 
-# Copy source code
+# Copy application code
 COPY . .
 
-# Place executables in the environment at the front of the path
+# Add virtual environment to PATH
 ENV PATH="/code/.venv/bin:$PATH"
+ENV DJANGO_SETTINGS_MODULE=config.settings
 
-# Build MkDocs rulesets (Ukrainian and English)
-RUN mkdocs build -f mkdocs-uk.yml --clean && \
-    mkdocs build -f mkdocs-en.yml --clean
+# Collect static files for ServeStatic
+RUN python manage.py collectstatic --noinput
+
+# Run migrations (SQLite)
+RUN python manage.py migrate --noinput
 
 # Create non-root user for security
 RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m
 RUN chown -R adventurer:adventurer /code
-RUN mkdir -p /home/adventurer/.cache && chown -R adventurer:adventurer /home/adventurer/.cache
 USER adventurer
 
+# Railway provides PORT env var; default to 8000 for local Docker
+ENV PORT=8000
 EXPOSE 8000
 
-# Run the FastAPI application
-CMD ["sh", "-c", "alembic upgrade head && granian --interface asgi --host 0.0.0.0 --port 8000 --workers 2 app.main:app"]
+# Granian ASGI server with HTTP/2 support
+# - --interface asgi: async views require ASGI
+# - --http 2: enable HTTP/2 (Railway handles TLS termination)
+# - --workers 2: multiple workers for concurrency
+# - sh -c: allows $PORT substitution at runtime
+CMD ["sh", "-c", "granian --interface asgi --http 2 --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]

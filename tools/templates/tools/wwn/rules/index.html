@@ -1,0 +1,17 @@
+{% extends "tools/wwn/rules/base_rules.html" %}
+
+{% block title %}{% if current_lang == "uk" %}Правила WWN{% else %}WWN Rules{% endif %} - Gnosis{% endblock %}
+
+{% block rules_content %}
+<h1>{% if current_lang == "uk" %}Правила WWN-Lite{% else %}WWN-Lite Rules{% endif %}</h1>
+<p class="lead">{% if current_lang == "uk" %}Короткий довідник правил Worlds Without Number Lite.{% else %}A quick reference guide to the Worlds Without Number Lite rules.{% endif %}</p>
+
+<div class="section-cards">
+    {% for section in sections %}
+    <a href="{% url 'tools:rules_section' section=section.key %}" class="section-card">
+        <h3><i class="{{ section.icon }} me-2"></i>{{ section.title }}</h3>
+        <p>{{ section.description }}</p>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

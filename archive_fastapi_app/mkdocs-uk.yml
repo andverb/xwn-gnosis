@@ -1,0 +1,140 @@
+site_name: WWN-Lite - Українська
+site_description: Правила WWN-Lite українською мовою
+site_author: John from DMK
+
+docs_dir: docs/wwn-lite/uk
+site_dir: site-uk
+
+theme:
+  name: material
+  language: uk
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    # Light mode
+    - scheme: default
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Перемкнути на темну тему
+    # Dark mode
+    - scheme: slate
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Перемкнути на світлу тему
+
+plugins:
+  - search:
+      lang: uk
+
+nav:
+  - Повернутися до Гнозіс: /
+  - Про Проєкт та Автори: credits.md
+  - Основи: basics/index.md
+  - Виживання:
+    - Загрози й Зцілення: survival/healing-hazards.md
+    - Дослідження Підземель: survival/delving.md
+    - Подорожі та Виживання: survival/overland-travel.md
+    - Морські подорожі: survival/sea-travel.md
+  - Бій:
+    - Основи Бою: combat/combat-basics.md
+    - Дії в Бою: combat/actions.md
+    - Броня й Зброя: equipment/armors-weapons.md
+  - Спорядження:
+    - Звичайне Спорядження: equipment/gear.md
+    - Виготовлення Спорядження: equipment/crafting.md
+    - Модифікації та Обслуговування: equipment/modifications.md
+    - Алхімія: equipment/alchemy.md
+  - Магія:
+    - Чари і Заклинання: magic/magic-basics.md
+    - Магічні Предмети: magic/magical-items.md
+  - Персонаж:
+    - Створення Персонажа: character/character-creation.md
+    - Досвід та Підвищення Рівня: character/xp-leveling.md
+  - Кампанія:
+    - Найманці: campaign/hirelings.md
+    - Найм Армій: campaign/hiring-armies.md
+    - Земельна Власність: campaign/land-ownership.md
+    - Будівництво Споруд: campaign/building-structures.md
+    - Магічні Конструкції: campaign/magical-workings.md
+    - Винагороди від Покровителів: campaign/patronage.md
+    - Визнання: campaign/renown.md
+    - Заняття в Період Простою: campaign/downtime.md
+  - Довідник:
+    - Теги:
+      - Теги Персонажа: reference/tags/character.md
+      - Теги Спільнот: reference/tags/community.md
+      - Теги Руїн: reference/tags/ruins.md
+      - Теги Дикої Місцевості: reference/tags/wilderness.md
+      - Теги Двору: reference/tags/court.md
+    - Складність Сутичок: reference/encounter-difficulty.md
+    - Статистики НІПИ: reference/npc-statistics.md
+
+markdown_extensions:
+  # Basic extensions
+  - tables
+  - attr_list
+  - def_list
+  - abbr
+  - footnotes
+
+  # Admonitions (notes, warnings, etc.)
+  - admonition
+  - pymdownx.details
+
+  # Code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+  # Content tabs
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Better lists
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  # Table of contents
+  - toc:
+      permalink: true
+      toc_depth: 4
+      title: На цій сторінці
+
+  # Better formatting
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.keys
+
+  # Emoji support
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  alternate:
+    - name: English
+      link: /rulesets/wwn-lite/en/basics/
+      lang: en
+  social:
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/@d-m-k
+      name: DMK YouTube Channel

@@ -1,0 +1,3008 @@
+{% extends "tools/base.html" %}
+
+{% block title %}Combat Tracker - Gnosis{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Single column layout */
+    .tracker-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Controls bar */
+    .controls-bar {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0.75rem;
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .controls-bar button {
+        margin: 0;
+        padding: 0.5rem 1rem;
+    }
+
+    .round-counter {
+        margin-left: auto;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .round-counter .round-number {
+        color: var(--bs-body-color);
+        font-weight: bold;
+    }
+
+    /* Round change animation */
+    @keyframes round-flash {
+        0% { background: var(--bs-primary); color: white; }
+        100% { background: var(--bs-tertiary-bg); color: var(--bs-secondary-color); }
+    }
+
+    .round-counter.flash {
+        animation: round-flash 0.8s ease-out;
+    }
+
+    /* Button group separator */
+    .controls-separator {
+        width: 1px;
+        height: 1.5rem;
+        background: var(--bs-border-color);
+        margin: 0 0.25rem;
+    }
+
+    /* Initiative list */
+    .initiative-panel {
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    /* Table header */
+    .combatant-table-header {
+        display: grid;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        gap: 0.3rem;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        background: var(--bs-tertiary-bg);
+        border-bottom: 1px solid var(--bs-border-color);
+        font-weight: 600;
+        font-size: 0.7rem;
+        color: var(--bs-secondary-color);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .combatant-table-header > div {
+        white-space: nowrap;
+    }
+
+    .combatant-table-header .col-ac,
+    .combatant-table-header .col-hp,
+    .combatant-table-header .col-move,
+    .combatant-table-header .col-ml,
+    .combatant-table-header .col-inst,
+    .combatant-table-header .col-skill,
+    .combatant-table-header .col-save {
+        text-align: center;
+    }
+
+
+    /* Group headers */
+    .group-header {
+        display: grid;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.25rem 0.5rem 0.25rem 1rem;
+        background: var(--bs-tertiary-bg);
+        border-bottom: 1px solid var(--bs-border-color);
+        font-weight: 600;
+        font-size: 0.8rem;
+        min-height: 0;
+    }
+
+    /* Group colors - applied dynamically */
+    .group-header.colored {
+        border-left: 3px solid var(--group-color, #6c757d);
+        background: color-mix(in srgb, var(--group-color, #6c757d) 10%, transparent);
+    }
+
+    .group-header .group-name {
+        flex: 1;
+        cursor: pointer;
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.2rem;
+    }
+
+    .group-header .group-name:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    .group-header .group-name-input {
+        width: 10rem;
+        height: 1.4rem;
+        min-height: 0;
+        padding: 0.1rem 0.25rem;
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.2rem;
+    }
+
+    .group-header .group-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        justify-content: flex-end;
+    }
+
+    /* Icon buttons (shared style for + and X) */
+    .icon-btn {
+        width: 1.4rem;
+        height: 1.4rem;
+        padding: 0;
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.2rem;
+        color: var(--bs-secondary-color);
+        cursor: pointer;
+    }
+
+    .icon-btn:hover {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    .icon-btn.danger:hover {
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .combatant-row.grouped {
+        border-left: 2px solid var(--group-color, #6c757d);
+        padding-left: calc(1rem - 2px);
+    }
+
+    .add-group-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0.5rem 0;
+        font-size: 0.8rem;
+        background: transparent;
+        border: 1px dashed var(--bs-border-color);
+        color: var(--bs-secondary-color);
+        width: 100%;
+    }
+
+    .add-group-btn:hover {
+        border-color: var(--bs-primary);
+        color: var(--bs-primary);
+        background: transparent;
+    }
+
+    .combatant-row {
+        display: grid;
+        grid-template-columns: 2.5rem minmax(12rem, 1fr) 3rem 2.5rem 2rem 2rem 2rem 2rem 2.5rem 3.5rem 3rem;
+        gap: 0.3rem;
+        align-items: center;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        border-bottom: 1px solid var(--bs-border-color);
+        transition: background-color 0.15s;
+        font-size: 0.8rem;
+    }
+
+    .combatant-row:last-child {
+        border-bottom: none;
+    }
+
+    .combatant-row:hover {
+        background: var(--bs-tertiary-bg);
+    }
+
+    .combatant-row.active {
+        background: rgba(13, 110, 253, 0.15);
+        border-left: 3px solid var(--bs-primary);
+        padding-left: calc(1rem - 3px);
+    }
+
+    /* Name + Attack stacked cell */
+    .combatant-name-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+    }
+
+    .combatant-name-row {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .combatant-attack-row {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        padding-left: 0.25rem;
+    }
+
+    .combatant-name {
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.1rem 0.25rem;
+        border-radius: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .combatant-name:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+    .combatant-hd {
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin-left: 0.25rem;
+    }
+
+    .combatant-abilities-star {
+        font-size: 0.7rem;
+        color: #ffc107;
+        margin-left: 0.25rem;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .combatant-abilities-star:hover,
+    .combatant-abilities-star.active {
+        opacity: 1;
+    }
+
+    .combatant-name-input {
+        width: 10rem;
+        height: 1.4rem !important;
+        max-height: 1.4rem !important;
+        min-height: 0 !important;
+        padding: 0.1rem 0.25rem;
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.2rem;
+        box-sizing: border-box;
+    }
+
+    /* Attack info (below name) */
+    .combatant-attack {
+        display: flex;
+        align-items: baseline;
+        gap: 0.35rem;
+        font-size: 0.75rem;
+        line-height: 1.2;
+        color: var(--bs-secondary-color);
+        white-space: nowrap;
+    }
+
+    .weapon-name {
+        color: var(--bs-primary);
+        cursor: help;
+        text-decoration: underline dotted;
+        text-underline-offset: 2px;
+        line-height: 1.2;
+    }
+
+    .weapon-name:hover {
+        color: var(--bs-primary-hover, #0056b3);
+    }
+
+    /* Weapon tooltip popup */
+    .weapon-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        width: 22rem;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        margin-bottom: 0.25rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .weapon-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        border: 6px solid transparent;
+        border-top-color: var(--bs-border-color);
+    }
+
+    .weapon-tooltip-row {
+        padding: 0.3rem 0;
+        border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .weapon-tooltip-row:last-child {
+        border-bottom: none;
+    }
+
+    .weapon-tooltip-label {
+        font-weight: 600;
+        color: var(--bs-primary);
+    }
+
+    .weapon-tooltip-desc {
+        color: var(--bs-body-color);
+        display: block;
+        margin-top: 0.1rem;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    .attack-stats {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--bs-secondary-color);
+        font-size: 0.75rem;
+    }
+
+    .attack-bab {
+        font-size: 0.75rem;
+    }
+
+    .attack-count {
+        font-size: 0.75rem;
+    }
+
+    .attack-damage {
+        color: var(--bs-primary);
+        font-weight: 600;
+        font-size: 0.75rem;
+    }
+
+    /* Shock column */
+    .combatant-shock {
+        text-align: left;
+        font-size: 0.8rem;
+    }
+
+    /* Move column */
+    .combatant-move {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* ML column */
+    .combatant-ml {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Inst column */
+    .combatant-inst {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Skill column */
+    .combatant-skill {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Save column */
+    .combatant-save {
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* AC column */
+    .combatant-ac {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .ac-suffix,
+    .move-suffix {
+        font-size: 0.65rem;
+        color: var(--bs-secondary-color);
+        vertical-align: super;
+        border-bottom: 1px dotted var(--bs-secondary-color);
+        cursor: help;
+    }
+
+    /* Trait badges */
+    .trait-badge {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.25rem;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.2rem;
+        cursor: help;
+        font-family: monospace;
+    }
+
+    .trait-badge:hover {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    .combatant-hp {
+        text-align: center;
+        cursor: pointer;
+        padding: 0.2rem 0.35rem;
+        border-radius: 0.25rem;
+        position: relative;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .combatant-hp:hover {
+        background: rgba(220, 53, 69, 0.2);
+    }
+
+    .hp-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: #dc3545;
+        width: 100%;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    .hp-bar-fill {
+        height: 100%;
+        background: #198754;
+        transition: width 0.3s;
+        border-radius: 0 0 0 0.25rem;
+    }
+
+    .combatant-ac {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .ac-suffix {
+        font-size: 0.7rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .combatant-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        justify-content: flex-end;
+    }
+
+    .combatant-actions button {
+        padding: 0.15rem 0.4rem;
+        margin: 0;
+        font-size: 0.75rem;
+    }
+
+    /* Modal - z-index must be higher than Bootstrap sticky-top navbar (1020) */
+    .tracker-modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1050;
+    }
+
+    .tracker-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: 1.5rem;
+        z-index: 1055;
+        max-width: 700px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .tracker-modal h3 {
+        margin: 0 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--bs-primary);
+    }
+
+    .tracker-modal-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--bs-secondary-color);
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .tracker-modal-close:hover {
+        color: var(--bs-body-color);
+    }
+
+    /* Form styles */
+    .form-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 1rem;
+    }
+
+    .form-tabs button {
+        flex: 1;
+        margin: 0;
+        border-radius: 0;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+    }
+
+    .form-tabs button:first-child {
+        border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+    }
+
+    .form-tabs button:last-child {
+        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+    }
+
+    .form-tabs button.active {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .form-field label {
+        font-size: 0.75rem;
+        color: var(--bs-secondary-color);
+        margin: 0;
+    }
+
+    /* Let Bootstrap handle input/select styling via form-control-sm and form-select-sm */
+    .form-field .form-control,
+    .form-field .form-select {
+        margin: 0;
+    }
+
+    .form-field.flex-2 { flex: 2; min-width: 120px; }
+    .form-field.flex-1 { flex: 1; min-width: 80px; }
+
+    .form-field input[type="number"].form-control {
+        width: 4.5rem;
+    }
+
+    .form-field input[type="checkbox"] {
+        width: auto;
+        margin: 0.25rem 0;
+    }
+
+    .checkbox-row {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .checkbox-field input {
+        margin: 0;
+    }
+
+    .checkbox-field label {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .form-section-title {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+        margin: 1rem 0 0.5rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--bs-border-color);
+    }
+
+    .form-actions button {
+        flex: 1;
+        margin: 0;
+    }
+
+    /* HP toggle */
+    .hp-mode-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .hp-mode-toggle button {
+        flex: 1;
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 0;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+    }
+
+    .hp-mode-toggle button:first-child {
+        border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+    }
+
+    .hp-mode-toggle button:last-child {
+        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+    }
+
+    .hp-mode-toggle button.active {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    /* Damage mode toggle */
+    .damage-mode-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .damage-mode-toggle button {
+        flex: 1;
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 0;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+    }
+
+    .damage-mode-toggle button:first-child {
+        border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+    }
+
+    .damage-mode-toggle button:last-child {
+        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+    }
+
+    .damage-mode-toggle button.active {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    /* HP Modal (damage/heal) */
+    .hp-modal-current {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .hp-modal-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .hp-modal-buttons button {
+        flex: 1;
+        margin: 0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .empty-state p {
+        margin: 0.5rem 0;
+    }
+
+    /* Dice styling */
+    .dice {
+        font-family: monospace;
+        font-weight: bold;
+        color: var(--bs-primary);
+    }
+
+    /* Alpine cloak - hide elements until Alpine initializes */
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* Tooltip indicator for headers */
+    .has-tooltip {
+        cursor: help;
+        border-bottom: 1px dotted var(--bs-secondary-color);
+    }
+
+    /* Input mode toggle (Template/Paste) */
+    .input-mode-toggle {
+        display: flex;
+        gap: 0;
+    }
+
+    .input-mode-toggle button {
+        flex: 1;
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        border-radius: 0;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+    }
+
+    .input-mode-toggle button:first-child {
+        border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+    }
+
+    .input-mode-toggle button:last-child {
+        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+    }
+
+    .input-mode-toggle button.active {
+        background: var(--bs-primary);
+        color: white;
+        border-color: var(--bs-primary);
+    }
+
+    /* Expanded abilities section */
+    .abilities-expanded {
+        background: var(--bs-tertiary-bg);
+        border-bottom: 1px solid var(--bs-border-color);
+        padding: 0.5rem 1rem 0.5rem 3.5rem;
+        font-size: 0.8rem;
+    }
+
+    .abilities-expanded.grouped {
+        padding-left: calc(3.5rem - 2px);
+        border-left: 2px solid var(--group-color, #6c757d);
+    }
+
+    .ability-item {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.25rem 0;
+        border-bottom: 1px dashed var(--bs-border-color);
+    }
+
+    .ability-item:last-child {
+        border-bottom: none;
+    }
+
+    .ability-name {
+        font-weight: 600;
+        color: #ffc107;
+        white-space: nowrap;
+    }
+
+    .ability-name::after {
+        content: ':';
+    }
+
+    .ability-desc {
+        color: var(--bs-body-color);
+    }
+
+    /* Ability form inputs */
+    .abilities-list {
+        margin-bottom: 0.75rem;
+    }
+
+    .ability-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .ability-row input {
+        margin: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.85rem;
+        height: auto;
+        min-height: 0;
+    }
+
+    .add-ability-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0;
+        font-size: 0.8rem;
+        background: transparent;
+        border: 1px dashed var(--bs-border-color);
+        color: var(--bs-secondary-color);
+        width: 100%;
+    }
+
+    .add-ability-btn:hover {
+        border-color: #ffc107;
+        color: #ffc107;
+        background: transparent;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="h2">Combat Tracker</h1>
+    </div>
+
+<div x-data="combatTracker()" x-init="init()">
+    <div class="tracker-layout">
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+            <!-- Setup phase -->
+            <button @click="rollAllInitiative()" :disabled="combatants.length === 0" class="btn btn-outline-primary">Roll Init</button>
+            <div class="controls-separator"></div>
+            <!-- Combat phase -->
+            <button @click="startCombat()" :disabled="!canStartCombat" class="btn btn-primary">Start</button>
+            <button @click="prevTurn()" :disabled="!currentTurnId" class="btn btn-outline-secondary">Prev</button>
+            <button @click="nextTurn()" :disabled="!currentTurnId" class="btn btn-outline-secondary">Next</button>
+            <button @click="endCombat()" :disabled="!currentTurnId" class="btn btn-secondary">End</button>
+            <div class="controls-separator"></div>
+            <!-- Management -->
+            <button class="btn btn-outline-secondary" @click="clearCombat()" :disabled="combatants.length === 0">Clear</button>
+            <div class="round-counter" :class="{ 'flash': roundFlash }" x-ref="roundCounter">
+                Round <span class="round-number" x-text="round"></span>
+            </div>
+        </div>
+
+        <!-- Initiative List -->
+        <div class="initiative-panel">
+            <!-- Table Header -->
+            <div class="combatant-table-header" x-show="combatants.length > 0">
+                <div class="col-init">#</div>
+                <div class="col-name">Name, HD, Attack</div>
+                <div class="col-shock has-tooltip" title="On miss: deals damage if target AC ≤ threshold. x/- = any AC. Hits deal at least shock dmg.">Shock</div>
+                <div class="col-move">Move</div>
+                <div class="col-ml has-tooltip" title="Morale Check: 2d6 > ML = Fail. NPC retreats or surrenders.">ML</div>
+                <div class="col-inst has-tooltip" title="Instinct Check: 1d10 ≤ Inst = Fail. NPC behaves impulsively.">Inst</div>
+                <div class="col-skill has-tooltip" title="Skill Check: 2d6 + Skill ≥ Difficulty = Success.">Skill</div>
+                <div class="col-save has-tooltip" title="Saving Throw: 1d20 ≥ Save = Success.">Save</div>
+                <div class="col-ac">AC</div>
+                <div class="col-hp">HP</div>
+                <div class="col-actions"></div>
+            </div>
+
+            <template x-if="sortedGroups.length === 0">
+                <div class="empty-state">
+                    <p>No combatants yet</p>
+                </div>
+            </template>
+
+            <!-- All Groups and Individual Combatants (mixed and sorted by initiative) -->
+            <template x-for="item in sortedGroups" :key="item.name">
+                <div :style="'--group-color: ' + item.color">
+                    <!-- Group Header (only for groups, not individuals) -->
+                    <template x-if="item.type === 'group'">
+                        <div class="group-header colored">
+                            <!-- Initiative Column -->
+                            <div>
+                                <input type="text"
+                                       :value="item.initiative"
+                                       @input="updateGroupInitiative(item.name, $event.target.value)"
+                                       placeholder="-"
+                                       title="Initiative"
+                                       style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
+                            </div>
+                            <!-- Group Name (spans middle columns) -->
+                            <div style="grid-column: span 9;">
+                                <span class="group-name"
+                                      x-show="editingGroup !== item.name"
+                                      @dblclick="startEditingGroup(item.name)"
+                                      x-text="item.name"
+                                      title="Double-click to rename"></span>
+                                <input x-show="editingGroup === item.name"
+                                       type="text"
+                                       class="group-name-input"
+                                       :value="item.name"
+                                       @blur="finishEditingGroup(item.name, $event.target.value)"
+                                       @keyup.enter="$event.target.blur()"
+                                       @keyup.escape="editingGroup = null"
+                                       x-ref="groupNameInput">
+                            </div>
+                            <!-- Group Actions -->
+                            <div class="group-actions">
+                                <button class="icon-btn" @click="openAddToGroup(item.name)" title="Add to group">+</button>
+                                <button class="icon-btn danger" @click="removeGroup(item.name)" title="Remove group">&times;</button>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Combatant Rows -->
+                    <template x-for="combatant in item.combatants" :key="combatant.id">
+                        <div class="combatant-wrapper">
+                        <div class="combatant-row"
+                             :class="{
+                                 'active': combatant.id === currentTurnId,
+                                 'grouped': item.type === 'group'
+                             }">
+                            <!-- Initiative Column -->
+                            <div>
+                                <template x-if="item.type === 'individual'">
+                                    <input type="text"
+                                           :value="combatant.initiative"
+                                           @input="updateIndividualInitiative(combatant.id, $event.target.value)"
+                                           placeholder="-"
+                                           title="Initiative"
+                                           style="width: 1.4rem; height: 1.4rem; min-height: 0; padding: 0; text-align: center; font-size: 0.8rem; margin: 0;">
+                                </template>
+                            </div>
+                            <!-- Name + Attack Column (stacked) -->
+                            <div class="combatant-name-cell">
+                                <div class="combatant-name-row">
+                                    <span class="combatant-name"
+                                          x-show="editingCombatant !== combatant.id"
+                                          @dblclick="startEditingCombatant(combatant.id)"
+                                          x-text="getCombatantDisplayName(combatant)"
+                                          title="Double-click to rename"></span>
+                                    <span class="combatant-hd"
+                                          x-show="editingCombatant !== combatant.id"
+                                          x-text="'[' + (combatant.type === 'npc' ? combatant.hd : getPC(combatant.sourceId)?.level) + ']'"></span>
+                                    <span class="combatant-abilities-star"
+                                          x-show="editingCombatant !== combatant.id && combatant.type === 'npc' && combatant.abilities?.length > 0"
+                                          :class="{ 'active': expandedAbilitiesId === combatant.id }"
+                                          @click.stop="expandedAbilitiesId = expandedAbilitiesId === combatant.id ? null : combatant.id"
+                                          title="Special Abilities">★</span>
+                                    <input x-show="editingCombatant === combatant.id"
+                                           type="text"
+                                           class="combatant-name-input"
+                                           :value="getCombatantDisplayName(combatant)"
+                                           @blur="finishEditingCombatant(combatant.id, $event.target.value)"
+                                           @keyup.enter="$event.target.blur()"
+                                           @keyup.escape="editingCombatant = null">
+                                </div>
+                                <div class="combatant-attack-row">
+                                    <template x-if="combatant.type === 'npc'">
+                                        <span class="combatant-attack">
+                                            <span :class="{ 'weapon-name': hasWeaponTraits(combatant) }"
+                                                  @mouseenter="hasWeaponTraits(combatant) && (openTooltipId = combatant.id)"
+                                                  @mouseleave="openTooltipId = null"
+                                                  style="position: relative;">
+                                                <span x-text="getWeaponName(combatant)"></span>
+                                                <!-- Weapon Tooltip (trait descriptions) -->
+                                                <template x-if="hasWeaponTraits(combatant)">
+                                                    <div class="weapon-tooltip" x-show="openTooltipId === combatant.id" x-cloak>
+                                                        <template x-for="trait in getWeaponTraits(combatant)" :key="trait.code">
+                                                            <div class="weapon-tooltip-row">
+                                                                <span class="weapon-tooltip-label" x-text="trait.code"></span>
+                                                                <span class="weapon-tooltip-desc" x-text="trait.desc"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </span>
+                                            <span class="attack-stats">
+                                                <span class="attack-bab rollable"
+                                                      @click.stop="$store.dice.rollAttack(combatant.bab, getCombatantDisplayName(combatant), getWeaponName(combatant))"
+                                                      x-text="'+' + combatant.bab"></span>
+                                                <template x-if="combatant.attacks > 1">
+                                                    <span class="attack-count rollable"
+                                                          @click.stop="$store.dice.rollMultipleAttacks(combatant.attacks, combatant.bab, getCombatantDisplayName(combatant), getWeaponName(combatant))"
+                                                          x-text="'x' + combatant.attacks"></span>
+                                                </template>
+                                                <span class="attack-damage rollable"
+                                                      @click.stop="$store.dice.rollDamage(getNpcDamage(combatant), getCombatantDisplayName(combatant), getNpcShockValue(combatant))"
+                                                      x-text="getNpcDamage(combatant)"></span>
+                                            </span>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+                            <!-- Shock Column -->
+                            <div class="combatant-shock">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span x-text="getNpcShock(combatant)"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Move Column -->
+                            <div class="combatant-move">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span>
+                                        <span x-text="combatant.mv || '-'"></span><span class="move-suffix"
+                                              x-show="getMoveSuffix(combatant)"
+                                              x-text="getMoveSuffix(combatant)"
+                                              :title="getMoveTooltip(combatant)"
+                                              style="cursor: help;"></span>
+                                    </span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- ML Column -->
+                            <div class="combatant-ml">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollMorale(combatant.ml, getCombatantDisplayName(combatant))"
+                                          x-text="combatant.ml || '-'"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Inst Column -->
+                            <div class="combatant-inst">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollInstinct(combatant.inst, getCombatantDisplayName(combatant))"
+                                          x-text="combatant.inst || '-'"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Skill Column -->
+                            <div class="combatant-skill">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollSkill(combatant.skl || 0, getCombatantDisplayName(combatant))"
+                                          x-text="'+' + (combatant.skl || 0)"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- Save Column -->
+                            <div class="combatant-save">
+                                <template x-if="combatant.type === 'npc'">
+                                    <span class="rollable"
+                                          @click.stop="$store.dice.rollSave(combatant.sv, getCombatantDisplayName(combatant))"
+                                          x-text="(combatant.sv || '-') + (combatant.sv ? '+' : '')"></span>
+                                </template>
+                                <template x-if="combatant.type === 'pc'">
+                                    <span>-</span>
+                                </template>
+                            </div>
+                            <!-- AC Column -->
+                            <div class="combatant-ac">
+                                <span x-text="getCombatantAC(combatant)"></span><span class="ac-suffix"
+                                      x-show="getAcSuffix(combatant)"
+                                      x-text="getAcSuffix(combatant)"
+                                      :title="getAcTooltip(combatant)"
+                                      style="cursor: help;"></span>
+                            </div>
+                            <!-- HP Column -->
+                            <div class="combatant-hp" @click.stop="openHpModal(combatant)">
+                                <span x-text="combatant.currentHp + '/' + combatant.maxHp"></span>
+                                <div class="hp-bar">
+                                    <div class="hp-bar-fill" :style="'width: ' + Math.max(0, combatant.currentHp / combatant.maxHp * 100) + '%'"></div>
+                                </div>
+                            </div>
+                            <!-- Actions Column -->
+                            <div class="combatant-actions">
+                                <button class="icon-btn" @click.stop="openEditCombatant(combatant)" title="Edit">✎</button>
+                                <button class="icon-btn danger" @click.stop="removeCombatant(combatant.id)" title="Remove">&times;</button>
+                            </div>
+                        </div>
+                        <!-- Expanded Abilities Section -->
+                        <div x-show="combatant.type === 'npc' && expandedAbilitiesId === combatant.id && combatant.abilities?.length > 0"
+                             class="abilities-expanded" :class="{ 'grouped': item.type === 'group' }">
+                            <template x-for="ability in (combatant.abilities || [])" :key="ability.name">
+                                <div class="ability-item">
+                                    <span class="ability-name" x-text="ability.name"></span>
+                                    <span class="ability-desc" x-text="ability.description"></span>
+                                </div>
+                            </template>
+                        </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Add Buttons -->
+            <div style="display: flex; gap: 0.5rem; padding: 0.5rem;">
+                <button class="add-group-btn" @click="addIndividualCombatant()" style="flex: 1;">+ Add Combatant</button>
+                <button class="add-group-btn" @click="addNewGroup()" style="flex: 1;">+ Add Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Combatant Modal -->
+    <template x-if="addModalOpen">
+        <div>
+            <div class="tracker-modal-backdrop" @click="closeAddModal()"></div>
+            <div class="tracker-modal">
+                <button class="tracker-modal-close" @click="closeAddModal()">&times;</button>
+                <h3 x-text="editModalCombatantId ? 'Edit Combatant' : 'Add Combatant'"></h3>
+
+                <!-- Tabs -->
+                <div class="form-tabs">
+                    <button :class="{ 'active': formTab === 'npc' }" @click="formTab = 'npc'">NPC / Monster</button>
+                    <button :class="{ 'active': formTab === 'pc' }" @click="formTab = 'pc'">PC</button>
+                </div>
+
+                <!-- NPC Form -->
+                <template x-if="formTab === 'npc'">
+                    <div>
+                        <!-- Template or Paste toggle -->
+                        <div class="form-row" style="margin-bottom: 0.5rem;">
+                            <div class="form-field" style="flex: 1;">
+                                <div class="input-mode-toggle">
+                                    <button type="button" :class="{ 'active': npcInputMode === 'template' }" @click="npcInputMode = 'template'">Template</button>
+                                    <button type="button" :class="{ 'active': npcInputMode === 'paste' }" @click="npcInputMode = 'paste'">Paste</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Template dropdown -->
+                        <div class="form-row" x-show="npcInputMode === 'template'">
+                            <div class="form-field" style="flex: 1;">
+                                <select class="form-select form-select-sm" @change="applyTemplate($event.target.value)">
+                                    <option value="">— Custom —</option>
+                                    <template x-for="category in npcTemplates" :key="category.category">
+                                        <optgroup :label="category.category">
+                                            <template x-for="tpl in category.templates" :key="tpl.name">
+                                                <option :value="category.category + '/' + tpl.name" x-text="tpl.name + ' (HD ' + tpl.hd + ')'"></option>
+                                            </template>
+                                        </optgroup>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Paste statblock -->
+                        <div class="form-row" x-show="npcInputMode === 'paste'">
+                            <div class="form-field" style="flex: 1;">
+                                <input type="text" class="form-control form-control-sm"
+                                       x-model="statblockPaste"
+                                       @input="parseStatblock()"
+                                       placeholder="Name HD AC +BAB DMG SHOCK MV ML INST +SKL SV">
+                                <small x-show="parseError" x-text="parseError" style="color: #dc3545; display: block; margin-top: 0.25rem;"></small>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field flex-2">
+                                <label>Name</label>
+                                <input type="text" class="form-control form-control-sm" x-model="npcForm.name" @keyup.enter="addNPC()">
+                            </div>
+                            <div class="form-field" x-show="!editModalCombatantId">
+                                <label>Count</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.count" min="1" max="20" style="width: 3.5rem;">
+                            </div>
+                            <div class="form-field">
+                                <label>HD</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.hd" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-section-title">HP Calculation</div>
+                        <div class="hp-mode-toggle">
+                            <button :class="{ 'active': npcForm.hpMode === 'roll' }" @click="npcForm.hpMode = 'roll'">Roll (HD×d8)</button>
+                            <button :class="{ 'active': npcForm.hpMode === 'average' }" @click="npcForm.hpMode = 'average'">Average (HD×4.5)</button>
+                        </div>
+
+                        <div class="form-row" style="align-items: flex-end;">
+                            <div class="form-field">
+                                <label>Attack Bonus</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.bab" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label># Attacks</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.attacks" min="1">
+                            </div>
+                            <div class="form-field" style="max-width: 5rem;">
+                                <label>AC</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.ac" min="0">
+                            </div>
+                            <div class="checkbox-field">
+                                <input type="checkbox" id="npc-armor" x-model="npcForm.hasArmor">
+                                <label for="npc-armor">Armor</label>
+                            </div>
+                            <div class="checkbox-field">
+                                <input type="checkbox" id="npc-shield" x-model="npcForm.hasShield">
+                                <label for="npc-shield">Shield</label>
+                            </div>
+                        </div>
+
+                        <div class="form-section-title">Damage Configuration</div>
+
+                        <!-- Mode Selector -->
+                        <div class="damage-mode-toggle">
+                            <button type="button" :class="{ 'active': npcForm.damageMode === 'weapon' }"
+                                    @click="npcForm.damageMode = 'weapon'">
+                                Weapon
+                            </button>
+                            <button type="button" :class="{ 'active': npcForm.damageMode === 'dice' }"
+                                    @click="npcForm.damageMode = 'dice'">
+                                Dice Builder
+                            </button>
+                        </div>
+
+                        <!-- Weapon Mode -->
+                        <template x-if="npcForm.damageMode === 'weapon'">
+                            <div>
+                                <div class="form-row" style="align-items: flex-end;">
+                                    <div class="form-field flex-1">
+                                        <label>Weapon</label>
+                                        <select class="form-select form-select-sm" x-model="npcForm.weaponId">
+                                            {% for weapon in weapons %}
+                                            <option value="{{ weapon.id }}">{{ weapon.name.en }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label>+Dmg Bonus</label>
+                                        <input type="number" class="form-control form-control-sm" x-model.number="npcForm.dmgBonus" min="0">
+                                    </div>
+                                    <div class="checkbox-field">
+                                        <input type="checkbox" id="weapon-shock-override" x-model="npcForm.shockOverride">
+                                        <label for="weapon-shock-override">Shock any AC</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Dice Builder Mode -->
+                        <template x-if="npcForm.damageMode === 'dice'">
+                            <div class="form-row">
+                                <div class="form-field" style="flex: 1; min-width: 6rem;">
+                                    <label>Attack Name</label>
+                                    <input type="text" class="form-control form-control-sm" x-model="npcForm.attackName" placeholder="Attack">
+                                </div>
+                                <div class="form-field" style="max-width: 5rem;">
+                                    <label>Dice Count</label>
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.diceCount" min="1" max="20" placeholder="1">
+                                </div>
+                                <div class="form-field" style="min-width: 5.5rem; max-width: 6rem;">
+                                    <label>Dice Type</label>
+                                    <select class="form-select form-select-sm" x-model.number="npcForm.diceType">
+                                        <option value="2">d2</option>
+                                        <option value="4">d4</option>
+                                        <option value="6">d6</option>
+                                        <option value="8">d8</option>
+                                        <option value="10">d10</option>
+                                        <option value="12">d12</option>
+                                        <option value="20">d20</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label>+Dmg Bonus</label>
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.dmgBonus" min="0">
+                                </div>
+                                <div class="form-field">
+                                    <label>Shock Value</label>
+                                    <input type="number" class="form-control form-control-sm" x-model.number="npcForm.shockValue" min="0" placeholder="0">
+                                </div>
+                                <div class="form-field" style="min-width: 5.5rem;">
+                                    <label>Shock AC</label>
+                                    <select class="form-select form-select-sm" x-model="npcForm.shockAC">
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="-">- (all)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="form-section-title">Behavior</div>
+                        <div class="form-row" style="gap: 0.5rem; flex-wrap: nowrap;">
+                            <div class="form-field" style="flex: 0 0 3.5rem;">
+                                <label>Move</label>
+                                <input type="text" class="form-control form-control-sm" x-model="npcForm.mv" style="width: 100%;">
+                            </div>
+                            <div class="form-field" style="flex: 0 0 auto;">
+                                <label>&nbsp;</label>
+                                <div style="display: flex; gap: 0.25rem; align-items: center;">
+                                    <input type="checkbox" id="npc-fly" x-model="npcForm.hasFly">
+                                    <label for="npc-fly" style="margin: 0;">Fly</label>
+                                    <input type="checkbox" id="npc-swim" x-model="npcForm.hasSwim">
+                                    <label for="npc-swim" style="margin: 0;">Swim</label>
+                                </div>
+                            </div>
+                            <div class="form-field" style="flex: 0 0 4rem;">
+                                <label>Morale</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.ml" min="2" max="12" style="width: 100%;">
+                            </div>
+                            <div class="form-field" style="flex: 0 0 4.5rem;">
+                                <label>Instinct</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.inst" min="0" max="10" style="width: 100%;">
+                            </div>
+                            <div class="form-field" style="flex: 0 0 3.5rem;">
+                                <label>Skill</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.skl" min="0" style="width: 100%;">
+                            </div>
+                            <div class="form-field" style="flex: 0 0 3.5rem;">
+                                <label>Save</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="npcForm.sv" min="1" max="20" style="width: 100%;">
+                            </div>
+                        </div>
+
+                        <div class="form-section-title">Special Abilities</div>
+                        <div class="abilities-list">
+                            <template x-for="(ability, index) in npcForm.abilities" :key="index">
+                                <div class="ability-row">
+                                    <div class="form-field" style="flex: 1; min-width: 100px;">
+                                        <input type="text" class="form-control form-control-sm" x-model="ability.name" placeholder="Ability name">
+                                    </div>
+                                    <div class="form-field" style="flex: 3; min-width: 200px;">
+                                        <input type="text" class="form-control form-control-sm" x-model="ability.description" placeholder="Description">
+                                    </div>
+                                    <button type="button" class="icon-btn danger" @click="npcForm.abilities.splice(index, 1)" title="Remove ability">&times;</button>
+                                </div>
+                            </template>
+                            <button type="button" class="add-ability-btn" @click="npcForm.abilities.push({name: '', description: ''})">+ Add Ability</button>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" @click="closeAddModal()">Cancel</button>
+                            <button class="btn btn-primary" @click="addNPC()" x-text="editModalCombatantId ? 'Save' : 'Add NPC'"></button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- PC Form -->
+                <template x-if="formTab === 'pc'">
+                    <div>
+                        <div class="form-row">
+                            <div class="form-field flex-2">
+                                <label>Character Name</label>
+                                <input type="text" class="form-control form-control-sm" x-model="pcForm.name" @keyup.enter="addPC()">
+                            </div>
+                            <div class="form-field">
+                                <label>Level</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.level" min="1" max="10">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label>AC</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.ac" min="0">
+                            </div>
+                            <div class="form-field">
+                                <label>Max HP</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.maxHp" min="1">
+                            </div>
+                            <div class="form-field">
+                                <label>System Strain</label>
+                                <input type="number" class="form-control form-control-sm" x-model.number="pcForm.systemStrain" min="0">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" @click="closeAddModal()">Cancel</button>
+                            <button class="btn btn-primary" @click="addPC()" x-text="editModalCombatantId ? 'Save' : 'Add PC'"></button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+
+    <!-- HP Modal (Damage/Heal) -->
+    <template x-if="hpModalOpen">
+        <div>
+            <div class="tracker-modal-backdrop" @click="closeHpModal()"></div>
+            <div class="tracker-modal" style="max-width: 300px;">
+                <button class="tracker-modal-close" @click="closeHpModal()">&times;</button>
+                <h3 x-text="getCombatantDisplayName(hpModalTarget)"></h3>
+                <div class="hp-modal-current">
+                    <span x-text="hpModalTarget?.currentHp"></span> / <span x-text="hpModalTarget?.maxHp"></span> HP
+                </div>
+                <div class="form-field" style="margin-bottom: 1rem;">
+                    <label>Amount</label>
+                    <input type="number" class="form-control form-control-sm" x-model.number="hpModalAmount" min="0" placeholder="0"
+                           @keyup.enter="applyDamage()" x-ref="hpInput">
+                </div>
+                <div class="hp-modal-buttons">
+                    <button class="btn btn-danger" @click="applyDamage()">Damage</button>
+                    <button class="btn btn-success" @click="applyHealing()">Heal</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+    // Weapon data from server (pre-serialized JSON from view)
+    const weaponsData = {{ weapons_json | safe }};
+
+    // Color palette for monster groups
+    const groupColors = [
+        '#dc3545', // red
+        '#fd7e14', // orange
+        '#6f42c1', // purple
+        '#0dcaf0', // cyan
+        '#d63384', // pink
+        '#20c997', // teal
+        '#ffc107', // yellow
+        '#6610f2', // indigo
+    ];
+
+    // NPC Templates - predefined statblocks
+    const npcTemplates = [
+        { category: 'Humanoids', templates: [
+            { name: 'Villager', hd: 1, ac: 10, hasArmor: false, bab: 0, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 7, inst: 5, skl: 1, sv: 15 },
+            { name: 'Thug/Militia', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 8, inst: 4, skl: 1, sv: 15 },
+            { name: 'Vet Soldier', hd: 1, ac: 13, hasArmor: true, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 8, inst: 3, skl: 1, sv: 15 },
+            { name: 'Skilled Vet', hd: 2, ac: 15, hasArmor: true, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 2, skl: 1, sv: 14 },
+            { name: 'Elite Guard', hd: 3, ac: 18, hasArmor: true, bab: 4, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 14 },
+            { name: 'Knight', hd: 4, ac: 18, hasArmor: true, bab: 6, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 1, skl: 2, sv: 13 },
+            { name: 'Warrior Baron', hd: 6, ac: 18, hasArmor: true, bab: 8, attacks: 1, damageMode: 'weapon', dmgBonus: 3, shockOverride: false, mv: "30'", ml: 9, inst: 1, skl: 2, sv: 12 },
+            { name: 'Warlord', hd: 8, ac: 16, hasArmor: true, bab: 10, attacks: 2, damageMode: 'weapon', dmgBonus: 4, shockOverride: true, mv: "30'", ml: 10, inst: 3, skl: 2, sv: 11 },
+        ]},
+        { category: 'Mages', templates: [
+            { name: 'Petty Mage', hd: 2, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 8, inst: 4, skl: 1, sv: 14 },
+            { name: 'Shaman', hd: 4, ac: 10, hasArmor: false, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 1, sv: 13 },
+            { name: 'Sorcerer', hd: 5, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 2, sv: 13 },
+            { name: 'Master Wizard', hd: 8, ac: 13, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 3, skl: 2, sv: 11 },
+        ]},
+        { category: 'Beasts', templates: [
+            { name: 'Small Predator', hd: 1, ac: 12, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 4, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 7, inst: 6, skl: 1, sv: 15 },
+            { name: 'Large Predator', hd: 5, ac: 13, hasArmor: false, bab: 6, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "30'", ml: 8, inst: 6, skl: 1, sv: 13 },
+            { name: 'Apex Predator', hd: 6, ac: 13, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "40'", ml: 8, inst: 6, skl: 2, sv: 12 },
+            { name: 'Large Herbivore', hd: 4, ac: 13, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 9, inst: 6, skl: 1, sv: 13 },
+            { name: 'Hulking Predator', hd: 10, ac: 15, hasArmor: false, bab: 12, attacks: 2, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 3, shockValue: 6, shockAC: '15', mv: "30'", ml: 10, inst: 4, skl: 1, sv: 10 },
+            { name: 'Hellbeast', hd: 10, ac: 18, hasArmor: false, bab: 12, attacks: 4, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 5, shockValue: 6, shockAC: '-', mv: "60'", ml: 11, inst: 4, skl: 3, sv: 10 },
+        ]},
+        { category: 'Creatures', templates: [
+            { name: 'Unnatural Swarm', hd: 4, ac: 10, hasArmor: false, bab: 6, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "30'", ml: 10, inst: 5, skl: 1, sv: 13 },
+            { name: 'Slime/Ooze', hd: 6, ac: 10, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "20'", ml: 12, inst: 5, skl: 1, sv: 12 },
+        ]},
+        { category: 'Undead', templates: [
+            { name: 'Skeleton', hd: 1, ac: 13, hasArmor: false, bab: 1, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "30'", ml: 12, inst: 5, skl: 0, sv: 15 },
+            { name: 'Zombie', hd: 2, ac: 10, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "20'", ml: 12, inst: 6, skl: 0, sv: 14 },
+            { name: 'Angry Shade', hd: 4, ac: 20, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 12, inst: 6, skl: 1, sv: 13 },
+            { name: 'Revenant', hd: 8, ac: 13, hasArmor: true, bab: 10, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 10, inst: 5, skl: 2, sv: 11 },
+            { name: 'Lich', hd: 8, ac: 10, hasArmor: false, bab: 10, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '-', mv: "30'", ml: 9, inst: 4, skl: 2, sv: 11 },
+            { name: 'Wraith Lord', hd: 10, ac: 20, hasArmor: false, bab: 10, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "30'", ml: 10, inst: 4, skl: 2, sv: 10 },
+            { name: 'Revenant King', hd: 12, ac: 18, hasArmor: true, bab: 14, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "30'", ml: 11, inst: 3, skl: 2, sv: 9 },
+        ]},
+        { category: 'Constructs', templates: [
+            { name: 'Automaton', hd: 2, ac: 13, hasArmor: false, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 12, inst: 3, skl: 1, sv: 14 },
+            { name: 'Military Robot', hd: 4, ac: 18, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 2, shockValue: 4, shockAC: '15', mv: "30'", ml: 12, inst: 3, skl: 1, sv: 13 },
+            { name: 'Guardian Commander', hd: 8, ac: 18, hasArmor: false, bab: 9, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 4, shockValue: 6, shockAC: '18', mv: "40'", ml: 12, inst: 3, skl: 2, sv: 11 },
+            { name: 'Warbot', hd: 10, ac: 20, hasArmor: false, bab: 12, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 7, shockAC: '-', mv: "40'", ml: 12, inst: 2, skl: 2, sv: 10 },
+            { name: 'Ancient Warbot', hd: 14, ac: 20, hasArmor: false, bab: 15, attacks: 3, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "60'", hasFly: true, ml: 12, inst: 2, skl: 2, sv: 8 },
+        ]},
+        { category: 'Demihumans', templates: [
+            { name: 'Dwarf', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 1, sv: 15 },
+            { name: 'Dwarf Veteran', hd: 2, ac: 16, hasArmor: true, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 3, skl: 1, sv: 14 },
+            { name: 'Dwarf Lord', hd: 10, ac: 20, hasArmor: true, bab: 11, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 10 },
+            { name: 'Elf Villager', hd: 1, ac: 13, hasArmor: true, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 2, skl: 2, sv: 15 },
+            { name: 'Elf Adventurer', hd: 3, ac: 15, hasArmor: true, bab: 5, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 2, skl: 2, sv: 14 },
+            { name: 'Elf Mage', hd: 5, ac: 10, hasArmor: false, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 1, skl: 2, sv: 13 },
+            { name: 'Elf Lord', hd: 10, ac: 20, hasArmor: true, bab: 11, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 1, skl: 3, sv: 10 },
+            { name: 'Elf ArchMage', hd: 10, ac: 13, hasArmor: false, bab: 8, attacks: 1, damageMode: 'weapon', dmgBonus: 3, shockOverride: true, mv: "30'", ml: 10, inst: 0, skl: 4, sv: 10 },
+        ]},
+    ];
+
+    function combatTracker() {
+        return {
+            // State
+            round: 1,
+            roundFlash: false,
+            currentTurnId: null,
+            openTooltipId: null,
+            expandedAbilitiesId: null,  // Combatant ID with expanded abilities
+            combatants: [],  // NPCs have stats embedded, PCs reference pcs array
+            pcs: [],
+
+            // Modals
+            addModalOpen: false,
+            hpModalOpen: false,
+            hpModalTarget: null,
+            hpModalAmount: 0,
+            formTab: 'npc',
+            npcInputMode: 'template',  // 'template' or 'paste'
+            statblockPaste: '',
+            parseError: '',
+
+            // NPC Form
+            npcForm: {
+                name: 'Monster',
+                group: '',
+                count: 1,
+                hd: 1,
+                hpMode: 'roll',
+                ac: 10,
+                hasArmor: false,
+                hasShield: false,
+                bab: 0,
+                attacks: 1,
+
+                // Damage configuration
+                damageMode: 'weapon',     // 'weapon' | 'dice'
+                weaponId: 'spear-light',
+                diceCount: 1,
+                diceType: 6,
+                attackName: '',           // Custom attack name for dice mode
+                dmgBonus: 0,
+                shockValue: 0,
+                shockAC: '10',
+                shockOverride: false,
+
+                mv: "30'",
+                hasFly: false,
+                hasSwim: false,
+                ml: 7,
+                inst: 5,
+                skl: 1,
+                sv: 15,
+                abilities: []  // Array of {name, description}
+            },
+
+            // Group initiative tracking
+            groupInitiatives: {},  // { "Group 1": 5, "Group 2": 3 }
+            nextGroupNum: 1,       // For auto-naming groups
+            editingGroup: null,    // Group name currently being edited
+            editingCombatant: null, // Combatant ID for inline name editing
+            editModalCombatantId: null, // Combatant ID for modal editing
+
+            // PC Form
+            pcForm: {
+                name: 'Adventurer',
+                group: '',
+                level: 1,
+                ac: 10,
+                maxHp: 6,
+                systemStrain: 0
+            },
+
+            // Templates reference (for Alpine access)
+            npcTemplates: npcTemplates,
+
+            // Computed
+            get sortedCombatants() {
+                return [...this.combatants].sort((a, b) => {
+                    const initA = a.initiative ?? -999;
+                    const initB = b.initiative ?? -999;
+                    return initB - initA;
+                });
+            },
+
+            get canStartCombat() {
+                // Need combatants, not already in combat, and at least one initiative set
+                if (this.combatants.length === 0) return false;
+                if (this.currentTurnId !== null) return false;
+                // Check if any group or individual has initiative
+                const hasGroupInit = Object.values(this.groupInitiatives).some(init => init !== null);
+                const hasIndividualInit = this.combatants.some(c => this.isIndividual(c) && c.initiative !== null);
+                return hasGroupInit || hasIndividualInit;
+            },
+
+            get allGroups() {
+                // Group all combatants (PCs and NPCs) by their group name, excluding individuals
+                const groups = {};
+
+                // Include empty groups from groupInitiatives (except _individual)
+                Object.keys(this.groupInitiatives).forEach(groupName => {
+                    if (groupName !== '_individual' && !groups[groupName]) {
+                        groups[groupName] = {
+                            name: groupName,
+                            initiative: this.groupInitiatives[groupName] ?? null,
+                            combatants: []
+                        };
+                    }
+                });
+
+                this.combatants.forEach(c => {
+                    const groupName = this.getCombatantGroup(c);
+
+                    // Skip individuals - they're handled separately
+                    if (groupName === '_individual') return;
+
+                    if (!groups[groupName]) {
+                        groups[groupName] = {
+                            name: groupName,
+                            initiative: this.groupInitiatives[groupName] ?? null,
+                            combatants: []
+                        };
+                    }
+                    groups[groupName].combatants.push(c);
+                });
+
+                // Assign colors to groups
+                const groupList = Object.values(groups);
+                groupList.forEach((group, index) => {
+                    group.color = groupColors[index % groupColors.length];
+                });
+
+                return groupList;
+            },
+
+            get individualCombatants() {
+                // Filter and sort individuals by their initiative
+                return this.combatants
+                    .filter(c => this.isIndividual(c))
+                    .sort((a, b) => {
+                        const initA = a.initiative ?? -999;
+                        const initB = b.initiative ?? -999;
+                        return initB - initA;
+                    });
+            },
+
+            get sortedGroups() {
+                // Mix groups and individual combatants, sorted by initiative
+                const items = [];
+
+                // Add all groups
+                this.allGroups.forEach(group => {
+                    items.push({
+                        type: 'group',
+                        ...group
+                    });
+                });
+
+                // Add individual combatants as single-item entries
+                this.individualCombatants.forEach(combatant => {
+                    items.push({
+                        type: 'individual',
+                        name: this.getCombatantDisplayName(combatant),
+                        initiative: combatant.initiative,
+                        combatants: [combatant],
+                        color: null
+                    });
+                });
+
+                // Sort by initiative (highest first), PCs win ties
+                return items.sort((a, b) => {
+                    const initA = a.initiative ?? -999;
+                    const initB = b.initiative ?? -999;
+                    if (initA !== initB) return initB - initA;
+                    // On tie, PCs go first
+                    const aHasPC = a.combatants.some(c => c.type === 'pc');
+                    const bHasPC = b.combatants.some(c => c.type === 'pc');
+                    if (aHasPC && !bHasPC) return -1;
+                    if (!aHasPC && bHasPC) return 1;
+                    return 0;
+                });
+            },
+
+            get existingGroups() {
+                // Get unique group names
+                return this.allGroups.map(g => g.name);
+            },
+
+            // Init
+            init() {
+                this.loadFromStorage();
+            },
+
+            // Helpers
+            generateId() {
+                return 'c-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            },
+
+            getWeapon(weaponId) {
+                return weaponsData.find(w => w.id === weaponId);
+            },
+
+            getPC(id) {
+                return this.pcs.find(p => p.id === id);
+            },
+
+            getCombatantDisplayName(combatant) {
+                if (!combatant) return '';
+                if (combatant.type === 'pc') {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.name || 'Unknown PC';
+                } else {
+                    // NPC: full name stored directly (including any number)
+                    return combatant.name || 'Unknown';
+                }
+            },
+
+            getCombatantAC(combatant) {
+                if (combatant.type === 'pc') {
+                    return this.getPC(combatant.sourceId)?.ac || 10;
+                } else {
+                    return combatant.ac || 10;
+                }
+            },
+
+            getAcSuffix(combatant) {
+                if (combatant.type === 'pc') return '';
+                let suffix = '';
+                if (combatant.hasArmor) suffix += 'a';
+                if (combatant.hasShield) suffix += 's';
+                return suffix;
+            },
+
+            getMoveSuffix(combatant) {
+                if (combatant.type === 'pc') return '';
+                let suffix = '';
+                if (combatant.hasFly) suffix += 'f';
+                if (combatant.hasSwim) suffix += 's';
+                return suffix;
+            },
+
+            getMoveTooltip(combatant) {
+                if (combatant.type === 'pc') return '';
+                const parts = [];
+                if (combatant.hasFly) parts.push('Fly');
+                if (combatant.hasSwim) parts.push('Swim');
+                return parts.join(', ');
+            },
+
+            getAcTooltip(combatant) {
+                if (combatant.type === 'pc') return '';
+                const parts = [];
+                if (combatant.hasArmor) parts.push('Armor');
+                if (combatant.hasShield) parts.push('Shield');
+                return parts.join(', ');
+            },
+
+            getNpcBab(combatant) {
+                const attacks = combatant.attacks > 1 ? ' x' + combatant.attacks : '';
+                return '+' + combatant.bab + attacks;
+            },
+
+            getWeaponName(combatant) {
+                if (combatant.damageMode === 'dice') {
+                    return combatant.attackName || 'Attack';
+                }
+                const weapon = this.getWeapon(combatant.weaponId);
+                return weapon?.name?.en || '-';
+            },
+
+            hasWeaponTraits(combatant) {
+                return this.getWeaponTraits(combatant).length > 0;
+            },
+
+            getNpcDamage(combatant) {
+                let baseDamage = '';
+
+                // Determine base damage based on mode (default to weapon if not set)
+                if (combatant.damageMode === 'dice') {
+                    baseDamage = `${combatant.diceCount}d${combatant.diceType}`;
+                } else {
+                    // Weapon mode (default)
+                    const weapon = this.getWeapon(combatant.weaponId);
+                    baseDamage = weapon?.damage || '-';
+                }
+
+                // ALWAYS add damage bonus (if present and > 0)
+                if (combatant.dmgBonus > 0 && baseDamage !== '-') {
+                    baseDamage += '+' + combatant.dmgBonus;
+                }
+
+                return baseDamage;
+            },
+
+            getNpcShock(combatant) {
+                // Handle different damage modes (default to weapon if not set)
+                if (combatant.damageMode === 'dice') {
+                    if (!combatant.shockValue || combatant.shockValue === 0) return '-';
+                    // In dice mode, shock value is set directly (dmg bonus only applies to attack damage)
+                    return combatant.shockValue + '/' + combatant.shockAC;  // shockAC can be number or "-"
+                } else {
+                    // Weapon mode (default)
+                    const weapon = this.getWeapon(combatant.weaponId);
+                    if (!weapon?.shock) return '-';
+                    // Add damage bonus to shock value
+                    const shockVal = weapon.shock.value + (combatant.dmgBonus || 0);
+                    // Check if shock override is enabled (applies to all AC)
+                    const shockAC = combatant.shockOverride ? '-' : weapon.shock.ac;
+                    return shockVal + '/' + shockAC;
+                }
+            },
+
+            getNpcShockValue(combatant) {
+                // Returns just the numeric shock damage value (for damage comparison)
+                if (combatant.damageMode === 'dice') {
+                    return combatant.shockValue || 0;
+                } else {
+                    const weapon = this.getWeapon(combatant.weaponId);
+                    if (!weapon?.shock) return 0;
+                    return weapon.shock.value + (combatant.dmgBonus || 0);
+                }
+            },
+
+            getNpcMove(combatant) {
+                let moveStr = combatant.mv || '-';
+                const movementTypes = [];
+
+                if (combatant.hasFly) movementTypes.push('fly');
+                if (combatant.hasSwim) movementTypes.push('swim');
+
+                if (movementTypes.length > 0 && moveStr !== '-') {
+                    moveStr += ' ' + movementTypes.join(',');
+                }
+
+                return moveStr;
+            },
+
+            getWeaponTraits(combatant) {
+                if (combatant.damageMode === 'dice') return [];
+                const weapon = this.getWeapon(combatant.weaponId);
+                if (!weapon?.traits) return [];
+                const traitData = {{ weapon_traits_json | safe }};
+                return weapon.traits.map(code => ({
+                    code: code,
+                    desc: traitData[code]?.en || code
+                }));
+            },
+
+            updateGroupInitiative(groupName, value) {
+                this.groupInitiatives[groupName] = value === '' ? null : parseInt(value);
+                this.saveToStorage();
+            },
+
+            updateIndividualInitiative(combatantId, value) {
+                const combatant = this.combatants.find(c => c.id === combatantId);
+                if (combatant) {
+                    combatant.initiative = value === '' ? null : parseInt(value);
+                    this.saveToStorage();
+                }
+            },
+
+            getNpcStatLine(combatant) {
+                const weapon = this.getWeapon(combatant.weaponId);
+                let dmg = combatant.fixedDamage || weapon?.damage || '-';
+                if (combatant.dmgBonus > 0 && !combatant.fixedDamage) dmg += '+' + combatant.dmgBonus;
+
+                let shock = '-';
+                if (combatant.fixedShock) {
+                    shock = combatant.fixedShock;
+                } else if (weapon?.shock) {
+                    const shockVal = weapon.shock.value + (combatant.dmgBonus || 0);
+                    shock = shockVal + '/AC' + weapon.shock.ac;
+                }
+
+                const attacks = combatant.attacks > 1 ? ' x' + combatant.attacks : '';
+
+                return [
+                    { label: 'BAB', value: '+' + combatant.bab + attacks },
+                    { label: 'Dmg', value: dmg },
+                    { label: 'Shock', value: shock },
+                    { label: 'ML', value: combatant.ml },
+                    { label: 'Inst', value: combatant.inst },
+                ];
+            },
+
+            getPcStatLine(combatant) {
+                const pc = this.getPC(combatant.sourceId);
+                if (!pc) return [];
+                return [
+                    { label: 'Level', value: pc.level },
+                    { label: 'Strain', value: combatant.systemStrain || 0 },
+                ];
+            },
+
+            rollDice(notation) {
+                const match = notation.match(/^(\d+)?d(\d+)([+-]\d+)?$/i);
+                if (!match) return null;
+                const count = parseInt(match[1]) || 1;
+                const sides = parseInt(match[2]);
+                const modifier = parseInt(match[3]) || 0;
+                const rolls = Array.from({length: count}, () => Math.floor(Math.random() * sides) + 1);
+                return rolls.reduce((a, b) => a + b, 0) + modifier;
+            },
+
+            // Modal controls
+            openAddModal() {
+                this.addModalOpen = true;
+            },
+
+            openAddToGroup(groupName) {
+                // Open modal with group pre-filled
+                this.npcForm.group = groupName;
+                this.formTab = 'npc';
+                this.addModalOpen = true;
+            },
+
+            addNewGroup() {
+                // Auto-generate group name
+                const groupName = 'Group ' + this.nextGroupNum;
+                this.nextGroupNum++;
+                this.groupInitiatives[groupName] = null;
+                this.npcForm.group = groupName;
+                this.pcForm.group = groupName;
+                this.addModalOpen = true;
+                this.saveToStorage();
+            },
+
+            addIndividualCombatant() {
+                // Add combatant with individual initiative (not in a group)
+                this.npcForm.group = '_individual';
+                this.pcForm.group = '_individual';
+                this.addModalOpen = true;
+            },
+
+            openEditCombatant(combatant) {
+                this.editModalCombatantId = combatant.id;
+
+                if (combatant.type === 'npc') {
+                    // Populate NPC form from combatant (stats are embedded)
+                    this.npcForm.name = combatant.name;
+                    this.npcForm.group = combatant.group || '_individual';
+                    this.npcForm.count = 1;  // Not relevant for editing
+                    this.npcForm.hd = combatant.hd;
+                    this.npcForm.hpMode = 'average';  // Not relevant for editing
+                    this.npcForm.ac = combatant.ac;
+                    this.npcForm.hasArmor = combatant.hasArmor || false;
+                    this.npcForm.hasShield = combatant.hasShield || false;
+                    this.npcForm.bab = combatant.bab;
+                    this.npcForm.attacks = combatant.attacks || 1;
+                    this.npcForm.damageMode = combatant.damageMode || 'weapon';
+                    this.npcForm.weaponId = combatant.weaponId || 'spear-light';
+                    this.npcForm.diceCount = combatant.diceCount || 1;
+                    this.npcForm.diceType = combatant.diceType || 6;
+                    this.npcForm.attackName = combatant.attackName || '';
+                    this.npcForm.dmgBonus = combatant.dmgBonus || 0;
+                    this.npcForm.shockValue = combatant.shockValue || 0;
+                    this.npcForm.shockAC = combatant.shockAC || '10';
+                    this.npcForm.shockOverride = combatant.shockOverride || false;
+                    this.npcForm.mv = combatant.mv || "30'";
+                    this.npcForm.hasFly = combatant.hasFly || false;
+                    this.npcForm.hasSwim = combatant.hasSwim || false;
+                    this.npcForm.ml = combatant.ml;
+                    this.npcForm.inst = combatant.inst;
+                    this.npcForm.skl = combatant.skl;
+                    this.npcForm.sv = combatant.sv;
+                    this.npcForm.abilities = combatant.abilities ? [...combatant.abilities] : [];
+
+                    this.formTab = 'npc';
+                    this.npcInputMode = 'template';  // Use template mode for editing
+                } else {
+                    // PC
+                    const pc = this.getPC(combatant.sourceId);
+                    if (!pc) return;
+
+                    this.pcForm.name = pc.name;
+                    this.pcForm.group = pc.group || '_individual';
+                    this.pcForm.level = pc.level;
+                    this.pcForm.ac = pc.ac;
+                    this.pcForm.maxHp = combatant.maxHp;
+                    this.pcForm.systemStrain = combatant.systemStrain || 0;
+
+                    this.formTab = 'pc';
+                }
+
+                this.addModalOpen = true;
+            },
+
+            startEditingGroup(groupName) {
+                this.editingGroup = groupName;
+                // Focus the input after Alpine updates the DOM
+                this.$nextTick(() => {
+                    const input = this.$el.querySelector('.group-name-input:not([style*="display: none"])');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                });
+            },
+
+            finishEditingGroup(oldName, newName) {
+                this.editingGroup = null;
+                if (newName && newName.trim() && newName.trim() !== oldName) {
+                    const trimmedName = newName.trim();
+                    // Update initiative tracking
+                    this.groupInitiatives[trimmedName] = this.groupInitiatives[oldName];
+                    delete this.groupInitiatives[oldName];
+                    // Update all NPC combatants with this group
+                    this.combatants.forEach(c => {
+                        if (c.type === 'npc' && c.group === oldName) c.group = trimmedName;
+                    });
+                    // Update all PCs with this group
+                    this.pcs.forEach(pc => {
+                        if (pc.group === oldName) pc.group = trimmedName;
+                    });
+                    this.saveToStorage();
+                }
+            },
+
+            startEditingCombatant(combatantId) {
+                this.editingCombatant = combatantId;
+                // Focus the input after Alpine updates the DOM
+                this.$nextTick(() => {
+                    const input = this.$el.querySelector('.combatant-name-input:not([style*="display: none"])');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                });
+            },
+
+            finishEditingCombatant(combatantId, newName) {
+                this.editingCombatant = null;
+                const combatant = this.combatants.find(c => c.id === combatantId);
+                if (combatant && newName !== undefined) {
+                    const trimmedName = newName.trim();
+                    if (trimmedName) {
+                        if (combatant.type === 'npc') {
+                            // NPC: update name directly on combatant
+                            combatant.name = trimmedName;
+                        } else {
+                            // PC: update name on the PC record
+                            const pc = this.getPC(combatant.sourceId);
+                            if (pc) pc.name = trimmedName;
+                        }
+                        this.saveToStorage();
+                    }
+                }
+            },
+
+            getDefaultCombatantName(combatant) {
+                if (!combatant) return '';
+                if (combatant.type === 'pc') {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.name || 'Unknown PC';
+                } else {
+                    // NPC: full name stored directly
+                    return combatant.name || 'Unknown';
+                }
+            },
+
+            removeGroup(groupName) {
+                if (!confirm(`Remove group "${groupName}" and all its combatants?`)) return;
+
+                // Find combatants in this group and remove them
+                this.combatants = this.combatants.filter(c => {
+                    if (c.type === 'npc') {
+                        return c.group !== groupName;
+                    } else {
+                        const pc = this.getPC(c.sourceId);
+                        return pc?.group !== groupName;
+                    }
+                });
+
+                // Remove PCs belonging to this group
+                this.pcs = this.pcs.filter(pc => pc.group !== groupName);
+
+                // Remove group from initiative tracking
+                delete this.groupInitiatives[groupName];
+
+                // Clear current turn if it was in this group
+                if (this.currentTurnId && !this.combatants.find(c => c.id === this.currentTurnId)) {
+                    this.currentTurnId = null;
+                }
+
+                this.saveToStorage();
+            },
+
+            closeAddModal() {
+                this.addModalOpen = false;
+                this.editModalCombatantId = null;
+                // Reset NPC form to defaults
+                this.npcForm.name = 'Monster';
+                this.npcForm.group = '';
+                this.npcForm.count = 1;
+                this.npcForm.hd = 1;
+                this.npcForm.hpMode = 'roll';
+                this.npcForm.ac = 10;
+                this.npcForm.hasArmor = false;
+                this.npcForm.hasShield = false;
+                this.npcForm.bab = 0;
+                this.npcForm.attacks = 1;
+                this.npcForm.damageMode = 'weapon';
+                this.npcForm.weaponId = 'spear-light';
+                this.npcForm.diceCount = 1;
+                this.npcForm.diceType = 6;
+                this.npcForm.attackName = '';
+                this.npcForm.dmgBonus = 0;
+                this.npcForm.shockValue = 0;
+                this.npcForm.shockAC = '10';
+                this.npcForm.shockOverride = false;
+                this.npcForm.mv = "30'";
+                this.npcForm.hasFly = false;
+                this.npcForm.hasSwim = false;
+                this.npcForm.ml = 7;
+                this.npcForm.inst = 5;
+                this.npcForm.skl = 1;
+                this.npcForm.sv = 15;
+                this.npcForm.abilities = [];
+                // Reset PC form to defaults
+                this.pcForm.name = 'Adventurer';
+                this.pcForm.group = '';
+                this.pcForm.level = 1;
+                this.pcForm.ac = 10;
+                this.pcForm.maxHp = 6;
+                this.pcForm.systemStrain = 0;
+                // Reset other state
+                this.statblockPaste = '';
+                this.parseError = '';
+                this.npcInputMode = 'template';
+            },
+
+            applyTemplate(value) {
+                if (!value) return;  // "Custom" selected, don't change anything
+
+                // Parse "Category/TemplateName" (template name may contain /)
+                const slashIndex = value.indexOf('/');
+                const categoryName = value.substring(0, slashIndex);
+                const templateName = value.substring(slashIndex + 1);
+                const category = npcTemplates.find(c => c.category === categoryName);
+                if (!category) return;
+                const template = category.templates.find(t => t.name === templateName);
+                if (!template) return;
+
+                // Apply template values to form
+                this.npcForm.name = template.name;
+                this.npcForm.hd = template.hd;
+                this.npcForm.ac = template.ac;
+                this.npcForm.hasArmor = template.hasArmor || false;
+                this.npcForm.hasShield = template.hasShield || false;
+                this.npcForm.bab = template.bab;
+                this.npcForm.attacks = template.attacks;
+                this.npcForm.damageMode = template.damageMode;
+                this.npcForm.dmgBonus = template.dmgBonus || 0;
+                this.npcForm.shockOverride = template.shockOverride || false;
+                this.npcForm.mv = template.mv;
+                this.npcForm.hasFly = template.hasFly || false;
+                this.npcForm.hasSwim = template.hasSwim || false;
+                this.npcForm.ml = template.ml;
+                this.npcForm.inst = template.inst;
+                this.npcForm.skl = template.skl;
+                this.npcForm.sv = template.sv;
+
+                // Dice mode specific fields
+                if (template.damageMode === 'dice') {
+                    this.npcForm.diceCount = template.diceCount || 1;
+                    this.npcForm.diceType = template.diceType || 6;
+                    this.npcForm.attackName = template.attackName || '';
+                    this.npcForm.shockValue = template.shockValue || 0;
+                    this.npcForm.shockAC = template.shockAC || '10';
+                } else {
+                    this.npcForm.attackName = '';
+                }
+            },
+
+            parseStatblock() {
+                const input = this.statblockPaste.trim();
+                if (!input) {
+                    this.parseError = '';
+                    return;
+                }
+
+                try {
+                    // Count ability markers (* and ¶)
+                    const starCount = (input.match(/\*/g) || []).length;
+                    const pilcrowCount = (input.match(/¶/g) || []).length;
+                    const abilityCount = starCount + pilcrowCount;
+
+                    // Check if it's compact format (has ¶ or no spaces between values)
+                    const hasCompactFormat = input.includes('¶') || !/\s{2,}/.test(input);
+
+                    let parsed;
+                    if (hasCompactFormat) {
+                        parsed = this.parseCompactStatblock(input);
+                    } else {
+                        parsed = this.parseSpacedStatblock(input);
+                    }
+
+                    if (!parsed) {
+                        this.parseError = 'Could not parse statblock';
+                        return;
+                    }
+
+                    // Apply parsed values to form
+                    this.npcForm.name = parsed.name;
+                    this.npcForm.hd = parsed.hd;
+                    this.npcForm.ac = parsed.ac;
+                    this.npcForm.hasArmor = parsed.hasArmor || false;
+                    this.npcForm.hasShield = parsed.hasShield || false;
+                    this.npcForm.bab = parsed.bab;
+                    this.npcForm.attacks = parsed.attacks || 1;
+                    this.npcForm.mv = parsed.mv;
+                    this.npcForm.hasFly = parsed.hasFly || false;
+                    this.npcForm.hasSwim = parsed.hasSwim || false;
+                    this.npcForm.ml = parsed.ml;
+                    this.npcForm.inst = parsed.inst;
+                    this.npcForm.skl = parsed.skl;
+                    this.npcForm.sv = parsed.sv;
+
+                    // Damage configuration
+                    if (parsed.damageMode === 'dice') {
+                        this.npcForm.damageMode = 'dice';
+                        this.npcForm.diceCount = parsed.diceCount || 1;
+                        this.npcForm.diceType = parsed.diceType || 6;
+                        this.npcForm.attackName = parsed.attackName || '';
+                        this.npcForm.dmgBonus = parsed.dmgBonus || 0;
+                        this.npcForm.shockValue = parsed.shockValue || 0;
+                        this.npcForm.shockAC = parsed.shockAC || '-';
+                    } else {
+                        this.npcForm.damageMode = 'weapon';
+                        this.npcForm.attackName = '';
+                        this.npcForm.dmgBonus = parsed.dmgBonus || 0;
+                        this.npcForm.shockOverride = parsed.shockOverride || false;
+                    }
+
+                    // Add placeholder abilities
+                    this.npcForm.abilities = [];
+                    for (let i = 0; i < abilityCount; i++) {
+                        this.npcForm.abilities.push({ name: 'Ability ' + (i + 1), description: '' });
+                    }
+
+                    this.parseError = '';
+                } catch (e) {
+                    this.parseError = 'Parse error: ' + e.message;
+                }
+            },
+
+            parseSpacedStatblock(input) {
+                // Format: Name  HD  AC  +BAB  DMG  SHOCK  MV  ML  INST  +SKL  SV
+                // Split on 2+ spaces
+                const parts = input.split(/\s{2,}/).map(p => p.trim()).filter(p => p);
+                if (parts.length < 10) return null;
+
+                const name = parts[0].replace(/[\*¶]/g, '').trim();
+                const hdMatch = parts[1].match(/(\d+)/);
+                const hd = hdMatch ? parseInt(hdMatch[1]) : 1;
+
+                // AC - may have 'a' or 's' suffix
+                const acMatch = parts[2].match(/(\d+)(a?)(s?)/);
+                const ac = acMatch ? parseInt(acMatch[1]) : 10;
+                const hasArmor = acMatch ? acMatch[2] === 'a' : false;
+                const hasShield = acMatch ? acMatch[3] === 's' : false;
+
+                // BAB - format: +N or +N xM
+                const babMatch = parts[3].match(/\+(\d+)(?:\s*x(\d+))?/);
+                const bab = babMatch ? parseInt(babMatch[1]) : 0;
+                const attacks = babMatch && babMatch[2] ? parseInt(babMatch[2]) : 1;
+
+                // Damage
+                const dmgParsed = this.parseDamage(parts[4]);
+
+                // Shock
+                const shockParsed = this.parseShock(parts[5]);
+
+                // Move
+                const mv = parts[6] || "30'";
+
+                // ML, Inst, Skill, Save
+                const ml = parseInt(parts[7]) || 7;
+                const inst = parseInt(parts[8]) || 5;
+                const sklMatch = parts[9].match(/\+?(\d+)/);
+                const skl = sklMatch ? parseInt(sklMatch[1]) : 1;
+                const svMatch = parts[10].match(/(\d+)/);
+                const sv = svMatch ? parseInt(svMatch[1]) : 15;
+
+                return {
+                    name, hd, ac, hasArmor, hasShield, bab, attacks,
+                    ...dmgParsed, ...shockParsed,
+                    mv, ml, inst, skl, sv
+                };
+            },
+
+            parseCompactStatblock(input) {
+                // PDF format: NameHDACAtk.Dmg.ShockMoveMLInst.SkillSave
+                // Example: Lesser Anak Warrior113a+1Wpn+1Wpn+120'74+115+
+                // Example: Undead Mage810+101d82/-30'94+211+
+                // Example: Ancient Warbot1420+15 x32d6+510/-60' fly122+28+
+
+                // Check for fly/swim before cleaning
+                const hasFly = /fly/i.test(input);
+                const hasSwim = /swim/i.test(input);
+                console.log('=== PRE-CLEAN ===', { input, hasFly, hasSwim });
+
+                // Clean input - remove header row if present, normalize
+                let cleanInput = input
+                    .replace(/HDACAtk\.?Dmg\.?Shock\.?Move\.?ML\.?Inst\.?Skill\.?Save\.?/gi, '')
+                    .replace(/\s*[\*¶]+\s*/g, '')  // Remove ability markers and surrounding spaces
+                    .replace(/\s*x\s*/g, 'x')  // Normalize "x2" attack notation (remove spaces)
+                    .replace(/\/\s*AC\s*/gi, '/')  // Normalize shock "2/AC 15" to "2/15"
+                    .replace(/[''′`]/g, "'")  // Normalize all quote-like chars to straight quote
+                    .replace(/'\s*(fly|swim)\s*/gi, "'")  // Remove fly/swim after move quote
+                    .replace(/\s*(fly|swim)\s*/gi, '')  // Remove fly/swim text
+                    .trim();
+                console.log('Cleaned input:', cleanInput);
+
+                // Use the step-by-step parser which handles constraints better
+                const result = this.parseCompactStatblockAlt(cleanInput);
+                if (result) {
+                    result.hasFly = hasFly;
+                    result.hasSwim = hasSwim;
+                }
+                return result;
+            },
+
+            parseCompactStatblockOld(input) {
+                // Old regex-based parser - kept for reference
+                const pattern = /^(.+?)(\d{1,2})(1[0-9]|20)(a?)(s?)(\+\d{1,2})(x\d+)?(Wpn(?:\+\d+)?|\d+d\d+(?:\+\d+)?)(Wpn(?:\+\d+)?|\d+\/?[-\d]*|None|-)(\d+['']?)(\d{1,2})(\d)(\+\d+)(\d+)\+?$/i;
+
+                const match = input.match(pattern);
+                if (!match) {
+                    return null;
+                }
+
+                const [, name, hd, ac, armor, shield, bab, attacksRaw, dmg, shock, mv, ml, inst, skl, sv] = match;
+
+                // Parse attacks
+                const attacks = attacksRaw ? parseInt(attacksRaw.replace('x', '')) : 1;
+
+                // Parse damage
+                const dmgParsed = this.parseDamage(dmg);
+
+                // Parse shock
+                const shockParsed = this.parseShock(shock);
+
+                return {
+                    name: name.trim(),
+                    hd: parseInt(hd),
+                    ac: parseInt(ac),
+                    hasArmor: armor === 'a',
+                    hasShield: shield === 's',
+                    bab: parseInt(bab.replace('+', '')),
+                    attacks,
+                    ...dmgParsed,
+                    ...shockParsed,
+                    mv: mv.includes("'") ? mv : mv + "'",
+                    ml: parseInt(ml),
+                    inst: parseInt(inst),
+                    skl: parseInt(skl.replace('+', '')),
+                    sv: parseInt(sv)
+                };
+            },
+
+            parseCompactStatblockAlt(input) {
+                // Parsing with game constraints:
+                // AC: 10-20, ML: 2-12, Inst: 1-10, Skill: +0 to +5, Save: 2-15
+
+                console.log('=== PARSE START ===');
+                console.log('Input:', input);
+
+                let rest = input;
+                let result = {};
+
+                // Extract name: everything before HD+AC pattern
+                // HD is 1-2 digits, AC is always 10+ (2 digits)
+                const nameMatch = rest.match(/^(.+?)(\d{1,2})(1[0-9]|20)/);
+                if (!nameMatch) { console.log('Name match failed'); return null; }
+                result.name = nameMatch[1].trim();
+                result.hd = parseInt(nameMatch[2]);
+                rest = rest.substring(nameMatch[1].length + nameMatch[2].length);
+                console.log('After name/HD:', { name: result.name, hd: result.hd, rest });
+
+                // AC (10-20 + optional a/s)
+                const acMatch = rest.match(/^(1[0-9]|20)(a?)(s?)/);
+                if (!acMatch) { console.log('AC match failed'); return null; }
+                result.ac = parseInt(acMatch[1]);
+                result.hasArmor = acMatch[2] === 'a';
+                result.hasShield = acMatch[3] === 's';
+                rest = rest.substring(acMatch[0].length);
+                console.log('After AC:', { ac: result.ac, rest });
+
+                // BAB (+1 to +20, optional xN where N is 2-9) - look ahead for Wpn or dice pattern
+                // Pattern: +digits followed by optional xN (single digit), then Wpn or NdN
+                const babMatch = rest.match(/^(\+\d{1,2})(x([2-9]))?(Wpn|\d+d)/i);
+                if (!babMatch) { console.log('BAB match failed on:', rest); return null; }
+                result.bab = parseInt(babMatch[1].replace('+', ''));
+                result.attacks = babMatch[3] ? parseInt(babMatch[3]) : 1;
+                // Only consume the BAB part and xN, not the damage lookahead
+                rest = rest.substring(babMatch[1].length + (babMatch[2] ? babMatch[2].length : 0));
+                console.log('After BAB:', { bab: result.bab, attacks: result.attacks, rest });
+
+                // Damage (Wpn+N or dice notation NdX+N where X is valid dice: 2,4,6,8,10,12,20, bonus max +9)
+                const dmgMatch = rest.match(/^(Wpn(?:\+[0-9])?|\d+d(20|12|10|8|6|4|2)(?:\+[0-9])?)/i);
+                if (dmgMatch) {
+                    Object.assign(result, this.parseDamage(dmgMatch[1]));
+                    rest = rest.substring(dmgMatch[0].length);
+                    console.log('After Damage:', { dmgMatch: dmgMatch[0], rest });
+                } else {
+                    console.log('Damage match failed on:', rest);
+                }
+
+                // Capture attack name (words like "swoop", "thorn whip" between damage and shock)
+                // Match spaces and letters but stop before None, Wpn, or digits
+                const attackNameMatch = rest.match(/^[\s]*([a-z\s]+?)(?=None|Wpn|\d)/i);
+                if (attackNameMatch) {
+                    result.attackName = attackNameMatch[1].trim();
+                    console.log('Captured attack name:', result.attackName);
+                    rest = rest.substring(attackNameMatch[0].length);
+                }
+
+                // Shock + Move combined (they often run together like "2/1530'" = shock 2/15, move 30')
+                // Shock value: 1-10, Shock AC: 10-20 or -
+                // Move: digits followed by quote(s) (fly/swim already removed at top level)
+                console.log('Trying shock+move on:', rest);
+                const shockMoveMatch = rest.match(/^(10|[1-9])\/(1[0-9]|20|-)(\d+)['′''`]*/);
+                if (shockMoveMatch) {
+                    result.shockValue = parseInt(shockMoveMatch[1]);
+                    result.shockAC = shockMoveMatch[2];
+                    result.mv = shockMoveMatch[3] + "'";
+                    rest = rest.substring(shockMoveMatch[0].length);
+                    console.log('After Shock+Move:', { shock: result.shockValue + '/' + result.shockAC, mv: result.mv, rest });
+                } else {
+                    console.log('Shock+Move match failed, trying alternatives');
+                    // Try None, Wpn shock (with optional /-), or -
+                    const altShockMatch = rest.match(/^(None|Wpn(?:\+\d+)?(?:\/-)?|-)/i);
+                    if (altShockMatch) {
+                        result.shockValue = 0;
+                        result.shockAC = '-';
+                        if (altShockMatch[1].toLowerCase().startsWith('wpn')) {
+                            result.shockOverride = altShockMatch[1].includes('/-');
+                        }
+                        rest = rest.substring(altShockMatch[0].length);
+                        console.log('After None/Wpn shock:', { shockOverride: result.shockOverride, rest });
+                    }
+                    // Move (digits + ' or "None")
+                    const mvMatch = rest.match(/^(None|\d+)['′''`]*/i);
+                    if (mvMatch) {
+                        result.mv = mvMatch[1].toLowerCase() === 'none' ? "0'" : mvMatch[1] + "'";
+                        rest = rest.substring(mvMatch[0].length);
+                        console.log('After Move:', { mv: result.mv, rest });
+                    } else {
+                        result.mv = "30'";
+                    }
+                }
+
+                // Remaining: ML (2-12) + Inst (1-10) + Skill (+0-5) + Save (2-15)+
+                // Parse from END first since Skill and Save have clear patterns
+                // e.g., "122+28+" = ML 12, Inst 2, Skill +2, Save 8+
+
+                // Strip any leading non-digit characters (stray quotes, spaces, etc.)
+                rest = rest.replace(/^[^0-9]+/, '');
+                console.log('Parsing trailing stats from:', rest);
+
+                // Save (2-15+) - from end, pattern: digits followed by +
+                let svMatch = rest.match(/(1[0-5]|[2-9])\+$/);
+                if (svMatch) {
+                    result.sv = parseInt(svMatch[1]);
+                    rest = rest.substring(0, rest.length - svMatch[0].length);
+                    console.log('After Save:', { sv: result.sv, rest });
+                } else {
+                    result.sv = 15;
+                    console.log('Save match failed, using default 15');
+                }
+
+                // Skill (+0 to +5) - from end, pattern: + followed by digit
+                const sklMatch = rest.match(/\+([0-5])$/);
+                if (sklMatch) {
+                    result.skl = parseInt(sklMatch[1]);
+                    rest = rest.substring(0, rest.length - sklMatch[0].length);
+                    console.log('After Skill:', { skl: result.skl, rest });
+                } else {
+                    result.skl = 1;
+                    console.log('Skill match failed, using default 1');
+                }
+
+                // Now rest should be ML + Inst (e.g., "122" = ML 12, Inst 2)
+                // ML: 2-12, Inst: 1-10
+                console.log('Parsing ML+Inst from:', rest);
+                // Try ML 2-digit (10, 11, 12) first
+                let mlMatch = rest.match(/^(1[0-2])/);
+                if (mlMatch) {
+                    result.ml = parseInt(mlMatch[1]);
+                    rest = rest.substring(mlMatch[0].length);
+                    console.log('ML (2-digit):', result.ml, 'rest:', rest);
+                } else {
+                    mlMatch = rest.match(/^([2-9])/);
+                    if (mlMatch) {
+                        result.ml = parseInt(mlMatch[1]);
+                        rest = rest.substring(mlMatch[0].length);
+                        console.log('ML (1-digit):', result.ml, 'rest:', rest);
+                    } else {
+                        result.ml = 7;
+                        console.log('ML match failed, using default 7');
+                    }
+                }
+
+                // Inst: remaining digits (1-10)
+                let instMatch = rest.match(/^(10|[1-9])/);
+                if (instMatch) {
+                    result.inst = parseInt(instMatch[1]);
+                    console.log('Inst:', result.inst);
+                } else {
+                    result.inst = 5;
+                    console.log('Inst match failed, using default 5');
+                }
+
+                console.log('=== PARSE RESULT ===', result);
+                return result;
+            },
+
+            parseDamage(dmgStr) {
+                if (!dmgStr || dmgStr.toLowerCase().startsWith('wpn')) {
+                    // Weapon mode
+                    const bonusMatch = dmgStr.match(/\+(\d+)/);
+                    return {
+                        damageMode: 'weapon',
+                        dmgBonus: bonusMatch ? parseInt(bonusMatch[1]) : 0
+                    };
+                }
+                // Dice mode (e.g., 1d6, 2d8+3)
+                const diceMatch = dmgStr.match(/(\d+)d(\d+)(\+(\d+))?/);
+                if (diceMatch) {
+                    return {
+                        damageMode: 'dice',
+                        diceCount: parseInt(diceMatch[1]),
+                        diceType: parseInt(diceMatch[2]),
+                        dmgBonus: diceMatch[4] ? parseInt(diceMatch[4]) : 0
+                    };
+                }
+                return { damageMode: 'weapon', dmgBonus: 0 };
+            },
+
+            parseShock(shockStr) {
+                if (!shockStr || shockStr === '-' || shockStr.toLowerCase() === 'none') {
+                    return { shockValue: 0, shockAC: '-' };
+                }
+                if (shockStr.toLowerCase().startsWith('wpn')) {
+                    // Weapon shock with possible override
+                    const override = shockStr.includes('/-');
+                    return { shockOverride: override };
+                }
+                // Format: N/AC or N/-
+                const match = shockStr.match(/(\d+)\/(-|\d+)/);
+                if (match) {
+                    return {
+                        shockValue: parseInt(match[1]),
+                        shockAC: match[2]
+                    };
+                }
+                return { shockValue: 0, shockAC: '-' };
+            },
+
+            openHpModal(combatant) {
+                this.hpModalTarget = combatant;
+                this.hpModalAmount = 0;
+                this.hpModalOpen = true;
+                this.$nextTick(() => {
+                    this.$refs.hpInput?.focus();
+                });
+            },
+
+            closeHpModal() {
+                this.hpModalOpen = false;
+                this.hpModalTarget = null;
+            },
+
+            // Actions
+            addNPC() {
+                if (!this.npcForm.name.trim()) {
+                    alert('Please enter a name');
+                    return;
+                }
+
+                // Edit mode: update combatant directly
+                if (this.editModalCombatantId) {
+                    const combatant = this.combatants.find(c => c.id === this.editModalCombatantId);
+                    if (!combatant) return;
+
+                    // Check if HD changed
+                    const hdChanged = combatant.hd !== this.npcForm.hd;
+
+                    // Update combatant stats directly
+                    combatant.name = this.npcForm.name.trim();
+                    combatant.group = this.npcForm.group.trim() || combatant.group;
+                    combatant.hd = this.npcForm.hd;
+                    combatant.ac = this.npcForm.ac;
+                    combatant.hasArmor = this.npcForm.hasArmor;
+                    combatant.hasShield = this.npcForm.hasShield;
+                    combatant.bab = this.npcForm.bab;
+                    combatant.attacks = this.npcForm.attacks;
+                    combatant.damageMode = this.npcForm.damageMode;
+                    combatant.weaponId = this.npcForm.weaponId;
+                    combatant.diceCount = this.npcForm.diceCount;
+                    combatant.diceType = this.npcForm.diceType;
+                    combatant.attackName = this.npcForm.attackName;
+                    combatant.dmgBonus = this.npcForm.dmgBonus;
+                    combatant.shockValue = this.npcForm.shockValue;
+                    combatant.shockAC = this.npcForm.shockAC;
+                    combatant.shockOverride = this.npcForm.shockOverride;
+                    combatant.mv = this.npcForm.mv;
+                    combatant.hasFly = this.npcForm.hasFly;
+                    combatant.hasSwim = this.npcForm.hasSwim;
+                    combatant.ml = this.npcForm.ml;
+                    combatant.inst = this.npcForm.inst;
+                    combatant.skl = this.npcForm.skl;
+                    combatant.sv = this.npcForm.sv;
+                    combatant.abilities = [...this.npcForm.abilities];
+
+                    // If HD changed, recalculate HP and heal to full
+                    if (hdChanged) {
+                        let newMaxHp;
+                        if (this.npcForm.hpMode === 'average') {
+                            newMaxHp = Math.round(this.npcForm.hd * 4.5);
+                        } else {
+                            newMaxHp = this.rollDice(this.npcForm.hd + 'd8') || this.npcForm.hd;
+                        }
+                        combatant.maxHp = newMaxHp;
+                        combatant.currentHp = newMaxHp;
+                    }
+
+                    this.saveToStorage();
+                    this.closeAddModal();
+                    return;
+                }
+
+                // Add mode: create combatants with embedded stats
+                const groupName = this.npcForm.group.trim() || this.npcForm.name.trim() + 's';
+                const baseName = this.npcForm.name.trim();
+                const count = Math.max(1, Math.min(20, this.npcForm.count || 1));
+
+                // Find highest existing number for this base name
+                // Matches "Zombie", "Zombie 1", "Zombie 2", etc.
+                let highestNum = 0;
+                const namePattern = new RegExp('^' + baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?: (\\d+))?$');
+                this.combatants.forEach(c => {
+                    if (c.type === 'npc') {
+                        const match = c.name?.match(namePattern);
+                        if (match) {
+                            const num = match[1] ? parseInt(match[1]) : 1;
+                            if (num > highestNum) highestNum = num;
+                        }
+                    }
+                });
+
+                // Create multiple combatants based on count
+                for (let i = 0; i < count; i++) {
+                    // Roll HP individually for each monster
+                    let maxHp;
+                    if (this.npcForm.hpMode === 'average') {
+                        maxHp = Math.round(this.npcForm.hd * 4.5);
+                    } else {
+                        maxHp = this.rollDice(this.npcForm.hd + 'd8') || this.npcForm.hd;
+                    }
+
+                    // Generate name with number
+                    const num = highestNum + i + 1;
+                    const fullName = baseName + ' ' + num;
+
+                    const combatant = {
+                        id: this.generateId(),
+                        type: 'npc',
+                        name: fullName,
+                        group: groupName,
+                        initiative: null,
+                        currentHp: maxHp,
+                        maxHp: maxHp,
+                        // Embedded stats
+                        hd: this.npcForm.hd,
+                        ac: this.npcForm.ac,
+                        hasArmor: this.npcForm.hasArmor,
+                        hasShield: this.npcForm.hasShield,
+                        bab: this.npcForm.bab,
+                        attacks: this.npcForm.attacks,
+                        damageMode: this.npcForm.damageMode,
+                        weaponId: this.npcForm.weaponId,
+                        diceCount: this.npcForm.diceCount,
+                        diceType: this.npcForm.diceType,
+                        attackName: this.npcForm.attackName,
+                        dmgBonus: this.npcForm.dmgBonus,
+                        shockValue: this.npcForm.shockValue,
+                        shockAC: this.npcForm.shockAC,
+                        shockOverride: this.npcForm.shockOverride,
+                        mv: this.npcForm.mv,
+                        hasFly: this.npcForm.hasFly,
+                        hasSwim: this.npcForm.hasSwim,
+                        ml: this.npcForm.ml,
+                        inst: this.npcForm.inst,
+                        skl: this.npcForm.skl,
+                        sv: this.npcForm.sv,
+                        abilities: [...this.npcForm.abilities],
+                        conditions: [],
+                        notes: ''
+                    };
+                    this.combatants.push(combatant);
+                }
+
+                this.saveToStorage();
+                this.closeAddModal();
+            },
+
+            addPC() {
+                if (!this.pcForm.name.trim()) {
+                    alert('Please enter a name');
+                    return;
+                }
+
+                // Edit mode: update existing PC and combatant
+                if (this.editModalCombatantId) {
+                    const combatant = this.combatants.find(c => c.id === this.editModalCombatantId);
+                    if (!combatant) return;
+
+                    const pc = this.getPC(combatant.sourceId);
+                    if (!pc) return;
+
+                    // Update PC
+                    pc.name = this.pcForm.name.trim();
+                    pc.group = this.pcForm.group.trim() || pc.group;
+                    pc.level = this.pcForm.level;
+                    pc.ac = this.pcForm.ac;
+                    pc.maxHp = this.pcForm.maxHp;
+
+                    // Update combatant
+                    combatant.maxHp = this.pcForm.maxHp;
+                    combatant.systemStrain = this.pcForm.systemStrain;
+                    // Clamp current HP to new max if needed
+                    if (combatant.currentHp > combatant.maxHp) {
+                        combatant.currentHp = combatant.maxHp;
+                    }
+
+                    this.saveToStorage();
+                    this.closeAddModal();
+                    return;
+                }
+
+                // Add mode: create new PC and combatant
+                const pcId = this.generateId();
+                const groupName = this.pcForm.group.trim() || 'Group 1';
+                const pc = {
+                    id: pcId,
+                    type: 'pc',
+                    name: this.pcForm.name.trim(),
+                    group: groupName,
+                    level: this.pcForm.level,
+                    ac: this.pcForm.ac,
+                    maxHp: this.pcForm.maxHp,
+                    systemStrain: this.pcForm.systemStrain
+                };
+                this.pcs.push(pc);
+
+                const combatant = {
+                    id: this.generateId(),
+                    type: 'pc',
+                    sourceId: pcId,
+                    initiative: null,
+                    currentHp: this.pcForm.maxHp,
+                    maxHp: this.pcForm.maxHp,
+                    systemStrain: this.pcForm.systemStrain,
+                    conditions: [],
+                    notes: ''
+                };
+                this.combatants.push(combatant);
+
+                // Reset name but keep group for adding more to same group
+                this.pcForm.name = 'Adventurer';
+                this.saveToStorage();
+                this.closeAddModal();
+            },
+
+            removeCombatant(id) {
+                const idx = this.combatants.findIndex(c => c.id === id);
+                if (idx !== -1) {
+                    this.combatants.splice(idx, 1);
+                    if (this.currentTurnId === id) {
+                        this.currentTurnId = null;
+                    }
+                    this.saveToStorage();
+                }
+            },
+
+            updateInitiative(id, value) {
+                const combatant = this.combatants.find(c => c.id === id);
+                if (combatant) {
+                    combatant.initiative = value === '' ? null : parseInt(value);
+                    this.saveToStorage();
+                }
+            },
+
+            rollAllInitiative() {
+                // Roll initiative for all groups
+                this.allGroups.forEach(group => {
+                    this.groupInitiatives[group.name] = this.rollDice('1d8') || 1;
+                });
+                // Roll for individual combatants
+                this.combatants.forEach(c => {
+                    if (this.isIndividual(c)) {
+                        c.initiative = this.rollDice('1d8') || 1;
+                    }
+                });
+                this.saveToStorage();
+            },
+
+            startCombat() {
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0) return;
+                this.currentTurnId = sorted[0].id;
+                this.saveToStorage();
+            },
+
+            endCombat() {
+                this.currentTurnId = null;
+                this.round = 1;
+                this.saveToStorage();
+            },
+
+            prevTurn() {
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0 || !this.currentTurnId) return;
+
+                const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
+                if (currentIdx === 0) {
+                    // Go to last combatant of previous round
+                    if (this.round > 1) {
+                        this.round--;
+                        this.flashRoundCounter();
+                        this.currentTurnId = sorted[sorted.length - 1].id;
+                    }
+                } else {
+                    this.currentTurnId = sorted[currentIdx - 1].id;
+                }
+                this.saveToStorage();
+            },
+
+            nextTurn() {
+                const sorted = this.getTurnOrder();
+                if (sorted.length === 0 || !this.currentTurnId) return;
+
+                const currentIdx = sorted.findIndex(c => c.id === this.currentTurnId);
+                const nextIdx = (currentIdx + 1) % sorted.length;
+                if (nextIdx === 0) {
+                    this.round++;
+                    this.flashRoundCounter();
+                }
+                this.currentTurnId = sorted[nextIdx].id;
+                this.saveToStorage();
+            },
+
+            flashRoundCounter() {
+                this.roundFlash = false;
+                // Force reflow to restart animation
+                this.$nextTick(() => {
+                    this.roundFlash = true;
+                    setTimeout(() => { this.roundFlash = false; }, 800);
+                });
+            },
+
+            getTurnOrder() {
+                // Derive turn order from visual order (sortedGroups) to ensure consistency
+                // This flattens groups so turn order matches top-to-bottom display
+                const order = [];
+                this.sortedGroups.forEach(item => {
+                    item.combatants.forEach(c => order.push(c));
+                });
+                return order;
+            },
+
+            getEffectiveInitiative(combatant) {
+                // Individual combatants use their own initiative
+                if (this.isIndividual(combatant)) {
+                    return combatant.initiative;
+                }
+                // Grouped combatants use group initiative
+                const groupName = this.getCombatantGroup(combatant);
+                return this.groupInitiatives[groupName] ?? null;
+            },
+
+            isIndividual(combatant) {
+                const groupName = this.getCombatantGroup(combatant);
+                return groupName === '_individual';
+            },
+
+            getCombatantGroup(combatant) {
+                if (combatant.type === 'npc') {
+                    return combatant.group || 'Group 1';
+                } else {
+                    const pc = this.getPC(combatant.sourceId);
+                    return pc?.group || 'Group 1';
+                }
+            },
+
+            clearCombat() {
+                if (confirm('Clear all combatants?')) {
+                    this.combatants = [];
+                    this.pcs = [];
+                    this.round = 1;
+                    this.currentTurnId = null;
+                    this.groupInitiatives = {};
+                    this.nextGroupNum = 1;
+                    this.saveToStorage();
+                }
+            },
+
+            applyDamage() {
+                if (this.hpModalTarget && this.hpModalAmount > 0) {
+                    this.hpModalTarget.currentHp = Math.max(0, this.hpModalTarget.currentHp - this.hpModalAmount);
+                    this.saveToStorage();
+                }
+                this.closeHpModal();
+            },
+
+            applyHealing() {
+                if (this.hpModalTarget && this.hpModalAmount > 0) {
+                    this.hpModalTarget.currentHp = Math.min(this.hpModalTarget.maxHp, this.hpModalTarget.currentHp + this.hpModalAmount);
+                    this.saveToStorage();
+                }
+                this.closeHpModal();
+            },
+
+            // Persistence
+            saveToStorage() {
+                const data = {
+                    round: this.round,
+                    currentTurnId: this.currentTurnId,
+                    combatants: this.combatants,
+                    pcs: this.pcs,
+                    groupInitiatives: this.groupInitiatives,
+                    nextGroupNum: this.nextGroupNum
+                };
+                localStorage.setItem('wwn-combat-tracker', JSON.stringify(data));
+            },
+
+            loadFromStorage() {
+                const saved = localStorage.getItem('wwn-combat-tracker');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        this.round = data.round || 1;
+                        this.currentTurnId = data.currentTurnId || null;
+                        this.combatants = data.combatants || [];
+                        this.pcs = data.pcs || [];
+                        this.groupInitiatives = data.groupInitiatives || {};
+                        this.nextGroupNum = data.nextGroupNum || 1;
+                    } catch (e) {
+                        console.error('Failed to load combat tracker data:', e);
+                    }
+                }
+            }
+        };
+    }
+</script>
+{% endblock %}

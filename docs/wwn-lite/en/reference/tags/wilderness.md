@@ -1,5 +1,0 @@
-### Wilderness Tags
-
-(Natural hazards, dangerous lands, remote motherload, wild beast territories…)
-
-Abandoned Village¹⁻², Ancient Guardians³⁻⁴, Ancient Monument⁵⁻⁶, Arratu Land⁷⁻⁸, Bandit Lair⁹⁻¹⁰, Beast Swarm¹¹⁻¹², Blighted Tribe¹³⁻¹⁴, Broken Infrastructure¹⁵⁻¹⁶, Chokepoint¹⁷⁻¹⁸, Collapsed Deep¹⁹⁻²⁰, Criminal Meet²¹⁻²², Cryptic Art²³⁻²⁴, Cursed Land²⁵⁻²⁶, Decayed Working²⁷⁻²⁸, Demihuman Community²⁹⁻³⁰, Devil Grove³¹⁻³², Disused Mine³³⁻³⁴, Healing Terrain³⁵⁻³⁶, Hermitage³⁷⁻³⁸, Historical Survival³⁹⁻⁴⁰, Isolated Academy⁴¹⁻⁴², Labyrinthine Tangle⁴³⁻⁴⁴, Lost Battlefield⁴⁵⁻⁴⁶, Lost City⁴⁷⁻⁴⁸, Magical Springs⁴⁹⁻⁵⁰, Migration Path⁵¹⁻⁵², Military Outpost⁵³⁻⁵⁴, Monstrous Beast⁵⁵⁻⁵⁶, Motherlode⁵⁷⁻⁵⁸, Nomad Camp⁵⁹⁻⁶⁰, Outsider Enclave⁶¹⁻⁶², Overgrown Tomb⁶³⁻⁶⁴, Perilous Path⁶⁵⁻⁶⁶, Pilgrimage Site⁶⁷⁻⁶⁸, Precious Game⁶⁹⁻⁷⁰, Rampant Experiment⁷¹⁻⁷², Refugee Camp⁷³⁻⁷⁴, Remnant Road⁷⁵⁻⁷⁶, Remote Monastery⁷⁷⁻⁷⁸, Ruined Fortification⁷⁹⁻⁸⁰, Savage Hamlet⁸¹⁻⁸², Sculpted Terrain⁸³⁻⁸⁴, Seductive Peril⁸⁵⁻⁸⁶, Taboo Territory⁸⁷⁻⁸⁸, Toxic Ruins⁸⁹⁻⁹⁰, Treacherous Terrain⁹¹⁻⁹², Twisted Fauna⁹³⁻⁹⁴, Uncanny Weather⁹⁵⁻⁹⁶, Working Wreckage⁹⁷⁻⁹⁸, Zealot Colony⁹⁹⁻¹⁰⁰.

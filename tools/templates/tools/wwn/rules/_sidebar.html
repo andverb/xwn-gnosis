@@ -1,0 +1,21 @@
+{% load static %}
+
+{% for section_key, section_data in rules_nav.items %}
+<div class="sidebar-section">
+    <button class="btn sidebar-section-title d-inline-flex align-items-center w-100 border-0 rounded"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapse-{{ section_key }}"
+            aria-expanded="true">
+        <i class="bi bi-chevron-down chevron me-2"></i>
+        <i class="{{ section_data.icon }} me-2"></i>
+        {{ section_data.title }}
+    </button>
+    <div class="collapse show" id="collapse-{{ section_key }}">
+        <ul class="sidebar-links btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            {% for page_item in section_data.pages %}
+            <li><a class="sidebar-link d-inline-flex text-decoration-none rounded{% if section == section_key and page == page_item.slug %} active{% endif %}" href="{% url 'tools:rules_page' section=section_key page=page_item.slug %}">{{ page_item.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}

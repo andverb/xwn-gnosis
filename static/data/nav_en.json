@@ -1,0 +1,188 @@
+{
+  "sections": {
+    "basics": {
+      "title": "Basics",
+      "icon": "bi bi-star",
+      "pages": [
+        {
+          "slug": "about",
+          "title": "Information"
+        },
+        {
+          "slug": "basic-rules",
+          "title": "Rules of the game"
+        }
+      ]
+    },
+    "character": {
+      "title": "Character",
+      "icon": "bi bi-person",
+      "pages": [
+        {
+          "slug": "character-creation",
+          "title": "Quick character creation flow"
+        },
+        {
+          "slug": "step-1-attributes",
+          "title": "Step 1: Generate Attributes"
+        },
+        {
+          "slug": "step-2-background",
+          "title": "Step 2: Choose a Backgrounds & Skills"
+        },
+        {
+          "slug": "step-3-class",
+          "title": "Step 3: Choose a Class & Take Its Abilities"
+        },
+        {
+          "slug": "step-4-foci",
+          "title": "Step 4: Choose Foci"
+        },
+        {
+          "slug": "step-5-equipment",
+          "title": "Step 5: Choose an Equipment Pack"
+        },
+        {
+          "slug": "step-6-magic",
+          "title": "Step 6: Mages Choose Tradition & Pick Spells"
+        },
+        {
+          "slug": "xp-leveling",
+          "title": "Character Advancement"
+        }
+      ]
+    },
+    "equipment": {
+      "title": "Equipment",
+      "icon": "bi bi-backpack",
+      "pages": [
+        {
+          "slug": "01-weapons",
+          "title": "Weapons"
+        },
+        {
+          "slug": "02-armor",
+          "title": "Armor"
+        },
+        {
+          "slug": "03-gear",
+          "title": "Equipment"
+        },
+        {
+          "slug": "04-crafting",
+          "title": "Crafting"
+        },
+        {
+          "slug": "05-modifications",
+          "title": "Modifications"
+        },
+        {
+          "slug": "06-alchemy",
+          "title": "Alchemical works"
+        }
+      ]
+    },
+    "magic": {
+      "title": "Magic",
+      "icon": "bi bi-magic",
+      "pages": [
+        {
+          "slug": "magic-basics",
+          "title": "Magic Basics"
+        },
+        {
+          "slug": "magical-items",
+          "title": "Magic Items"
+        },
+        {
+          "slug": "magical-workings",
+          "title": "Magical Workings"
+        },
+        {
+          "slug": "new-spells",
+          "title": "Developing New Spells"
+        }
+      ]
+    },
+    "combat": {
+      "title": "Combat",
+      "icon": "bi bi-shield",
+      "pages": [
+        {
+          "slug": "01-combat-basics",
+          "title": "Combat Basics"
+        },
+        {
+          "slug": "actions",
+          "title": "Combat Actions"
+        }
+      ]
+    },
+    "survival": {
+      "title": "Travel & Survival",
+      "icon": "bi bi-heart-pulse",
+      "pages": [
+        {
+          "slug": "01-healing-hazards",
+          "title": "Healing & Hazards"
+        },
+        {
+          "slug": "delving",
+          "title": "Site exploration"
+        },
+        {
+          "slug": "overland-travel",
+          "title": "Overland travel"
+        },
+        {
+          "slug": "sea-travel",
+          "title": "Sea travel"
+        }
+      ]
+    },
+    "campaign": {
+      "title": "Campaign",
+      "icon": "bi bi-map",
+      "pages": [
+        {
+          "slug": "01-downtime",
+          "title": "Downtime"
+        },
+        {
+          "slug": "02-hirelings",
+          "title": "Hirelings"
+        },
+        {
+          "slug": "03-patronage",
+          "title": "Monetary Rewards"
+        },
+        {
+          "slug": "04-renown",
+          "title": "Renown & Projects"
+        },
+        {
+          "slug": "05-building-structures",
+          "title": "05 Building Structures"
+        },
+        {
+          "slug": "06-hiring-armies",
+          "title": "Armies & Mass Combat"
+        },
+        {
+          "slug": "07-tags",
+          "title": "Tags"
+        }
+      ]
+    },
+    "reference": {
+      "title": "Reference",
+      "icon": "bi bi-bookmark",
+      "pages": [
+        {
+          "slug": "monsters-encounters",
+          "title": "Monsters & Encounters"
+        }
+      ]
+    }
+  }
+}

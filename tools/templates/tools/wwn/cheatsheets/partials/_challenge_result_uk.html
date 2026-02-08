@@ -1,0 +1,16 @@
+<div class="calculator-result">
+    <div class="scores">
+        <div class="score-box">
+            <div class="score-value">{{ foe_score|default:1 }}</div>
+            <div class="score-label">Рахунок Ворогів<br><small>(Атаки &times; КХ)</small></div>
+        </div>
+        <div class="score-box">
+            <div style="font-size: 1.5rem; padding-top: 0.5rem;">проти</div>
+        </div>
+        <div class="score-box">
+            <div class="score-value">{{ party_score|default:16 }}</div>
+            <div class="score-label">Рахунок Групи<br><small>(Рівні &times; ПГ)</small></div>
+        </div>
+    </div>
+    <div class="verdict {{ verdict_class|default:'verdict-easy' }}">{{ verdict|default:'Легко - Скоріш за все легка прогулянка' }}</div>
+</div>

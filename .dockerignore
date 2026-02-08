@@ -30,3 +30,4 @@ __pycache__/
 # Development files
 .pre-commit-config.yaml
 backups
+archive_fastapi_app/
