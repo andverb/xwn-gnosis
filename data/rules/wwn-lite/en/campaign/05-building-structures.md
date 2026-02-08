@@ -1,3 +1,5 @@
+## Building Structures
+
 ### Construction Costs
 - 1 Unskilled worker = 5 $p/day worth of construction.
 - 1 Skilled worker = 25 $p/day worth of construction.
