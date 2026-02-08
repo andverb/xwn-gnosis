@@ -145,7 +145,8 @@
         showLoadingState();
 
         const lang = getLang();
-        const indexUrl = `/static/data/search_index_${lang}.json`;
+        const modal = document.getElementById('searchModal');
+        const indexUrl = modal.dataset[`searchIndex${lang === 'uk' ? 'Uk' : 'En'}`];
 
         try {
             const response = await fetch(indexUrl);

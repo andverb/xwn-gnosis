@@ -1,6 +1,8 @@
 {% load static %}
 <!-- Search Modal (Bootstrap 5) -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true"
+     data-search-index-en="{% static 'data/search_index_en.json' %}"
+     data-search-index-uk="{% static 'data/search_index_uk.json' %}">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header border-bottom-0 pb-0">
