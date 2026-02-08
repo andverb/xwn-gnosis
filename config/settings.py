@@ -170,7 +170,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Railway handles TLS termination, so we trust its HTTPS proxy
 # =============================================================================
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True  # W008: redirect HTTP -> HTTPS
+    # Note: SECURE_SSL_REDIRECT is NOT set — Railway handles HTTPS redirection
+    # at the proxy level. Setting it here breaks Railway's internal health checks
+    # which use plain HTTP.
     SECURE_HSTS_SECONDS = 31536000  # W004: 1 year HSTS
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True

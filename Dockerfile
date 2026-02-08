@@ -32,9 +32,10 @@ ENV PATH="/code/.venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=config.settings
 
 # Collect static files for ServeStatic
-RUN python manage.py collectstatic --noinput
+# SECRET_KEY needed at build time for ManifestStaticFilesStorage hashing
+RUN SECRET_KEY=build-placeholder python manage.py collectstatic --noinput
 
-# Run migrations (SQLite)
+# Run migrations (SQLite - creates db in container)
 RUN python manage.py migrate --noinput
 
 # Create non-root user for security

@@ -9,15 +9,15 @@
 .idea
 .vscode/
 
-# Databases (use external volumes in production)
+# Databases
 *.db
-*.sqlite3
 
 # Environment files (pass via Docker env vars)
 .env
 
-# Documentation
-*.md
+# Documentation (root-level only, not data/rules/)
+/README.md
+/CLAUDE.md
 
 # OS files
 .DS_Store
