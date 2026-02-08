@@ -160,3 +160,16 @@ SERVESTATIC_KEEP_ONLY_HASHED_FILES = True  # Save space: only store hashed versi
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# =============================================================================
+# Security settings (production)
+# Railway handles TLS termination, so we trust its HTTPS proxy
+# =============================================================================
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True  # W008: redirect HTTP -> HTTPS
+    SECURE_HSTS_SECONDS = 31536000  # W004: 1 year HSTS
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True  # W012: cookies only over HTTPS
+    CSRF_COOKIE_SECURE = True  # W016: CSRF cookie only over HTTPS
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")  # Trust Railway's proxy
