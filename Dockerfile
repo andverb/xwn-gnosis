@@ -40,13 +40,10 @@ RUN groupadd -r adventurer && useradd -r -g adventurer adventurer -m
 RUN chown -R adventurer:adventurer /code
 USER adventurer
 
-# Railway provides PORT env var; default to 8000 for local Docker
-ENV PORT=8000
 EXPOSE 8000
 
 # Granian ASGI server
-# - --interface asgi: async views require ASGI
+# - --interface asginl: ASGI without lifespan (Django doesn't implement lifespan protocol)
+# - --port 8000: hardcoded to match EXPOSE (Railway routes traffic to EXPOSE port)
 # - --workers 2: multiple workers for concurrency
-# - sh -c: allows $PORT substitution at runtime
-# Note: no --http 2 (Railway terminates TLS, connects to container over plain HTTP/1.1)
-CMD ["sh", "-c", "python manage.py migrate --noinput && granian --interface asginl --host 0.0.0.0 --port $PORT --workers 2 config.asgi:application"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && granian --interface asginl --host 0.0.0.0 --port 8000 --workers 2 config.asgi:application"]
