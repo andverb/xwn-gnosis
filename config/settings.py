@@ -28,8 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-i#4)2aqhfm=p_1axpf-*ai8t*-qmc2+94)4m15j894a&1w@de9")
 
+# Environment: "production" on Railway, "development" locally
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+# DEBUG is off in production unless explicitly overridden
+DEBUG = os.getenv("DEBUG", str(ENVIRONMENT != "production")).lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
