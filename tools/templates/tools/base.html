@@ -448,6 +448,13 @@
                     </a>
                 </li>
 
+                <!-- Faction Tracker -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tools:faction_tracker' %}">
+                        <i class="bi bi-flag me-1"></i>{% if current_lang == "uk" %}Трекер фракцій{% else %}Faction Tracker{% endif %}
+                    </a>
+                </li>
+
                 <!-- Entities link (hidden until implemented) -->
                 {% comment %}
                 <li class="nav-item">
