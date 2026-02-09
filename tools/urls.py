@@ -36,6 +36,7 @@ urlpatterns = [
     path("wwn/cheatsheets/calculate-challenge/", views.calculate_challenge, name="calculate_challenge"),
     # --- Shared tools ---
     path("tools/combat-tracker/", views.combat_tracker, name="combat_tracker"),
+    path("wwn/tools/faction-tracker/", views.faction_tracker, name="faction_tracker"),
     path("tools/entities/", views.entity_browse, name="entity_browse"),
     path("tools/entities/search/", views.entity_search, name="entity_search"),
     # --- Global ---
