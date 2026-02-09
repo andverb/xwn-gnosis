@@ -544,7 +544,7 @@ def get_section_pages(section: str, lang: str) -> list[dict]:
 
 def render_markdown(content: str) -> str:
     """Render markdown to HTML with linkable headings."""
-    return markdown.markdown(
+    html = markdown.markdown(
         content,
         extensions=[
             "tables",
@@ -562,6 +562,7 @@ def render_markdown(content: str) -> str:
             },
         },
     )
+    return html.replace("<table>", '<table class="table table-striped table-bordered">')
 
 
 def slugify_heading(value: str) -> str:
