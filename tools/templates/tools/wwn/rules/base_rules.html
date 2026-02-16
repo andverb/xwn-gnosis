@@ -450,7 +450,7 @@
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('heading-anchor')) {
         e.preventDefault();
-        const url = e.target.href;
+        const url = decodeURI(e.target.href);
         navigator.clipboard.writeText(url).then(function() {
             e.target.classList.add('copied');
             setTimeout(function() {
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation(); // Prevent collapse toggle when clicking anchor
-                navigator.clipboard.writeText(anchor.href).then(function() {
+                navigator.clipboard.writeText(decodeURI(anchor.href)).then(function() {
                     anchor.classList.add('copied');
                     setTimeout(function() { anchor.classList.remove('copied'); }, 1500);
                 });
@@ -621,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                navigator.clipboard.writeText(anchor.href).then(function() {
+                navigator.clipboard.writeText(decodeURI(anchor.href)).then(function() {
                     anchor.classList.add('copied');
                     setTimeout(function() { anchor.classList.remove('copied'); }, 1500);
                 });
@@ -643,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const hash = window.location.hash;
         if (!hash) return;
 
-        const targetId = hash.substring(1);
+        const targetId = decodeURIComponent(hash.substring(1));
         const target = content.querySelector('#' + CSS.escape(targetId));
         if (!target) return;
 
@@ -679,6 +679,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 parentH4.classList.remove('collapsed');
             }
         }
+
+        // Scroll to target after collapse animation completes
+        setTimeout(function() {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 400);
     }
 
     expandHashTarget();

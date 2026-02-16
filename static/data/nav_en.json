@@ -162,7 +162,7 @@
         },
         {
           "slug": "05-building-structures",
-          "title": "05 Building Structures"
+          "title": "Building Structures"
         },
         {
           "slug": "06-hiring-armies",
@@ -171,6 +171,22 @@
         {
           "slug": "07-tags",
           "title": "Tags"
+        },
+        {
+          "slug": "08-factions",
+          "title": "Factions"
+        },
+        {
+          "slug": "09-cunning-assets",
+          "title": "Cunning Assets"
+        },
+        {
+          "slug": "10-force-assets",
+          "title": "Force Assets"
+        },
+        {
+          "slug": "11-wealth-assets",
+          "title": "Wealth Assets"
         }
       ]
     },
