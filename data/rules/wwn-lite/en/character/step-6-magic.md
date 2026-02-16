@@ -4,27 +4,27 @@
 
 ### Full High Mage
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 4
+**Starting # of Spells Known**: 4  
 
-**Starting Arts**: Any Two
+**Starting Arts**: Any Two  
 
-**Max Effort**: Int or Cha modifier + Magic Skill + 1
+**Max Effort**: Int or Cha modifier + Magic Skill + 1  
 
-**Spell List**: High Mage
+**Spell List**: High Mage  
 
 ### Half High Mage
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 2
+**Starting # of Spells Known**: 2  
 
-**Starting Arts**: Any Two (HB)
+**Starting Arts**: Any Two (HB)  
 
-**Max Effort**: Int or Cha modifier + Magic Skill
+**Max Effort**: Int or Cha modifier + Magic Skill  
 
-**Spell List**: High Mage
+**Spell List**: High Mage  
 
 ### Arts of the High Mages
 
@@ -116,94 +116,94 @@ While Commited you can't be made unkempt or unclean. Noxious substances slide of
 #### See Magic
 *Apprehending the Arcane Form*
 
-**Level:** 1
-**Duration:** 15 mins x Caster level
+**Level:** 1  
+**Duration:** 15 mins x Caster level  
 Caster can see active magic as patterns of light, identify magic items' purpose or power, see mages w/ prep'd spells (which spells prep'd are unknown), & see in darkness.
 
 #### Arcane Spark
 *The Coruscating Coffin*
 
-**Level:** 1
-**Range:** 100' x Caster level
+**Level:** 1  
+**Range:** 100' x Caster level  
 1d8 damage x Caster level to target (Phys Save ½). 1HD NPCs are auto slain. Can't be blocked by mundane barriers.
 
 #### Dominate Sense
 *Damnation of the Sense*
 
-**Level:** 1
-**Duration:** 1 Scene (Mental Save reduces to 1 Round)
-**Range:** 200'
+**Level:** 1  
+**Duration:** 1 Scene (Mental Save reduces to 1 Round)  
+**Range:** 200'  
 Caster gains control of 1 of a target's senses. Cause false impressions, blind, deafen… Loss of feeling causes a Phys Save to act each Round. Blind foes can't make ranged attacks & roll melee attacks w/ disadvantage. Mortal danger prompts a repeat Mental Save @ the end of each Round.
 
 #### Control Animal
 *Cognitive Supersession of the Inferior Orders*
 
-**Level:** 1
-**Requires:** a mundane creature
+**Level:** 1  
+**Requires:** a mundane creature  
 Form a telepathic bond & share its senses. It obeys non-suicidal commands (will not fight). Mage can't act physically while casting & requires Main Action to share creature's senses.
 
 #### Destroy Plants
 *Decree of Ligneous Dissolution*
 
-**Level:** 1
-**Range:** 100' x Caster level
+**Level:** 1  
+**Range:** 100' x Caster level  
 Effects 10³ft x Caster level. Mundane plant matter w/in the area erodes away. Plant monsters take 1d10 damage x Caster level (Phys Save ½).
 
 #### Invisibility
 *The Excellent Transpicuous Transformation*
 
-**Level:** 1
-**Duration:** 1hr x Caster level (ends if target performs violent motion i.e. running, attacking, or casting).
-**Range:** 100'
-**Affects:** 1 target x Caster level
+**Level:** 1  
+**Duration:** 1hr x Caster level (ends if target performs violent motion i.e. running, attacking, or casting).  
+**Range:** 100'  
+**Affects:** 1 target x Caster level  
 The targets & their gear become transparent. Target largely immune to missile attacks. Melee attacks vs target = -4 penalty to hit. When spell breaks for 1 target it breaks for all.
 
 #### Detect Thoughts
 *Imperceptible Cerebral Divulgence*
 
-**Level:** 1
-**Duration:** 1 scene
-**Range:** 100' x Caster level
+**Level:** 1  
+**Duration:** 1 scene  
+**Range:** 100' x Caster level  
 The spell can be cast w/o notice. Immediately receive an impression of the target's surface thoughts (regardless of language). Caster may ask 1 question of the target's memories x Caster level. Mental Save before each answer. Success ends the spell.
 
 #### Dominate Person
 *Ineluctable Shackles of Volition*
 
-**Level:** 1
-**Duration:** Until dispelled, death, or release
-**Requires:** line of sight & a live creature
-**Range:** 100'
+**Level:** 1  
+**Duration:** Until dispelled, death, or release  
+**Requires:** line of sight & a live creature  
+**Range:** 100'  
 Target makes a Mental Save @ a penalty = Caster's Magic Skill. Failure: They must obey the Caster's physical commands. They will fight & defend themselves, but won't obey suicidal orders, answer queries, perform actions req'ing independent judgment, or use non-physical abilities or spells. Those who've been enthralled before make unmodified Mental Saves to resist. Creatures of a level > the caster make Mental Saves to end the spell the 1st time each day its given orders it finds greatly objectionable.
 
 #### Stasis
 *The Long Amber Moment*
 
-**Level:** 1
-**Duration:** 1 day x Caster level, or release (caster can't release themselves)
-**Range:** Touch
-**Requires:** a willing or helpless creature
+**Level:** 1  
+**Duration:** 1 day x Caster level, or release (caster can't release themselves)  
+**Range:** Touch  
+**Requires:** a willing or helpless creature  
 Can be cast as an On Turn Action if no other spell has been cast that Round. Target & their carried gear are frozen in time & become impervious to mundane harm until the spell ends or is dispelled. Enchanted creatures weigh 4Є.
 
 #### Create Illusions
 *Phantasmal Mimesis*
 
-**Level:** 1
-**Duration:** Until dispelled, released, or recast
-**Range:** 100' x Caster level (bound w/in 100' of its origin)
+**Level:** 1  
+**Duration:** Until dispelled, released, or recast  
+**Range:** 100' x Caster level (bound w/in 100' of its origin)  
 Size: ≤ 10'³ x Caster level. Creates an illusion that betrays the senses. Only those w/ reason to disbelieve can attempt a Mental Save each Round. Success grants immunity. The illusion acts on its own will inline w/ the caster's intent. Illusion Stats: attack = Caster's, Damage 1d8, 10AC, Vanish if struck. Max # of illusionary attackers = ½ Caster level. Foes brought to 0 HP fall unconscious & wake in 10 min w/ 1 HP.
 
 #### Blunt Contact
 *Wardpact Invocation*
 
-**Level:** 1
+**Level:** 1  
 (1st Form) Lasts 1 Round x ½ cast level. Range: ≤ 200'. Requires a target other than the caster. Target becomes resistant to physical weapons (weapon hits require the attacker pass a Phys Save or the hit fails). Only affects target 1/scene. (2nd Form) Lasts 1 scene. Limit: 1 scene. Range: ≤ 200'. Requires line of site of a weapon. The weapon is unable to inflict damage for the rest of the scene (no save). Natural body weapons aren't affected.
 
 #### Sleep
 *The Wind of the Final Repose*
 
-**Level:** 1
-**Duration:** 1 Scene or awoken
-**Requires:** a live creature
+**Level:** 1  
+**Duration:** 1 Scene or awoken  
+**Requires:** a live creature  
 Range 200'. A silent, invisible burst of soporific influence erupts from that point, targeting living creatures w/in 20'. All such targets ≤4 HD w/in that area fall unconscious instantly, & can be roused only by damage or a Main Action. Nonsleeping beings are immune to this spell.
 
 ---
@@ -213,100 +213,100 @@ Range 200'. A silent, invisible burst of soporific influence erupts from that po
 #### Summon Familiar
 *Calculation of the Evoked Servitor*
 
-**Level:** 2
-**Duration:** until dismissed or dawn
+**Level:** 2  
+**Duration:** until dismissed or dawn  
 Conjures an intelligent familiar (1HP x Caster level, AC 14, Mv 30', SV = caster's, Skill +0, No attack). Caster chooses its shape ( > cat, < small human). Familiar shares a telepathic connection w/ caster, obeys any & all commands, & can perform any Act that a competent human could. A slain familiar may be later resummoned, retaining its memories & shape.
 
 #### Scrying Pool
 *Casting Forth the Inner Eye*
 
-**Level:** 2
-**Duration:** Until the caster performs another Action
-**Range:** 100' x Caster level or allocation the caster has been before
-**Requires:** a reflective surface to scry in
+**Level:** 2  
+**Duration:** Until the caster performs another Action  
+**Range:** 100' x Caster level or allocation the caster has been before  
+**Requires:** a reflective surface to scry in  
 The caster perceives the location as if he were there. Magic wards prevent scrying. Can't perceive the same area x2 in the same wk. Targets w/ HD > Caster levels get a Mental Save to gain a sense of being watched.
 
 #### Telestep
 *Conjunction of the Inexorable Step*
 
-**Level:** 2
-**Range:** 100'
-**Requires:** a visible target
+**Level:** 2  
+**Range:** 100'  
+**Requires:** a visible target  
 Target is immediately teleported to a visible, solid resting point w/in a ½ mile, provided the point has adequate room & poses no imminent peril. Unwilling targets make a Mental Save to resist; on a success, it is the caster who is transported. Can also affect unattended objects ≤ a horse.
 
 #### Destroy Earth
 *Decree of Lithic Dissolution*
 
-**Level:** 2
-**Range:** 100' x Caster level
-**AoE:** 1 contiguous 10' cube x Caster level
-**Requires:** a visible area
+**Level:** 2  
+**Range:** 100' x Caster level  
+**AoE:** 1 contiguous 10' cube x Caster level  
+**Requires:** a visible area  
 Caster may dissolve an area of stone, earth... Metal & enchanted objects are unaffected. Spell does 1d10 damage x Caster level vs foes of stone (Phys Save for 1/2).
 
 #### Dispel Magic
 *Extirpate Arcana*
 
-**Level:** 2
-**Range:** 100' x Caster level
-**AoE:** 20' radius centered on a visible point
+**Level:** 2  
+**Range:** 100' x Caster level  
+**AoE:** 20' radius centered on a visible point  
 Caster removes unwanted magical effects from that area. If it was cast by a creature of ≤ HD, the effect is dispelled automatically. Otherwise roll an opposed Int/Magic or Cha/Magic Check (higher level'd caster gains +2. Dispeller wins ties). Spells can't permanently suppress standing magical effects. Requires an opposed roll to temporarily suppress them. If successful, the effect is negated for 1d6 Rounds. If cast on a very large enchantment, only the portion w/in the spell's zone of effect is suppressed.
 
 #### Incite Rumor
 *The Inexorable Imputation*
 
-**Level:** 2
-**Range:** 40' from caster
-**Duration:** 1 hr x Caster level
-**Requires:** listeners who understand the casters language
+**Level:** 2  
+**Range:** 40' from caster  
+**Duration:** 1 hr x Caster level  
+**Requires:** listeners who understand the casters language  
 Spell is subtle & not obviously magic. Caster makes a one-sentence statement & all who hear make a Mental Save or believe the statement is true unless impossible or intolerable to believe. Caster may exempt up to 2 targets x Caster level. Afterwards believers are no more persuaded than events or common sense would allow.
 
 #### Floating Palanquin
 *The Jade Palanquin of the Faceless God*
 
-**Level:** 2
-**Duration:** dusk, dawn, or until statue is struck or insulted
+**Level:** 2  
+**Duration:** dusk, dawn, or until statue is struck or insulted  
 Spell summons a jade palanquin (12' x 8') w/ a slim 3' tall faceless statue in the center. Floats ~5' in the air. Not self-moving, but may be pulled by 1 human-sized bearer. Hauls ≤ 2k lbs.
 
 #### Shield of Daggers
 *Mantle of Disjecting Dissection*
 
-**Level:** 2
-**Range:** 30'
-**Duration:** 1 scene or until the target uses their Move Action
-**Requires:** a visible willing creature
+**Level:** 2  
+**Range:** 30'  
+**Duration:** 1 scene or until the target uses their Move Action  
+**Requires:** a visible willing creature  
 They are surrounded by razor-sharp energy shards. Anyone attempting to touch or melee attack the target must make an Evasion Save or suffer 1d6 damage + the Caster level before resolving their attack. Also affects allies attempting to touch the target.
 
 #### Fein Mutilation
 *Prudentially Transient Abnegation of Life*
 
-**Level:** 2
-**Requires:** a visible willing target
+**Level:** 2  
+**Requires:** a visible willing target  
 May be cast as an Instant Action in response to an injury reducing the target to 0 HP (even if another spell was cast that Round). Target suffers a dramatic & gory death. They are dead to all mundane or magical examination. Subject is aware of their surroundings while "dead." ≤ 2 hrs later, @ the target's discretion, their remains coalesce to restore the body w/ 2HP x Caster level (causes +2 Strain). If the target's remains are scattered widely, incinerated, etc… they can't revive.
 
 #### Haste
 *Resounding Temporal Echo*
 
-**Level:** 2
-**Duration:** 1d4+1 Rounds
-**Affects:** 1 visible ally x Caster level
+**Level:** 2  
+**Duration:** 1d4+1 Rounds  
+**Affects:** 1 visible ally x Caster level  
 Targets gain 1 extra Main Action on their turn (can't be used to cast spells or use arts), but also gain +1 Strain each Round they take the extra Action.
 
 #### Vine Growth
 *The Verdant Vallation*
 
-**Level:** 2
-**Duration:** 1 scene (or until dispelled or death if summoned in soil that could sustain plant life)
-**Range:** 100' x Caster level
-**AoE:** ≤ 20' high, 3' thick, & 20' in width x Caster level
-**Requires:** a visible point
+**Level:** 2  
+**Duration:** 1 scene (or until dispelled or death if summoned in soil that could sustain plant life)  
+**Range:** 100' x Caster level  
+**AoE:** ≤ 20' high, 3' thick, & 20' in width x Caster level  
+**Requires:** a visible point  
 Caster summons a contiguous wall of vines that may be shaped as desired w/in the area of effect. Foes must inflict 5 HP of damage x Caster level using means that could cut through a wooden wall in order to cut a man-sized hole in the vines. The vines may optionally have thorns that inflict 2d6 damage.
 
 #### Elemental Shield
 *Visitation of the Clement Clime*
 
-**Level:** 2
-**Duration:** 1hr x Caster level
-**Affects:** caster & ≤ 3 visible allies x Caster level
+**Level:** 2  
+**Duration:** 1hr x Caster level  
+**Affects:** caster & ≤ 3 visible allies x Caster level  
 Targets become immune to mundane extremes of heat, cold, natural acid, or electricity. They take ½ damage from magical harm of this nature (Physical Save reduces to 0 damage).
 
 ---
@@ -316,87 +316,87 @@ Targets become immune to mundane extremes of heat, cold, natural acid, or electr
 #### Transfiguration
 *Adopt the Simulacular Visage*
 
-**Level:** 3
-**Duration:** Until Dawn
-**Requires:** 1 visible willing target x Caster level
+**Level:** 3  
+**Duration:** Until Dawn  
+**Requires:** 1 visible willing target x Caster level  
 Target transforms into a simulacrum of a humanoid creature the caster has seen before, including voice & scent though no special abilities. Mundane clothing transforms to something appropriate to the target, & they gain fluency in the target's language.
 
 #### Transfer Life
 *Conjunct the Vital Viscera*
 
-**Level:** 3
-**Duration:** 1hr x caster level, dropped, or dispelled (transferred HP or afflictions don't return to their origin)
-**Requires:** willing or bound creatures
-**Affects:** 1 visible subject x Caster level
+**Level:** 3  
+**Duration:** 1hr x caster level, dropped, or dispelled (transferred HP or afflictions don't return to their origin)  
+**Requires:** willing or bound creatures  
+**Affects:** 1 visible subject x Caster level  
 HP, poisons, & diseases can be transferred between creatures, healing up to max HP. Body parts can be swapped so long as each subject retains ≥ ½ original. A willing subject of the spell can absorb ≤ 5 human-sized targets into their body. Absorbed subjects can see & hear what goes on outside their carrier, & are hidden until the spell ends or they choose to spring out. If a subject is killed while "borrowing" another's body parts, those parts don't return.
 
 #### Arctic Circle
 *Exhalation of Congelating Cold*
 
-**Level:** 3
-**Range:** 100' x Caster level
-**AoE:** 10' x Caster level
+**Level:** 3  
+**Range:** 100' x Caster level  
+**AoE:** 10' x Caster level  
 Caster freezes an area. Liquids freeze to a depth of 2'. Living creatures not impervious to arctic cold suffer 1d6 damage x 1/2 the Caster levels (Phys Save for ½). Those who fail a Phys Saves are numbed & lose their Move Action for 1d4 Rounds. Area warms again @ a rate befitting the environment.
 
 #### Augury
 *Foresightful Apprehension*
 
-**Level:** 3
-**Limit:** 1/wk on the same general topic
+**Level:** 3  
+**Limit:** 1/wk on the same general topic  
 Caster describes an action they or an ally intends to presently undertake. The GM tells them what is likely to happen in the 1st 5 mins after the act, as they think most probable.
 
 #### Message Chimes
 *The Glass Chimes of the Bamboo Terrace*
 
-**Level:** 3
-**Duration:** 1 scene or until shattered
-**Range:** 10 miles x Caster level
+**Level:** 3  
+**Duration:** 1 scene or until shattered  
+**Range:** 10 miles x Caster level  
 Spell summons floating colored glass chimes which only the caster can strike. Caster chooses who hears them w/in range. Those who hear them understand the caster's desired message. If the caster shatters the chimes (Main Action), the noise deals 3d6 damage to non-deaf targets w/in 40' (excluding caster).
 
 #### Magic Bomb
 *The Howl of Light*
 
-**Level:** 3
-**Range:** 50' x Caster level
-**AoE:** 20' radius, 8' high
-**Requires:** a visible point
+**Level:** 3  
+**Range:** 50' x Caster level  
+**AoE:** 20' radius, 8' high  
+**Requires:** a visible point  
 Everything w/in the area suffers 1d8 damage x Caster level from an explosion (Evasion Save for ½). If used in a < 40' wide, the explosion is channeled through adjacent spaces & passages for an additional 1d6 x 10'.
 
 #### Phobic Storm
 
-**Level:** 3
-**Range:** 40'
+**Level:** 3  
+**Range:** 40'  
 Numbing terror sweeps over all enemies of the caster w/in range. They must immediately make a Morale check @ a -1 penalty (failure = flee). Those who succeed the check suffer 1 damage x Caster level from despair. Those brought to 0HP instead regain 1HP & flee. This spell has no effect on creatures that feel no fear or w/ a Morale of 12.
 
 #### Wind Walk
 *Scorn the Fetters of Earth*
 
-**Level:** 3
-**Duration:** 1 scene
-**Affects:** caster & ≤ 1 visible ally x Caster level
+**Level:** 3  
+**Duration:** 1 scene  
+**Affects:** caster & ≤ 1 visible ally x Caster level  
 Targets become capable of running into the air & remain suspended after their movement for the Round. When the spell ends all affected targets float gently to the ground. Optionally: Affects 1 visible flying creature x Caster level. Creatures must make a Phys Save @ a penalty = to the caster's Magic Skill or be forced to land as they had fallen half the distance they descended. Creatures remain grounded for the rest of the scene.
 
 #### Curse of Boils
 *The Torment of Tumefaction*
 
-**Level:** 3
-**Requires:** a single visible creature
+**Level:** 3  
+**Requires:** a single visible creature  
 A creature is cursed w/ boils, bleeding, baldness… Main Action to attempt a Phys Save. Failure: the curse remains for 1 scene. Creatures lower level than the caster suffer the curse indefinitely until dispelled. If they perform any vigorous physical Act save movement they incur 2 damage x Caster level from the curse. This damage can't be suffered > 1/Round.
 
 #### Tunnel Touch
 *Touch of Elucidating Intangibility*
 
-**Level:** 3
-**Duration:** Until the caster ceases to touch the barrier or immediately after it has been made insubstantial
+**Level:** 3  
+**Duration:** Until the caster ceases to touch the barrier or immediately after it has been made insubstantial  
 Caster touches a solid mundane barrier. A 10 foot cube of the barrier then becomes transparent on the caster's side, allowing them to see & hear what lies on the other side as if well-lit & visible. Optionally, the caster may make the barrier insubstantial for 1 Round x Caster level, allowing anyone to pass or shoot through it from either side. The barrier always appears solid & opaque from the other side. Someone caught w/in the barrier when it becomes solid again is ejected on the nearest clear side & suffers 2d10 damage.
 
 #### Magic Wall
 *Vallation of Specified Exclusion*
 
-**Level:** 3
-**Duration:** 1 hr x Caster level, dispelled, or dropped
-**Range:** 20' x caster' level long, 100' high, 10' downward
-**Affects:** a chosen type of target that could be distinguished w/out need for knowing their thoughts (race, uniform…)
+**Level:** 3  
+**Duration:** 1 hr x Caster level, dispelled, or dropped  
+**Range:** 20' x caster' level long, 100' high, 10' downward  
+**Affects:** a chosen type of target that could be distinguished w/out need for knowing their thoughts (race, uniform…)  
 The caster forms a line (dropped powder, traced in dirt…) which prevents a target or their powers from crossing. If the excluded creatures are attacked or targeted by powers from the other side of the barrier, the field shatters.
 
 ---
@@ -406,69 +406,69 @@ The caster forms a line (dropped powder, traced in dirt…) which prevents a tar
 #### Summon Creature
 *Calculation of the Phantasmal Eidolon*
 
-**Level:** 4
-**Duration:** Until destroyed or next dawn
+**Level:** 4  
+**Duration:** Until destroyed or next dawn  
 HD4, HP20, attack +6 melee, Damage 1d8, Shock 2/15, AC15, MV30', Skill+1, SV13+. Caster conjures a phantasmal creature of a chosen appearance (< an ox). It has human intellect & obeys w/ suicidal devotion. Its damage is nonlethal & foes reduced to 0HP awaken 1hr later w/ 1HP. It's caster may pick 1 special quality for it: fly rate of 30', a duplication of a person they've seen, a telepathic connection w/ the caster, the ability to use normal weaponry & armor...
 
 #### Store Dispel Magic
 *Contingent Excision of Arcana*
 
-**Level:** 4
-**Duration:** Until triggered or next dawn
+**Level:** 4  
+**Duration:** Until triggered or next dawn  
 The caster may negate magic as if w/ a Dispel magic spell as an Instant Action.
 
 #### Rewind
 *Disjunctive Temporal Reversion*
 
-**Level:** 4
-**Range:** 100'
-**Instant Action**
-**Affects:** a single creature
+**Level:** 4  
+**Range:** 100'  
+**Instant Action**  
+**Affects:** a single creature  
 Time is rolled back slightly, allowing them to replay their current Round of Act as if it never occurred, though all involved retain a memory of what originally happened. This spell only affects targets currently taking their Round's Actions; once they've finished for the Round & another creature begins acting, it is too late. Unwilling targets may make a Mental Save to resist.
 
 #### Pull Object
 *Evert the Inwardness*
 
-**Level:** 4
-**Affects:** a single visible target
+**Level:** 4  
+**Affects:** a single visible target  
 The contents that target possesses are extracted & placed in the caster's hands. If used on a container it must be smaller than an armoire. The caster instantly learns its contents & may choose what to take. If used on a creature, it attempts to tear out the subject's innards; if the subject has ≤ HD than the caster, it must make a Phys Save or die instantly. Whether or not it perishes, it suffers 1d10 damage x Caster level (Phys Save for ½).
 
 #### The Grinding Geas
 
-**Level:** 4
-**Duration:** until dispelled
-**Requires:** a living creature
+**Level:** 4  
+**Duration:** until dispelled  
+**Requires:** a living creature  
 Target is bound to comply w/ a command or suffer an agonizing disease. The caster lays a 1 sentence command on the target (cannot be suicidal, indefinite, imprecise, or impossible). If the target unreasonably delays or defies the geas, they die in 1d6 wks, suffering -2 to attack rolls, -1 to Checks, & halving their max HP each wk. If they begin complying w/ the geas afterwards or if the curse is lifted, the disease halts & reverses itself @ the same rate. Targets make a Mental Save to resist the spell, but not if restrained, unconscious, or otherwise subdued.
 
 #### Greater Dominate Person
 *Obnubilation of the Will*
 
-**Level:** 4
-**Duration:** Until dispelled, death, or release
-**Requires:** a helpless or restrained living victim
+**Level:** 4  
+**Duration:** Until dispelled, death, or release  
+**Requires:** a helpless or restrained living victim  
 Target makes a Mental Save to resist. Success: forever after immune to its effects. Failure: Target becomes hopelessly obedient to the caster. Target must be able to understand the caster's wishes, but will obey to the best of its ability. Target makes a Mental saving throw to resist even suicidal actions. Caster's thrall limit = Caster level x 2. If this # is exceeded, the earliest thrall is freed 1st. Thralls display small tics that can provoke confusion & will give away the mental influence to an onlooker w/ ≥ Magic-0 who can observe them for ≥ 1 hr.
 
 #### Swapping Sigil
 *The Ochre Sigil of Juxtaposition*
 
-**Level:** 4
-**Duration:** 1 day
-**Range:** W/in 1 mi of each other
+**Level:** 4  
+**Duration:** 1 day  
+**Range:** W/in 1 mi of each other  
 Paired sigils count as 1 spell slot. The 1st casting inscribes a palm-sized radiant seal. The 2nd casting switches all creatures & objects w/in 10' of the caster w/ all creatures & objects w/in 10' of the 1st sigil. The caster can choose which targets switch. Objects too heavy or affixed do not swap. Unwilling targets w/ > 4HD make a Mental Save to resist.
 
 #### Warpgate
 *Pierce the Pallid Gate*
 
-**Level:** 4
-**Duration:** 1 Round x Caster level or until dropped (Instant Action)
-**Range:** 100' x level
+**Level:** 4  
+**Duration:** 1 Round x Caster level or until dropped (Instant Action)  
+**Range:** 100' x level  
 The caster opens a short-ranged spatial rift between 2 points, provided they can see or have physically occupied both points @ some prior time & provided the 2 points are ≥ 20' apart. The rift forms a gateway that connects the 2 points (large enough to drive a cart through) & allows subjects on either side to see & pass through the gate. Environmental qualities such as liquids or atmospheres will not pass through the portal; only intentionally-directed creatures & objects. Once the creature has passed through a portal, it can't pass through again until its next turn. Creatures partially in a rift when it closes are spat out on the far side.
 
 #### Control Wind
 *Sigil of Aeolian Auctoritas*
 
-**Level:** 4
-**AoE:** a line 100' long & 30' wide
+**Level:** 4  
+**AoE:** a line 100' long & 30' wide  
 Caster conjures a fierce gust of wind. All creatures ≤ man-size make a Phys Save or are bowled over & blown 30', losing their next Round's Main Action & taking 1d6 damage. Light wooden structures & the like are knocked down. Optionally: Lasts 1 hr x Caster level. AoE: 1/4 mile around the caster. If used outdoors, the spell can alter the weather to any climate found normally @ that location @ any point during the year. The spell can't summon extreme weather, but can call rain & conventional storms sufficient to cause flooding in areas prone to it.
 
 ---
@@ -478,85 +478,85 @@ Caster conjures a fierce gust of wind. All creatures ≤ man-size make a Phys Sa
 #### Time Stop
 *Abdication of Temporal Presence*
 
-**Level:** 5
-**Duration:** 1d4+1 Rounds
-**Affects:** the caster & up to 1 visible ally x Caster level
+**Level:** 5  
+**Duration:** 1d4+1 Rounds  
+**Affects:** the caster & up to 1 visible ally x Caster level  
 Targets briefly step outside of time, & the rest of the world freezes around them. They can't physically affect the world or move any object they were not carrying when they cast the spell. Any spells the caster or other allies cast can affect only their own group, & not those entities still in the normal flow of time.
 
 #### Labyrinth Banishment
 *Banishment to the Black Glass Labyrinth*
 
-**Level:** 5
-**Duration:** Until dropped, or Caster or Target's death (Mental Save = Reappear next Round)
-**Range:** Visible point w/in 300'
-**Affects:** all creatures except the caster w/in a 10' radius of the target
+**Level:** 5  
+**Duration:** Until dropped, or Caster or Target's death (Mental Save = Reappear next Round)  
+**Range:** Visible point w/in 300'  
+**Affects:** all creatures except the caster w/in a 10' radius of the target  
 Creatures are sent to an endless, lightless, empty extra dimensional maze. Failed Saves may be reattempted in 1 hr. Creatures w/ ≤ 5HD receive no Save. Time passes normally while trapped, & creatures snared w/in may rest, fight, starve… Dead or escaped creatures appear near their original departure.
 
 #### Beholder's Gaze
 *The Dazzling Prismatic Hemicycle*
 
-**Level:** 5
-**AoE:** Cone 100' long & 100' wide @ the end
+**Level:** 5  
+**AoE:** Cone 100' long & 100' wide @ the end  
 Those caught in w/in the AoE of the spell must make a Phys Save. Those who fail roll 1d6. 1.Unharmed. 2.Collapse & turn to dust. 3.Fall unconscious for 1 hr. 4.Go violently insane for 1hr & attack all around them. 5.Turn to stone. 6.Become enthralled to the caster's commands for 1 hr (see the Dominate Person spell).
 
 #### Typhoon
 *Deluge of Hell*
 
-**Level:** 5
-**Range:** 3000'
-**AoE:** 200' radius x Caster level (reducible to 20')
-**Requires:** a visible point
+**Level:** 5  
+**Range:** 3000'  
+**AoE:** 200' radius x Caster level (reducible to 20')  
+**Requires:** a visible point  
 The caster unleashes a consuming destruction inflicting 1d8 damage x Caster level (Phys Save for ½), auto killing all targets w/ ≤ 4 HD. Destroys anything ≤ lightly-built stone structures & seriously damages even fortifications. The caster can't be selective about targets w/in that area. This spell can't be cast indoors, & is hazardous to the caster. Caster makes a Mental Save on casting or suffers 1⁄4 of the damage inflicted ↑.
 
 #### Mold Landscape
 *The Earth as Clay*
 
-**Level:** 5
-**Range:** 300' x Caster level
+**Level:** 5  
+**Range:** 300' x Caster level  
 The caster may psychically mold the terrain over the course of 1 hr, provided the material can maintain shape. Tunnels & caves may be shaped ≤ 50' down, & hills raised ≤ 200' above grade. This spell can't work w/in a 1000' of stone or earth that has been significantly worked by intelligent creatures (excluding previous uses of the spell by the caster).
 
 #### Impenetrable Dome
 *Invocation of the Invincible Citadel*
 
-**Level:** 5
-**Duration:** Until dispelled or the caster exits
-**Instant Action**
+**Level:** 5  
+**Duration:** Until dispelled or the caster exits  
+**Instant Action**  
 Creates a transparent bubble of force around the caster (≤ 20' radius) that can't be penetrated from outside. The interior is warm, breathable, safe regardless of the exterior. Those w/in the bubble may leave but can't return. Objects, attacks, & magical effects (other than dispel) can't harm it or pass through it from either direction.
 
 #### Dimension Portal
 *Open the High Road*
 
-**Level:** 5
-**Duration:** 1 min x Caster level or until the caster passes through
-**Requires:** 1 hr
-**Range:** 100 mi x Caster level
+**Level:** 5  
+**Duration:** 1 min x Caster level or until the caster passes through  
+**Requires:** 1 hr  
+**Range:** 100 mi x Caster level  
 Caster opens a one-way portal large enough for a wagon from their location to a preset point. Atmosphere, etc can't pass through, only living creatures & what they ride or carry. 1 location may be prep'd for this spell @ a time. (10% chance of appearing 1d100 mi in a random direction).
 
 ### Arcane Tradition of the Druid
 
 ### Full Druid
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 4
+**Starting # of Spells Known**: 4  
 
-**Starting Arts**: Beast Tongue, Verdant Law, Any One
+**Starting Arts**: Beast Tongue, Verdant Law, Any One  
 
-**Max Effort**: Int or Wis modifier + Survive Skill + 1
+**Max Effort**: Int or Wis modifier + Survive Skill + 1  
 
-**Spell Lists**: High Mage, Druid
+**Spell Lists**: High Mage, Druid  
 
 ### Half Druid
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 2
+**Starting # of Spells Known**: 2  
 
-**Starting Arts**: Beast Tongue, Verdant Law, Any One (HB)
+**Starting Arts**: Beast Tongue, Verdant Law, Any One (HB)  
 
-**Max Effort**: Int or Wis modifier + Survive Skill
+**Max Effort**: Int or Wis modifier + Survive Skill  
 
-**Spell Lists**: High Mage, Druid
+**Spell Lists**: High Mage, Druid  
 
 ### Druids & Beasts
 
@@ -635,27 +635,27 @@ Until dawn, you are immune to natural temperature extremes & can derive sustenan
 ### Level 1
 
 #### Delude Beast
-**Level:** 1
+**Level:** 1  
 Targets up to 1d6 beasts + 1 per caster level. Range: 100'. Duration: While the caster is present & 1 hour after departed. Beasts already in combat or in fear for their lives are unaffected. Mental Save. Failure = their senses are under the control of the caster, who can make them see, smell, or hear what they wish. If a delusion would put them in physical danger the spell breaks. The caster cannot change the illusions once they've left the target's presence.
 
 #### Enthrall Beast
-**Level:** 1
-**Requires:** a visible beast w/in 100'
+**Level:** 1  
+**Requires:** a visible beast w/in 100'  
 Mental Save. Failure = the beast becomes docile & obedient to the caster (obeys verbal orders w/ a human intellect so long as they are neither suicidal nor contrary to its nature). The beast will fight for the caster, provided the odds are not overwhelming. The caster can have a # of enthralled beasts = to their level or a total hit dice of beasts ≤ 2x the caster's level, whichever is fewer.
 
 #### Seasonal Growth
-**Level:** 1
-**Requires:** 1 hr to cast while the mage paces the boundaries of the area to be affected, ≤ 1 acre x caster level
+**Level:** 1  
+**Requires:** 1 hr to cast while the mage paces the boundaries of the area to be affected, ≤ 1 acre x caster level  
 Once cast, the plant life w/in the area gains ≤ 1 yr of growth. This gain is uniform & indiscriminate. One acre of a peasant crop will yield enough to feed 2 people for 1 year, or 3 if the field is carefully prepared beforehand. This spell can't be cast again w/in a 1 mi radius until next spring.
 
 #### Shape Plants
-**Level:** 1
+**Level:** 1  
 Bend & shape or destroy all living, non magical plant material w/in 1 contiguous 10' cube x caster level. Requires 5 min to shape, but destruction of matter is instant. If used against plant-based monsters, the spell does 1d10 damage x caster level (Physical Save for ½). Cutting through magically shaped barriers takes 5hp x caster level of damage to cut a man-sized hole, & requires weapons suitable for chopping wood. The plants can be shaped w/ enough precision to make crude tools that have no moving parts.
 
 #### Wood Ward
-**Level:** 1
-**Requires:** 1 visible subject w/in 30' x caster level
-**Duration:** 1 scene
+**Level:** 1  
+**Requires:** 1 visible subject w/in 30' x caster level  
+**Duration:** 1 scene  
 Target becomes immune to non-magical wooden or wood-hafted weapons or implements, as well as plant-derived toxins, spores, or glues. This spell can cure poisonings or infestations.
 
 ---
@@ -663,21 +663,21 @@ Target becomes immune to non-magical wooden or wood-hafted weapons or implements
 ### Level 2
 
 #### Beast Pellet
-**Level:** 2
-**Requires:** a dead, mostly-intact beast ≤ an ox & 1 week
+**Level:** 2  
+**Requires:** a dead, mostly-intact beast ≤ an ox & 1 week  
 Magical spores cover the corpse, causing it to shrink to a marble sized pellet. The caster may hurl the pellet w/in 30' as a Main Action, whereupon the beast will reappear fully intact, albeit undead. It obeys the caster's spoken commands w/ human intellect & suicidal devotion. The beast withers away to dust 1 hr after summoning. The caster may have no more pellets at once than their level, & each pellet they carry subtracts 1 point from their maximum System Strain.
 
 #### Beast Shape
-**Level:** 2
+**Level:** 2  
 The caster may adopt the outward semblance of any normal beast or plant < an ox & > a mouse. They gain the movement rating of the beast & its ability to breathe water or endure natural temperature extremes, but the caster's other statistics, senses, or unarmed attacks are unchanged. Any worn or held equipment merges w/ the beast form & continues to confer its usual AC or weapon statistics; the caster cannot change gear or drop items until the spell ends. Lasts until dispelled, next dawn, or ended as an On Turn action.
 
 #### Sickles of Bone
-**Level:** 2
-**Requires:** ≤ 1 willing target x caster level
+**Level:** 2  
+**Requires:** ≤ 1 willing target x caster level  
 Range 30'. Targets grow long, sharp claws of bone for 1 hr x caster level. Targets are capable of clawing 2 in/min through plant matter. These claws do not hinder the user's dexterity, but count as magical weapons (1d8 damage, Shock 2/15, attribute = Str or Dex). If the caster is the target, they may use Magic instead of Stab or Punch as the combat skill. If cast on a creature that already has claws, fangs, or other natural weapons (not including unarmed-trained humans) the creature gains a bonus to damage rolls & Shock equal to the caster's level.
 
 #### Trace the Path
-**Level:** 2
+**Level:** 2  
 The caster must focus on the image of a person or a type of creature when casting this spell. The plant life around the mage immediately telepathically directs the caster in the direction of whatever creature last fit the description, provided the tracked target would be perceptible to human senses. The plant life continues to lead the caster for up to 1hr x level, though the spell ends at dusk or when the caster casts another spell.
 
 ---
@@ -685,16 +685,16 @@ The caster must focus on the image of a person or a type of creature when castin
 ### Level 3
 
 #### Beast Ward
-**Level:** 3
+**Level:** 3  
 Caster must pace off an area ≤ 1 acre x level, or spend a Main Action indicating a straight line ≤ 40' long w/in 100'. Wild beasts will not cross into the warded area or pass the indicated line unless permitted by the caster. Creatures who somehow end up in the area will think of nothing but fleeing it. Area wards persist as long as the caster remains inside them. Line wards or abandoned areas cease to protect 1 hr x level afterwards. Beasts incapable of feeling fear are unaffected by this spell.
 
 #### Feral Bargain
-**Level:** 3
+**Level:** 3  
 This spell does not function in combat, & must be cast on a beast w/in 50' of the caster. The spell immediately opens a telepathic link w/ the target, after which the caster must offer something that the beast would reasonably want in exchange for a service from the beast. Even a hostile creature will spend a few mins parlaying unless directly threatened, & will negotiate w/ a human level of intelligence. If the mage can offer a suitable price for the creature's cooperation, the bargain will be made & the creature will be bound to perform it w/ human intelligence if they are capable of doing it & it is not suicidally dangerous. If the caster fails to keep their end of the bargain under the same terms, however, they must make a Mental save to avoid immediate death from the psychic backlash.
 
 #### Plant Walk
-**Level:** 3
-**Requires:** a willing target w/in 30' touching a plant of a volume ≥ their body
+**Level:** 3  
+**Requires:** a willing target w/in 30' touching a plant of a volume ≥ their body  
 Once cast, the spell's recipient disappears into the plant. As a Main Action, they can step out of any plant of similar or larger size w/in 100' x caster level. Optionally, they can instead cast their senses to such a target plant & observe their surroundings as if standing there. Lasts 15 min or ends when the subject steps out of a plant. Damage inflicted on a plant while the subject is hiding in it is done to them as well.
 
 ---
@@ -702,12 +702,12 @@ Once cast, the spell's recipient disappears into the plant. As a Main Action, th
 ### Level 4
 
 #### Force Beast Shape
-**Level:** 4
+**Level:** 4  
 Functions as Beast Shape but can target even an unwilling creature w/in 100' (Physical save negates). If the creature is of a level > the caster, it rolls its Save w/ Advantage. The shifted creature retains its own stats, but drops its possessions when it changes. Lasts until dispelled or ended. Each week spent as an animal they must succeed a Mental save or succumb to the beast's nature & forget their prior life forever, gaining the attributes of the natural animal. If killed in animal shape they remain an animal in death.
 
 #### Harmonious Passage
-**Level:** 4
-**Affects:** the caster & up to 3 other visible allies x caster level
+**Level:** 4  
+**Affects:** the caster & up to 3 other visible allies x caster level  
 So long as the spell is maintained, those protected are immune to plant or animal derived toxins or spores & are considered inedible by beasts, who will ignore them unless greatly provoked. They leave no mundanely-perceptible trace of their passage over unpaved earth & are immune to inclement weather, provided the atmosphere is not outright unsurvivable. Lasts until dawn, or until a subject voluntarily harms a beast or large plant.
 
 ---
@@ -715,39 +715,39 @@ So long as the spell is maintained, those protected are immune to plant or anima
 ### Level 5
 
 #### Claim Domain
-**Level:** 5
-**Requires:** 5 hrs & a full moon
+**Level:** 5  
+**Requires:** 5 hrs & a full moon  
 Once cast, all the land w/in 1 mi x caster level is accounted part of the caster's domain. W/in this space, beasts will obey them w/ human intelligence in any way not contrary to their nature. The caster may speak w/ animals & plants w/in this area as if they had human intellect. They will also become intuitively aware of the location of any groups > 24 people traveling or living together. This domain cannot overlap w/ a prior caster's domain, & it has no power w/in the walls or boundary markers of human settlements or cities. A caster may maintain only 1 domain at a time.
 
 #### Rend Structure
-**Level:** 5
+**Level:** 5  
 Range 200'. Affects only non magical structures. Plantlife erupts from the surface of the structure, their roots ripping it apart w/in 6 secs. The spell can affect only 1 structure or wall segment at a time & destroy no more than a 100' cube of it. The caster has very fine control of the demolition & can destroy only selective smaller parts of a structure, or prevent the demolition from harming those in or around the building. If not so careful, anyone w/in the structure takes 10d6 damage (Evasion save for ½).
 
 ### Arcane Tradition of the Elementalist
 
 ### Full Elementalist
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 4
+**Starting # of Spells Known**: 4  
 
-**Starting Arts**: Elemental Resilience, Any One
+**Starting Arts**: Elemental Resilience, Any One  
 
-**Max Effort**: Int or Cha modifier + Magic Skill + 1
+**Max Effort**: Int or Cha modifier + Magic Skill + 1  
 
-**Spell Lists**: High Mage, Elementalist
+**Spell Lists**: High Mage, Elementalist  
 
 ### Half Elementalist
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 2
+**Starting # of Spells Known**: 2  
 
-**Starting Arts**: Elemental Resilience, Any One
+**Starting Arts**: Elemental Resilience, Any One  
 
-**Max Effort**: Int or Cha modifier + Magic Skill
+**Max Effort**: Int or Cha modifier + Magic Skill  
 
-**Spell Lists**: High Mage, Elementalist
+**Spell Lists**: High Mage, Elementalist  
 
 ### Arts of the Elementalists
 
@@ -821,26 +821,26 @@ Negate a single instance of fire or frost damage to 1 visible ally or object.
 ### Level 1
 
 #### Aqueous Harmony
-**Level:** 1
-**Duration:** 1hr x Caster level, or so long as a subject is still largely submerged, or until dispelled
+**Level:** 1  
+**Duration:** 1hr x Caster level, or so long as a subject is still largely submerged, or until dispelled  
 Caster & ≤ 12 allies gain water-breathing, the ability to survive the depths, & can see clearly through water. Targets may move through water @ their usual move rate, their attacks & projectile weapons are not hindered by water, & their possessions remain dry & undamaged.
 
 #### Flame Scrying
-**Level:** 1
-**Duration:** while the caster remains motionlessly focused on the spell
-**Range:** 30' x Caster level
+**Level:** 1  
+**Duration:** while the caster remains motionlessly focused on the spell  
+**Range:** 30' x Caster level  
 The caster becomes aware of the approximate locations of all open flames w/in range. They can choose 1 of those flames as a focus for the scrying, allowing them to see & hear all around the flame as if present. The caster may switch their focus between various flames in range as they wish.
 
 #### Shape Element
 *Elemental Favor*
 
-**Level:** 1
-**Duration:** 1 scene (permanently if the new shape is stable w/out the aid of magic)
+**Level:** 1  
+**Duration:** 1 scene (permanently if the new shape is stable w/out the aid of magic)  
 The caster makes a direct appeal to a mundane mass of earth, stone, water, flame, or air no larger than a 10' cube. At the end of the Round, the mass will move or reshape itself w/in that space as the caster requests.
 
 #### Elemental Spy
-**Level:** 1
-**Duration:** 1 day x Caster level, or until the charmed object is destroyed, dispersed, or consumed
+**Level:** 1  
+**Duration:** 1 day x Caster level, or until the charmed object is destroyed, dispersed, or consumed  
 The caster enchants a stone, 1 oz of liquid, a flame ≤ a candle… As a Main Action the caster can see & hear as if present by the object.
 
 ---
@@ -850,31 +850,31 @@ The caster enchants a stone, 1 oz of liquid, a flame ≤ a candle… As a Main A
 #### Fly
 *Boreal Wings*
 
-**Level:** 2
-**Duration:** ≤ 4th level casters = 1 scene, 5th-7th level = 1 hr, ≥ 8th level = until next dawn or dusk; or dispelled
-**Requires:** a visible ally w/in 100'
+**Level:** 2  
+**Duration:** ≤ 4th level casters = 1 scene, 5th-7th level = 1 hr, ≥ 8th level = until next dawn or dusk; or dispelled  
+**Requires:** a visible ally w/in 100'  
 The target gains flight (x2 usual movement rate). If the spell ends while aloft the target floats gently to earth.
 
 #### Form Tunnel
 *The Burrower Below*
 
-**Level:** 2
-**AoE:** ≤ 20' long (or 2' for worked stone) x Caster level, & ≤ 10' wide & tall
+**Level:** 2  
+**AoE:** ≤ 20' long (or 2' for worked stone) x Caster level, & ≤ 10' wide & tall  
 Caster carves a tunnel through natural stone or earth. The caster can choose to make the tunnel stable & sound or allow it to collapse naturally. Magical stone or earth can't be altered by this spell. The caster has basic control over the direction & interior features of the tunnel, & can form simple structures w/in it.
 
 #### Continual Flame
 *Flame Without End*
 
-**Level:** 2
-**Duration:** Until dispelled, extinguished, or dropped
+**Level:** 2  
+**Duration:** Until dispelled, extinguished, or dropped  
 A flame no larger than the caster is made effectively eternal. It consumes no fuel, though it may be used to burn or heat other things, & it resists extinguishing save being buried or wholly immersed in water. The caster can temporarily extinguish it @ will. A # of such flames can be created = to the Caster level; beyond that, special ingredients & fuels are needed that cost 500 silver pieces per flame. If used as a weapon, it adds +2 damage to a successful hit (nothing to Shock).
 
 #### Pact of Elemental Resistance
 *Pact of Stone & Sea*
 
-**Level:** 2
-**Duration:** 1 scene
-**Requires:** a visible target
+**Level:** 2  
+**Duration:** 1 scene  
+**Requires:** a visible target  
 The target is immune to injury caused by mundane manifestations of earth, water, fire, or wind (as chosen by the caster). Stone weapons don't harm them, water doesn't drown them, fire doesn't burn them, & wind doesn't topple them. This affects secondary effects of the material as well; a fire-pacted mage couldn't be boiled in a pot, & an earth-pacted one won't be suffocated if buried alive.
 
 ---
@@ -884,17 +884,17 @@ The target is immune to injury caused by mundane manifestations of earth, water,
 #### Elemental Wall
 *Elemental Vallation*
 
-**Level:** 3
-**Duration:** 1 scene
-**Range:** 200' from caster
-**AoE:** 10' long x Caster level, w/ a height of 10' & a thickness of 1 ft
+**Level:** 3  
+**Duration:** 1 scene  
+**Range:** 200' from caster  
+**AoE:** 10' long x Caster level, w/ a height of 10' & a thickness of 1 ft  
 Calls forth a wall of a chosen elemental force which must rest on solid ground & may be shaped as desired. Earthen walls are impervious to anything but mining tools or rock-shattering strength, taking 20 HP of damage to knock a man-sized hole in them. Fire walls inflict 3d6 damage + the Caster level to any who pass through. Water walls spin & hurl creatures ≤ ox-size who pass through them, ejecting them @ a random point on the far side of the wall & doing 2d6 damage. Air walls are invisible, inaudible, & 20' in height; those who cross them suffer 1d6 + the Caster level in electrical damage.
 
 #### Become Element
 *Like the Stones*
 
-**Level:** 3
-**Duration:** 1 scene
+**Level:** 3  
+**Duration:** 1 scene  
 The caster charges their physical shape w/ the qualities of a chosen element.
 
 - **Stone**: automatically stabilize @ 0HP & ignore the 1st 3 points of damage from any source.
@@ -907,9 +907,9 @@ In all cases, they need not breathe & gain immunity to poisons & diseases not al
 #### Gaseous Form
 *Wind Walking*
 
-**Level:** 3
-**Duration:** 1 scene or target or caster ends
-**Requires:** a visible target
+**Level:** 3  
+**Duration:** 1 scene or target or caster ends  
+**Requires:** a visible target  
 The creature & their possessions are briefly transformed into a misty cloud, only vulnerable to sources that could harm a cloud. They may pass freely into any area that a vapor could & move freely in 3 dimensions @ their movement rate. Can't physically handle objects.
 
 ---
@@ -919,15 +919,15 @@ The creature & their possessions are briefly transformed into a misty cloud, onl
 #### Calcify
 *Calcifying Scourge*
 
-**Level:** 4
-**Duration:** Until dispelled or caster ends
-**Range:** 100'
-**Requires:** a visible target
+**Level:** 4  
+**Duration:** Until dispelled or caster ends  
+**Range:** 100'  
+**Requires:** a visible target  
 Target must make a Phys Save or be turned to stone. Affects any size of living creature. Objects > a cart are unaffected. Objects being held or worn by someone else get a Phys Save made by their user. If the target is damaged while petrified, it may be harmed or killed upon its restoration. If the target's Save was successful, it is slowed & loses its Move Action for the 1d6 Rounds.
 
 #### Elemental Guardian
-**Level:** 4
-**Duration:** until destroyed or the next dawn
+**Level:** 4  
+**Duration:** until destroyed or the next dawn  
 The caster imbues a human-sized mass of earth, water, fire, or air w/ a crude awareness & an eagerness to defend them. Guardian Stats: HD 4, AC 15, MV 40', Skill +1, SV 13+, Instinct 0, Morale 12, melee attack of +6/1d10, no Shock. **Earth**: HD 6. **Fire**: 5/- Shock damage. **Water**: AC 18. **Air**: Flies @ its rate of movement. Has human intelligence; can communicate w/ others & handle objects. Serves w/ suicidal devotion. Limit of 1 elemental summoned @ a time & if destroyed a new elemental can't be summoned in the same scene.
 
 ---
@@ -935,43 +935,43 @@ The caster imbues a human-sized mass of earth, water, fire, or air w/ a crude aw
 ### Level 5
 
 #### Fury of the Elements
-**Level:** 5
-**Range:** 200' x Caster level
+**Level:** 5  
+**Range:** 200' x Caster level  
 AoE 30' of target point. Molten rock, searing wind, & steam erupt to ravage a target point causing 10d6 damage. Convention structures are destroyed. The target point moves 1d6x10' in a random direction @ the start of the next Round, blasting everything in its path. The point wanders for 1d6 Rounds before ending. Molten remnants persist after the spell ends, a hazard for any who enter the area for the rest of the day.
 
 #### Earthquake
 *Tremors of the Depths*
 
-**Level:** 5
-**Requires:** a visible point & 5 min for effects to fully manifest
-**AoE:** radius ≤ 500'
+**Level:** 5  
+**Requires:** a visible point & 5 min for effects to fully manifest  
+**AoE:** radius ≤ 500'  
 Caster calls a deep tremor which can destroy any structures, tunnels, or caves w/in the AoE unless such structures are magically reinforced. The effects are negated if dispelled w/in 1 min of its casting; after that it's too late to stop.
 
 ### Arcane Tradition of the Necromancer
 
 ### Full Necromancer
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 4
+**Starting # of Spells Known**: 4  
 
-**Starting Arts**: Any One
+**Starting Arts**: Any One  
 
-**Max Effort**: Int or Cha modifier + Magic Skill + 1
+**Max Effort**: Int or Cha modifier + Magic Skill + 1  
 
-**Spell Lists**: High Mage, Necromancer
+**Spell Lists**: High Mage, Necromancer  
 
 ### Half Necromancer
 
-**Bonus Skill**: Magic level-0
+**Bonus Skill**: Magic level-0  
 
-**Starting # of Spells Known**: 2
+**Starting # of Spells Known**: 2  
 
-**Starting Arts**: Any One
+**Starting Arts**: Any One  
 
-**Max Effort**: Int or Cha modifier + Magic Skill
+**Max Effort**: Int or Cha modifier + Magic Skill  
 
-**Spell Lists**: High Mage, Necromancer
+**Spell Lists**: High Mage, Necromancer  
 
 ### Arts of the Necromancers
 
@@ -1041,29 +1041,29 @@ Automatically stabilize when Mortally Wounded. You may use this ability to benef
 ### Level 1
 
 #### Command the Dead
-**Level:** 1
-**Duration:** until dropped
-**Range:** 100'
-**Requires:** a visible target
+**Level:** 1  
+**Duration:** until dropped  
+**Range:** 100'  
+**Requires:** a visible target  
 Caster exerts will over a # of HD worth of undead = to x2 their level. Undead get a Mental Save to resist w/ penalty = to caster's Magic Skill. Creatures partially affected by the spell due to excess HD are dazed for 1 Round. Those fully affected become suicidally loyal. Caster is limited to ≤ x2 their level of HD bound @ a time.
 
 #### Speak with Dead
 *Query the Skull*
 
-**Level:** 1
+**Level:** 1  
 Spell requires corpse w/ largely-intact organs of communication, dead ≤ 1 day per Caster level. Corpse will answer 1 question x Caster level. Caster understands regardless of language. Corpses generally answer in ≤ 2 sentences. Replies are truthful but literal, & they have no power to hypothesize or make judgments. This spell may not be used x2 on the same corpse.
 
 #### Smite the Dead
-**Level:** 1
-**Range:** 100' x Caster level
-**AoE:** 20'
+**Level:** 1  
+**Range:** 100' x Caster level  
+**AoE:** 20'  
 Hostile undead w/in the AoE take 1d10 damage x Caster level. Undead w/ HD ≤ Caster level make Phys Saves or are destroyed. Caster may Commit Effort for the day immediately before casting this spell; if so, its casting does not count against their available spell slots for the day.
 
 #### Disguise Death
 *Terrible Liveliness*
 
-**Level:** 1
-**Duration:** until dispelled or dropped
+**Level:** 1  
+**Duration:** until dispelled or dropped  
 Target appears as it did @ any point in its lifespan the caster desires, & is capable of performing normal human activities. The effect is tangible & physically real. Caster can maintain 1 disguise x their level. Does not work on sentient unwilling targets.
 
 ---
@@ -1073,27 +1073,27 @@ Target appears as it did @ any point in its lifespan the caster desires, & is ca
 #### Augment Vitality
 *Augment Mortal Vitality*
 
-**Level:** 2
-**Duration:** 1 scene
+**Level:** 2  
+**Duration:** 1 scene  
 Phys Saves the target makes gain a bonus = to the caster's Magic Skill & they automatically stabilize when Mortally Wounded. Once during the scene, as an Instant Action, they can immediately heal from all damage inflicted by an injury that did not Mortally Wound them. Spell's target gains +1 Strain.
 
 #### Enfeebling Wave
-**Level:** 2
-**Duration:** 1 Scene (Save reduces to 1 turn)
-**Range:** 100'
-**AoE:** 20'
+**Level:** 2  
+**Duration:** 1 Scene (Save reduces to 1 turn)  
+**Range:** 100'  
+**AoE:** 20'  
 Living creatures w/in the area make a Phys Save or have their movement rate ½, & all attack & damage rolls w/ disadvantage.
 
 #### Final Death
-**Level:** 2
-**Duration:** 1 Scene
+**Level:** 2  
+**Duration:** 1 Scene  
 The caster curses 1 visible target x level. They can't recover or gain HP & die instantly if Mortally Wounded. After each failed instance of healing, a target makes a Phys Save to remove the spell.
 
 #### Raise Corpse
-**Level:** 2
-**Duration:** until target is reduced to 0 HP or released
-**Requires:** mostly-intact skeleton or corpse
-**Stats:** HD1, AC13, MV30', Skill+0, SV15+, +1/1d6 unarmed melee attack, INST0, ML12.
+**Level:** 2  
+**Duration:** until target is reduced to 0 HP or released  
+**Requires:** mostly-intact skeleton or corpse  
+**Stats:** HD1, AC13, MV30', Skill+0, SV15+, +1/1d6 unarmed melee attack, INST0, ML12.  
 Such corpses may be equipped w/ weapons & armor. Decay ceases. Corpse is suicidally loyal to its creator, has no natural volition, but obeys commands w/ human intelligence. Has vague memories of its prior life. May retain human tics or habits. Can answer only simple, self-evident questions. Damage to a corpse can be repaired only by casting this spell on it again, which restores it to its original HP. # of raised corpses limited to ≤ the Caster level.
 
 ---
@@ -1101,31 +1101,31 @@ Such corpses may be equipped w/ weapons & armor. Decay ceases. Corpse is suicida
 ### Level 3
 
 #### Compel Flesh
-**Level:** 3
-**Duration:** 1 scene or Phys Save
-**Range:** 100'
-**Requires:** a visible living creature or physically-bodied undead
+**Level:** 3  
+**Duration:** 1 scene or Phys Save  
+**Range:** 100'  
+**Requires:** a visible living creature or physically-bodied undead  
 Target is paralyzed unless commanded by the caster as an On Turn Action. Once commanded their body complies on their next turn. The target's mind is unaffected & won't perform intellectual tasks, answer questions, cast spells…, but will fight, move... Target can make a Phys Save @ the start of each of their turns to end the effect, but suffers 1 damage x Caster level w/ each attempt.
 
 #### Festering Curse
-**Level:** 3
-**Duration:** until dispelled
-**Requires:** a living target
+**Level:** 3  
+**Duration:** until dispelled  
+**Requires:** a living target  
 Subject begins to decay. They suffer -2 to social Skill check & gain no satisfaction from food, drink, or bodily sensation. Creatures of a level > the caster gain a Phys Save to resist.
 
 #### Forgetting the Grave
-**Level:** 3
-**Duration:** 1 Round x Caster level
-**Requires:** willing target w/in sight
+**Level:** 3  
+**Duration:** 1 Round x Caster level  
+**Requires:** willing target w/in sight  
 While affected the target can't die. Those reduced to 0 HP lose their Move Action each turn but can continue to act otherwise. If the target is damaged yet again, they make a Phys Save each time or become incapable of movement until healed. At the spell's end, targets reduced to zero HP are Mortally Wounded; those that have been injured beyond the hope of survival die instantly.
 
 #### Share Vitality
 *Merge Souls*
 
-**Level:** 3
-**Duration:** Dawn or dispelled
-**Range:** Touch
-**Requires:** 2 willing or helpless targets
+**Level:** 3  
+**Duration:** Dawn or dispelled  
+**Range:** Touch  
+**Requires:** 2 willing or helpless targets  
 While in effect the 2 creatures pool their HP. Injuries to either subtract from this pool, & neither dies until it is reduced to 0 HP, whereupon both are Mortally Wounded. They can communicate telepathically while connected by the spell. If dispelled the remaining pool is split.
 
 ---
@@ -1133,13 +1133,13 @@ While in effect the 2 creatures pool their HP. Injuries to either subtract from 
 ### Level 4
 
 #### Boneshaper
-**Level:** 4
-**Duration:** until dropped or dispelled
+**Level:** 4  
+**Duration:** until dropped or dispelled  
 Whether living or undead, a willing or helpless victim under the effects of this spell can be reshaped into any roughly-equivalent form w/ an hr's work. Limbs can be added or removed & existing tissue can be recolored, re-textured, or rearranged to the caster's wishes. Perfect imitation of a particular creature requires a DC 10 Dex/Magic check. This spell is limited in the physical changes it can effect; a bonus of +1 can be added to the modifier of Cha or a physical attribute @ the cost of a -1 penalty to the modifier of 1 of the same attributes, to a maximum of +2 or -2.
 
 #### Raise Grave Knight
-**Level:** 4
-**Requires:** a relatively powerful creature w/ ≥ 4 HD or levels
+**Level:** 4  
+**Requires:** a relatively powerful creature w/ ≥ 4 HD or levels  
 **Stats:** HD4, AC15, MV40', Skill+, SV13+, ISNT0, ML12, Melee attack +6/1d10 or WPN.  
 It is fully intelligent & self-willed, albeit utterly devoted to its creator, & it remembers a significant amount about its prior life. A grave knight regains all lost HP @ dusk each day, assuming it's not destroyed. A caster may have only 1 grave knight active @ a time. 1 that has been reduced to 0 HP is destroyed & can only be rebuilt w/ a month of painstaking repair & re-enchantment.
 
@@ -1148,15 +1148,15 @@ It is fully intelligent & self-willed, albeit utterly devoted to its creator, & 
 ### Level 5
 
 #### Call of the Tomb
-**Level:** 5
-**Duration:** 1 Round x caster level (Phys Save reduces to 1 Round)
-**AoE:** foes w/in 40'
+**Level:** 5  
+**Duration:** 1 Round x caster level (Phys Save reduces to 1 Round)  
+**AoE:** foes w/in 40'  
 All attacks made against those affected automatically hit & all damage dice they suffer are max. Any special defenses, resistances, or immunities are negated.
 
 #### Everlasting
-**Level:** 5
-**Duration:** 5 Rounds
-**Affects:** allies w/in 50'
+**Level:** 5  
+**Duration:** 5 Rounds  
+**Affects:** allies w/in 50'  
 Cast as an Instant Action. No affected ally can be reduced below 1 HP. At the end of the spell the caster is reduced to 1 HP. Creatures are limited to these benefits 1/day.
 
 ### Arcane Tradition of the Bard (Half Class)
