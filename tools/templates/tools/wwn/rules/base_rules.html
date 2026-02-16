@@ -204,6 +204,51 @@
         margin-bottom: 0;
     }
 
+    /* Collapsible h3 "Level X" sections */
+    .rules-content .h3-collapsible {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        user-select: none;
+        padding: 0.35rem 0.5rem;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        border-radius: var(--bs-border-radius);
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .rules-content .h3-collapsible:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .rules-content .h3-collapsible .h3-chevron {
+        font-size: 0.85rem;
+        transition: transform 0.2s ease-in-out;
+        color: var(--bs-secondary-color);
+        flex-shrink: 0;
+    }
+
+    .rules-content .h3-collapsible[aria-expanded="true"] .h3-chevron {
+        transform: rotate(90deg);
+    }
+
+    .rules-content .h3-collapsible[aria-expanded="false"] .h3-chevron {
+        transform: rotate(0deg);
+    }
+
+    .rules-content .h3-collapsible .h3-title {
+        flex-grow: 1;
+    }
+
+    .rules-content .h3-collapsible .heading-anchor {
+        margin-left: auto;
+    }
+
+    .rules-content .h3-collapse-content {
+        margin-bottom: 1.5rem;
+    }
+
     .rules-content p {
         margin-bottom: 1rem;
         line-height: 1.6;
@@ -506,7 +551,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Re-add the anchor if it existed
         if (anchor) {
             anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation(); // Prevent collapse toggle when clicking anchor
+                navigator.clipboard.writeText(anchor.href).then(function() {
+                    anchor.classList.add('copied');
+                    setTimeout(function() { anchor.classList.remove('copied'); }, 1500);
+                });
             });
             h4.appendChild(anchor);
         }
@@ -525,26 +575,112 @@ document.addEventListener('DOMContentLoaded', function() {
         h4.parentNode.insertBefore(collapseDiv, h4.nextSibling);
     });
 
-    // Handle URL hash - expand section if hash points to an h4
+    // --- H3 "Level X" collapsible sections ---
+    const levelPattern = /^(Level|Рівень)\s+\d+$/i;
+    const h3s = content.querySelectorAll('h3');
+
+    h3s.forEach(function(h3, index) {
+        const headingText = h3.textContent.replace(/\s+/g, ' ').trim();
+        if (!levelPattern.test(headingText)) return;
+
+        const headingId = h3.id || 'h3-level-' + index;
+        const collapseId = 'collapse-' + headingId;
+
+        // Collect siblings until next h2, h3, or hr
+        const contentElements = [];
+        let sibling = h3.nextElementSibling;
+
+        while (sibling && !['H1', 'H2', 'H3', 'HR'].includes(sibling.tagName)) {
+            contentElements.push(sibling);
+            sibling = sibling.nextElementSibling;
+        }
+
+        if (contentElements.length === 0) return;
+
+        // Extract anchor
+        const anchor = h3.querySelector('.heading-anchor');
+
+        // Rebuild h3 as collapsible
+        h3.innerHTML = '';
+        h3.className = 'h3-collapsible collapsed';
+        h3.setAttribute('data-bs-toggle', 'collapse');
+        h3.setAttribute('data-bs-target', '#' + collapseId);
+        h3.setAttribute('aria-expanded', 'false');
+        h3.setAttribute('aria-controls', collapseId);
+
+        const chevron = document.createElement('i');
+        chevron.className = 'bi bi-chevron-right h3-chevron';
+        h3.appendChild(chevron);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'h3-title';
+        titleSpan.textContent = headingText;
+        h3.appendChild(titleSpan);
+
+        if (anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                navigator.clipboard.writeText(anchor.href).then(function() {
+                    anchor.classList.add('copied');
+                    setTimeout(function() { anchor.classList.remove('copied'); }, 1500);
+                });
+            });
+            h3.appendChild(anchor);
+        }
+
+        // Create collapse container (starts collapsed)
+        const collapseDiv = document.createElement('div');
+        collapseDiv.id = collapseId;
+        collapseDiv.className = 'collapse h3-collapse-content';
+
+        contentElements.forEach(function(el) { collapseDiv.appendChild(el); });
+        h3.parentNode.insertBefore(collapseDiv, h3.nextSibling);
+    });
+
+    // Handle URL hash - expand section if hash points to an h4 or h3 (after both transforms)
     function expandHashTarget() {
         const hash = window.location.hash;
-        if (hash) {
-            const targetId = hash.substring(1);
-            const targetH4 = content.querySelector('h4#' + CSS.escape(targetId));
-            if (targetH4 && targetH4.classList.contains('h4-collapsible')) {
-                const collapseId = targetH4.getAttribute('data-bs-target');
-                const collapseEl = document.querySelector(collapseId);
-                if (collapseEl) {
-                    const collapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
-                    collapse.show();
-                    targetH4.setAttribute('aria-expanded', 'true');
-                    targetH4.classList.remove('collapsed');
-                }
+        if (!hash) return;
+
+        const targetId = hash.substring(1);
+        const target = content.querySelector('#' + CSS.escape(targetId));
+        if (!target) return;
+
+        // If target is inside a collapsed h3 section, expand it
+        const parentH3Collapse = target.closest('.h3-collapse-content');
+        if (parentH3Collapse) {
+            bootstrap.Collapse.getOrCreateInstance(parentH3Collapse, { toggle: false }).show();
+            const parentH3 = parentH3Collapse.previousElementSibling;
+            if (parentH3 && parentH3.classList.contains('h3-collapsible')) {
+                parentH3.setAttribute('aria-expanded', 'true');
+                parentH3.classList.remove('collapsed');
+            }
+        }
+
+        // If target is an h4 collapsible, expand it
+        if (target.classList.contains('h4-collapsible')) {
+            const collapseTarget = target.getAttribute('data-bs-target');
+            const collapseEl = document.querySelector(collapseTarget);
+            if (collapseEl) {
+                bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false }).show();
+                target.setAttribute('aria-expanded', 'true');
+                target.classList.remove('collapsed');
+            }
+        }
+
+        // If target is inside a collapsed h4 section, expand it
+        const parentH4Collapse = target.closest('.h4-collapse-content');
+        if (parentH4Collapse) {
+            bootstrap.Collapse.getOrCreateInstance(parentH4Collapse, { toggle: false }).show();
+            const parentH4 = parentH4Collapse.previousElementSibling;
+            if (parentH4 && parentH4.classList.contains('h4-collapsible')) {
+                parentH4.setAttribute('aria-expanded', 'true');
+                parentH4.classList.remove('collapsed');
             }
         }
     }
 
-    // Expand on page load and hash change
     expandHashTarget();
     window.addEventListener('hashchange', expandHashTarget);
 })();
