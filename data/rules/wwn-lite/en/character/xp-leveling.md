@@ -18,7 +18,7 @@ PCs gain 3 XP per successful mission. XP totals are cumulative (don't reset on l
 | 10    | 93            | 139           |
 
 
-### Alternative XP system: silver-for-xp
+### Alternative XP system: silver-for-xp (SRC: Homebrew - KaiokenXTen)
 - PCs gain 1xp per every 1 $p of loot retrieved from dangerous locales, returned to civilization, & blown carousing.
 - **Carousing Cost**: 1 night & d10×100 $p in towns or d10×200 $p in cities. XP gained = cost.
 

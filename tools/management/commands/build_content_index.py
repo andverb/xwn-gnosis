@@ -15,6 +15,14 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
+SRC_MARKER_RE = re.compile(r"\(SRC:[^)]+\)", re.IGNORECASE)
+
+
+def strip_src_marker(text: str) -> str:
+    """Strip (SRC: ...) markers from heading text for clean slugs and titles."""
+    return SRC_MARKER_RE.sub("", text).strip()
+
+
 # Rules content directory
 RULES_DIR = Path(settings.BASE_DIR) / "data" / "rules" / "wwn-lite"
 
@@ -254,8 +262,8 @@ class Command(BaseCommand):
                             }
                         )
 
-                # Start new heading
-                current_heading = heading_match.group(2).strip()
+                # Start new heading (strip SRC markers from titles)
+                current_heading = strip_src_marker(heading_match.group(2).strip())
                 current_text = []
             elif current_heading:
                 current_text.append(line)
@@ -276,8 +284,8 @@ class Command(BaseCommand):
 
     def slugify(self, text: str) -> str:
         """Convert heading text to URL-safe slug."""
-        # Lowercase and replace spaces
-        slug = text.lower().strip()
+        # Strip (SRC: ...) markers so slugs match the heading anchor IDs
+        slug = strip_src_marker(text).lower().strip()
         # Remove special characters, keep alphanumeric, spaces, and hyphens
         slug = re.sub(r"[^\w\s-]", "", slug)
         # Replace spaces with hyphens

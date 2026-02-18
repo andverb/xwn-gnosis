@@ -42,7 +42,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Any NPC being directly led by you gains a Morale & hit roll bonus = to your Lead Skill & a +1 bonus on all Skill checks. Your followers & henchmen will not act against your interests unless under extreme pressure.
 
-#### BERSERKER (CUPOFCOFFE HB)
+#### BERSERKER (SRC: Homebrew - CupOfCoffe)
 (Only Warriors or Partial Warriors can take this Focus.)
 
 **Level 1**: 1/Combat, you may enter a fury as a Move Action, & end it as an On Turn Action. While in the fury you can choose to make your attack & damage rolls w/advantage, however until the start of your next turn, foes roll attack & damage w/ advantage against you. You are immune to mental effects that would alter your emotions while in the fury.
@@ -64,7 +64,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session, reroll a failed social Skill check.
 
-#### DANGER SENSE
+#### DANGER SENSE (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only 1 foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Notice. You & those near you become immune to execution attacks. 1/day before triggering a trap, an ambush, or taking action that would likely result in harm or death, you sense the danger in time to stop yourself.
@@ -98,14 +98,14 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/day silently consecrate a bargain. The deal's terms must be specific & time-limited, not open-ended. Breaking the deal requires a Mental Save unless it risks the target's life or something they value equally. Most NPCs won't attempt to break it.
 
-#### DUAL WIELDING (HB)
+#### DUAL WIELDING (SRC: Homebrew - KaiokenXTen)
 **Level 1**: Gain Stab. Two one-handed weapons can be carried Readied w/o costing Encumbrance. While dual-wielding, your AC increases by +1. 1/scene, you can use the Dual Feint Action (see below).
 
 **Level 2**: Ignore the dual-wielding hit penalty. You can use Dual Feint > 1/scene, but each use after the 1st adds +1 Strain.
 
 **Dual Feint**: Instant Action. When you miss an attack while dual-wielding, make another attack roll w/ either weapon w/ +2 to hit.
 
-#### FOLIE À DEUX
+#### FOLIE À DEUX (SRC: Atlas of Latter Earth)
 
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
@@ -123,7 +123,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Your HM will fight for you against anything but clearly hopeless odds. HM stats = Veteran Soldiers. Skilled NPCs may become HM if you've done a service to earn their fierce loyalty.
 
-#### IMPERVIOUS DEFENSE
+#### IMPERVIOUS DEFENSE (SRC: Homebrew - KaiokenXTen)
 (This Foci's benefits don't stack w/ armor, but Dex & shield mods apply.)
 
 **Level 1**: Base Armor Class = 14 + 1/2 your character level ↑.
@@ -142,14 +142,14 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/session, in a situation of need or peril roll 1d6. If ≥ 2: fortune provides a solution, escape, advantage, or victory. If =1: the situation immediately grows much worse (GM discretion).
 
-#### MASTER TRACKER
+#### MASTER TRACKER (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Survive. You can track any trail left w/in the past day in an urban environment or the past week in the wilderness, detecting even the smallest traces of movement while ignoring interference from weather or water. You can determine the number of creatures that passed, as well as their general physical shape & condition.
 
 **Level 2**: Gain a +1 bonus to your Wisdom modifier (+2 Max). You can recognize the tracks of specific individuals if you have met them before. 1/day, by examining a mostly undisturbed scene where an event occurred w/in the past week, you can reconstruct the general physical actions that took place there.
 
-#### NIGHT WALKER
+#### NIGHT WALKER (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Sneak. You can see normally in all but pitch blackness, & even when blinded your senses allow you to function as if you could see out to 30' around you. Your sleep is so light that you are fully aware of your surroundings while asleep & can wake at will.
@@ -161,7 +161,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: 1/day, as an Instant Action, you are unaffected by an unwanted magic effect or ability. Immunity to a persistent effect lasts for the rest of the scene.
 
-#### PACK BEAST
+#### PACK BEAST (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Exert. For encumbrance purposes, your Strength is treated as 18, or 22 if it is already 18.
@@ -180,7 +180,7 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: Gain immunity to poison, & a universal antidote that can be applied as a Main Action. Attempts to detect or Save vs your poisons suffer a penalty = to your Alchemy Skill. Your ingested poisons count as an Execution attack vs unsuspecting targets, w/ Alchemy used for the Phys Save penalty & 1d6 damage x Skill level on a Success (can be non-lethal @ your discretion).
 
-#### PROVIDENT CRAFTER
+#### PROVIDENT CRAFTER (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Craft. Your Strength is treated as 4 higher for encumbrance purposes. When making a skill check or using an item such as an elixir or calyx, any necessary equipment or items are considered Readied, even if they are Stowed.
@@ -224,7 +224,7 @@ Create Mods even if you are not an Expert.
 - Gains the ability to attack w/ a hit bonus = to 1/2 your level ↑, doing 1d8 damage on a hit w/ no Shock.
 - Gains another shape of your choice which it can adopt or discard as an On Turn Action.
 
-#### STEADFAST (CUPOFCOFFEE HB)
+#### STEADFAST (SRC: Homebrew - CupOfCoffe)
 **Level 1**: When you suffer an effect that can be Saved against for full or ½ damage, you take ½ damage instead of full & 0 instead of ½.
 
 **Level 2**: 1/scene you can choose to make a 2nd attempt to succeed w/ a Physical, Evasion or Mental Save when trying to save against any effect. 1/wk, as an Instant Action, you can decide to end a non-permanent condition affecting you.
@@ -244,12 +244,12 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: The 1st Screen Ally check you make in a Round is always successful. Gain +2 AC while screening someone. You can screen against foes as large as oxen.
 
-#### WAR CASTER (ADAPTED FROM SWN DELUXE EDITION)
+#### WAR CASTER (SRC: Stars Without Number Deluxe Edition)
 **Level 1**: When attacked while casting a spell, you may make a Phys Save at a penalty = to damage taken to avoid losing it. Even if your spell is interrupted, you do not lose the spell slot; only your Act is wasted though you can't cast another spell the next Round.
 
 **Level 2**: Whenever you would lose a spell to an interruption, accept damage = to x2 the spell's level to continue casting it. If this damage would reduce you to 0 HP, you complete the casting before passing out, stable but at 0 HP.
 
-#### WALK LIKE WIND
+#### WALK LIKE WIND (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Exert. Your base ground movement rate increases by +10 feet. You can move normally up or down vertical surfaces, provided you end your turn standing on a flat surface or gripping a usable handhold.
@@ -268,19 +268,19 @@ Create Mods even if you are not an Expert.
 
 **Level 2**: The 1st time you kill someone in a Round w/ a normal attack, instantly gain a 2nd attack on a target w/in range.
 
-#### WILDTONGUE
+#### WILDTONGUE (SRC: Atlas of Latter Earth)
 (Experts/Partial Experts only. Only one foci such as this may be taken by any single PC. Effects are non-magical.)
 
 **Level 1**: Gain Survive. You can communicate w/ animals, conveying simple ideas w/in their comprehension. If these animals are appeased, they may be willing to perform basic favors that require only immediate attention.
 
 **Level 2**: Gain a +1 bonus to your Charisma modifier (+2 Max). 1/day, you can command a visible animal 1/scene, making it obey even complex orders that would usually be beyond its understanding, as long as they don't seem suicidal or overly dangerous to it. Magical beasts can attempt a Mental Save to resist your command.
 
-#### WRESTLER (CUPOFCOFFEE HB)
+#### WRESTLER (SRC: Homebrew - CupOfCoffe)
 **Level 1**: Gain Exert or Punch. Roll 3d6 & drop the lowest die for Skill checks related to shoving & grappling. You ignore the size penalty for grappling & shoving significantly larger creatures, & may move grappled targets smaller than you w/o additional Actions or Checks.
 
 **Level 2**: When shoving a creature, you can choose to move them ≤ 20' away & have them fall prone. As a Move Action, whenever you successfully attack a creature w/ a punch attack, you can force them to go prone. You ignore the size penalty for grappling & shoving only barely plausible large creatures.
 
-#### SPECIAL ORIGINS/SPECIES FOCI (CUPOFCOFFEE HB)
+#### SPECIAL ORIGINS/SPECIES FOCI (SRC: Homebrew - CupOfCoffe)
 
 (A PC can take an Special Origin focus at level 1 in addition to their usual level 1 Foci. A PC who takes this option doesn't get their usual level 2 Focus.)
 

@@ -542,6 +542,58 @@ def get_section_pages(section: str, lang: str) -> list[dict]:
     return fallback_pages
 
 
+def process_src_sections(html: str) -> str:
+    """
+    Replace (SRC: ...) markers in headings with styled source badges.
+
+    Categories detected from the source text:
+    - "Homebrew ..."  → amber HB badge
+    - "Alt. ..."      → teal ALT badge
+    - anything else   → purple SRC badge (sourcebooks, reddit posts, cut content, etc.)
+    """
+    src_pattern = re.compile(r"\(SRC:\s*([^)]+)\)", re.IGNORECASE)
+    heading_pattern = re.compile(r"<(h[1-6])([^>]*)>(.*?)</\1>", re.DOTALL | re.IGNORECASE)
+
+    def categorize(source_text: str) -> tuple[str, str, str]:
+        """Return (badge_label, css_suffix, tooltip_text)."""
+        src = source_text.strip()
+        src_lower = src.lower()
+        if src_lower.startswith("homebrew"):
+            author = src[8:].strip(" -").strip()
+            tooltip = f"Homebrew by {author}" if author else "Homebrew"
+            return "HB", "homebrew", tooltip
+        if src_lower.startswith("alt"):
+            return "ALT", "altrule", f"Alternative rule: {src}"
+        return "SRC", "source", f"Source: {src}"
+
+    def process_heading(m: re.Match) -> str:
+        tag, attrs, inner = m.group(1), m.group(2), m.group(3)
+        src_match = src_pattern.search(inner)
+        if not src_match:
+            return m.group(0)
+
+        label, css_suffix, tooltip = categorize(src_match.group(1))
+        badge = (
+            f'<span class="src-badge src-badge--{css_suffix}" data-bs-toggle="tooltip" title="{tooltip}">{label}</span>'
+        )
+
+        # Remove (SRC: ...) from inner content
+        new_inner = src_pattern.sub("", inner).strip()
+
+        # Insert badge before the heading-anchor if present, otherwise append
+        anchor_pat = re.compile(r"<a [^>]*heading-anchor[^>]*>.*?</a>", re.DOTALL)
+        anchor_match = anchor_pat.search(new_inner)
+        if anchor_match:
+            pos = anchor_match.start()
+            new_inner = new_inner[:pos].rstrip() + " " + badge + " " + new_inner[pos:]
+        else:
+            new_inner = new_inner + " " + badge
+
+        return f"<{tag}{attrs}>{new_inner}</{tag}>"
+
+    return heading_pattern.sub(process_heading, html)
+
+
 def render_markdown(content: str) -> str:
     """Render markdown to HTML with linkable headings."""
     html = markdown.markdown(
@@ -562,11 +614,14 @@ def render_markdown(content: str) -> str:
             },
         },
     )
+    html = process_src_sections(html)
     return html.replace("<table>", '<table class="table table-striped table-bordered">')
 
 
 def slugify_heading(value: str) -> str:
     """Convert heading text to URL-safe slug."""
+    # Strip (SRC: ...) markers so they don't pollute anchor IDs
+    value = re.sub(r"\(SRC:[^)]+\)", "", value, flags=re.IGNORECASE).strip()
     # Normalize unicode characters
     value = unicodedata.normalize("NFKD", value)
     # Convert to lowercase

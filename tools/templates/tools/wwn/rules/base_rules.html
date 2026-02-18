@@ -403,6 +403,88 @@
         font-size: 0.85rem;
         color: var(--bs-secondary-color);
     }
+
+    /* ------------------------------------------------------------------ */
+    /* SRC source attribution badges                                        */
+    /* ------------------------------------------------------------------ */
+    .src-badge {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.15em 0.45em;
+        border-radius: 0.25rem;
+        vertical-align: middle;
+        cursor: default;
+        flex-shrink: 0;
+        line-height: 1.4;
+    }
+
+    .src-badge--homebrew {
+        background-color: rgba(var(--bs-warning-rgb), 0.2);
+        color: var(--bs-warning-text-emphasis);
+    }
+
+    .src-badge--altrule {
+        background-color: rgba(var(--bs-info-rgb), 0.2);
+        color: var(--bs-info-text-emphasis);
+    }
+
+    .src-badge--source {
+        background-color: rgba(111, 66, 193, 0.15);
+        color: #6f42c1;
+    }
+
+    /* Tint the collapsible heading row */
+    .h4-collapsible.src--homebrew { background-color: rgba(var(--bs-warning-rgb), 0.07) !important; }
+    .h4-collapsible.src--altrule  { background-color: rgba(var(--bs-info-rgb), 0.07) !important; }
+    .h4-collapsible.src--source   { background-color: rgba(111, 66, 193, 0.05) !important; }
+
+    /* Tint the collapse content and recolor its left border */
+    .h4-collapse-content.src--homebrew {
+        border-left-color: rgba(var(--bs-warning-rgb), 0.4) !important;
+        background-color: rgba(var(--bs-warning-rgb), 0.03);
+        border-radius: 0 0 0.25rem 0;
+    }
+    .h4-collapse-content.src--altrule {
+        border-left-color: rgba(var(--bs-info-rgb), 0.4) !important;
+        background-color: rgba(var(--bs-info-rgb), 0.03);
+        border-radius: 0 0 0.25rem 0;
+    }
+    .h4-collapse-content.src--source {
+        border-left-color: rgba(111, 66, 193, 0.3) !important;
+        background-color: rgba(111, 66, 193, 0.02);
+        border-radius: 0 0 0.25rem 0;
+    }
+
+    /* h3 src-section wrapper (non-collapsible h3) */
+    .src-section {
+        padding-left: 0.75rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 0 0.375rem 0.375rem 0;
+    }
+    .src-section > h3:first-child { margin-top: 0; }
+    .src-section.src--homebrew {
+        border-left: 3px solid rgba(var(--bs-warning-rgb), 0.6);
+        background-color: rgba(var(--bs-warning-rgb), 0.06);
+    }
+    .src-section.src--altrule {
+        border-left: 3px solid rgba(var(--bs-info-rgb), 0.6);
+        background-color: rgba(var(--bs-info-rgb), 0.06);
+    }
+    .src-section.src--source {
+        border-left: 3px solid rgba(111, 66, 193, 0.5);
+        background-color: rgba(111, 66, 193, 0.05);
+    }
+
+    /* h3 Level-X collapsible with src */
+    .h3-collapsible.src--homebrew { background-color: rgba(var(--bs-warning-rgb), 0.07) !important; }
+    .h3-collapsible.src--altrule  { background-color: rgba(var(--bs-info-rgb), 0.07) !important; }
+    .h3-collapsible.src--source   { background-color: rgba(111, 66, 193, 0.05) !important; }
+    .h3-collapse-content.src--homebrew { background-color: rgba(var(--bs-warning-rgb), 0.02); }
+    .h3-collapse-content.src--altrule  { background-color: rgba(var(--bs-info-rgb), 0.02); }
+    .h3-collapse-content.src--source   { background-color: rgba(111, 66, 193, 0.02); }
 </style>
 {% endblock %}
 
@@ -525,13 +607,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // Skip if no content to collapse
         if (contentElements.length === 0) return;
 
-        // Extract the heading text and anchor
+        // Extract special elements before wiping innerHTML
         const anchor = h4.querySelector('.heading-anchor');
+        const srcBadge = h4.querySelector('.src-badge');
+
+        // Determine src class from badge before removing it
+        let srcClass = null;
+        if (srcBadge) {
+            if (srcBadge.classList.contains('src-badge--homebrew')) srcClass = 'src--homebrew';
+            else if (srcBadge.classList.contains('src-badge--altrule')) srcClass = 'src--altrule';
+            else srcClass = 'src--source';
+            srcBadge.remove(); // detach so textContent is clean
+        }
+
         const headingText = h4.textContent.trim();
 
         // Create the collapsible h4 structure
         h4.innerHTML = '';
-        h4.className = 'h4-collapsible collapsed';
+        h4.className = 'h4-collapsible collapsed' + (srcClass ? ' ' + srcClass : '');
         h4.setAttribute('data-bs-toggle', 'collapse');
         h4.setAttribute('data-bs-target', '#' + collapseId);
         h4.setAttribute('aria-expanded', 'false');
@@ -548,6 +641,11 @@ document.addEventListener('DOMContentLoaded', function() {
         titleSpan.textContent = headingText;
         h4.appendChild(titleSpan);
 
+        // Re-add src badge after the title (before anchor)
+        if (srcBadge) {
+            h4.appendChild(srcBadge);
+        }
+
         // Re-add the anchor if it existed
         if (anchor) {
             anchor.addEventListener('click', function(e) {
@@ -561,10 +659,10 @@ document.addEventListener('DOMContentLoaded', function() {
             h4.appendChild(anchor);
         }
 
-        // Create collapse container
+        // Create collapse container (inherits src class for section coloring)
         const collapseDiv = document.createElement('div');
         collapseDiv.id = collapseId;
-        collapseDiv.className = 'collapse h4-collapse-content';
+        collapseDiv.className = 'collapse h4-collapse-content' + (srcClass ? ' ' + srcClass : '');
 
         // Move content elements into collapse container
         contentElements.forEach(function(el) {
@@ -580,8 +678,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const h3s = content.querySelectorAll('h3');
 
     h3s.forEach(function(h3, index) {
+        // Extract and detach src-badge before reading text (same pattern as h4)
+        const srcBadge = h3.querySelector('.src-badge');
+        let srcClass = null;
+        if (srcBadge) {
+            if (srcBadge.classList.contains('src-badge--homebrew')) srcClass = 'src--homebrew';
+            else if (srcBadge.classList.contains('src-badge--altrule')) srcClass = 'src--altrule';
+            else srcClass = 'src--source';
+            srcBadge.remove();
+        }
+
         const headingText = h3.textContent.replace(/\s+/g, ' ').trim();
-        if (!levelPattern.test(headingText)) return;
+
+        if (!levelPattern.test(headingText)) {
+            // Not a Level X heading — restore badge if present and skip collapse
+            if (srcBadge) h3.appendChild(srcBadge);
+            return;
+        }
 
         const headingId = h3.id || 'h3-level-' + index;
         const collapseId = 'collapse-' + headingId;
@@ -595,14 +708,17 @@ document.addEventListener('DOMContentLoaded', function() {
             sibling = sibling.nextElementSibling;
         }
 
-        if (contentElements.length === 0) return;
+        if (contentElements.length === 0) {
+            if (srcBadge) h3.appendChild(srcBadge);
+            return;
+        }
 
         // Extract anchor
         const anchor = h3.querySelector('.heading-anchor');
 
         // Rebuild h3 as collapsible
         h3.innerHTML = '';
-        h3.className = 'h3-collapsible collapsed';
+        h3.className = 'h3-collapsible collapsed' + (srcClass ? ' ' + srcClass : '');
         h3.setAttribute('data-bs-toggle', 'collapse');
         h3.setAttribute('data-bs-target', '#' + collapseId);
         h3.setAttribute('aria-expanded', 'false');
@@ -616,6 +732,8 @@ document.addEventListener('DOMContentLoaded', function() {
         titleSpan.className = 'h3-title';
         titleSpan.textContent = headingText;
         h3.appendChild(titleSpan);
+
+        if (srcBadge) h3.appendChild(srcBadge);
 
         if (anchor) {
             anchor.addEventListener('click', function(e) {
@@ -632,10 +750,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create collapse container (starts collapsed)
         const collapseDiv = document.createElement('div');
         collapseDiv.id = collapseId;
-        collapseDiv.className = 'collapse h3-collapse-content';
+        collapseDiv.className = 'collapse h3-collapse-content' + (srcClass ? ' ' + srcClass : '');
 
         contentElements.forEach(function(el) { collapseDiv.appendChild(el); });
         h3.parentNode.insertBefore(collapseDiv, h3.nextSibling);
+    });
+
+    // --- Non-collapsible h3 with src-badge: wrap section in a div ---
+    content.querySelectorAll('h3:not(.h3-collapsible)').forEach(function(h3) {
+        const srcBadge = h3.querySelector('.src-badge');
+        if (!srcBadge) return;
+
+        let srcClass = null;
+        if (srcBadge.classList.contains('src-badge--homebrew')) srcClass = 'src--homebrew';
+        else if (srcBadge.classList.contains('src-badge--altrule')) srcClass = 'src--altrule';
+        else srcClass = 'src--source';
+
+        // Wrap h3 + following siblings (until next h2/h3) in a section div
+        const wrapper = document.createElement('div');
+        wrapper.className = 'src-section ' + srcClass;
+        h3.parentNode.insertBefore(wrapper, h3);
+        wrapper.appendChild(h3);
+
+        let next = wrapper.nextSibling;
+        while (next) {
+            const following = next.nextSibling;
+            if (next.nodeType === 1 && /^H[123]$/.test(next.tagName)) break;
+            wrapper.appendChild(next);
+            next = following;
+        }
     });
 
     // Handle URL hash - expand section if hash points to an h4 or h3 (after both transforms)
@@ -688,6 +831,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     expandHashTarget();
     window.addEventListener('hashchange', expandHashTarget);
+
+    // Initialize Bootstrap tooltips for src-badges
+    content.querySelectorAll('.src-badge[data-bs-toggle="tooltip"]').forEach(function(el) {
+        new bootstrap.Tooltip(el, { trigger: 'hover focus' });
+    });
 })();
 </script>
 {% endblock %}

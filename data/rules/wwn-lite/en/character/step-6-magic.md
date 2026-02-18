@@ -532,7 +532,7 @@ Creates a transparent bubble of force around the caster (≤ 20' radius) that ca
 **Range:** 100 mi x Caster level  
 Caster opens a one-way portal large enough for a wagon from their location to a preset point. Atmosphere, etc can't pass through, only living creatures & what they ride or carry. 1 location may be prep'd for this spell @ a time. (10% chance of appearing 1d100 mi in a random direction).
 
-### Arcane Tradition of the Druid
+### Arcane Tradition of the Druid (SRC: Homebrew - KaiokenXTen)
 
 ### Full Druid
 
