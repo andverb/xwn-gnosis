@@ -19,14 +19,14 @@
 **Level 2**: You can cast spells while wearing armor of any Encumbrance. You can cast w/ both hands full, but not bound.
 
 #### ARMSMASTER
-(Not applicable to unarmed or non-thrown weapons. Doesn't stack w/ other Foci that add a Skills level to damage or Shock.)
+(Not applicable to unarmed attacks or non-thrown ranged weapons. Doesn't stack w/ other Foci that add a Skills level to damage or Shock.)
 
 **Level 1**: Gain Stab. Ready a Stowed melee or thrown weapon as an Instant Action. Add your Stab Skill level to a melee or thrown weapon's damage roll or Shock damage (assuming it has any).
 
 **Level 2**: Shock from your melee attacks always treats the target as AC 10. +1 bonus to hit w/ all thrown or melee attacks.
 
 #### ARTISAN
-Create Mods even if you are not an Expert.
+**Create Mods even if you are not an Expert.**
 
 **Level 1**: Gain Craft. Your Craft Skill is treated as 1 level higher (max of +5) for purposes of crafting & maintaining Mods. Mods you build require 1 fewer unit of arcane salvage (min of 1). Craft any profession's work w/o penalty.
 
