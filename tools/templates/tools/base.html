@@ -433,10 +433,11 @@
                         <li><a class="dropdown-item" href="{% url 'tools:site_exploration' %}">
                             <i class="bi bi-people me-2"></i>{% if current_lang == "uk" %}Дослідження Локацій{% else %}Site Exploration{% endif %}
                         </a></li>
-                        {# WIP - wilderness exploration cheatsheet not ready yet #}
-                        {# <li><a class="dropdown-item" href="{% url 'tools:wilderness_exploration' %}">
+                        {% comment %}WIP - wilderness exploration cheatsheet not ready yet
+                        <li><a class="dropdown-item" href="{% url 'tools:wilderness_exploration' %}">
                             <i class="bi bi-tree me-2"></i>{% if current_lang == "uk" %}Подорожі та Виживання{% else %}Wilderness Exploration{% endif %}
-                        </a></li> #}
+                        </a></li>
+                        {% endcomment %}
                     </ul>
                 </li>
 
