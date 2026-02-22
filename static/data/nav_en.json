@@ -19,35 +19,35 @@
       "icon": "bi bi-person",
       "pages": [
         {
-          "slug": "character-creation",
+          "slug": "0-character-creation",
           "title": "Quick character creation flow"
         },
         {
-          "slug": "step-1-attributes",
+          "slug": "1-attributes",
           "title": "Step 1: Generate Attributes"
         },
         {
-          "slug": "step-2-background",
+          "slug": "2-background",
           "title": "Step 2: Choose a Backgrounds & Skills"
         },
         {
-          "slug": "step-3-class",
+          "slug": "3-class",
           "title": "Step 3: Choose a Class & Take Its Abilities"
         },
         {
-          "slug": "step-4-foci",
+          "slug": "4-foci",
           "title": "Step 4: Choose Foci"
         },
         {
-          "slug": "step-5-equipment",
+          "slug": "5-equipment",
           "title": "Step 5: Choose an Equipment Pack"
         },
         {
-          "slug": "step-6-magic",
+          "slug": "6-magic",
           "title": "Step 6: Mages Choose Tradition & Pick Spells"
         },
         {
-          "slug": "xp-leveling",
+          "slug": "7-leveling",
           "title": "Character Advancement"
         }
       ]
@@ -153,8 +153,8 @@
           "title": "Hirelings"
         },
         {
-          "slug": "03-patronage",
-          "title": "Monetary Rewards"
+          "slug": "03-rewards",
+          "title": "Rewards"
         },
         {
           "slug": "04-renown",

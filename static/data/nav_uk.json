@@ -19,35 +19,35 @@
       "icon": "bi bi-person",
       "pages": [
         {
-          "slug": "character-creation",
+          "slug": "0-character-creation",
           "title": "Швидке створення персонажа"
         },
         {
-          "slug": "step-1-attributes",
+          "slug": "1-attributes",
           "title": "Крок 1: Розподіліть Здібності"
         },
         {
-          "slug": "step-2-background",
+          "slug": "2-background",
           "title": "Крок 2: Оберіть Передісторію та Навички"
         },
         {
-          "slug": "step-3-class",
+          "slug": "3-class",
           "title": "Крок 3: Оберіть Клас"
         },
         {
-          "slug": "step-4-foci",
+          "slug": "4-foci",
           "title": "Крок 4: Оберіть Фокуси"
         },
         {
-          "slug": "step-5-equipment",
+          "slug": "5-equipment",
           "title": "Крок 5: Виберіть Набір Спорядження"
         },
         {
-          "slug": "step-6-magic",
+          "slug": "6-magic",
           "title": "Крок 6: Маги Обирають Традицію та Заклинання"
         },
         {
-          "slug": "xp-leveling",
+          "slug": "7-leveling",
           "title": "Розвиток Персонажа"
         }
       ]
@@ -153,7 +153,7 @@
           "title": "Найманці"
         },
         {
-          "slug": "03-patronage",
+          "slug": "03-rewards",
           "title": "Винагороди"
         },
         {
