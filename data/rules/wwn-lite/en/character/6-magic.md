@@ -1159,6 +1159,227 @@ All attacks made against those affected automatically hit & all damage dice they
 **Affects:** allies w/in 50'  
 Cast as an Instant Action. No affected ally can be reduced below 1 HP. At the end of the spell the caster is reduced to 1 HP. Creatures are limited to these benefits 1/day.
 
+---
+
+### Arcane Tradition of the Illusionist (SRC: cut content from Atlas of Latter Earth)
+
+
+### Full Illusionist
+
+**Bonus Skill**: Magic level-0  
+
+**Starting # of Spells Known**: 4  
+
+**Starting Arts**: Shadow Play + Any One  
+
+**Max Effort**: Int or Cha modifier + Magic Skill + 1  
+
+**Spell Lists**: High Mage, Illusionist  
+
+
+### Half Illusionist
+
+**Bonus Skill**: Magic level-0  
+
+**Starting # of Spells Known**: 2  
+
+**Starting Arts**: Shadow Play + Any One  
+
+**Max Effort**: Int or Cha modifier + Magic Skill  
+
+**Spell Lists**: High Mage, Illusionist  
+
+
+### Arts of the Illusionists
+
+- Scene: Returned after 1 Scene.
+- Indefinite: Returned once Art is instantly "turned off."
+- Day: Returned after 1 Night's Rest.
+
+Cannot cast spells in armor or w/ a shield. Arts are subtle & require no obvious gestures or words.
+
+#### Shadow Play
+**Effort:** None  
+**Main Action**  
+Create small phantasms, spectral sounds, & limited olfactory/tactile impressions. Obviously illusionary; can't conceal objects or meaningfully deceive. Range: 10'. Lasts while you keep using this art.
+
+#### Command Attention
+**Effort:** Day  
+**Move Action**  
+Distract a visible creature. On a failed Mental Save, its attention is entirely on you for 1 Round & it's oblivious to everything else unless directly threatened. Doesn't work once combat has begun.
+
+#### Dazzling Lights
+**Effort:** Day  
+**On Turn Action**  
+**Limit:** 1/Round  
+Conjure brilliant lights, smoke, or other distractions concealing you & everything within 5' for 1 Round. You & those inside see clearly; opaque to those outside.
+
+#### False End
+**Effort:** Day  
+**Instant Action**  
+When you or a visible willing ally is injured but not killed or Mortally Wounded, create a True Illusion of their dramatic death lasting up to 1 hr. Objects taken from the "corpse" vanish when the art ends. Ends if the "victim" acts or suffers further injury.
+
+#### Ghost Light
+**Effort:** Indefinite  
+**Main Action**  
+A sourceless light illumines everything within 30' of you. Only you & up to ~6 companions can see it.
+
+#### Masked Token
+**Effort:** Day  
+**Move Action**  
+While holding an object < 5 lbs, transform it into any other object of similar weight. Lasts 1 hr/level. Careful inspection: Mental Save breaks the effect.
+
+#### Pierce the Veil
+**Effort:** None  
+Automatically detect illusions & see invisible objects. Doesn't help notice creatures using conventional Stealth, & doesn't let you see *through* an illusion — only recognize it as false.
+
+#### Sensory Excision
+**Effort:** Day  
+**Main Action**  
+Allow a willing ally in sight to completely ignore 1 sensory input for the scene (e.g., pain, exhaustion, thirst). If pain is ignored: ally can act @ 0 HP, but further damage kills instead of Mortally Wounding. Doesn't prevent spellcasting disruption from injury.
+
+#### Share Senses
+**Effort:** Day  
+**Move Action**  
+Target a visible creature (Mental Save resists; on success they sense mental magic was used). If unresisted, you sense everything the target senses until end of scene or until dropped. You are oblivious to your own senses while active.
+
+#### Showmanship
+**Effort:** None  
+Use your Magic skill in place of any Perform skill check or requirement. If you already have Perform, trade it for a different skill @ equal level.
+
+#### Splendid Aspect
+**Effort:** Indefinite  
+**On Turn Action**  
+While Committed, appear dressed, coiffed, & adorned however you choose, @ any apparent age. Perfectly convincing to all senses; physical statistics unchanged.
+
+#### Thunderous Roar
+**Effort:** Scene  
+**Move Action**  
+Create a sound of your choice within 50'. Audible up to 50' x caster level away. Lasts & can be changed as long as you spend a Move Action each turn. Known voices can be mimicked. Fine control: Cha/Perform check @ GM-set difficulty.
+
+#### Wizard's Pocket
+**Effort:** Indefinite  
+**Move Action**  
+While holding an object < 5 lbs, it disappears until Effort is reclaimed (counts as 1 Stowed enc while displaced). Automatically reappears in hand if you die or are targeted by Extirpate Arcana.
+
+---
+
+### True Illusions
+
+All Illusionist spells that create True Illusions share these rules:
+
+- **Physically real**: Fully tangible — True Illusionary fire burns, walls can be climbed, creatures can be fought.
+- **No lasting effects**: All effects end when the spell does. Slain foes rise unhurt, burnt objects reconstitute.
+- **Can't subtract reality**: Can add walls, creatures, objects. Can't create holes, pits, or remove existing things.
+- **Stability**: Each True Illusion has Stability = caster's Magic skill + 1. When reduced to 0, the illusion ends. Spells specify when Stability is risked (Mental Saves, taking damage, close inspection). Willing participants may choose not to save.
+
+Movement under a True Illusion still counts in reality. A creature carried in an illusionary cart is still wherever it was left; one who climbed an illusionary ladder onto solid ground stays there.
+
+### Illusionist Spells
+
+### Level 1
+
+#### Call the Compliant Phantasm
+**Level:** 1  
+**Duration:** until next dawn  
+Summon a human-sized True Illusionary servant (any form). Can't fight; loses 1 Stability when attacked. Performs any mundane skill @ +1. Absolutely obedient. Physical actions & moved objects are undone at spell's end; memories remain.
+
+#### Chamber of Dreams
+**Level:** 1  
+**Duration:** until 1 hr after caster leaves, or dispelled  
+**AoE:** 40' × 40'  
+Redecorate one room or area w/ a True Illusion — objects, environments, barriers as desired. Hazardous environments: max 1d6 dmg/round, erodes 1 Stability per creature harmed. Can't change environment once set. Striking objects or navigating barriers: Mental Save erodes 1 Stability.
+
+#### Evocation of Ambulant Dread
+**Level:** 1  
+**Duration:** 1 hr/level  
+Call a ferocious True Illusionary creature (≤ large human) adjacent to you. AC15, Move 30', +1 combat. Can Screen Ally or attack — always hits for 1d6 + Magic skill dmg. Being harmed by it or surviving its blow: attacker may Mental Save to erode 1 Stability. Only 1 at a time.
+
+#### Reality Rectification
+**Level:** 1  
+Acts as Extirpate Arcana vs conventional illusions, invisibility, or sensory-altering magic. Vs True Illusions: opposed Int/Magic check; on tie or win, illusion loses Stability = caster's Magic skill.
+
+#### Visiage of Pearl and Jade
+**Level:** 1  
+**Duration:** until ended or dispelled (daily slot locked until then)  
+Mask up to 1 willing creature/level w/ the appearance, voice, scent, & physicality of any roughly-similar creature. Can perfectly impersonate known individuals. Creates phantom limbs & conjures clothing. No new movement modes. Touched or magically investigated: Mental Save erodes 1 Stability.
+
+---
+
+### Level 2
+
+#### Echo of the Final Hour
+**Level:** 2  
+**Duration:** 1 hr/level or 0 HP  
+Cast on a corpse dead ≤ 1 day. It rises as its uninjured self — suicidally loyal, no magic/spells, acts w/ prior intelligence. Can only answer what the caster already knows. Each time damaged, attacker may Mental Save to erode 1 Stability. Spell ends @ 0 HP, 0 Stability, or time limit; corpse returns to its original location. Only 1 use per corpse.
+
+#### Masque of the Multitude
+**Level:** 2  
+**Duration:** until dropped or next dawn  
+**AoE:** caster + allies within 50'  
+All affected appear as any humanoid, beast, or conveyance w/ matching sound, voice, scent & gear. Move rates & physical stats unchanged. Conjured gear is unusable but convincing. Suspicious inspection: Mental Save erodes 1 Stability.
+
+#### The Most Serene Pavillion
+**Level:** 2  
+**Duration:** until next dawn  
+**AoE:** ≤ 30' sq × 15' high  
+Conjure a True Illusionary cottage or pavilion of any decor. Furnished interior; True Illusionary servant performs ordinary tasks. Phantasmal food doesn't sate hunger. Adequate real food + shelter here allows full rest (Strain & Effort recovery). Blows on doors/walls: Mental Save erodes 1 Stability. Natural hazards also damage Stability.
+
+#### The Superabundant Panoply
+**Level:** 2  
+**Duration:** 1 hr/level  
+**Range:** 10'  
+Call up to 3 enc/level of mundane True Illusionary objects (may be precious materials). Weapons, armor, tools. Man-sized = 6 enc; cart-sized = 15. Careful inspection: Mental Save erodes 1 Stability.
+
+#### The Wood of Winding Paths
+**Level:** 2  
+**Duration:** while caster remains within; rest of scene after leaving  
+**AoE:** 20'/level radius (outdoors)  
+Warp an outdoor area — those within are hidden from all others unless in melee range. Searchers who suspect someone is there may Mental Save (each entry) to erode 1 Stability. Intentionally attacking a concealed target from outside melee range ends the spell.
+
+---
+
+### Level 3
+
+#### Zone of Absolute Apprehension
+**Level:** 3  
+**Duration:** while caster remains within or drops it  
+**AoE:** 10'/level radius  
+All illusions, invisibility, disguises, secret doors, & hidden objects within are dispelled or rendered obvious. Stealth checks: -4 penalty. True Illusions: counts as Extirpate Arcana (Magic skill dmg to Stability). All senses within are clear regardless of mist, darkness, or noise. Solid objects remain opaque. Affects new illusions cast inside, including the caster's own.
+
+---
+
+### Level 4
+
+#### The Daydreamt Host
+**Level:** 4  
+**Duration:** until next dawn  
+Summon up to 24 True Illusionary humans/demihumans in any appearance. Peaceful human stats; +1 to a trade/craft skill; suicidally devoted. Subject to True Illusion limits. Can't deal direct damage or Screen Ally, but coordinate for Swarm Attack maneuvers alongside real allies.
+
+#### Phantasmal Nemesis
+**Level:** 4  
+**Duration:** 1 Round/level  
+Summon a powerful True Illusionary creature (≤ ogre) adjacent to you. AC15, Move 40', +1 combat. Hits every attack for 2d6 + Magic skill; up to 3 different targets/round, no target more than once. No HP; each time damaged, attacker may Mental Save to erode 1 Stability. Vanishes if caster is unconscious or dead. Only 1 at a time; prevents other spellcasting while active.
+
+---
+
+### Level 5
+
+#### A Heart's True Desire
+**Level:** 5  
+Target 1 visible creature (Mental Save negates). On failure, the rest of the scene plays out as their fondest wish — whatever outcome they hoped for is theirs. Others involved may cooperate instinctively or, if opposed, Mental Save to erode 1 Stability. When the target leaves the area or the spell ends, all events are undone & everyone resets to prior conditions. Memories remain.
+
+#### A World as One Wishes
+**Level:** 5  
+**Duration:** while caster is within; fades 1 Round/level after leaving  
+**AoE:** 50'/level radius  
+**Strain:** +1 System Strain per use  
+Complete control over the environment within the area (True Illusion limits apply). Alter environment as a Main Action. Contents used to harm: 3d6 automatic dmg (once/round/victim; each victim may Mental Save to erode 1 Stability). Obstructed targets may also Mental Save to erode Stability.
+
+
+
+### Non-spellcasting mage classes
+
 ### Arcane Tradition of the Bard (Half Class)
 
 - The Bard exists only as a partial Mage class to be taken alongside a partial Warrior or partial Expert. (HB)
