@@ -1,41 +1,5 @@
 ## Character Advancement
 
-
-### Gaining XP: Mission-Based
-PCs gain 3 XP per successful mission. XP totals are cumulative (don't reset on level-up).
-
-| Level | Fast leveling | Slow leveling |
-|-------|---------------|---------------|
-| 1     | 0             | 0             |
-| 2     | 3             | 6             |
-| 3     | 6             | 15            |
-| 4     | 12            | 24            |
-| 5     | 18            | 36            |
-| 6     | 27            | 51            |
-| 7     | 39            | 69            |
-| 8     | 54            | 87            |
-| 9     | 72            | 105           |
-| 10    | 93            | 139           |
-
-
-### Alternative XP system: silver-for-xp (SRC: Homebrew - KaiokenXTen)
-- PCs gain 1xp per every 1 $p of loot retrieved from dangerous locales, returned to civilization, & blown carousing.
-- **Carousing Cost**: 1 night & d10×100 $p in towns or d10×200 $p in cities. XP gained = cost.
-
-### XP Requirements
-- XP required to gain level 2 = 2k xp, & doubles for each additional level
-- Level 2: 2k xp
-- Level 3: 4k xp
-- Level 4: 8k xp
-- Level 5: 16k xp
-- Level 6: 32k xp
-- Level 7: 64k xp
-- Level 8: 128k xp
-- Level 9: 256k xp
-- Level 10: 512k xp
-
-
-
 ### Leveling Up
 When a PC has accumulated enough xp to advance a level they achieve the following:
 
@@ -43,7 +7,7 @@ When a PC has accumulated enough xp to advance a level they achieve the followin
 - Gain Arts according to your Class (if any).
 - Full Mages add 2 spells to their grimoire, half-Mages that cast spells add 1.
 - Gain New Foci @ levels 2, 5, 7, & 10. **Foci that grant Skills grant 3 SP to invest into corresponding skill instead**.
-- Increase HP. (1d6 + Class HP Adjustment + Con Mod) X Level. Min increase of +1 from your previous Max HP.
+- Increase HP. Roll 1d6 + Class HP Adjustment + Con Mod for each Level. Minimum for each roll is 1, even with negative Con mod. If sum of rolls is greater than your max. HP, this is your new max. HP, otherwise +1 to your max HP.
 - PC Saves decrease by 1 (Saves = 16 - character Level - Best Relevant Attr).
 - Gain 3 SP to save or spend on improving Skills or Attr. Full & Partial Experts gain +1 SP to spend on a non-combat Skill.
 
