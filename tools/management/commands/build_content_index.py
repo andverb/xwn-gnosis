@@ -61,8 +61,8 @@ SECTION_META = {
         "title": {"en": "Campaign", "uk": "Кампанія"},
         "icon": "bi bi-map",
     },
-    "reference": {
-        "title": {"en": "Reference", "uk": "Довідник"},
+    "gm-tools": {
+        "title": {"en": "GM Tools", "uk": "Інструменти МГ"},
         "icon": "bi bi-bookmark",
     },
 }
@@ -76,7 +76,7 @@ SECTION_ORDER = [
     "combat",
     "survival",
     "campaign",
-    "reference",
+    "gm-tools",
 ]
 
 

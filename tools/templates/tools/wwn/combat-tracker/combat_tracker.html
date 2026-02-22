@@ -922,8 +922,14 @@
                 <div class="col-name">Name, HD, Attack</div>
                 <div class="col-shock has-tooltip" title="On miss: deals damage if target AC ≤ threshold. x/- = any AC. Hits deal at least shock dmg.">Shock</div>
                 <div class="col-move">Move</div>
-                <div class="col-ml has-tooltip" title="Morale Check: 2d6 > ML = Fail. NPC retreats or surrenders.">ML</div>
-                <div class="col-inst has-tooltip" title="Instinct Check: 1d10 ≤ Inst = Fail. NPC behaves impulsively.">Inst</div>
+                <div class="col-ml has-tooltip"
+                     data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-html="true"
+                     data-bs-title="Morale (2d6 &gt; ML = Fail)"
+                     data-bs-content="<strong>Roll when:</strong><ul class='mb-0 ps-3 mt-1'><li>First group member killed/incapacitated</li><li>Visibly losing or odds shrink</li><li>Facing terror, horror, or vastly superior foe</li><li>Non-combatant first faces serious harm</li></ul><strong>On fail:</strong><ul class='mb-0 ps-3 mt-1'><li>Non-combatants: flee, drop everything</li><li>Fighters: fighting withdrawal</li><li>No escape: surrender or berserk</li></ul>">ML</div>
+                <div class="col-inst has-tooltip"
+                     data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-html="true"
+                     data-bs-title="Instinct (1d10 ≤ Inst = Triggered)"
+                     data-bs-content="<strong>Roll when:</strong><ul class='mb-0 ps-3 mt-1'><li>Round 2+ for mobs &amp; undisciplined fighters</li><li>Just made a Morale check</li><li>Enemy did something confusing/disorienting</li><li>Enraged or directly intimidated</li><li>Presented with something it desires</li></ul><strong>On fail:</strong> acts impulsively — attacks wrong target, drops weapon, chases bait.">Inst</div>
                 <div class="col-skill has-tooltip" title="Skill Check: 2d6 + Skill ≥ Difficulty = Success.">Skill</div>
                 <div class="col-save has-tooltip" title="Saving Throw: 1d20 ≥ Save = Success.">Save</div>
                 <div class="col-ac">AC</div>
@@ -1502,23 +1508,33 @@
             { name: 'Knight', hd: 4, ac: 18, hasArmor: true, bab: 6, attacks: 1, damageMode: 'weapon', dmgBonus: 2, shockOverride: false, mv: "30'", ml: 10, inst: 1, skl: 2, sv: 13 },
             { name: 'Warrior Baron', hd: 6, ac: 18, hasArmor: true, bab: 8, attacks: 1, damageMode: 'weapon', dmgBonus: 3, shockOverride: false, mv: "30'", ml: 9, inst: 1, skl: 2, sv: 12 },
             { name: 'Warlord', hd: 8, ac: 16, hasArmor: true, bab: 10, attacks: 2, damageMode: 'weapon', dmgBonus: 4, shockOverride: true, mv: "30'", ml: 10, inst: 3, skl: 2, sv: 11 },
+            { name: 'Mighty General', hd: 8, ac: 18, hasArmor: true, bab: 10, attacks: 1, damageMode: 'weapon', dmgBonus: 4, shockOverride: true, mv: "30'", ml: 10, inst: 1, skl: 3, sv: 11 },
+            { name: 'Major Hero', hd: 10, ac: 18, hasArmor: true, bab: 12, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 2, skl: 3, sv: 10 },
+            { name: 'Great Warrior King', hd: 12, ac: 18, hasArmor: true, bab: 14, attacks: 2, damageMode: 'weapon', dmgBonus: 5, shockOverride: true, mv: "30'", ml: 10, inst: 1, skl: 3, sv: 9 },
         ]},
         { category: 'Mages', templates: [
             { name: 'Petty Mage', hd: 2, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 8, inst: 4, skl: 1, sv: 14 },
             { name: 'Shaman', hd: 4, ac: 10, hasArmor: false, bab: 3, attacks: 1, damageMode: 'weapon', dmgBonus: 1, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 1, sv: 13 },
             { name: 'Sorcerer', hd: 5, ac: 10, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 4, skl: 2, sv: 13 },
             { name: 'Master Wizard', hd: 8, ac: 13, hasArmor: false, bab: 1, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 3, skl: 2, sv: 11 },
+            { name: 'Famous Arch-Mage', hd: 10, ac: 13, hasArmor: false, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 9, inst: 2, skl: 2, sv: 10 },
         ]},
         { category: 'Beasts', templates: [
             { name: 'Small Predator', hd: 1, ac: 12, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 4, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 7, inst: 6, skl: 1, sv: 15 },
             { name: 'Large Predator', hd: 5, ac: 13, hasArmor: false, bab: 6, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "30'", ml: 8, inst: 6, skl: 1, sv: 13 },
             { name: 'Apex Predator', hd: 6, ac: 13, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 2, shockAC: '13', mv: "40'", ml: 8, inst: 6, skl: 2, sv: 12 },
+            { name: 'Herd Beast', hd: 2, ac: 11, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 4, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "40'", ml: 7, inst: 6, skl: 1, sv: 14 },
             { name: 'Large Herbivore', hd: 4, ac: 13, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "40'", ml: 9, inst: 6, skl: 1, sv: 13 },
+            { name: 'Elephantine Grazer', hd: 6, ac: 13, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 2, diceType: 8, dmgBonus: 0, shockValue: 0, shockAC: '-', mv: "40'", ml: 7, inst: 6, skl: 1, sv: 12 },
+            { name: 'Predator, Small Vicious', hd: 1, ac: 14, hasArmor: false, bab: 1, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 4, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "30'", ml: 7, inst: 5, skl: 1, sv: 15 },
+            { name: 'Predator, Large Vicious', hd: 6, ac: 13, hasArmor: false, bab: 7, attacks: 2, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 0, shockValue: 2, shockAC: '15', mv: "40'", ml: 9, inst: 5, skl: 2, sv: 13 },
             { name: 'Hulking Predator', hd: 10, ac: 15, hasArmor: false, bab: 12, attacks: 2, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 3, shockValue: 6, shockAC: '15', mv: "30'", ml: 10, inst: 4, skl: 1, sv: 10 },
             { name: 'Hellbeast', hd: 10, ac: 18, hasArmor: false, bab: 12, attacks: 4, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 5, shockValue: 6, shockAC: '-', mv: "60'", ml: 11, inst: 4, skl: 3, sv: 10 },
         ]},
         { category: 'Creatures', templates: [
             { name: 'Unnatural Swarm', hd: 4, ac: 10, hasArmor: false, bab: 6, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "30'", ml: 10, inst: 5, skl: 1, sv: 13 },
+            { name: 'Terrible Warbeast', hd: 8, ac: 15, hasArmor: false, bab: 10, attacks: 2, damageMode: 'dice', diceCount: 2, diceType: 6, dmgBonus: 4, shockValue: 7, shockAC: '15', mv: "40'", ml: 9, inst: 4, skl: 2, sv: 11 },
+            { name: 'Legendary God-Titan', hd: 20, ac: 22, hasArmor: false, bab: 20, attacks: 3, damageMode: 'dice', diceCount: 2, diceType: 10, dmgBonus: 5, shockValue: 10, shockAC: '-', mv: "40'", ml: 10, inst: 3, skl: 3, sv: 2 },
             { name: 'Slime/Ooze', hd: 6, ac: 10, hasArmor: false, bab: 6, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 8, dmgBonus: 0, shockValue: 1, shockAC: '-', mv: "20'", ml: 12, inst: 5, skl: 1, sv: 12 },
         ]},
         { category: 'Undead', templates: [
@@ -1532,6 +1548,7 @@
         ]},
         { category: 'Constructs', templates: [
             { name: 'Automaton', hd: 2, ac: 13, hasArmor: false, bab: 2, attacks: 1, damageMode: 'weapon', dmgBonus: 0, shockOverride: false, mv: "30'", ml: 12, inst: 3, skl: 1, sv: 14 },
+            { name: 'Automaton, Laborer', hd: 2, ac: 15, hasArmor: false, bab: 2, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 6, dmgBonus: 0, shockValue: 1, shockAC: '13', mv: "30'", ml: 12, inst: 3, skl: 1, sv: 14 },
             { name: 'Military Robot', hd: 4, ac: 18, hasArmor: false, bab: 5, attacks: 1, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 2, shockValue: 4, shockAC: '15', mv: "30'", ml: 12, inst: 3, skl: 1, sv: 13 },
             { name: 'Guardian Commander', hd: 8, ac: 18, hasArmor: false, bab: 9, attacks: 2, damageMode: 'dice', diceCount: 1, diceType: 10, dmgBonus: 4, shockValue: 6, shockAC: '18', mv: "40'", ml: 12, inst: 3, skl: 2, sv: 11 },
             { name: 'Warbot', hd: 10, ac: 20, hasArmor: false, bab: 12, attacks: 3, damageMode: 'dice', diceCount: 1, diceType: 12, dmgBonus: 5, shockValue: 7, shockAC: '-', mv: "40'", ml: 12, inst: 2, skl: 2, sv: 10 },
@@ -2235,11 +2252,17 @@
                     const pilcrowCount = (input.match(/¶/g) || []).length;
                     const abilityCount = starCount + pilcrowCount;
 
-                    // Check if it's compact format (has ¶ or no spaces between values)
-                    const hasCompactFormat = input.includes('¶') || !/\s{2,}/.test(input);
+                    // Check format: compact (no spaces between values), double-spaced, or single-spaced
+                    const hasDoubleSpaces = /\s{2,}/.test(input);
+                    const hasPilcrow = input.includes('¶');
+                    // Single-space format: no double-spaces, no pilcrow, but has " +digit" (BAB token)
+                    const isSingleSpaceFormat = !hasPilcrow && !hasDoubleSpaces && /\s\+\d/.test(input);
+                    const hasCompactFormat = hasPilcrow || (!isSingleSpaceFormat && !hasDoubleSpaces);
 
                     let parsed;
-                    if (hasCompactFormat) {
+                    if (isSingleSpaceFormat) {
+                        parsed = this.parseSingleSpaceStatblock(input);
+                    } else if (hasCompactFormat) {
                         parsed = this.parseCompactStatblock(input);
                     } else {
                         parsed = this.parseSpacedStatblock(input);
@@ -2337,6 +2360,48 @@
                     ...dmgParsed, ...shockParsed,
                     mv, ml, inst, skl, sv
                 };
+            },
+
+            parseSingleSpaceStatblock(input) {
+                // Format: Name HD AC +BAB DMG SHOCK MV ML INST +SKL SV
+                // Name can contain spaces; all other fields are single space-separated tokens.
+                // Identify BAB by finding first token matching +digit (starting from index 2).
+                const tokens = input.split(/\s+/).map(t => t.trim()).filter(t => t);
+
+                let babIdx = -1;
+                for (let i = 2; i < tokens.length - 5; i++) {
+                    if (/^\+\d/.test(tokens[i])) { babIdx = i; break; }
+                }
+                if (babIdx < 2) return null;
+
+                const name = tokens.slice(0, babIdx - 2).join(' ').replace(/[\*¶]/g, '').trim();
+
+                const hdMatch = tokens[babIdx - 2].match(/(\d+)/);
+                const hd = hdMatch ? parseInt(hdMatch[1]) : 1;
+
+                const acMatch = tokens[babIdx - 1].match(/(\d+)(a?)(s?)/);
+                const ac = acMatch ? parseInt(acMatch[1]) : 10;
+                const hasArmor = acMatch ? acMatch[2] === 'a' : false;
+                const hasShield = acMatch ? acMatch[3] === 's' : false;
+
+                const babMatch = tokens[babIdx].match(/\+(\d+)(?:x(\d+))?/);
+                const bab = babMatch ? parseInt(babMatch[1]) : 0;
+                const attacks = babMatch && babMatch[2] ? parseInt(babMatch[2]) : 1;
+
+                const rest = tokens.slice(babIdx + 1);
+                if (rest.length < 6) return null;
+
+                const dmgParsed = this.parseDamage(rest[0]);
+                const shockParsed = this.parseShock(rest[1]);
+                const mv = rest[2] || "30'";
+                const ml = parseInt(rest[3]) || 7;
+                const inst = parseInt(rest[4]) || 5;
+                const sklMatch = rest[5] ? rest[5].match(/\+?(\d+)/) : null;
+                const skl = sklMatch ? parseInt(sklMatch[1]) : 1;
+                const svMatch = rest[6] ? rest[6].match(/(\d+)/) : null;
+                const sv = svMatch ? parseInt(svMatch[1]) : 15;
+
+                return { name, hd, ac, hasArmor, hasShield, bab, attacks, ...dmgParsed, ...shockParsed, mv, ml, inst, skl, sv };
             },
 
             parseCompactStatblock(input) {
@@ -3004,5 +3069,12 @@
             }
         };
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
+            new bootstrap.Popover(el, { container: 'body' });
+        });
+    });
 </script>
 {% endblock %}

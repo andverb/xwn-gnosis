@@ -177,10 +177,10 @@
                     this.showResult = true;
                     this.triggerFlash();
 
-                    // Longer timeout for multiple attacks (2 extra seconds per attack)
+                    // Exponential timeout: each additional attack multiplies display time
                     this.resultTimeout = setTimeout(() => {
                         this.showResult = false;
-                    }, 5000 + (count * 2000));
+                    }, Math.round(5000 * Math.pow(1.35, count - 1)));
 
                     return attacks;
                 },
