@@ -26,6 +26,7 @@ WEAPONS_FILE = DATA_DIR / "wwn_weapons.json"
 SPELLS_FILE = DATA_DIR / "wwn_spells.json"
 FOCI_FILE = DATA_DIR / "wwn_foci.json"
 EQUIPMENT_FILE = DATA_DIR / "wwn_equipment.json"
+FACTION_ASSETS_FILE = DATA_DIR / "wwn_faction_assets.json"
 
 
 def get_language(request):
@@ -220,6 +221,31 @@ async def combat_tracker(request):
             # Pre-serialize to JSON for safe embedding in <script> tags
             "weapons_json": json.dumps(weapons_data["weapons"]),
             "weapon_traits_json": json.dumps(weapons_data["traits"]),
+        },
+    )
+
+
+@lru_cache
+def get_faction_assets_data() -> dict:
+    """Load faction assets data from JSON file (cached)."""
+    if FACTION_ASSETS_FILE.exists():
+        with open(FACTION_ASSETS_FILE) as f:
+            return json.load(f)
+    return {"assets": [], "tags": [], "goals": [], "hp_table": []}
+
+
+async def faction_tracker(request):
+    """WWN Faction Tracker - faction turn management and logging."""
+    current_lang = get_language(request)
+    faction_data = get_faction_assets_data()
+
+    return render(
+        request,
+        "tools/wwn/faction-tracker/faction_tracker.html",
+        {
+            "current_lang": current_lang,
+            "other_lang": get_other_lang(current_lang),
+            "faction_assets_json": json.dumps(faction_data),
         },
     )
 

@@ -1,0 +1,2361 @@
+{% extends "tools/base.html" %}
+
+{% block title %}Faction Tracker - Gnosis{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* ===== Layout ===== */
+    .faction-tracker {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ===== Header bar ===== */
+    .tracker-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .tracker-header .campaign-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--bs-body-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .tracker-header .campaign-name:hover,
+    .tracker-header .campaign-name:focus {
+        border-color: var(--bs-border-color);
+        background: var(--bs-tertiary-bg);
+    }
+
+    .tracker-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    /* ===== Faction color palette ===== */
+    .faction-color-0 { --faction-color: #e74c3c; }
+    .faction-color-1 { --faction-color: #3498db; }
+    .faction-color-2 { --faction-color: #2ecc71; }
+    .faction-color-3 { --faction-color: #f39c12; }
+    .faction-color-4 { --faction-color: #9b59b6; }
+    .faction-color-5 { --faction-color: #1abc9c; }
+
+    /* ===== Faction cards ===== */
+    .faction-card {
+        border-left: 4px solid var(--faction-color);
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-left: 4px solid var(--faction-color);
+        border-radius: var(--bs-border-radius);
+        margin-bottom: 0.75rem;
+    }
+
+    .faction-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--bs-border-color);
+        flex-wrap: wrap;
+    }
+
+    .faction-name {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--faction-color);
+    }
+
+    .faction-stats {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        font-size: 0.85rem;
+    }
+
+    .faction-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+    }
+
+    .faction-stat-label {
+        font-weight: 600;
+        color: var(--bs-secondary-color);
+    }
+
+    .faction-stat-value {
+        font-weight: 700;
+    }
+
+    .faction-card-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .faction-card-body {
+        padding: 0.75rem 1rem;
+    }
+
+    /* HP bar */
+    .hp-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hp-bar {
+        flex: 1;
+        height: 8px;
+        background: var(--bs-tertiary-bg);
+        border-radius: 4px;
+        overflow: hidden;
+        max-width: 200px;
+    }
+
+    .hp-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+
+    .hp-bar-fill.hp-high { background: var(--bs-success); }
+    .hp-bar-fill.hp-mid { background: var(--bs-warning); }
+    .hp-bar-fill.hp-low { background: var(--bs-danger); }
+
+    .hp-text {
+        font-size: 0.8rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* Goal & treasure row */
+    .faction-info-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .faction-treasure {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-weight: 600;
+    }
+
+    .faction-goal {
+        color: var(--bs-secondary-color);
+    }
+
+    .faction-tags .badge {
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    /* ===== Asset list ===== */
+    .asset-list {
+        margin-top: 0.5rem;
+    }
+
+    .asset-list-grid {
+        display: grid;
+        grid-template-columns: minmax(120px, 1fr) 70px 90px auto;
+        gap: 0.25rem 0.5rem;
+        align-items: center;
+        font-size: 0.82rem;
+    }
+
+    .asset-row {
+        display: contents;
+        cursor: pointer;
+    }
+
+    .asset-row > * {
+        padding: 0.35rem 0.25rem;
+    }
+
+    .asset-row:hover > * {
+        background: var(--bs-tertiary-bg);
+    }
+
+    .asset-row.expanded > * {
+        background: var(--bs-tertiary-bg);
+    }
+
+    .asset-detail-wrapper {
+        grid-column: 1 / -1;
+    }
+
+    /* (hover/expanded handled via display:contents > * selectors above) */
+
+    .asset-name {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .asset-hp-bar {
+        height: 6px;
+        background: var(--bs-tertiary-bg);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .asset-hp-bar-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+
+    .asset-location {
+        color: var(--bs-secondary-color);
+        font-size: 0.78rem;
+    }
+
+    .asset-qualities {
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+    }
+
+    .asset-quality {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.35rem;
+        border-radius: 3px;
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
+    }
+
+    .asset-quality-special {
+        cursor: help;
+        border-bottom: 1px dotted var(--bs-secondary-color);
+    }
+
+    .asset-detail {
+        padding: 0.5rem 0.75rem;
+        background: var(--bs-tertiary-bg);
+        border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .asset-detail-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.35rem;
+        flex-wrap: wrap;
+    }
+
+    .asset-detail-desc {
+        color: var(--bs-secondary-color);
+        font-style: italic;
+    }
+
+    /* ===== Turn controls ===== */
+    .turn-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 0;
+        border-top: 1px solid var(--bs-border-color);
+        border-bottom: 1px solid var(--bs-border-color);
+        margin: 1rem 0;
+    }
+
+    /* ===== Turn Log ===== */
+    .turn-log {
+        margin-top: 1rem;
+    }
+
+    .turn-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .turn-title-input {
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--bs-body-color);
+        font-weight: 600;
+        padding: 0.15rem 0.4rem;
+        border-radius: var(--bs-border-radius);
+        font-size: 0.9rem;
+    }
+
+    .turn-title-input:hover,
+    .turn-title-input:focus {
+        border-color: var(--bs-border-color);
+        background: var(--bs-tertiary-bg);
+    }
+
+    .turn-initiative {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .log-faction-block {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--bs-border-color-translucent);
+    }
+
+    .log-faction-name {
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .log-entry {
+        font-size: 0.82rem;
+        padding: 0.15rem 0 0.15rem 1rem;
+        border-left: 2px solid var(--bs-border-color-translucent);
+        margin-bottom: 0.15rem;
+    }
+
+    .log-entry-auto {
+        color: var(--bs-secondary-color);
+    }
+
+    .log-entry-action {
+        font-weight: 500;
+    }
+
+    .log-entry-roll {
+        font-family: monospace;
+        font-size: 0.8rem;
+    }
+
+    .log-entry-note {
+        font-style: italic;
+        color: var(--bs-secondary-color);
+        padding: 0.25rem 0.5rem;
+        margin-top: 0.25rem;
+        border-left: 2px solid var(--faction-color, var(--bs-primary));
+        font-size: 0.8rem;
+    }
+
+    .log-entry-note-input {
+        width: 100%;
+        background: var(--bs-tertiary-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        color: var(--bs-body-color);
+        padding: 0.35rem 0.5rem;
+        font-size: 0.8rem;
+        font-style: italic;
+        resize: vertical;
+        min-height: 2.5rem;
+    }
+
+    .log-entry-xp {
+        color: var(--bs-success);
+        font-weight: 500;
+    }
+
+    /* ===== Run Turn Panel ===== */
+    .run-turn-panel {
+        border: 2px solid var(--faction-color);
+        border-radius: var(--bs-border-radius-lg);
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        background: var(--bs-body-bg);
+    }
+
+    .run-turn-panel h5 {
+        color: var(--faction-color);
+        margin-bottom: 1rem;
+    }
+
+    .auto-result {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0;
+        font-size: 0.85rem;
+    }
+
+    .auto-result .bi-check-circle-fill {
+        color: var(--bs-success);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+    }
+
+    /* ===== Attack sub-flow ===== */
+    .attack-flow {
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        padding: 1rem;
+        margin: 0.75rem 0;
+        background: var(--bs-tertiary-bg);
+    }
+
+    .attack-flow-step {
+        margin-bottom: 0.75rem;
+    }
+
+    .attack-flow-step label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+
+    /* ===== Empty state ===== */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="faction-tracker" x-data="factionTracker()" x-init="init()">
+
+    <!-- Header -->
+    <div class="tracker-header">
+        <input type="text" class="campaign-name"
+               x-model="state.campaignName"
+               @change="save()"
+               placeholder="Campaign Name">
+        <span class="text-body-secondary" x-show="state.currentTurn > 0" x-text="'Turn ' + state.currentTurn"></span>
+
+        <div class="tracker-actions">
+            <button class="btn btn-outline-secondary btn-sm" @click="exportJSON()" title="Export campaign data">
+                <i class="bi bi-download me-1"></i>Export
+            </button>
+            <label class="btn btn-outline-secondary btn-sm mb-0" title="Import campaign data">
+                <i class="bi bi-upload me-1"></i>Import
+                <input type="file" accept=".json" class="d-none" @change="importJSON($event)">
+            </label>
+            <button class="btn btn-outline-primary btn-sm" @click="showAddFaction = true"
+                    :disabled="state.factions.length >= 6">
+                <i class="bi bi-plus-lg me-1"></i>Add Faction
+            </button>
+        </div>
+    </div>
+
+    <!-- Faction Cards -->
+    <template x-if="state.factions.length === 0">
+        <div class="empty-state">
+            <i class="bi bi-flag"></i>
+            <h5>No factions yet</h5>
+            <p>Add your first faction to start tracking the campaign's power players.</p>
+            <button class="btn btn-primary" @click="showAddFaction = true">
+                <i class="bi bi-plus-lg me-1"></i>Add Faction
+            </button>
+        </div>
+    </template>
+
+    <div class="row g-3">
+        <template x-for="faction in state.factions" :key="faction.id">
+            <div class="col-12 col-lg-6">
+                <div class="faction-card" :class="'faction-color-' + faction.color">
+                    <!-- Card Header -->
+                    <div class="faction-card-header">
+                        <span class="faction-name" x-text="faction.name"></span>
+                        <div class="faction-stats">
+                            <span class="faction-stat">
+                                <span class="faction-stat-label">F:</span>
+                                <span class="faction-stat-value" x-text="faction.force"></span>
+                            </span>
+                            <span class="faction-stat">
+                                <span class="faction-stat-label">W:</span>
+                                <span class="faction-stat-value" x-text="faction.wealth"></span>
+                            </span>
+                            <span class="faction-stat">
+                                <span class="faction-stat-label">C:</span>
+                                <span class="faction-stat-value" x-text="faction.cunning"></span>
+                            </span>
+                            <span class="badge bg-secondary" x-text="capitalize(faction.magic)"
+                                  x-show="faction.magic !== 'none'"></span>
+                        </div>
+                        <div class="faction-card-actions">
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    @click="editFaction(faction)" title="Edit faction">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm"
+                                    @click="confirmDeleteFaction(faction)" title="Delete faction">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="faction-card-body">
+                        <!-- HP & Treasure -->
+                        <div class="hp-bar-container">
+                            <span class="hp-text">HP</span>
+                            <div class="hp-bar">
+                                <div class="hp-bar-fill"
+                                     :class="hpBarClass(faction.hp, getMaxHp(faction))"
+                                     :style="'width:' + hpPercent(faction.hp, getMaxHp(faction)) + '%'">
+                                </div>
+                            </div>
+                            <span class="hp-text"
+                                  x-text="faction.hp + '/' + getMaxHp(faction)"></span>
+                            <span class="faction-treasure ms-3">
+                                <i class="bi bi-gem text-warning"></i>
+                                <span x-text="faction.treasure"></span>
+                            </span>
+                            <span class="ms-1 text-body-secondary" style="font-size:0.8rem"
+                                  x-show="faction.xp > 0"
+                                  x-text="'XP: ' + faction.xp"></span>
+                        </div>
+
+                        <!-- Goal -->
+                        <div class="faction-info-row">
+                            <span class="faction-goal" x-show="faction.goal.type"
+                                  style="cursor: help"
+                                  :title="getGoalDescription(faction.goal.type)">
+                                <i class="bi bi-bullseye me-1"></i>
+                                <span x-text="getGoalName(faction.goal.type)"></span>
+                                <template x-if="faction.goal.target > 0">
+                                    <span class="text-body-secondary"
+                                          x-text="' — ' + faction.goal.progress + '/' + faction.goal.target"></span>
+                                </template>
+                            </span>
+                            <!-- Tags -->
+                            <div class="faction-tags" x-show="faction.tags.length > 0">
+                                <template x-for="tag in faction.tags" :key="tag">
+                                    <span class="badge bg-secondary bg-opacity-50 me-1"
+                                          style="cursor: help"
+                                          x-text="capitalize(tag)"
+                                          :title="getTagDescription(tag)"></span>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Asset List -->
+                        <div class="asset-list asset-list-grid" x-show="faction.assets.length > 0">
+                            <template x-for="asset in faction.assets" :key="asset.id">
+                                <div class="asset-row"
+                                     :class="{ expanded: expandedAsset === asset.id }"
+                                     @click="toggleAsset(asset.id)">
+                                    <div class="asset-name">
+                                        <i class="bi bi-chevron-right" style="font-size:0.65rem; transition: transform 0.2s"
+                                           :style="expandedAsset === asset.id ? 'transform:rotate(90deg)' : ''"></i>
+                                        <span x-text="asset.name"></span>
+                                        <span class="text-body-secondary" style="font-size:0.75rem"
+                                              x-text="'(' + asset.hp + '/' + asset.maxHp + ')'"></span>
+                                    </div>
+                                    <div>
+                                        <div class="asset-hp-bar">
+                                            <div class="hp-bar-fill"
+                                                 :class="hpBarClass(asset.hp, asset.maxHp)"
+                                                 :style="'width:' + hpPercent(asset.hp, asset.maxHp) + '%'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="asset-location" x-text="asset.location || '—'"></div>
+                                    <div class="asset-qualities">
+                                        <template x-for="q in getAssetQualities(asset)" :key="q">
+                                            <span class="asset-quality asset-quality-special"
+                                                  :title="getQualityTooltip(q, asset.assetId)"
+                                                  x-text="q"></span>
+                                        </template>
+                                        <span class="asset-quality asset-quality-special" x-show="asset.stealth"
+                                              style="color: var(--bs-info)"
+                                              :title="QUALITY_DESCRIPTIONS['Stealthed']">Stealthed</span>
+                                    </div>
+                                    <!-- Expanded asset detail (spans full grid) -->
+                                    <div class="asset-detail-wrapper" x-show="expandedAsset === asset.id" x-cloak @click.stop>
+                                        <div class="asset-detail">
+                                            <div class="asset-detail-stats">
+                                                <span><strong>Type:</strong> <span x-text="capitalize(asset.type)"></span></span>
+                                                <span><strong>Cost:</strong> <span x-text="getAssetStaticData(asset.assetId)?.cost || '?'"></span></span>
+                                                <template x-if="getAssetStaticData(asset.assetId)?.attack">
+                                                    <span>
+                                                        <strong>Attack:</strong>
+                                                        <span x-text="formatAttack(getAssetStaticData(asset.assetId).attack)"></span>
+                                                    </span>
+                                                </template>
+                                                <template x-if="getAssetStaticData(asset.assetId)?.counter">
+                                                    <span>
+                                                        <strong>Counter:</strong>
+                                                        <span x-text="getAssetStaticData(asset.assetId).counter.damage"></span>
+                                                    </span>
+                                                </template>
+                                            </div>
+                                            <div class="d-flex gap-2 align-items-center mb-1">
+                                                <label class="text-body-secondary" style="font-size:0.78rem">Location:</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                       style="max-width: 200px; font-size: 0.8rem"
+                                                       :value="asset.location"
+                                                       @change="updateAssetLocation(faction.id, asset.id, $event.target.value)"
+                                                       @click.stop>
+                                                <button class="btn btn-outline-danger btn-sm" style="font-size:0.7rem"
+                                                        @click.stop="confirmDeleteAsset(faction, asset)"
+                                                        title="Remove asset">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                            <div class="asset-detail-desc"
+                                                 x-text="getAssetDescription(asset.assetId)"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Add Asset button -->
+                        <button class="btn btn-outline-secondary btn-sm mt-2" style="font-size:0.75rem"
+                                @click.stop="openAddAsset(faction)">
+                            <i class="bi bi-plus me-1"></i>Add Asset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Turn Controls -->
+    <template x-if="state.factions.length > 0">
+        <div class="turn-controls">
+            <button class="btn btn-primary" @click="startTurn()"
+                    :disabled="runningTurn">
+                <i class="bi bi-play-fill me-1"></i>Run Faction Turn
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" @click="showManualEntry = true">
+                <i class="bi bi-pencil-square me-1"></i>Add Manual Entry
+            </button>
+        </div>
+    </template>
+
+    <!-- Run Turn Panel (shown during turn execution) -->
+    <template x-if="runningTurn">
+        <div>
+            <!-- Initiative Phase -->
+            <template x-if="turnPhase === 'initiative'">
+                <div class="run-turn-panel border-primary">
+                    <h5><i class="bi bi-dice-6 me-2"></i>Initiative — Turn <span x-text="state.currentTurn + 1"></span></h5>
+                    <div class="mb-3">
+                        <template x-for="init in turnInitiative" :key="init.factionId">
+                            <div class="d-flex align-items-center gap-2 mb-1"
+                                 :class="'faction-color-' + getFaction(init.factionId).color">
+                                <span class="faction-name" style="min-width:140px"
+                                      x-text="getFaction(init.factionId).name"></span>
+                                <span class="badge bg-secondary" x-text="'1d8 → ' + init.roll"></span>
+                                <button class="btn btn-outline-secondary btn-sm" style="font-size:0.7rem"
+                                        @click="rerollInitiative(init)">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                                <input type="number" class="form-control form-control-sm" style="width:60px; font-size:0.8rem"
+                                       :value="init.roll"
+                                       @change="init.roll = parseInt($event.target.value); sortInitiative()">
+                            </div>
+                        </template>
+                    </div>
+                    <button class="btn btn-primary btn-sm" @click="proceedToFactionTurns()">
+                        <i class="bi bi-arrow-right me-1"></i>Start Turns
+                    </button>
+                </div>
+            </template>
+
+            <!-- Per-Faction Turn -->
+            <template x-if="turnPhase === 'faction'">
+                <div class="run-turn-panel"
+                     :class="'faction-color-' + currentTurnFaction().color">
+                    <h5>
+                        <span x-text="currentTurnFaction().name + '\'s Turn'"></span>
+                        <span class="text-body-secondary" style="font-size:0.8rem"
+                              x-text="'(' + (currentFactionIdx + 1) + '/' + turnInitiative.length + ')'"></span>
+                    </h5>
+
+                    <!-- Auto results: treasure & upkeep -->
+                    <div class="auto-result">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span x-text="'Earned ' + currentAutoTreasure + ' Treasure (½×' + currentTurnFaction().wealth + ' + ¼(' + currentTurnFaction().force + '+' + currentTurnFaction().cunning + ')) → now ' + currentTurnFaction().treasure"></span>
+                    </div>
+                    <template x-for="upkeep in currentUpkeepResults" :key="upkeep.assetId">
+                        <div class="auto-result">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span x-text="upkeep.text"></span>
+                        </div>
+                    </template>
+
+                    <!-- Special abilities -->
+                    <template x-if="currentAbilities.length > 0">
+                        <div class="mt-2 mb-2">
+                            <strong class="d-block mb-1" style="font-size:0.85rem">Special Abilities:</strong>
+                            <template x-for="ability in currentAbilities" :key="ability.assetId">
+                                <div class="d-flex align-items-start gap-2 mb-1 p-2 rounded"
+                                     style="background: var(--bs-tertiary-bg); font-size:0.83rem">
+                                    <div class="flex-grow-1">
+                                        <strong x-text="ability.assetName"></strong>
+                                        <span class="text-body-secondary" x-text="'(' + ability.location + ')'"></span>
+                                        <div class="text-body-secondary" x-text="ability.description" style="font-size:0.78rem"></div>
+                                    </div>
+                                    <div class="d-flex gap-1" x-show="!ability.resolved">
+                                        <button class="btn btn-outline-primary btn-sm" style="font-size:0.7rem"
+                                                @click="resolveAbility(ability, true)">Use</button>
+                                        <button class="btn btn-outline-secondary btn-sm" style="font-size:0.7rem"
+                                                @click="resolveAbility(ability, false)">Skip</button>
+                                    </div>
+                                    <span class="badge" x-show="ability.resolved"
+                                          :class="ability.used ? 'bg-primary' : 'bg-secondary'"
+                                          x-text="ability.used ? 'Used' : 'Skipped'"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Action selection -->
+                    <div class="mt-3" x-show="!currentAction">
+                        <strong class="d-block mb-2" style="font-size:0.85rem">Choose Action:</strong>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline-danger btn-sm" @click="startAction('attack')">
+                                <i class="bi bi-lightning me-1"></i>Attack
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" @click="startAction('move')">
+                                <i class="bi bi-arrows-move me-1"></i>Move
+                            </button>
+                            <button class="btn btn-outline-success btn-sm" @click="startAction('repair')">
+                                <i class="bi bi-wrench me-1"></i>Repair
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm" @click="startAction('expand')">
+                                <i class="bi bi-geo-alt me-1"></i>Expand
+                            </button>
+                            <button class="btn btn-outline-info btn-sm" @click="startAction('create')">
+                                <i class="bi bi-plus-circle me-1"></i>Create
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" @click="startAction('hide')">
+                                <i class="bi bi-eye-slash me-1"></i>Hide
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" @click="startAction('sell')">
+                                <i class="bi bi-cash-coin me-1"></i>Sell
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" @click="startAction('none')">
+                                <i class="bi bi-dash-circle me-1"></i>No Action
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Attack sub-flow -->
+                    <template x-if="currentAction === 'attack'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-lightning me-1"></i>Attack</h6>
+
+                            <!-- Step 1: pick attacking asset -->
+                            <div class="attack-flow-step">
+                                <label>Attacking Asset:</label>
+                                <select class="form-select form-select-sm"
+                                        x-model="attackState.attackerAssetId"
+                                        @change="attackState.step = attackState.attackerAssetId ? 2 : 1">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="asset in getAttackableAssets(currentTurnFaction())" :key="asset.id">
+                                        <option :value="asset.id" x-text="asset.name + ' (' + formatAttack(getAssetStaticData(asset.assetId)?.attack) + ')'"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Step 2: pick target faction -->
+                            <div class="attack-flow-step" x-show="attackState.step >= 2">
+                                <label>Target Faction:</label>
+                                <select class="form-select form-select-sm"
+                                        x-model="attackState.targetFactionId"
+                                        @change="attackState.step = attackState.targetFactionId ? 3 : 2; attackState.defenderAssetId = ''">
+                                    <option value="">Select target...</option>
+                                    <template x-for="f in getEnemyFactions()" :key="f.id">
+                                        <option :value="f.id" x-text="f.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Step 3: defender picks asset -->
+                            <div class="attack-flow-step" x-show="attackState.step >= 3">
+                                <label>Defending Asset:</label>
+                                <select class="form-select form-select-sm"
+                                        x-model="attackState.defenderAssetId">
+                                    <option value="">Select defender...</option>
+                                    <template x-for="asset in getDefendableAssets(attackState.targetFactionId, attackState.attackerAssetId)" :key="asset.id">
+                                        <option :value="asset.id" x-text="asset.name + ' (HP: ' + asset.hp + '/' + asset.maxHp + ')'"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Step 4: Roll -->
+                            <div class="attack-flow-step" x-show="attackState.defenderAssetId && !attackState.rolled">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <button class="btn btn-danger btn-sm" @click="executeAttack()">
+                                        <i class="bi bi-dice-6 me-1"></i>
+                                        <span x-text="'Roll ' + getAttackNotation()"></span>
+                                    </button>
+                                    <span class="text-body-secondary" style="font-size:0.8rem">or</span>
+                                    <div class="d-flex gap-1 align-items-center">
+                                        <input type="number" class="form-control form-control-sm" style="width:60px"
+                                               placeholder="Atk" x-model.number="attackState.manualAtk">
+                                        <span>vs</span>
+                                        <input type="number" class="form-control form-control-sm" style="width:60px"
+                                               placeholder="Def" x-model.number="attackState.manualDef">
+                                        <button class="btn btn-outline-danger btn-sm" @click="executeAttackManual()">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Result -->
+                            <template x-if="attackState.rolled">
+                                <div class="mt-2 p-2 rounded" :class="attackState.hit ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'">
+                                    <div class="fw-bold" x-text="attackState.hit ? '✓ Hit!' : '✗ Miss!'"></div>
+                                    <div class="log-entry-roll" x-text="attackState.rollText"></div>
+                                    <template x-if="attackState.damageText">
+                                        <div x-text="attackState.damageText" class="mt-1"></div>
+                                    </template>
+                                    <button class="btn btn-outline-primary btn-sm mt-2" @click="confirmAttackResult()"
+                                            x-text="attackState.moreAttacks ? 'Attack with Another Asset' : 'Done'"></button>
+                                    <button class="btn btn-outline-secondary btn-sm mt-2" @click="attackState.moreAttacks = true; resetAttackForMore()"
+                                            x-show="!attackState.moreAttacks && getAttackableAssets(currentTurnFaction()).length > 1">
+                                        Add Another Attack
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Move sub-flow -->
+                    <template x-if="currentAction === 'move'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-arrows-move me-1"></i>Move Asset</h6>
+                            <div class="attack-flow-step">
+                                <label>Asset to Move:</label>
+                                <select class="form-select form-select-sm" x-model="moveState.assetId">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="asset in currentTurnFaction().assets" :key="asset.id">
+                                        <option :value="asset.id" x-text="asset.name + ' (' + (asset.location || 'no location') + ')'"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="attack-flow-step" x-show="moveState.assetId">
+                                <label>Destination:</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       x-model="moveState.destination" placeholder="Location name...">
+                            </div>
+                            <button class="btn btn-primary btn-sm mt-2" @click="executeMove()"
+                                    x-show="moveState.assetId && moveState.destination"
+                                    :disabled="!moveState.assetId || !moveState.destination">
+                                Confirm Move
+                            </button>
+                        </div>
+                    </template>
+
+                    <!-- Create sub-flow -->
+                    <template x-if="currentAction === 'create'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-plus-circle me-1"></i>Create Asset</h6>
+                            <div class="attack-flow-step">
+                                <label>Location (must have Base of Influence):</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       x-model="createState.location" placeholder="Location name...">
+                            </div>
+                            <div class="attack-flow-step">
+                                <label>Asset to Purchase:</label>
+                                <select class="form-select form-select-sm" x-model="createState.assetId">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="a in getEligibleAssets(currentTurnFaction())" :key="a.id">
+                                        <option :value="a.id"
+                                                x-text="a.name.en + ' (' + capitalize(a.type) + ' ' + a.attribute_req + ', Cost: ' + a.cost + ', HP: ' + a.hp + ')'"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <template x-if="createState.assetId">
+                                <div class="mt-1" style="font-size:0.83rem">
+                                    <span class="text-body-secondary"
+                                          x-text="'Cost: ' + (getAssetStaticData(createState.assetId)?.cost || '?') + ' Treasure (have ' + currentTurnFaction().treasure + ')'"></span>
+                                </div>
+                            </template>
+                            <button class="btn btn-primary btn-sm mt-2" @click="executeCreate()"
+                                    x-show="createState.assetId && createState.location"
+                                    :disabled="currentTurnFaction().treasure < (getAssetStaticData(createState.assetId)?.cost || 0)">
+                                Purchase Asset
+                            </button>
+                            <div class="mt-2 p-2 rounded bg-success bg-opacity-10" style="font-size:0.83rem"
+                                 x-show="createState.lastCreated">
+                                <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                <span x-text="'Created: ' + createState.lastCreated"></span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Repair sub-flow -->
+                    <template x-if="currentAction === 'repair'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-wrench me-1"></i>Repair Asset</h6>
+                            <div class="attack-flow-step">
+                                <label>Asset to Repair:</label>
+                                <select class="form-select form-select-sm" x-model="repairState.assetId">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="asset in getDamagedAssets(currentTurnFaction())" :key="asset.id">
+                                        <option :value="asset.id"
+                                                x-text="asset.name + ' (HP: ' + asset.hp + '/' + asset.maxHp + ')'"></option>
+                                    </template>
+                                    <option value="__faction__" x-text="'Faction HP (' + currentTurnFaction().hp + '/' + getMaxHp(currentTurnFaction()) + ')'"></option>
+                                </select>
+                            </div>
+                            <template x-if="repairState.assetId">
+                                <div class="mt-1" style="font-size:0.85rem">
+                                    <span x-text="'Cost: 1 Treasure → Heals ' + getRepairAmount(repairState.assetId) + ' HP'"></span>
+                                    <button class="btn btn-success btn-sm ms-2" @click="executeRepair()">Repair</button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Simple action sub-flows (hide, sell, expand, none) -->
+                    <template x-if="currentAction === 'hide'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-eye-slash me-1"></i>Hide Asset (Cunning 3+ required, costs 2 Treasure)</h6>
+                            <div class="attack-flow-step">
+                                <label>Asset to Hide:</label>
+                                <select class="form-select form-select-sm" x-model="simpleActionState.assetId">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="asset in currentTurnFaction().assets.filter(a => !a.stealth)" :key="asset.id">
+                                        <option :value="asset.id" x-text="asset.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-sm mt-2" @click="executeHide()"
+                                    x-show="simpleActionState.assetId"
+                                    :disabled="currentTurnFaction().cunning < 3 || currentTurnFaction().treasure < 2">
+                                Hide Asset (-2 Treasure)
+                            </button>
+                        </div>
+                    </template>
+
+                    <template x-if="currentAction === 'sell'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-cash-coin me-1"></i>Sell Asset</h6>
+                            <div class="attack-flow-step">
+                                <label>Asset to Sell:</label>
+                                <select class="form-select form-select-sm" x-model="simpleActionState.assetId">
+                                    <option value="">Select asset...</option>
+                                    <template x-for="asset in currentTurnFaction().assets" :key="asset.id">
+                                        <option :value="asset.id"
+                                                x-text="asset.name + ' (Refund: ' + getSellValue(asset) + ' Treasure)'"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-sm mt-2" @click="executeSell()"
+                                    x-show="simpleActionState.assetId">
+                                Sell Asset
+                            </button>
+                        </div>
+                    </template>
+
+                    <template x-if="currentAction === 'expand'">
+                        <div class="attack-flow">
+                            <h6><i class="bi bi-geo-alt me-1"></i>Expand Influence</h6>
+                            <div class="attack-flow-step">
+                                <label>Location:</label>
+                                <input type="text" class="form-control form-control-sm"
+                                       x-model="expandState.location" placeholder="Location for new Base...">
+                            </div>
+                            <div class="attack-flow-step" x-show="expandState.location">
+                                <label>Base HP (costs 1 Treasure per HP):</label>
+                                <input type="number" class="form-control form-control-sm" style="width:80px"
+                                       x-model.number="expandState.baseHp" min="1">
+                            </div>
+                            <button class="btn btn-primary btn-sm mt-2" @click="executeExpand()"
+                                    x-show="expandState.location && expandState.baseHp > 0"
+                                    :disabled="currentTurnFaction().treasure < expandState.baseHp">
+                                <span x-text="'Establish Base (-' + expandState.baseHp + ' Treasure)'"></span>
+                            </button>
+                        </div>
+                    </template>
+
+                    <template x-if="currentAction === 'none'">
+                        <div class="mt-2 p-2 rounded text-body-secondary" style="background: var(--bs-tertiary-bg); font-size:0.85rem">
+                            No action this turn.
+                        </div>
+                    </template>
+
+                    <!-- Goal check / select -->
+                    <div class="mt-3" x-show="currentAction">
+                        <!-- Has a goal: show it with Complete button -->
+                        <div class="d-flex align-items-center gap-2" style="font-size:0.85rem"
+                             x-show="currentTurnFaction().goal.type">
+                            <i class="bi bi-bullseye"></i>
+                            <span x-text="'Goal: ' + getGoalName(currentTurnFaction().goal.type)"></span>
+                            <button class="btn btn-outline-success btn-sm" style="font-size:0.75rem"
+                                    @click="completeGoal()">
+                                <i class="bi bi-check me-1"></i>Complete
+                            </button>
+                        </div>
+                        <!-- No goal: show selector -->
+                        <div x-show="!currentTurnFaction().goal.type" style="font-size:0.85rem">
+                            <label class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-bullseye"></i>
+                                <strong>Select New Goal:</strong>
+                            </label>
+                            <select class="form-select form-select-sm" style="max-width:350px"
+                                    @change="setGoal($event.target.value); $event.target.value = ''">
+                                <option value="">No goal this turn...</option>
+                                <template x-for="goal in ASSET_DATA.goals" :key="goal.id">
+                                    <option :value="goal.id" x-text="goal.name.en + ' (Difficulty ' + goal.difficulty + ')'"></option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Spend XP -->
+                    <div class="mt-3" x-show="currentAction && currentTurnFaction().xp > 0">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <strong style="font-size:0.85rem">Spend XP</strong>
+                            <span class="badge bg-success" x-text="currentTurnFaction().xp + ' XP'"></span>
+                        </div>
+                        <template x-for="attr in ['force', 'wealth', 'cunning']" :key="attr">
+                            <div class="d-flex align-items-center gap-2 mb-1" style="font-size:0.83rem">
+                                <span style="min-width:70px; font-weight:600" x-text="capitalize(attr) + ' ' + currentTurnFaction()[attr]"></span>
+                                <span class="text-body-secondary"
+                                      x-text="currentTurnFaction()[attr] >= 8 ? '(max)' : '→ ' + (currentTurnFaction()[attr] + 1) + ' (cost: ' + getXpCostForNext(currentTurnFaction()[attr]) + ' XP)'"></span>
+                                <button class="btn btn-outline-success btn-sm" style="font-size:0.7rem; padding:0.15rem 0.5rem"
+                                        @click="raiseAttribute(attr)"
+                                        :disabled="currentTurnFaction()[attr] >= 8 || currentTurnFaction().xp < getXpCostForNext(currentTurnFaction()[attr])">
+                                    Raise
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- GM Notes -->
+                    <div class="mt-3">
+                        <label class="d-block text-body-secondary mb-1" style="font-size:0.8rem">GM Notes:</label>
+                        <textarea class="log-entry-note-input" x-model="currentFactionNote"
+                                  placeholder="Notable events, adventure hooks, narrative consequences..."></textarea>
+                    </div>
+
+                    <!-- Finish this faction's turn -->
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button class="btn btn-primary btn-sm" @click="finishFactionTurn()"
+                                :disabled="!currentAction">
+                            <span x-text="currentFactionIdx < turnInitiative.length - 1 ? 'Next Faction →' : 'Finish Turn'"></span>
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <!-- Turn Log -->
+    <div class="turn-log" x-show="state.log.length > 0">
+        <h5 class="mb-3"><i class="bi bi-clock-history me-2"></i>Turn Log</h5>
+        <div class="accordion" id="turnLogAccordion">
+            <template x-for="(turn, turnIdx) in [...state.log].reverse()" :key="turn.turn">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" :class="{ collapsed: turnIdx > 0 }"
+                                type="button" data-bs-toggle="collapse"
+                                :data-bs-target="'#turnLog' + turn.turn">
+                            <div class="turn-header">
+                                <strong x-text="'Turn ' + turn.turn"></strong>
+                                <input type="text" class="turn-title-input"
+                                       :value="turn.title"
+                                       @change="updateTurnTitle(turn.turn, $event.target.value)"
+                                       @click.stop
+                                       placeholder="Name this turn...">
+                                <span class="turn-initiative"
+                                      x-text="'Initiative: ' + turn.initiative.map(i => getFaction(i.factionId)?.name + ' (' + i.roll + ')').join(' → ')">
+                                </span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div :id="'turnLog' + turn.turn" class="accordion-collapse collapse"
+                         :class="{ show: turnIdx === 0 }">
+                        <div class="accordion-body">
+                            <template x-for="factionId in turn.initiative.map(i => i.factionId)" :key="factionId">
+                                <div class="log-faction-block"
+                                     :class="'faction-color-' + (getFaction(factionId)?.color || 0)">
+                                    <div class="log-faction-name" style="color: var(--faction-color)"
+                                         x-text="getFaction(factionId)?.name || 'Unknown'"></div>
+                                    <template x-for="(entry, entryIdx) in turn.entries.filter(e => e.factionId === factionId)" :key="factionId + '-' + entryIdx">
+                                        <div>
+                                            <div class="log-entry"
+                                                 :class="{
+                                                     'log-entry-auto': entry.type === 'auto',
+                                                     'log-entry-action': entry.type === 'action',
+                                                     'log-entry-xp': entry.type === 'xp'
+                                                 }">
+                                                <span x-text="entry.text"></span>
+                                                <template x-if="entry.roll">
+                                                    <div class="log-entry-roll" x-text="entry.rollText"></div>
+                                                </template>
+                                                <template x-if="entry.damageText">
+                                                    <div class="log-entry-roll" x-text="entry.damageText"></div>
+                                                </template>
+                                            </div>
+                                            <template x-if="entry.note">
+                                                <div class="log-entry-note" style="border-left-color: var(--faction-color)"
+                                                     x-text="entry.note"></div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Add/Edit Faction Modal -->
+    <div class="modal fade" id="factionModal" tabindex="-1" x-ref="factionModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" x-text="editingFaction ? 'Edit Faction' : 'Add Faction'"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" x-model="factionForm.name" placeholder="Faction name...">
+                    </div>
+                    <div class="mb-3" x-show="!editingFaction">
+                        <label class="form-label">Headquarters Location</label>
+                        <input type="text" class="form-control" x-model="factionForm.headquarters" placeholder="Location name...">
+                        <div class="form-text">All factions start with a Base of Influence at their HQ.</div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <label class="form-label">Force (1-8)</label>
+                            <input type="number" class="form-control" x-model.number="factionForm.force" min="1" max="8">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Wealth (1-8)</label>
+                            <input type="number" class="form-control" x-model.number="factionForm.wealth" min="1" max="8">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Cunning (1-8)</label>
+                            <input type="number" class="form-control" x-model.number="factionForm.cunning" min="1" max="8">
+                        </div>
+                    </div>
+                    <div class="alert alert-info py-2 mb-3" style="font-size:0.85rem"
+                         x-show="!editingFaction">
+                        <strong x-text="getStartingAssetsGuidance(factionForm.force, factionForm.wealth, factionForm.cunning).size + ' Faction'"></strong>
+                        <span> — </span>
+                        <span x-text="getStartingAssetsGuidance(factionForm.force, factionForm.wealth, factionForm.cunning).text"></span>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Magic</label>
+                            <select class="form-select" x-model="factionForm.magic">
+                                <option value="none">None</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Treasure</label>
+                            <input type="number" class="form-control" x-model.number="factionForm.treasure" min="0">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">HP (leave blank for auto-calc)</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="number" class="form-control" style="max-width:100px"
+                                   x-model.number="factionForm.hp" min="1">
+                            <span class="text-body-secondary" style="font-size:0.85rem"
+                                  x-text="'Max: ' + calcMaxHp(factionForm.force, factionForm.wealth, factionForm.cunning)"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tags</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <template x-for="tag in ASSET_DATA.tags" :key="tag.id">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           :id="'tag-' + tag.id"
+                                           :value="tag.id"
+                                           :checked="factionForm.tags.includes(tag.id)"
+                                           @change="toggleTag(tag.id)">
+                                    <label class="form-check-label" :for="'tag-' + tag.id"
+                                           x-text="tag.name.en"
+                                           :title="tag.description.en"
+                                           data-bs-toggle="tooltip"></label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Goal</label>
+                        <select class="form-select" x-model="factionForm.goalType">
+                            <option value="">No goal</option>
+                            <template x-for="goal in ASSET_DATA.goals" :key="goal.id">
+                                <option :value="goal.id" x-text="goal.name.en + ' (Difficulty ' + goal.difficulty + ')'"></option>
+                            </template>
+                        </select>
+                        <div class="form-text" x-show="factionForm.goalType"
+                             x-text="ASSET_DATA.goals?.find(g => g.id === factionForm.goalType)?.description?.en || ''"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click="saveFaction()" :disabled="!factionForm.name">
+                        <span x-text="editingFaction ? 'Save Changes' : 'Add Faction'"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Asset Modal -->
+    <div class="modal fade" id="addAssetModal" tabindex="-1" x-ref="addAssetModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" x-text="'Add Asset to ' + (addAssetFaction?.name || '')"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Asset</label>
+                        <select class="form-select" x-model="addAssetForm.assetId">
+                            <option value="">Select asset...</option>
+                            <optgroup label="Cunning">
+                                <template x-for="a in getEligibleAssetsByType(addAssetFaction, 'cunning')" :key="a.id">
+                                    <option :value="a.id" x-text="a.name.en + ' (C' + a.attribute_req + ', Cost: ' + a.cost + ', HP: ' + a.hp + ')'"></option>
+                                </template>
+                            </optgroup>
+                            <optgroup label="Force">
+                                <template x-for="a in getEligibleAssetsByType(addAssetFaction, 'force')" :key="a.id">
+                                    <option :value="a.id" x-text="a.name.en + ' (F' + a.attribute_req + ', Cost: ' + a.cost + ', HP: ' + a.hp + ')'"></option>
+                                </template>
+                            </optgroup>
+                            <optgroup label="Wealth">
+                                <template x-for="a in getEligibleAssetsByType(addAssetFaction, 'wealth')" :key="a.id">
+                                    <option :value="a.id" x-text="a.name.en + ' (W' + a.attribute_req + ', Cost: ' + a.cost + ', HP: ' + a.hp + ')'"></option>
+                                </template>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" x-model="addAssetForm.location" placeholder="Asset location...">
+                    </div>
+                    <template x-if="addAssetForm.assetId">
+                        <div class="p-2 rounded" style="background: var(--bs-tertiary-bg); font-size:0.85rem">
+                            <div x-text="getAssetDescription(addAssetForm.assetId)"></div>
+                        </div>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click="confirmAddAsset()"
+                            :disabled="!addAssetForm.assetId">
+                        Add Asset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Log Entry Modal -->
+    <div class="modal fade" id="manualEntryModal" tabindex="-1" x-ref="manualEntryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Manual Log Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Faction (optional)</label>
+                        <select class="form-select" x-model="manualEntryForm.factionId">
+                            <option value="">No faction</option>
+                            <template x-for="f in state.factions" :key="f.id">
+                                <option :value="f.id" x-text="f.name"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Entry</label>
+                        <textarea class="form-control" x-model="manualEntryForm.text" rows="3"
+                                  placeholder="What happened..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click="addManualEntry()"
+                            :disabled="!manualEntryForm.text">
+                        Add Entry
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" x-ref="deleteConfirmModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p x-text="deleteConfirmText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" @click="executeDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Static asset data from Django
+const FACTION_ASSET_DATA = {{ faction_assets_json|safe }};
+
+function factionTracker() {
+    return {
+        // ===== Static Data =====
+        ASSET_DATA: FACTION_ASSET_DATA,
+        HP_TABLE: FACTION_ASSET_DATA.hp_table || [],
+
+        // ===== Persistent State =====
+        state: {
+            version: 1,
+            campaignName: '',
+            currentTurn: 0,
+            factions: [],
+            log: []
+        },
+
+        // ===== UI State =====
+        expandedAsset: null,
+        showAddFaction: false,
+        editingFaction: null,
+        showManualEntry: false,
+
+        // Faction form
+        factionForm: { name: '', force: 3, wealth: 3, cunning: 3, magic: 'none', treasure: 4, hp: 0, tags: [], goalType: '', headquarters: '' },
+
+        // Add asset
+        addAssetFaction: null,
+        addAssetForm: { assetId: '', location: '' },
+
+        // Delete confirmation
+        deleteConfirmText: '',
+        deleteCallback: null,
+
+        // Manual entry
+        manualEntryForm: { factionId: '', text: '' },
+
+        // ===== Turn Execution State =====
+        runningTurn: false,
+        turnPhase: '', // 'initiative' | 'faction'
+        turnInitiative: [],
+        currentFactionIdx: 0,
+        currentAction: null,
+        currentFactionNote: '',
+        currentAutoTreasure: 0,
+        currentUpkeepResults: [],
+        currentAbilities: [],
+        currentTurnEntries: [], // entries being built for current faction
+
+        // Attack state
+        attackState: { attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false },
+
+        // Move state
+        moveState: { assetId: '', destination: '' },
+
+        // Create state
+        createState: { assetId: '', location: '', lastCreated: '' },
+
+        // Repair state
+        repairState: { assetId: '' },
+
+        // Expand state
+        expandState: { location: '', baseHp: 1 },
+
+        // Simple action state (hide, sell)
+        simpleActionState: { assetId: '' },
+
+        // All turn entries for the full turn being constructed
+        fullTurnEntries: [],
+
+        // ===== Init =====
+        init() {
+            this.loadFromStorage();
+
+            // Watch for modal triggers
+            this.$watch('showAddFaction', (val) => {
+                if (val) {
+                    this.editingFaction = null;
+                    this.resetFactionForm();
+                    this.openModal('factionModal');
+                    this.showAddFaction = false;
+                }
+            });
+            this.$watch('showManualEntry', (val) => {
+                if (val) {
+                    this.manualEntryForm = { factionId: '', text: '' };
+                    this.openModal('manualEntryModal');
+                    this.showManualEntry = false;
+                }
+            });
+        },
+
+        // ===== Storage =====
+        save() {
+            localStorage.setItem('factionTrackerState', JSON.stringify(this.state));
+        },
+
+        loadFromStorage() {
+            const saved = localStorage.getItem('factionTrackerState');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    this.state = { ...this.state, ...data };
+                } catch (e) {
+                    console.error('Failed to load faction tracker state:', e);
+                }
+            }
+        },
+
+        // ===== Export / Import =====
+        exportJSON() {
+            const blob = new Blob([JSON.stringify(this.state, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (this.state.campaignName || 'faction-tracker') + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        },
+
+        importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.factions) {
+                        this.state = { ...this.state, ...data };
+                        this.save();
+                    }
+                } catch (err) {
+                    alert('Invalid JSON file');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        },
+
+        // ===== Helpers =====
+        uuid() {
+            return crypto.randomUUID();
+        },
+
+        capitalize(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+
+        openModal(refName) {
+            this.$nextTick(() => {
+                const el = this.$refs[refName];
+                if (el) {
+                    const modal = bootstrap.Modal.getOrCreateInstance(el);
+                    modal.show();
+                }
+            });
+        },
+
+        closeModal(refName) {
+            const el = this.$refs[refName];
+            if (el) {
+                const modal = bootstrap.Modal.getInstance(el);
+                if (modal) modal.hide();
+            }
+        },
+
+        // ===== HP Calculations =====
+        getHpForRating(rating) {
+            const entry = this.HP_TABLE.find(e => e.rating === rating);
+            return entry ? entry.hp : rating;
+        },
+
+        getMaxHp(faction) {
+            return this.getHpForRating(faction.force) + this.getHpForRating(faction.wealth) + this.getHpForRating(faction.cunning);
+        },
+
+        calcMaxHp(f, w, c) {
+            return this.getHpForRating(f || 1) + this.getHpForRating(w || 1) + this.getHpForRating(c || 1);
+        },
+
+        getXpCostForNext(currentRating) {
+            const entry = this.HP_TABLE.find(e => e.rating === currentRating + 1);
+            return entry ? entry.xp_cost : Infinity;
+        },
+
+        getStartingAssetsGuidance(f, w, c) {
+            const best = Math.max(f || 1, w || 1, c || 1);
+            if (best <= 4) return { size: 'Small', text: 'No starting assets' };
+            if (best <= 6) return { size: 'Medium', text: '4 assets (2 from highest attribute + 2 from others)' };
+            return { size: 'Large', text: '8 assets (4 from highest attribute + 4 from others)' };
+        },
+
+        hpPercent(current, max) {
+            if (max <= 0) return 0;
+            return Math.min(100, Math.max(0, (current / max) * 100));
+        },
+
+        hpBarClass(current, max) {
+            const pct = this.hpPercent(current, max);
+            if (pct > 60) return 'hp-high';
+            if (pct > 25) return 'hp-mid';
+            return 'hp-low';
+        },
+
+        // ===== Faction CRUD =====
+        resetFactionForm() {
+            this.factionForm = { name: '', force: 3, wealth: 3, cunning: 3, magic: 'none', treasure: 4, hp: 0, tags: [], goalType: '', headquarters: '' };
+        },
+
+        editFaction(faction) {
+            this.editingFaction = faction.id;
+            this.factionForm = {
+                name: faction.name,
+                force: faction.force,
+                wealth: faction.wealth,
+                cunning: faction.cunning,
+                magic: faction.magic,
+                treasure: faction.treasure,
+                hp: faction.hp,
+                tags: [...faction.tags],
+                goalType: faction.goal.type
+            };
+            this.openModal('factionModal');
+        },
+
+        toggleTag(tagId) {
+            const idx = this.factionForm.tags.indexOf(tagId);
+            if (idx >= 0) this.factionForm.tags.splice(idx, 1);
+            else this.factionForm.tags.push(tagId);
+        },
+
+        saveFaction() {
+            if (this.editingFaction) {
+                const faction = this.state.factions.find(f => f.id === this.editingFaction);
+                if (faction) {
+                    faction.name = this.factionForm.name;
+                    faction.force = this.factionForm.force;
+                    faction.wealth = this.factionForm.wealth;
+                    faction.cunning = this.factionForm.cunning;
+                    faction.magic = this.factionForm.magic;
+                    faction.treasure = this.factionForm.treasure;
+                    faction.hp = this.factionForm.hp || this.getMaxHp(faction);
+                    faction.tags = [...this.factionForm.tags];
+                    faction.goal = { type: this.factionForm.goalType, progress: faction.goal?.progress || 0, target: faction.goal?.target || 0 };
+                }
+            } else {
+                const newFaction = {
+                    id: this.uuid(),
+                    name: this.factionForm.name,
+                    color: this.state.factions.length,
+                    force: this.factionForm.force,
+                    wealth: this.factionForm.wealth,
+                    cunning: this.factionForm.cunning,
+                    magic: this.factionForm.magic,
+                    hp: this.factionForm.hp || this.calcMaxHp(this.factionForm.force, this.factionForm.wealth, this.factionForm.cunning),
+                    treasure: this.factionForm.treasure,
+                    xp: 0,
+                    tags: [...this.factionForm.tags],
+                    goal: { type: this.factionForm.goalType, progress: 0, target: 0 },
+                    assets: []
+                };
+                this.state.factions.push(newFaction);
+
+                // Auto-create HQ Base of Influence
+                const hqLocation = this.factionForm.headquarters || newFaction.name + ' HQ';
+                const hqMaxHp = this.getMaxHp(newFaction);
+                newFaction.assets.push({
+                    id: this.uuid(),
+                    assetId: 'base-of-influence',
+                    name: 'Base of Influence',
+                    type: 'special',
+                    hp: hqMaxHp,
+                    maxHp: hqMaxHp,
+                    location: hqLocation,
+                    qualities: [],
+                    stealth: false,
+                    notes: '',
+                    isHQ: true
+                });
+            }
+            this.save();
+            this.closeModal('factionModal');
+        },
+
+        confirmDeleteFaction(faction) {
+            this.deleteConfirmText = `Delete faction "${faction.name}" and all its assets?`;
+            this.deleteCallback = () => {
+                this.state.factions = this.state.factions.filter(f => f.id !== faction.id);
+                this.save();
+            };
+            this.openModal('deleteConfirmModal');
+        },
+
+        confirmDeleteAsset(faction, asset) {
+            this.deleteConfirmText = `Remove "${asset.name}" from ${faction.name}?`;
+            this.deleteCallback = () => {
+                faction.assets = faction.assets.filter(a => a.id !== asset.id);
+                this.save();
+            };
+            this.openModal('deleteConfirmModal');
+        },
+
+        executeDelete() {
+            if (this.deleteCallback) {
+                this.deleteCallback();
+                this.deleteCallback = null;
+            }
+            this.closeModal('deleteConfirmModal');
+        },
+
+        // ===== Asset Helpers =====
+        getAssetStaticData(assetId) {
+            return this.ASSET_DATA.assets?.find(a => a.id === assetId) || null;
+        },
+
+        getAssetDescription(assetId) {
+            const data = this.getAssetStaticData(assetId);
+            return data?.description?.en || '';
+        },
+
+        getAssetQualities(asset) {
+            const data = this.getAssetStaticData(asset.assetId);
+            const baseQualities = data?.qualities || [];
+            const extra = asset.qualities || [];
+            const all = [...new Set([...baseQualities, ...extra])];
+            return all.map(q => this.capitalize(q));
+        },
+
+        formatAttack(attack) {
+            if (!attack) return 'None';
+            const atk = attack.atk_attr === 'special' ? 'Special' :
+                        attack.atk_attr.charAt(0).toUpperCase();
+            const def = attack.def_attr === 'special' ? 'Special' :
+                        attack.def_attr.charAt(0).toUpperCase();
+            const dmg = attack.damage === 'special' ? 'Special' : attack.damage;
+            return `${atk} v. ${def} / ${dmg}`;
+        },
+
+        toggleAsset(assetId) {
+            this.expandedAsset = this.expandedAsset === assetId ? null : assetId;
+        },
+
+        updateAssetLocation(factionId, assetId, location) {
+            const faction = this.state.factions.find(f => f.id === factionId);
+            if (faction) {
+                const asset = faction.assets.find(a => a.id === assetId);
+                if (asset) {
+                    asset.location = location;
+                    this.save();
+                }
+            }
+        },
+
+        // ===== Asset CRUD =====
+        openAddAsset(faction) {
+            this.addAssetFaction = faction;
+            this.addAssetForm = { assetId: '', location: '' };
+            this.openModal('addAssetModal');
+        },
+
+        getEligibleAssets(faction) {
+            if (!faction) return [];
+            return (this.ASSET_DATA.assets || []).filter(a => {
+                const attrVal = faction[a.type] || 0;
+                if (a.attribute_req > attrVal) return false;
+                const magicOrder = ['none', 'low', 'medium', 'high'];
+                if (magicOrder.indexOf(a.magic_req) > magicOrder.indexOf(faction.magic || 'none')) return false;
+                return true;
+            });
+        },
+
+        getEligibleAssetsByType(faction, type) {
+            return this.getEligibleAssets(faction).filter(a => a.type === type);
+        },
+
+        confirmAddAsset() {
+            if (!this.addAssetFaction || !this.addAssetForm.assetId) return;
+            const assetData = this.getAssetStaticData(this.addAssetForm.assetId);
+            if (!assetData) return;
+
+            const newAsset = {
+                id: this.uuid(),
+                assetId: this.addAssetForm.assetId,
+                name: assetData.name.en,
+                type: assetData.type,
+                hp: assetData.hp,
+                maxHp: assetData.hp,
+                location: this.addAssetForm.location,
+                qualities: [],
+                stealth: false,
+                notes: ''
+            };
+
+            this.addAssetFaction.assets.push(newAsset);
+            this.save();
+            this.closeModal('addAssetModal');
+        },
+
+        // ===== Reference Data Helpers =====
+        QUALITY_DESCRIPTIONS: {
+            'Subtle': 'Can move to locations normally prohibited by ruling powers. Must be Attacked to dislodge or moved out by owner.',
+            'Action': 'Has a free action special ability that can be triggered each turn.',
+            'Stealthed': 'Moves freely to any location within reach. Cannot be Attacked until Stealth is lost (by being discovered or by Attacking).',
+        },
+
+        getQualityTooltip(quality, assetId) {
+            if (quality === 'Special') return this.getAssetDescription(assetId);
+            return this.QUALITY_DESCRIPTIONS[quality] || '';
+        },
+
+        getGoalName(goalId) {
+            if (!goalId) return '';
+            const goal = this.ASSET_DATA.goals?.find(g => g.id === goalId);
+            return goal?.name?.en || goalId;
+        },
+
+        getGoalDescription(goalId) {
+            if (!goalId) return '';
+            const goal = this.ASSET_DATA.goals?.find(g => g.id === goalId);
+            if (!goal) return '';
+            return `${goal.description?.en || ''} (Difficulty: ${goal.difficulty})`;
+        },
+
+        getTagDescription(tagId) {
+            const tag = this.ASSET_DATA.tags?.find(t => t.id === tagId);
+            return tag?.description?.en || '';
+        },
+
+        getFaction(factionId) {
+            return this.state.factions.find(f => f.id === factionId);
+        },
+
+        // ===== Turn Execution =====
+        startTurn() {
+            this.runningTurn = true;
+            this.turnPhase = 'initiative';
+            this.fullTurnEntries = [];
+            this.currentFactionIdx = 0;
+
+            // Roll initiative (1d8) for each faction
+            this.turnInitiative = this.state.factions.map(f => ({
+                factionId: f.id,
+                roll: Math.floor(Math.random() * 8) + 1
+            }));
+            this.sortInitiative();
+        },
+
+        sortInitiative() {
+            this.turnInitiative.sort((a, b) => b.roll - a.roll);
+        },
+
+        rerollInitiative(init) {
+            init.roll = Math.floor(Math.random() * 8) + 1;
+            this.sortInitiative();
+        },
+
+        proceedToFactionTurns() {
+            this.turnPhase = 'faction';
+            this.currentFactionIdx = 0;
+            this.setupCurrentFactionTurn();
+        },
+
+        currentTurnFaction() {
+            if (this.turnInitiative.length === 0) return this.state.factions[0];
+            const init = this.turnInitiative[this.currentFactionIdx];
+            return this.getFaction(init?.factionId) || this.state.factions[0];
+        },
+
+        setupCurrentFactionTurn() {
+            const faction = this.currentTurnFaction();
+            this.currentAction = null;
+            this.currentFactionNote = '';
+            this.currentTurnEntries = [];
+
+            // Reset sub-flow states
+            this.attackState = { attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false };
+            this.moveState = { assetId: '', destination: '' };
+            this.createState = { assetId: '', location: '', lastCreated: '' };
+            this.repairState = { assetId: '' };
+            this.expandState = { location: '', baseHp: 1 };
+            this.simpleActionState = { assetId: '' };
+
+            // Step 1: Auto-calc treasure
+            const treasureEarned = Math.ceil(faction.wealth / 2 + (faction.force + faction.cunning) / 4);
+            faction.treasure += treasureEarned;
+            this.currentAutoTreasure = treasureEarned;
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'auto',
+                text: `Earned ${treasureEarned} Treasure → now ${faction.treasure}`
+            });
+
+            // Step 2: Pay upkeep
+            this.currentUpkeepResults = [];
+            for (const asset of faction.assets) {
+                const data = this.getAssetStaticData(asset.assetId);
+                if (data && data.upkeep > 0) {
+                    if (faction.treasure >= data.upkeep) {
+                        faction.treasure -= data.upkeep;
+                        this.currentUpkeepResults.push({
+                            assetId: asset.id,
+                            text: `Upkeep: −${data.upkeep} ${asset.name} → now ${faction.treasure}`
+                        });
+                        this.currentTurnEntries.push({
+                            factionId: faction.id,
+                            type: 'auto',
+                            text: `Upkeep: −${data.upkeep} (${asset.name})`
+                        });
+                    } else {
+                        this.currentUpkeepResults.push({
+                            assetId: asset.id,
+                            text: `⚠ Cannot pay upkeep for ${asset.name} (needs ${data.upkeep}, has ${faction.treasure})`
+                        });
+                        this.currentTurnEntries.push({
+                            factionId: faction.id,
+                            type: 'auto',
+                            text: `⚠ Cannot pay upkeep for ${asset.name}!`
+                        });
+                    }
+                }
+            }
+
+            // Step 3: Identify special abilities
+            this.currentAbilities = [];
+            for (const asset of faction.assets) {
+                const data = this.getAssetStaticData(asset.assetId);
+                if (data && data.qualities?.includes('special')) {
+                    this.currentAbilities.push({
+                        assetId: asset.id,
+                        assetName: asset.name,
+                        location: asset.location || '—',
+                        description: data.description?.en || '',
+                        resolved: false,
+                        used: false
+                    });
+                }
+            }
+
+            this.save();
+        },
+
+        resolveAbility(ability, used) {
+            ability.resolved = true;
+            ability.used = used;
+            if (used) {
+                this.currentTurnEntries.push({
+                    factionId: this.currentTurnFaction().id,
+                    type: 'ability',
+                    text: `Ability: ${ability.assetName} — used`
+                });
+            }
+        },
+
+        // ===== Action Execution =====
+        startAction(action) {
+            this.currentAction = action;
+            if (action === 'none') {
+                this.currentTurnEntries.push({
+                    factionId: this.currentTurnFaction().id,
+                    type: 'action',
+                    action: 'none',
+                    text: 'No action taken'
+                });
+            }
+        },
+
+        getAttackableAssets(faction) {
+            return faction.assets.filter(a => {
+                const data = this.getAssetStaticData(a.assetId);
+                return data?.attack != null;
+            });
+        },
+
+        getEnemyFactions() {
+            const currentId = this.currentTurnFaction().id;
+            return this.state.factions.filter(f => f.id !== currentId);
+        },
+
+        getDefendableAssets(factionId, attackerAssetId) {
+            const faction = this.getFaction(factionId);
+            if (!faction) return [];
+            // All assets at appropriate location can defend
+            return faction.assets;
+        },
+
+        getAttackNotation() {
+            const attacker = this.currentTurnFaction().assets.find(a => a.id === this.attackState.attackerAssetId);
+            if (!attacker) return '';
+            const data = this.getAssetStaticData(attacker.assetId);
+            if (!data?.attack) return '';
+            return `${this.capitalize(data.attack.atk_attr)} vs ${this.capitalize(data.attack.def_attr)}`;
+        },
+
+        executeAttack() {
+            const faction = this.currentTurnFaction();
+            const attacker = faction.assets.find(a => a.id === this.attackState.attackerAssetId);
+            const targetFaction = this.getFaction(this.attackState.targetFactionId);
+            const defender = targetFaction?.assets.find(a => a.id === this.attackState.defenderAssetId);
+            if (!attacker || !targetFaction || !defender) return;
+
+            const atkData = this.getAssetStaticData(attacker.assetId);
+            const defData = this.getAssetStaticData(defender.assetId);
+            if (!atkData?.attack) return;
+
+            const atkAttr = faction[atkData.attack.atk_attr] || 0;
+            const defAttr = targetFaction[atkData.attack.def_attr] || 0;
+
+            const atkRoll = Math.floor(Math.random() * 10) + 1;
+            const defRoll = Math.floor(Math.random() * 10) + 1;
+            const atkTotal = atkRoll + atkAttr;
+            const defTotal = defRoll + defAttr;
+
+            const hit = atkTotal > defTotal; // Attacker wins if higher; defender wins ties
+
+            this.attackState.rolled = true;
+            this.attackState.hit = hit;
+            this.attackState.rollText = `1d10+${atkAttr} vs 1d10+${defAttr} → [${atkRoll}]+${atkAttr}=${atkTotal} vs [${defRoll}]+${defAttr}=${defTotal}`;
+
+            // Show in dice toast
+            Alpine.store('dice').displayResult(
+                `${attacker.name} → ${defender.name}`,
+                '1d10', [atkRoll], atkAttr, atkTotal,
+                hit ? 'success' : 'fail'
+            );
+
+            if (hit && atkData.attack.damage && atkData.attack.damage !== 'special') {
+                const dmgResult = Alpine.store('dice').roll(atkData.attack.damage);
+                if (dmgResult) {
+                    defender.hp = Math.max(0, defender.hp - dmgResult.total);
+                    const destroyed = defender.hp <= 0;
+                    let dmgText = `Damage: ${atkData.attack.damage} → [${dmgResult.rolls.join(',')}] = ${dmgResult.total}`;
+
+                    // Base of Influence: damage also dealt to faction HP (no overflow)
+                    if (defender.assetId === 'base-of-influence') {
+                        const factionDmg = Math.min(dmgResult.total, targetFaction.hp);
+                        targetFaction.hp = Math.max(0, targetFaction.hp - factionDmg);
+                        dmgText += ` (Faction HP: −${factionDmg} → ${targetFaction.hp})`;
+                    }
+
+                    dmgText += destroyed ? ' — DESTROYED!' : ` → HP: ${defender.hp}/${defender.maxHp}`;
+                    this.attackState.damageText = dmgText;
+
+                    if (destroyed) {
+                        targetFaction.assets = targetFaction.assets.filter(a => a.id !== defender.id);
+                    }
+                }
+            } else if (!hit && defData?.counter) {
+                const ctrResult = Alpine.store('dice').roll(defData.counter.damage);
+                if (ctrResult) {
+                    attacker.hp = Math.max(0, attacker.hp - ctrResult.total);
+                    const destroyed = attacker.hp <= 0;
+                    this.attackState.damageText = `Counterattack: ${defData.counter.damage} → [${ctrResult.rolls.join(',')}] = ${ctrResult.total}${destroyed ? ' — DESTROYED!' : ' → HP: ' + attacker.hp + '/' + attacker.maxHp}`;
+
+                    if (destroyed) {
+                        faction.assets = faction.assets.filter(a => a.id !== attacker.id);
+                    }
+                }
+            } else if (hit && atkData.attack.damage === 'special') {
+                this.attackState.damageText = 'Special effect — resolve manually';
+            }
+
+            this.save();
+        },
+
+        executeAttackManual() {
+            const atk = this.attackState.manualAtk;
+            const def = this.attackState.manualDef;
+            if (atk == null || def == null) return;
+
+            const hit = atk > def;
+            this.attackState.rolled = true;
+            this.attackState.hit = hit;
+            this.attackState.rollText = `Manual: ${atk} vs ${def}`;
+            this.attackState.damageText = hit ? 'Hit — resolve damage manually' : 'Miss — resolve counterattack manually';
+        },
+
+        confirmAttackResult() {
+            const attacker = this.currentTurnFaction().assets.find(a => a.id === this.attackState.attackerAssetId);
+            const targetFaction = this.getFaction(this.attackState.targetFactionId);
+            const defenderName = this.attackState.defenderAssetId ?
+                (targetFaction?.assets.find(a => a.id === this.attackState.defenderAssetId)?.name || 'asset') : 'asset';
+
+            this.currentTurnEntries.push({
+                factionId: this.currentTurnFaction().id,
+                type: 'action',
+                action: 'attack',
+                text: `Attack: ${attacker?.name || 'asset'} → ${targetFaction?.name}'s ${defenderName}`,
+                rollText: this.attackState.rollText,
+                damageText: this.attackState.damageText,
+                roll: true
+            });
+
+            if (this.attackState.moreAttacks) {
+                this.resetAttackForMore();
+            } else {
+                // Done with attacks
+            }
+        },
+
+        resetAttackForMore() {
+            this.attackState = { ...this.attackState, attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false };
+        },
+
+        executeMove() {
+            const faction = this.currentTurnFaction();
+            const asset = faction.assets.find(a => a.id === this.moveState.assetId);
+            if (!asset) return;
+
+            const from = asset.location || 'unknown';
+            asset.location = this.moveState.destination;
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'action',
+                action: 'move',
+                text: `Move: ${asset.name} from ${from} → ${this.moveState.destination}`
+            });
+            this.save();
+        },
+
+        executeCreate() {
+            const faction = this.currentTurnFaction();
+            const assetData = this.getAssetStaticData(this.createState.assetId);
+            if (!assetData) return;
+
+            if (faction.treasure < assetData.cost) {
+                alert('Not enough Treasure!');
+                return;
+            }
+
+            faction.treasure -= assetData.cost;
+            const newAsset = {
+                id: this.uuid(),
+                assetId: this.createState.assetId,
+                name: assetData.name.en,
+                type: assetData.type,
+                hp: assetData.hp,
+                maxHp: assetData.hp,
+                location: this.createState.location,
+                qualities: [],
+                stealth: false,
+                notes: ''
+            };
+            faction.assets.push(newAsset);
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'action',
+                action: 'create',
+                text: `Create: ${assetData.name.en} at ${this.createState.location} (−${assetData.cost} Treasure)`
+            });
+
+            this.createState.lastCreated = `${assetData.name.en} at ${this.createState.location}`;
+            this.createState.assetId = '';
+            this.save();
+        },
+
+        getDamagedAssets(faction) {
+            return faction.assets.filter(a => a.hp < a.maxHp);
+        },
+
+        getRepairAmount(assetId) {
+            const faction = this.currentTurnFaction();
+            if (assetId === '__faction__') {
+                const highest = Math.max(faction.force, faction.wealth, faction.cunning);
+                const lowest = Math.min(faction.force, faction.wealth, faction.cunning);
+                return Math.ceil((highest + lowest) / 2);
+            }
+            const asset = faction.assets.find(a => a.id === assetId);
+            if (!asset) return 0;
+            return Math.ceil(faction[asset.type] / 2);
+        },
+
+        executeRepair() {
+            const faction = this.currentTurnFaction();
+            if (faction.treasure < 1) {
+                alert('Not enough Treasure!');
+                return;
+            }
+
+            const heal = this.getRepairAmount(this.repairState.assetId);
+            faction.treasure -= 1;
+
+            if (this.repairState.assetId === '__faction__') {
+                const max = this.getMaxHp(faction);
+                faction.hp = Math.min(max, faction.hp + heal);
+                this.currentTurnEntries.push({
+                    factionId: faction.id,
+                    type: 'action',
+                    action: 'repair',
+                    text: `Repair: Faction HP +${heal} (−1 Treasure) → ${faction.hp}/${max}`
+                });
+            } else {
+                const asset = faction.assets.find(a => a.id === this.repairState.assetId);
+                if (asset) {
+                    asset.hp = Math.min(asset.maxHp, asset.hp + heal);
+                    this.currentTurnEntries.push({
+                        factionId: faction.id,
+                        type: 'action',
+                        action: 'repair',
+                        text: `Repair: ${asset.name} +${heal} HP (−1 Treasure) → ${asset.hp}/${asset.maxHp}`
+                    });
+                }
+            }
+            this.save();
+        },
+
+        executeHide() {
+            const faction = this.currentTurnFaction();
+            const asset = faction.assets.find(a => a.id === this.simpleActionState.assetId);
+            if (!asset || faction.cunning < 3 || faction.treasure < 2) return;
+
+            faction.treasure -= 2;
+            asset.stealth = true;
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'action',
+                action: 'hide',
+                text: `Hide: ${asset.name} gains Stealth (−2 Treasure)`
+            });
+            this.save();
+        },
+
+        getSellValue(asset) {
+            const data = this.getAssetStaticData(asset.assetId);
+            if (!data) return 0;
+            if (asset.hp < asset.maxHp) return 0; // No refund if damaged
+            return Math.floor(data.cost / 2);
+        },
+
+        executeSell() {
+            const faction = this.currentTurnFaction();
+            const asset = faction.assets.find(a => a.id === this.simpleActionState.assetId);
+            if (!asset) return;
+
+            const refund = this.getSellValue(asset);
+            faction.treasure += refund;
+            faction.assets = faction.assets.filter(a => a.id !== asset.id);
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'action',
+                action: 'sell',
+                text: `Sell: ${asset.name} (+${refund} Treasure)`
+            });
+            this.save();
+        },
+
+        executeExpand() {
+            const faction = this.currentTurnFaction();
+            if (faction.treasure < this.expandState.baseHp) return;
+
+            faction.treasure -= this.expandState.baseHp;
+            const base = {
+                id: this.uuid(),
+                assetId: 'base-of-influence',
+                name: 'Base of Influence',
+                type: 'special',
+                hp: this.expandState.baseHp,
+                maxHp: this.expandState.baseHp,
+                location: this.expandState.location,
+                qualities: [],
+                stealth: false,
+                notes: ''
+            };
+            faction.assets.push(base);
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'action',
+                action: 'expand',
+                text: `Expand Influence: New Base at ${this.expandState.location} (HP: ${this.expandState.baseHp}, −${this.expandState.baseHp} Treasure)`
+            });
+            this.save();
+        },
+
+        completeGoal() {
+            const faction = this.currentTurnFaction();
+            const goal = this.ASSET_DATA.goals?.find(g => g.id === faction.goal.type);
+            const xp = goal ? parseInt(goal.difficulty) || 1 : 1;
+            faction.xp += xp;
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'goal',
+                text: `Goal Complete: ${this.getGoalName(faction.goal.type)} (+${xp} XP)`
+            });
+
+            faction.goal = { type: '', progress: 0, target: 0 };
+            this.save();
+        },
+
+        setGoal(goalId) {
+            if (!goalId) return;
+            const faction = this.currentTurnFaction();
+            faction.goal = { type: goalId, progress: 0, target: 0 };
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'auto',
+                text: `New Goal: ${this.getGoalName(goalId)}`
+            });
+            this.save();
+        },
+
+        raiseAttribute(attrName) {
+            const faction = this.currentTurnFaction();
+            const oldVal = faction[attrName];
+            const cost = this.getXpCostForNext(oldVal);
+            if (oldVal >= 8 || faction.xp < cost) return;
+
+            const oldMaxHp = this.getMaxHp(faction);
+            faction.xp -= cost;
+            faction[attrName] = oldVal + 1;
+            const newMaxHp = this.getMaxHp(faction);
+            const hpDiff = newMaxHp - oldMaxHp;
+
+            // Increase faction HP by the difference
+            faction.hp += hpDiff;
+
+            // Update HQ base HP
+            const hqBase = faction.assets.find(a => a.isHQ === true);
+            if (hqBase) {
+                hqBase.maxHp = newMaxHp;
+                hqBase.hp += hpDiff;
+            }
+
+            this.currentTurnEntries.push({
+                factionId: faction.id,
+                type: 'xp',
+                text: `Raised ${this.capitalize(attrName)} ${oldVal} → ${oldVal + 1} (−${cost} XP)`
+            });
+            this.save();
+        },
+
+        // ===== Finish Faction Turn =====
+        finishFactionTurn() {
+            // Add GM note if present
+            if (this.currentFactionNote.trim()) {
+                this.currentTurnEntries.push({
+                    factionId: this.currentTurnFaction().id,
+                    type: 'manual',
+                    text: '',
+                    note: this.currentFactionNote.trim()
+                });
+            }
+
+            // Add all entries to the full turn (use concat to avoid reactivity issues)
+            this.fullTurnEntries = this.fullTurnEntries.concat(
+                this.currentTurnEntries.map(e => ({...e}))
+            );
+
+            // Move to next faction or finish turn
+            if (this.currentFactionIdx < this.turnInitiative.length - 1) {
+                this.currentFactionIdx++;
+                this.setupCurrentFactionTurn();
+            } else {
+                this.completeTurn();
+            }
+        },
+
+        completeTurn() {
+            this.state.currentTurn++;
+
+            const turnLog = {
+                turn: this.state.currentTurn,
+                title: '',
+                initiative: [...this.turnInitiative],
+                entries: [...this.fullTurnEntries]
+            };
+
+            this.state.log.push(turnLog);
+
+            // Reset turn state
+            this.runningTurn = false;
+            this.turnPhase = '';
+            this.fullTurnEntries = [];
+            this.save();
+        },
+
+        // ===== Turn Log =====
+        updateTurnTitle(turnNum, title) {
+            const turn = this.state.log.find(t => t.turn === turnNum);
+            if (turn) {
+                turn.title = title;
+                this.save();
+            }
+        },
+
+        addManualEntry() {
+            if (!this.manualEntryForm.text) return;
+
+            // Add to the latest turn, or create a new pseudo-turn
+            if (this.state.log.length === 0) {
+                this.state.log.push({
+                    turn: 0,
+                    title: 'Pre-game',
+                    initiative: [],
+                    entries: []
+                });
+            }
+
+            const lastTurn = this.state.log[this.state.log.length - 1];
+            lastTurn.entries.push({
+                factionId: this.manualEntryForm.factionId || null,
+                type: 'manual',
+                text: this.manualEntryForm.text,
+                note: null
+            });
+
+            this.save();
+            this.closeModal('manualEntryModal');
+        }
+    };
+}
+</script>
+{% endblock %}
