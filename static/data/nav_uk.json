@@ -167,20 +167,24 @@
         {
           "slug": "06-hiring-armies",
           "title": "Армії та Битви"
+        }
+      ]
+    },
+    "gm-tools": {
+      "title": "Інструменти МГ",
+      "icon": "bi bi-bookmark",
+      "pages": [
+        {
+          "slug": "01-monsters-encounters",
+          "title": "Монстри та сутички"
         },
         {
           "slug": "07-tags",
           "title": "Теги"
-        }
-      ]
-    },
-    "reference": {
-      "title": "Довідник",
-      "icon": "bi bi-bookmark",
-      "pages": [
+        },
         {
-          "slug": "monsters-encounters",
-          "title": "Монстри та сутички"
+          "slug": "08-factions",
+          "title": "Фракції"
         }
       ]
     }

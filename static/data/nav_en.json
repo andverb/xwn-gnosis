@@ -167,6 +167,16 @@
         {
           "slug": "06-hiring-armies",
           "title": "Armies & Mass Combat"
+        }
+      ]
+    },
+    "gm-tools": {
+      "title": "GM Tools",
+      "icon": "bi bi-bookmark",
+      "pages": [
+        {
+          "slug": "01-monsters-encounters",
+          "title": "Monsters & Encounters"
         },
         {
           "slug": "07-tags",
@@ -187,16 +197,6 @@
         {
           "slug": "11-wealth-assets",
           "title": "Wealth Assets"
-        }
-      ]
-    },
-    "reference": {
-      "title": "Reference",
-      "icon": "bi bi-bookmark",
-      "pages": [
-        {
-          "slug": "monsters-encounters",
-          "title": "Monsters & Encounters"
         }
       ]
     }
