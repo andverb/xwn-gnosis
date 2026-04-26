@@ -30,7 +30,7 @@ dev = [
 [tool.ruff]
 line-length = 120
 indent-width = 4
-extend-exclude = ["archive_fastapi_app/*"]
+extend-exclude = ["archive_fastapi_app"]
 
 [tool.ruff.format]
 quote-style = "double"

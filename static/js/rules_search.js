@@ -282,11 +282,20 @@
                 ${snippet ? `<div class="search-result-snippet">${snippet}</div>` : ''}
             `;
 
-            // Click handler
+            // Click handler - navigate after closing modal
             resultEl.addEventListener('click', function(e) {
-                // Close modal on navigation
+                e.preventDefault();
+                const targetUrl = resultEl.href;
                 const modal = bootstrap.Modal.getInstance(searchModal);
-                if (modal) modal.hide();
+                if (modal) {
+                    searchModal.addEventListener('hidden.bs.modal', function onHidden() {
+                        searchModal.removeEventListener('hidden.bs.modal', onHidden);
+                        window.location.href = targetUrl;
+                    });
+                    modal.hide();
+                } else {
+                    window.location.href = targetUrl;
+                }
             });
 
             // Hover handler

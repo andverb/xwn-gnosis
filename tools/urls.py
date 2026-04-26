@@ -32,6 +32,7 @@ urlpatterns = [
     # Cheatsheets
     path("wwn/cheatsheets/combat-actions/", views.combat_actions, name="combat_actions"),
     path("wwn/cheatsheets/site-exploration/", views.site_exploration, name="site_exploration"),
+    # WIP
     # path("wwn/cheatsheets/wilderness-exploration/", views.wilderness_exploration, name="wilderness_exploration"),
     path("wwn/cheatsheets/calculate-challenge/", views.calculate_challenge, name="calculate_challenge"),
     # --- Shared tools ---
