@@ -455,6 +455,9 @@
                 <i class="bi bi-upload me-1"></i>Import
                 <input type="file" accept=".json" class="d-none" @change="importJSON($event)">
             </label>
+            <button class="btn btn-outline-danger btn-sm" @click="confirmClearAll()" title="Clear all data">
+                <i class="bi bi-trash me-1"></i>Clear All
+            </button>
             <button class="btn btn-outline-primary btn-sm" @click="showAddFaction = true"
                     :disabled="state.factions.length >= 6">
                 <i class="bi bi-plus-lg me-1"></i>Add Faction
@@ -696,8 +699,8 @@
                         <span x-text="'Earned ' + currentAutoTreasure + ' Treasure (½×' + currentTurnFaction().wealth + ' + ¼(' + currentTurnFaction().force + '+' + currentTurnFaction().cunning + ')) → now ' + currentTurnFaction().treasure"></span>
                     </div>
                     <template x-for="upkeep in currentUpkeepResults" :key="upkeep.assetId">
-                        <div class="auto-result">
-                            <i class="bi bi-check-circle-fill"></i>
+                        <div class="auto-result" :class="upkeep.text.startsWith('⚠') ? 'text-warning fw-semibold' : ''">
+                            <i class="bi" :class="upkeep.text.startsWith('⚠') ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill'"></i>
                             <span x-text="upkeep.text"></span>
                         </div>
                     </template>
@@ -759,6 +762,14 @@
                         </div>
                     </div>
 
+                    <!-- Back to action selection -->
+                    <div class="mt-2" x-show="currentAction && !attackState.rolled && !expandState.baseCreated">
+                        <button class="btn btn-link btn-sm text-body-secondary px-0"
+                                @click="cancelAction()">
+                            <i class="bi bi-arrow-left me-1"></i>Change action
+                        </button>
+                    </div>
+
                     <!-- Attack sub-flow -->
                     <template x-if="currentAction === 'attack'">
                         <div class="attack-flow">
@@ -793,6 +804,9 @@
                             <!-- Step 3: defender picks asset -->
                             <div class="attack-flow-step" x-show="attackState.step >= 3">
                                 <label>Defending Asset:</label>
+                                <p class="text-body-secondary mb-1" style="font-size:0.78rem">
+                                    <i class="bi bi-info-circle me-1"></i>Defending asset must be at the same location as your attacker.
+                                </p>
                                 <select class="form-select form-select-sm"
                                         x-model="attackState.defenderAssetId">
                                     <option value="">Select defender...</option>
@@ -863,6 +877,12 @@
                                     :disabled="!moveState.assetId || !moveState.destination">
                                 Confirm Move
                             </button>
+                            <div class="mt-2 p-2 rounded bg-success bg-opacity-10 small" x-show="moveState.movedCount > 0">
+                                <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                <span x-text="moveState.movedCount + ' asset(s) moved. Pick another or click Done.'"></span>
+                            </div>
+                            <button class="btn btn-secondary btn-sm mt-2" x-show="moveState.movedCount > 0"
+                                    @click="cancelAction()">Done Moving</button>
                         </div>
                     </template>
 
@@ -908,6 +928,10 @@
                     <template x-if="currentAction === 'repair'">
                         <div class="attack-flow">
                             <h6><i class="bi bi-wrench me-1"></i>Repair Asset</h6>
+                            <p class="text-body-secondary mb-2" style="font-size:0.8rem">
+                                Assets: 1 Treasure heals ½ faction's matching attribute (Force asset → ½ Force, Wealth → ½ Wealth, etc.), rounded up. Repairing the same asset again this turn costs +1 each time (2nd = 2T, 3rd = 3T).
+                                Faction HP: 1 Treasure heals (highest + lowest attr) ÷ 2, rounded up — once per turn.
+                            </p>
                             <div class="attack-flow-step">
                                 <label>Asset to Repair:</label>
                                 <select class="form-select form-select-sm" x-model="repairState.assetId">
@@ -916,7 +940,9 @@
                                         <option :value="asset.id"
                                                 x-text="asset.name + ' (HP: ' + asset.hp + '/' + asset.maxHp + ')'"></option>
                                     </template>
-                                    <option value="__faction__" x-text="'Faction HP (' + currentTurnFaction().hp + '/' + getMaxHp(currentTurnFaction()) + ')'"></option>
+                                    <option value="__faction__"
+                                            :disabled="factionHpRepairedThisTurn || currentTurnFaction().hp >= getMaxHp(currentTurnFaction())"
+                                            x-text="'Faction HP (' + currentTurnFaction().hp + '/' + getMaxHp(currentTurnFaction()) + ')' + (factionHpRepairedThisTurn ? ' — once per turn' : currentTurnFaction().hp >= getMaxHp(currentTurnFaction()) ? ' — full' : '')"></option>
                                 </select>
                             </div>
                             <template x-if="repairState.assetId">
@@ -946,6 +972,9 @@
                                     :disabled="currentTurnFaction().cunning < 3 || currentTurnFaction().treasure < 2">
                                 Hide Asset (-2 Treasure)
                             </button>
+                            <p class="text-body-secondary mb-0 mt-2" style="font-size:0.8rem">
+                                <i class="bi bi-info-circle me-1"></i>Cannot hide assets at a location where a rival faction has a Base of Influence.
+                            </p>
                         </div>
                     </template>
 
@@ -972,21 +1001,64 @@
                     <template x-if="currentAction === 'expand'">
                         <div class="attack-flow">
                             <h6><i class="bi bi-geo-alt me-1"></i>Expand Influence</h6>
-                            <div class="attack-flow-step">
-                                <label>Location:</label>
-                                <input type="text" class="form-control form-control-sm"
-                                       x-model="expandState.location" placeholder="Location for new Base...">
-                            </div>
-                            <div class="attack-flow-step" x-show="expandState.location">
-                                <label>Base HP (costs 1 Treasure per HP):</label>
-                                <input type="number" class="form-control form-control-sm" style="width:80px"
-                                       x-model.number="expandState.baseHp" min="1">
-                            </div>
-                            <button class="btn btn-primary btn-sm mt-2" @click="executeExpand()"
-                                    x-show="expandState.location && expandState.baseHp > 0"
-                                    :disabled="currentTurnFaction().treasure < expandState.baseHp">
-                                <span x-text="'Establish Base (-' + expandState.baseHp + ' Treasure)'"></span>
-                            </button>
+                            <template x-if="!expandState.baseCreated">
+                                <div>
+                                    <div class="attack-flow-step">
+                                        <label>Location:</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                               x-model="expandState.location" placeholder="Location for new Base...">
+                                    </div>
+                                    <div class="attack-flow-step" x-show="expandState.location">
+                                        <label>Base HP (costs 1 Treasure per HP):</label>
+                                        <input type="number" class="form-control form-control-sm" style="width:80px"
+                                               x-model.number="expandState.baseHp" min="1">
+                                    </div>
+                                    <button class="btn btn-primary btn-sm mt-2" @click="executeExpand()"
+                                            x-show="expandState.location && expandState.baseHp > 0"
+                                            :disabled="currentTurnFaction().treasure < expandState.baseHp">
+                                        <span x-text="'Establish Base (-' + expandState.baseHp + ' Treasure)'"></span>
+                                    </button>
+                                </div>
+                            </template>
+                            <template x-if="expandState.baseCreated">
+                                <div>
+                                    <div class="mb-2 p-2 rounded bg-success bg-opacity-10 small">
+                                        <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                        <span x-text="'Base established at ' + expandState.location + ' (HP: ' + expandState.baseHp + ')'"></span>
+                                    </div>
+                                    <p class="text-body-secondary mb-2" style="font-size:0.82rem">
+                                        <i class="bi bi-dice-6 me-1"></i><strong>Rival Check:</strong> For each rival faction with Assets at this location, make a Cunning vs Cunning check. If the rival wins, they may immediately Attack your new Base.
+                                    </p>
+                                    <div class="attack-flow-step">
+                                        <label>Rival Faction:</label>
+                                        <select class="form-select form-select-sm" x-model="expandState.rivalFactionId">
+                                            <option value="">Select rival faction...</option>
+                                            <template x-for="f in getEnemyFactions()" :key="f.id">
+                                                <option :value="f.id" x-text="f.name + ' (Cunning ' + f.cunning + ')'"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm mt-2"
+                                            x-show="expandState.rivalFactionId"
+                                            @click="executeExpandRivalCheck(expandState.rivalFactionId)">
+                                        <i class="bi bi-dice-6 me-1"></i>Roll Cunning Check
+                                    </button>
+                                    <template x-if="expandState.rivalChecks.length > 0">
+                                        <div class="mt-2">
+                                            <template x-for="(check, idx) in expandState.rivalChecks" :key="idx">
+                                                <div class="p-2 rounded mb-1 small"
+                                                     :class="check.rivalWins ? 'bg-danger bg-opacity-10' : 'bg-success bg-opacity-10'">
+                                                    <span x-text="check.rivalName + ': You ' + check.myTotal + ' vs ' + check.rivTotal"></span>
+                                                    <span class="fw-semibold ms-1"
+                                                          :class="check.rivalWins ? 'text-danger' : 'text-success'"
+                                                          x-text="check.rivalWins ? '⚠ Rival wins — may Attack' : '✓ Rival fails'"></span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <button class="btn btn-secondary btn-sm mt-2" @click="cancelAction()">Done</button>
+                                </div>
+                            </template>
                         </div>
                     </template>
 
@@ -1393,7 +1465,7 @@ function factionTracker() {
         attackState: { attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false },
 
         // Move state
-        moveState: { assetId: '', destination: '' },
+        moveState: { assetId: '', destination: '', movedCount: 0 },
 
         // Create state
         createState: { assetId: '', location: '', lastCreated: '' },
@@ -1402,7 +1474,7 @@ function factionTracker() {
         repairState: { assetId: '' },
 
         // Expand state
-        expandState: { location: '', baseHp: 1 },
+        expandState: { location: '', baseHp: 1, baseCreated: false, rivalChecks: [], rivalFactionId: '' },
 
         // Simple action state (hide, sell)
         simpleActionState: { assetId: '' },
@@ -1643,6 +1715,22 @@ function factionTracker() {
             this.openModal('deleteConfirmModal');
         },
 
+        confirmClearAll() {
+            this.deleteConfirmText = 'Clear all factions, assets, and turn history? This cannot be undone.';
+            this.deleteCallback = () => {
+                this.state = { version: 1, campaignName: '', currentTurn: 0, factions: [], log: [] };
+                this.runningTurn = false;
+                this.turnPhase = '';
+                this.turnInitiative = [];
+                this.currentFactionIdx = 0;
+                this.currentAction = null;
+                this.currentTurnEntries = [];
+                this.fullTurnEntries = [];
+                this.save();
+            };
+            this.openModal('deleteConfirmModal');
+        },
+
         executeDelete() {
             if (this.deleteCallback) {
                 this.deleteCallback();
@@ -1701,6 +1789,10 @@ function factionTracker() {
             this.openModal('addAssetModal');
         },
 
+        countAssetsOfType(faction, type) {
+            return faction.assets.filter(a => a.type === type && a.assetId !== 'base-of-influence').length;
+        },
+
         getEligibleAssets(faction) {
             if (!faction) return [];
             return (this.ASSET_DATA.assets || []).filter(a => {
@@ -1708,6 +1800,7 @@ function factionTracker() {
                 if (a.attribute_req > attrVal) return false;
                 const magicOrder = ['none', 'low', 'medium', 'high'];
                 if (magicOrder.indexOf(a.magic_req) > magicOrder.indexOf(faction.magic || 'none')) return false;
+                if (this.countAssetsOfType(faction, a.type) >= faction[a.type]) return false;
                 return true;
             });
         },
@@ -1817,10 +1910,11 @@ function factionTracker() {
 
             // Reset sub-flow states
             this.attackState = { attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false };
-            this.moveState = { assetId: '', destination: '' };
+            this.moveState = { assetId: '', destination: '', movedCount: 0 };
             this.createState = { assetId: '', location: '', lastCreated: '' };
             this.repairState = { assetId: '' };
-            this.expandState = { location: '', baseHp: 1 };
+            this.factionHpRepairedThisTurn = false;
+            this.expandState = { location: '', baseHp: 1, baseCreated: false, rivalChecks: [], rivalFactionId: '' };
             this.simpleActionState = { assetId: '' };
 
             // Step 1: Auto-calc treasure
@@ -1864,6 +1958,24 @@ function factionTracker() {
                 }
             }
 
+            // Asset cap excess check
+            for (const type of ['force', 'wealth', 'cunning']) {
+                const count = this.countAssetsOfType(faction, type);
+                if (count > faction[type]) {
+                    const excess = count - faction[type];
+                    const label = this.capitalize(type);
+                    this.currentUpkeepResults.push({
+                        assetId: 'cap-' + type,
+                        text: `⚠ Excess ${label} assets: ${count}/${faction[type]} — pay ${excess}T extra or remove the excess`
+                    });
+                    this.currentTurnEntries.push({
+                        factionId: faction.id,
+                        type: 'auto',
+                        text: `⚠ Excess ${label} assets (${count}/${faction[type]}) — costs ${excess}T or remove them`
+                    });
+                }
+            }
+
             // Step 3: Identify special abilities
             this.currentAbilities = [];
             for (const asset of faction.assets) {
@@ -1898,14 +2010,16 @@ function factionTracker() {
         // ===== Action Execution =====
         startAction(action) {
             this.currentAction = action;
-            if (action === 'none') {
-                this.currentTurnEntries.push({
-                    factionId: this.currentTurnFaction().id,
-                    type: 'action',
-                    action: 'none',
-                    text: 'No action taken'
-                });
-            }
+        },
+
+        cancelAction() {
+            this.currentAction = null;
+            this.attackState = { attackerAssetId: '', targetFactionId: '', defenderAssetId: '', step: 1, rolled: false, hit: false, rollText: '', damageText: '', manualAtk: null, manualDef: null, moreAttacks: false };
+            this.moveState = { assetId: '', destination: '', movedCount: 0 };
+            this.createState = { assetId: '', location: '', lastCreated: '' };
+            this.repairState = { assetId: '' };
+            this.expandState = { location: '', baseHp: 1, baseCreated: false, rivalChecks: [], rivalFactionId: '' };
+            this.simpleActionState = { assetId: '' };
         },
 
         getAttackableAssets(faction) {
@@ -2059,6 +2173,9 @@ function factionTracker() {
                 action: 'move',
                 text: `Move: ${asset.name} from ${from} → ${this.moveState.destination}`
             });
+            this.moveState.movedCount++;
+            this.moveState.assetId = '';
+            this.moveState.destination = '';
             this.save();
         },
 
@@ -2069,6 +2186,18 @@ function factionTracker() {
 
             if (faction.treasure < assetData.cost) {
                 alert('Not enough Treasure!');
+                return;
+            }
+
+            const capCount = this.countAssetsOfType(faction, assetData.type);
+            if (capCount >= faction[assetData.type]) {
+                alert(`Attribute cap reached: you have ${capCount}/${faction[assetData.type]} ${assetData.type} assets. Raise your ${assetData.type} attribute to purchase more.`);
+                return;
+            }
+
+            const magicOrder = ['none', 'low', 'medium', 'high'];
+            if (magicOrder.indexOf(assetData.magic_req) > magicOrder.indexOf(faction.magic || 'none')) {
+                alert('Magic level insufficient for this asset.');
                 return;
             }
 
@@ -2128,6 +2257,7 @@ function factionTracker() {
             if (this.repairState.assetId === '__faction__') {
                 const max = this.getMaxHp(faction);
                 faction.hp = Math.min(max, faction.hp + heal);
+                this.factionHpRepairedThisTurn = true;
                 this.currentTurnEntries.push({
                     factionId: faction.id,
                     type: 'action',
@@ -2216,6 +2346,27 @@ function factionTracker() {
                 action: 'expand',
                 text: `Expand Influence: New Base at ${this.expandState.location} (HP: ${this.expandState.baseHp}, −${this.expandState.baseHp} Treasure)`
             });
+            this.expandState.baseCreated = true;
+            this.expandState.rivalChecks = [];
+            this.expandState.rivalFactionId = '';
+            this.save();
+        },
+
+        executeExpandRivalCheck(factionId) {
+            const myFaction = this.currentTurnFaction();
+            const rival = this.getFaction(factionId);
+            if (!rival) return;
+            const myRoll = Math.floor(Math.random() * 10) + 1;
+            const rivRoll = Math.floor(Math.random() * 10) + 1;
+            const myTotal = myRoll + myFaction.cunning;
+            const rivTotal = rivRoll + rival.cunning;
+            const rivalWins = rivTotal > myTotal;
+            this.expandState.rivalChecks.push({ factionId, rivalName: rival.name, myTotal, rivTotal, rivalWins });
+            this.currentTurnEntries.push({
+                factionId: myFaction.id,
+                type: 'auto',
+                text: `Expand check vs ${rival.name}: You ${myTotal} (${myRoll}+${myFaction.cunning}) vs ${rival.name} ${rivTotal} (${rivRoll}+${rival.cunning}) — ${rivalWins ? '⚠ Rival wins — may Attack immediately' : '✓ Rival fails'}`
+            });
             this.save();
         },
 
@@ -2238,6 +2389,13 @@ function factionTracker() {
         setGoal(goalId) {
             if (!goalId) return;
             const faction = this.currentTurnFaction();
+            if (faction.goal?.type) {
+                this.currentTurnEntries.push({
+                    factionId: faction.id,
+                    type: 'auto',
+                    text: `⚠ Goal abandoned (${this.getGoalName(faction.goal.type)}) — forfeits next turn's action and asset special abilities`
+                });
+            }
             faction.goal = { type: goalId, progress: 0, target: 0 };
             this.currentTurnEntries.push({
                 factionId: faction.id,
@@ -2279,6 +2437,16 @@ function factionTracker() {
 
         // ===== Finish Faction Turn =====
         finishFactionTurn() {
+            // Record 'none' action (deferred from startAction so the GM can still go back)
+            if (this.currentAction === 'none') {
+                this.currentTurnEntries.push({
+                    factionId: this.currentTurnFaction().id,
+                    type: 'action',
+                    action: 'none',
+                    text: 'No action taken'
+                });
+            }
+
             // Add GM note if present
             if (this.currentFactionNote.trim()) {
                 this.currentTurnEntries.push({
