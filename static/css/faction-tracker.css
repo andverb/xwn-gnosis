@@ -1,0 +1,464 @@
+/* ===== Layout ===== */
+.faction-tracker {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== Header bar ===== */
+.tracker-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.tracker-header .campaign-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--bs-body-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--bs-border-radius);
+}
+
+.tracker-header .campaign-name:hover,
+.tracker-header .campaign-name:focus {
+    border-color: var(--bs-border-color);
+    background: var(--bs-tertiary-bg);
+}
+
+.tracker-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* ===== Faction color palette ===== */
+.faction-color-0 { --faction-color: #e74c3c; }
+.faction-color-1 { --faction-color: #3498db; }
+.faction-color-2 { --faction-color: #2ecc71; }
+.faction-color-3 { --faction-color: #f39c12; }
+.faction-color-4 { --faction-color: #9b59b6; }
+.faction-color-5 { --faction-color: #1abc9c; }
+
+/* ===== Faction cards ===== */
+.faction-card {
+    border-left: 4px solid var(--faction-color);
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-left: 4px solid var(--faction-color);
+    border-radius: var(--bs-border-radius);
+    margin-bottom: 0.75rem;
+}
+
+.faction-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--bs-border-color);
+    flex-wrap: wrap;
+}
+
+.faction-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--faction-color);
+}
+
+.faction-stats {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.faction-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.faction-stat-label {
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+}
+
+.faction-stat-value {
+    font-weight: 700;
+}
+
+.faction-card-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.faction-card-body {
+    padding: 0.75rem 1rem;
+}
+
+/* HP bar */
+.hp-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hp-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--bs-tertiary-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.hp-bar-fill.hp-high { background: var(--bs-success); }
+.hp-bar-fill.hp-mid { background: var(--bs-warning); }
+.hp-bar-fill.hp-low { background: var(--bs-danger); }
+
+.hp-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Goal & treasure row */
+.faction-info-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.faction-treasure {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+}
+
+.faction-goal {
+    color: var(--bs-secondary-color);
+}
+
+.faction-tags .badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* ===== Asset list ===== */
+.asset-list {
+    margin-top: 0.5rem;
+}
+
+.asset-list-grid {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) 70px 90px auto;
+    gap: 0.25rem 0.5rem;
+    align-items: center;
+    font-size: 0.82rem;
+}
+
+.asset-row {
+    display: contents;
+    cursor: pointer;
+}
+
+.asset-row > * {
+    padding: 0.35rem 0.25rem;
+}
+
+.asset-row:hover > * {
+    background: var(--bs-tertiary-bg);
+}
+
+.asset-row.expanded > * {
+    background: var(--bs-tertiary-bg);
+}
+
+.asset-detail-wrapper {
+    grid-column: 1 / -1;
+}
+
+.asset-name {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.asset-hp-bar {
+    height: 6px;
+    background: var(--bs-tertiary-bg);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.asset-hp-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.asset-location {
+    color: var(--bs-secondary-color);
+    font-size: 0.78rem;
+}
+
+.asset-qualities {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.asset-quality {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+}
+
+.asset-quality-special {
+    cursor: help;
+    border-bottom: 1px dotted var(--bs-secondary-color);
+}
+
+.asset-detail {
+    padding: 0.5rem 0.75rem;
+    background: var(--bs-tertiary-bg);
+    border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.asset-detail-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.asset-detail-desc {
+    color: var(--bs-secondary-color);
+    font-style: italic;
+}
+
+/* ===== Turn controls ===== */
+.turn-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+    border-top: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid var(--bs-border-color);
+    margin: 1rem 0;
+}
+
+/* ===== Turn Log ===== */
+.turn-log {
+    margin-top: 1rem;
+}
+
+.turn-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.turn-title-input {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--bs-body-color);
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--bs-border-radius);
+    font-size: 0.9rem;
+}
+
+.turn-title-input:hover,
+.turn-title-input:focus {
+    border-color: var(--bs-border-color);
+    background: var(--bs-tertiary-bg);
+}
+
+.turn-initiative {
+    font-size: 0.8rem;
+    color: var(--bs-secondary-color);
+}
+
+.log-faction-block {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--bs-border-color-translucent);
+}
+
+.log-faction-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+}
+
+.log-entry {
+    font-size: 0.82rem;
+    padding: 0.15rem 0 0.15rem 1rem;
+    border-left: 2px solid var(--bs-border-color-translucent);
+    margin-bottom: 0.15rem;
+}
+
+.log-entry-auto {
+    color: var(--bs-secondary-color);
+}
+
+.log-entry-action {
+    font-weight: 500;
+}
+
+.log-entry-roll {
+    font-family: monospace;
+    font-size: 0.8rem;
+}
+
+.log-entry-note {
+    font-style: italic;
+    color: var(--bs-secondary-color);
+    padding: 0.25rem 0.5rem;
+    margin-top: 0.25rem;
+    border-left: 2px solid var(--faction-color, var(--bs-primary));
+    font-size: 0.8rem;
+}
+
+.log-entry-note-input {
+    width: 100%;
+    background: var(--bs-tertiary-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    color: var(--bs-body-color);
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    resize: vertical;
+    min-height: 2.5rem;
+}
+
+.log-entry-xp {
+    color: var(--bs-success);
+    font-weight: 500;
+}
+
+/* ===== Run Turn Panel ===== */
+.run-turn-panel {
+    border: 2px solid var(--faction-color);
+    border-radius: var(--bs-border-radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    background: var(--bs-body-bg);
+}
+
+.run-turn-panel h5 {
+    color: var(--faction-color);
+    margin-bottom: 1rem;
+}
+
+.auto-result {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0;
+    font-size: 0.85rem;
+}
+
+.auto-result .bi-check-circle-fill {
+    color: var(--bs-success);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+/* ===== Attack sub-flow ===== */
+.attack-flow {
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    padding: 1rem;
+    margin: 0.75rem 0;
+    background: var(--bs-tertiary-bg);
+}
+
+.attack-flow-step {
+    margin-bottom: 0.75rem;
+}
+
+.attack-flow-step label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--bs-secondary-color);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ===== Auto value (manual override component) ===== */
+.auto-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.auto-value-edit-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--bs-secondary-color);
+    padding: 0 0.2rem;
+    font-size: 0.7rem;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.auto-value-edit-btn:hover {
+    border-color: var(--bs-border-color);
+    color: var(--bs-primary);
+}
+
+.auto-value-input {
+    width: 60px;
+    padding: 0 0.25rem;
+    font-size: inherit;
+    background: var(--bs-tertiary-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 3px;
+    color: var(--bs-body-color);
+}
+
+.auto-value-overridden {
+    color: var(--bs-warning);
+    font-weight: 600;
+}
