@@ -1,5 +1,32 @@
-// WWN statblock parser - pure module, no Alpine state
-// Exposes window.CombatTracker.parseStatblock(input) -> parsed object | null
+// WWN statblock parser - pure module, no Alpine state.
+//
+// Exposes window.CombatTracker.parseStatblock(input) in browser, and
+// module.exports.parseStatblock under Node (CommonJS) for tests.
+//
+// Three input formats are supported. parseStatblock() auto-detects:
+//
+//   1. SPACED    — fields separated by 2+ spaces (markdown-table-ish):
+//        "Villager  1  10  +0  Wpn  Wpn  30'  7  5  +1  15+"
+//
+//   2. SINGLE    — fields separated by single spaces (multi-word names allowed,
+//                  BAB token "+N" anchors the field positions):
+//        "Lesser Anak Warrior 1 13a +1 Wpn+1 Wpn+1 20' 7 4 +1 15+"
+//
+//   3. COMPACT   — PDF copy-paste format, no separators between fields:
+//        "Lesser Anak Warrior113a+1Wpn+1Wpn+120'74+115+"
+//        "Undead Mage810+101d82/-30'94+211+"
+//        "Ancient Warbot1420+15 x32d6+510/-60' fly122+28+"
+//
+// Field order in all three formats:
+//   Name | HD | AC[a][s] | +BAB[xN] | Damage | Shock | Move | ML | Inst | +Skill | Save+
+//
+// parseStatblock returns one of:
+//   { ok: true,  data: {...}, format: 'spaced' | 'single-space' | 'compact' }
+//   { ok: false, error: { code, message, format? } }
+//
+// The internal parsers (parseSpacedStatblock, parseSingleSpaceStatblock,
+// parseCompactStatblock) still return raw data | null and are used directly by
+// tests; only the public parseStatblock wraps them in the result envelope.
 (function () {
     'use strict';
 
@@ -126,49 +153,36 @@
     function parseCompactStatblockAlt(input) {
         // Parsing with game constraints:
         // AC: 10-20, ML: 2-12, Inst: 1-10, Skill: +0 to +5, Save: 2-15
-
-        console.log('=== PARSE START ===');
-        console.log('Input:', input);
-
         let rest = input;
         let result = {};
 
         // Extract name: everything before HD+AC pattern
         // HD is 1-2 digits, AC is always 10+ (2 digits)
         const nameMatch = rest.match(/^(.+?)(\d{1,2})(1[0-9]|20)/);
-        if (!nameMatch) { console.log('Name match failed'); return null; }
+        if (!nameMatch) { return null; }
         result.name = nameMatch[1].trim();
         result.hd = parseInt(nameMatch[2]);
         rest = rest.substring(nameMatch[1].length + nameMatch[2].length);
-        console.log('After name/HD:', { name: result.name, hd: result.hd, rest });
-
         // AC (10-20 + optional a/s)
         const acMatch = rest.match(/^(1[0-9]|20)(a?)(s?)/);
-        if (!acMatch) { console.log('AC match failed'); return null; }
+        if (!acMatch) { return null; }
         result.ac = parseInt(acMatch[1]);
         result.hasArmor = acMatch[2] === 'a';
         result.hasShield = acMatch[3] === 's';
         rest = rest.substring(acMatch[0].length);
-        console.log('After AC:', { ac: result.ac, rest });
-
         // BAB (+1 to +20, optional xN where N is 2-9) - look ahead for Wpn or dice pattern
         // Pattern: +digits followed by optional xN (single digit), then Wpn or NdN
         const babMatch = rest.match(/^(\+\d{1,2})(x([2-9]))?(Wpn|\d+d)/i);
-        if (!babMatch) { console.log('BAB match failed on:', rest); return null; }
+        if (!babMatch) { return null; }
         result.bab = parseInt(babMatch[1].replace('+', ''));
         result.attacks = babMatch[3] ? parseInt(babMatch[3]) : 1;
         // Only consume the BAB part and xN, not the damage lookahead
         rest = rest.substring(babMatch[1].length + (babMatch[2] ? babMatch[2].length : 0));
-        console.log('After BAB:', { bab: result.bab, attacks: result.attacks, rest });
-
         // Damage (Wpn+N or dice notation NdX+N where X is valid dice: 2,4,6,8,10,12,20, bonus max +9)
         const dmgMatch = rest.match(/^(Wpn(?:\+[0-9])?|\d+d(20|12|10|8|6|4|2)(?:\+[0-9])?)/i);
         if (dmgMatch) {
             Object.assign(result, parseDamage(dmgMatch[1]));
             rest = rest.substring(dmgMatch[0].length);
-            console.log('After Damage:', { dmgMatch: dmgMatch[0], rest });
-        } else {
-            console.log('Damage match failed on:', rest);
         }
 
         // Capture attack name (words like "swoop", "thorn whip" between damage and shock)
@@ -176,25 +190,21 @@
         const attackNameMatch = rest.match(/^[\s]*([a-z\s]+?)(?=None|Wpn|\d)/i);
         if (attackNameMatch) {
             result.attackName = attackNameMatch[1].trim();
-            console.log('Captured attack name:', result.attackName);
             rest = rest.substring(attackNameMatch[0].length);
         }
 
         // Shock + Move combined (they often run together like "2/1530'" = shock 2/15, move 30')
         // Shock value: 1-10, Shock AC: 10-20 or -
         // Move: digits followed by quote(s) (fly/swim already removed at top level)
-        console.log('Trying shock+move on:', rest);
         const shockMoveMatch = rest.match(/^(10|[1-9])\/(1[0-9]|20|-)(\d+)['′''`]*/);
         if (shockMoveMatch) {
             result.shockValue = parseInt(shockMoveMatch[1]);
             result.shockAC = shockMoveMatch[2];
             result.mv = shockMoveMatch[3] + "'";
             rest = rest.substring(shockMoveMatch[0].length);
-            console.log('After Shock+Move:', { shock: result.shockValue + '/' + result.shockAC, mv: result.mv, rest });
         } else {
-            console.log('Shock+Move match failed, trying alternatives');
             // Try None, Wpn shock (with optional /-), or -
-            const altShockMatch = rest.match(/^(None|Wpn(?:\+\d+)?(?:\/-)?|-)/i);
+            const altShockMatch = rest.match(/^(None|Wpn(?:\+\d)?(?:\/-)?|-)/i);
             if (altShockMatch) {
                 result.shockValue = 0;
                 result.shockAC = '-';
@@ -202,14 +212,12 @@
                     result.shockOverride = altShockMatch[1].includes('/-');
                 }
                 rest = rest.substring(altShockMatch[0].length);
-                console.log('After None/Wpn shock:', { shockOverride: result.shockOverride, rest });
             }
             // Move (digits + ' or "None")
             const mvMatch = rest.match(/^(None|\d+)['′''`]*/i);
             if (mvMatch) {
                 result.mv = mvMatch[1].toLowerCase() === 'none' ? "0'" : mvMatch[1] + "'";
                 rest = rest.substring(mvMatch[0].length);
-                console.log('After Move:', { mv: result.mv, rest });
             } else {
                 result.mv = "30'";
             }
@@ -221,17 +229,13 @@
 
         // Strip any leading non-digit characters (stray quotes, spaces, etc.)
         rest = rest.replace(/^[^0-9]+/, '');
-        console.log('Parsing trailing stats from:', rest);
-
         // Save (2-15+) - from end, pattern: digits followed by +
         let svMatch = rest.match(/(1[0-5]|[2-9])\+$/);
         if (svMatch) {
             result.sv = parseInt(svMatch[1]);
             rest = rest.substring(0, rest.length - svMatch[0].length);
-            console.log('After Save:', { sv: result.sv, rest });
         } else {
             result.sv = 15;
-            console.log('Save match failed, using default 15');
         }
 
         // Skill (+0 to +5) - from end, pattern: + followed by digit
@@ -239,30 +243,24 @@
         if (sklMatch) {
             result.skl = parseInt(sklMatch[1]);
             rest = rest.substring(0, rest.length - sklMatch[0].length);
-            console.log('After Skill:', { skl: result.skl, rest });
         } else {
             result.skl = 1;
-            console.log('Skill match failed, using default 1');
         }
 
         // Now rest should be ML + Inst (e.g., "122" = ML 12, Inst 2)
         // ML: 2-12, Inst: 1-10
-        console.log('Parsing ML+Inst from:', rest);
         // Try ML 2-digit (10, 11, 12) first
         let mlMatch = rest.match(/^(1[0-2])/);
         if (mlMatch) {
             result.ml = parseInt(mlMatch[1]);
             rest = rest.substring(mlMatch[0].length);
-            console.log('ML (2-digit):', result.ml, 'rest:', rest);
         } else {
             mlMatch = rest.match(/^([2-9])/);
             if (mlMatch) {
                 result.ml = parseInt(mlMatch[1]);
                 rest = rest.substring(mlMatch[0].length);
-                console.log('ML (1-digit):', result.ml, 'rest:', rest);
             } else {
                 result.ml = 7;
-                console.log('ML match failed, using default 7');
             }
         }
 
@@ -270,13 +268,9 @@
         let instMatch = rest.match(/^(10|[1-9])/);
         if (instMatch) {
             result.inst = parseInt(instMatch[1]);
-            console.log('Inst:', result.inst);
         } else {
             result.inst = 5;
-            console.log('Inst match failed, using default 5');
         }
-
-        console.log('=== PARSE RESULT ===', result);
         return result;
     }
 
@@ -289,8 +283,6 @@
         // Check for fly/swim before cleaning
         const hasFly = /fly/i.test(input);
         const hasSwim = /swim/i.test(input);
-        console.log('=== PRE-CLEAN ===', { input, hasFly, hasSwim });
-
         // Clean input - remove header row if present, normalize
         let cleanInput = input
             .replace(/HDACAtk\.?Dmg\.?Shock\.?Move\.?ML\.?Inst\.?Skill\.?Save\.?/gi, '')
@@ -301,8 +293,6 @@
             .replace(/'\s*(fly|swim)\s*/gi, "'")  // Remove fly/swim after move quote
             .replace(/\s*(fly|swim)\s*/gi, '')  // Remove fly/swim text
             .trim();
-        console.log('Cleaned input:', cleanInput);
-
         // Use the step-by-step parser which handles constraints better
         const result = parseCompactStatblockAlt(cleanInput);
         if (result) {
@@ -314,7 +304,9 @@
 
     function parseStatblock(input) {
         const trimmed = (input || '').trim();
-        if (!trimmed) return null;
+        if (!trimmed) {
+            return { ok: false, error: { code: 'empty', message: 'Statblock is empty.' } };
+        }
 
         const hasDoubleSpaces = /\s{2,}/.test(trimmed);
         const hasPilcrow = trimmed.includes('¶');
@@ -322,11 +314,43 @@
         const isSingleSpaceFormat = !hasPilcrow && !hasDoubleSpaces && /\s\+\d/.test(trimmed);
         const hasCompactFormat = hasPilcrow || (!isSingleSpaceFormat && !hasDoubleSpaces);
 
-        if (isSingleSpaceFormat) return parseSingleSpaceStatblock(trimmed);
-        if (hasCompactFormat) return parseCompactStatblock(trimmed);
-        return parseSpacedStatblock(trimmed);
+        let format, data;
+        if (isSingleSpaceFormat) {
+            format = 'single-space';
+            data = parseSingleSpaceStatblock(trimmed);
+        } else if (hasCompactFormat) {
+            format = 'compact';
+            data = parseCompactStatblock(trimmed);
+        } else {
+            format = 'spaced';
+            data = parseSpacedStatblock(trimmed);
+        }
+
+        if (!data) {
+            return {
+                ok: false,
+                error: {
+                    code: 'parse_failed',
+                    format,
+                    message: 'Could not parse as ' + format + ' format. Expected fields: Name HD AC +BAB Damage Shock Move ML Inst +Skill Save+'
+                }
+            };
+        }
+        return { ok: true, data, format };
     }
 
-    window.CombatTracker = window.CombatTracker || {};
-    window.CombatTracker.parseStatblock = parseStatblock;
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = {
+            parseStatblock,
+            parseDamage,
+            parseShock,
+            parseSpacedStatblock,
+            parseSingleSpaceStatblock,
+            parseCompactStatblock
+        };
+    }
+    if (typeof window !== 'undefined') {
+        window.CombatTracker = window.CombatTracker || {};
+        window.CombatTracker.parseStatblock = parseStatblock;
+    }
 })();

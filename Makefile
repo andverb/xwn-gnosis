@@ -1,4 +1,4 @@
-.PHONY: run migrate migrations static index lint test build shell
+.PHONY: run migrate migrations static index lint test test-js build shell
 
 run:
 	uv run python manage.py runserver
@@ -26,6 +26,9 @@ lint:
 
 test:
 	uv run pytest
+
+test-js:
+	node --test 'static/js/**/*.test.js'
 
 shell:
 	uv run python manage.py shell
