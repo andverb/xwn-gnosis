@@ -605,8 +605,10 @@
 
 {% block extra_scripts %}
 {{ block.super }}
-<script id="combat-tracker-weapons" type="application/json">{{ weapons_json | safe }}</script>
-<script id="combat-tracker-weapon-traits" type="application/json">{{ weapon_traits_json | safe }}</script>
+<script>
+    window.WEAPONS_URL = "{% static 'data/wwn_weapons.json' %}";
+    window.NPC_TEMPLATES_URL = "{% static 'data/wwn_npc_templates.json' %}";
+</script>
 <script src="{% static 'js/combat-tracker/storage.js' %}"></script>
 <script src="{% static 'js/combat-tracker/statblock-parser.js' %}"></script>
 <script src="{% static 'js/combat-tracker/store.js' %}"></script>

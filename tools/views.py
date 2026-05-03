@@ -215,11 +215,7 @@ async def combat_tracker(request):
         {
             "current_lang": current_lang,
             "other_lang": get_other_lang(current_lang),
-            # Raw list for Django template iteration
             "weapons": weapons_data["weapons"],
-            # Pre-serialize to JSON for safe embedding in <script> tags
-            "weapons_json": json.dumps(weapons_data["weapons"]),
-            "weapon_traits_json": json.dumps(weapons_data["traits"]),
         },
     )
 

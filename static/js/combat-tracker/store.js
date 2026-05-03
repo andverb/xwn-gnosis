@@ -1,15 +1,11 @@
 (function() {
-    const weaponsDataEl = document.getElementById('combat-tracker-weapons');
-    const weaponTraitsEl = document.getElementById('combat-tracker-weapon-traits');
-    const weaponsData = weaponsDataEl ? JSON.parse(weaponsDataEl.textContent) : [];
-    const weaponTraitsData = weaponTraitsEl ? JSON.parse(weaponTraitsEl.textContent) : {};
-
     const groupColors = [
         '#dc3545', '#fd7e14', '#6f42c1', '#0dcaf0',
         '#d63384', '#20c997', '#ffc107', '#6610f2',
     ];
 
-    const NPC_TEMPLATES_URL = '/static/data/wwn_npc_templates.json';
+    const WEAPONS_URL = window.WEAPONS_URL || '/static/data/wwn_weapons.json';
+    const NPC_TEMPLATES_URL = window.NPC_TEMPLATES_URL || '/static/data/wwn_npc_templates.json';
 
     function combatTracker() {
         return {
@@ -83,7 +79,9 @@
                 systemStrain: 0
             },
 
-            // NPC templates (loaded from JSON in init)
+            // Data loaded from JSON in init()
+            weapons: [],
+            weaponTraits: {},
             npcTemplates: [],
 
             // Computed
@@ -201,6 +199,13 @@
             // Init
             init() {
                 this.loadFromStorage();
+                fetch(WEAPONS_URL)
+                    .then(r => r.ok ? r.json() : { weapons: [], traits: {} })
+                    .then(data => {
+                        this.weapons = data.weapons || [];
+                        this.weaponTraits = data.traits || {};
+                    })
+                    .catch(err => console.error('Failed to load weapons:', err));
                 fetch(NPC_TEMPLATES_URL)
                     .then(r => r.ok ? r.json() : [])
                     .then(data => { this.npcTemplates = data; })
@@ -213,7 +218,7 @@
             },
 
             getWeapon(weaponId) {
-                return weaponsData.find(w => w.id === weaponId);
+                return this.weapons.find(w => w.id === weaponId);
             },
 
             getPC(id) {
@@ -355,10 +360,9 @@
                 if (combatant.damageMode === 'dice') return [];
                 const weapon = this.getWeapon(combatant.weaponId);
                 if (!weapon?.traits) return [];
-                const traitData = weaponTraitsData;
                 return weapon.traits.map(code => ({
                     code: code,
-                    desc: traitData[code]?.en || code
+                    desc: this.weaponTraits[code]?.en || code
                 }));
             },
 
